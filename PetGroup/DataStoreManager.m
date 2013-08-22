@@ -99,21 +99,68 @@
 #pragma mark - 存储个人信息
 +(void)saveMyInfo:(NSDictionary *)myInfo
 {
-    NSString * myName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
-    NSString * nickName = [myInfo objectForKey:@"nickname"];
-    if (myName) {
+    NSString * myUserName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
+    NSString * nickName = [self toString:[myInfo objectForKey:@"nickname"]];
+    NSString * gender = [myInfo objectForKey:@"gender"];
+    NSString * headImgID = [self toString:[myInfo objectForKey:@"img"]];
+    NSString * signature = [myInfo objectForKey:@"signature"];
+    NSString * hobby = [myInfo objectForKey:@"hobby"];
+    NSString * age = [self toString:[myInfo objectForKey:@"birthdate"]];
+    NSString * userId = [self toString:[myInfo objectForKey:@"userid"]];
+ 
+    if (myUserName) {
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",myName];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",myUserName];
             DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
             if (!dFriend)
-                dFriend = [DSFriends MR_createInContext:localContext];    
-            dFriend.userName = myName;
-            dFriend.nickName = nickName;
-
+                dFriend = [DSFriends MR_createInContext:localContext]; 
+            dFriend.userName = myUserName;
+            dFriend.nickName = nickName?nickName:@"";
+            dFriend.gender = gender?gender:@"";
+            dFriend.userId = userId?userId:@"";
+            dFriend.hobby = hobby?hobby:@"";
+            dFriend.headImgID = headImgID?headImgID:@"";
+            dFriend.signature = signature?signature:@"";
+            dFriend.age = age?age:@"";
         }];
+        [self storePetInfo:myInfo];
       } 
 }
 
++(void)storePetInfo:(NSDictionary *)myInfo
+{
+    NSArray * petArray = [myInfo objectForKey:@"petInfos"];
+    for (int i = 0; i<petArray.count; i++) {
+        NSString * hostName = [myInfo objectForKey:@"username"];
+        NSString * hostNickName = [myInfo objectForKey:@"nickname"];
+        NSString * nickName = [[petArray objectAtIndex:i] objectForKey:@"nickname"];
+        NSString * gender = [[petArray objectAtIndex:i] objectForKey:@"gender"];
+        NSString * headImgID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"img"]];
+        NSString * trait = [[petArray objectAtIndex:i] objectForKey:@"trait"];
+        NSString * type = [self toString:[[petArray objectAtIndex:i] objectForKey:@"type"]];
+        NSString * age = [self toString:[[petArray objectAtIndex:i] objectForKey:@"birthdate"]];
+        NSString * petID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"id"]];
+        [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
+            DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
+            if (!dPet)
+                dPet = [DSPets MR_createInContext:localContext];
+            dPet.friendName = hostName?hostName:@"";
+            dPet.friendNickname = hostNickName?hostNickName:@"";
+            dPet.petNickname = nickName?nickName:@"";
+            dPet.petGender = gender?gender:@"";
+            dPet.petHeadImgID = headImgID?headImgID:@"";
+            dPet.petTrait = trait?trait:@"";
+            dPet.petType = type?type:@"";
+            dPet.petAge = age?age:@"";
+            dPet.petID = petID?petID:@"";
+        }];
+    }
+}
++(NSString *)toString:(id)object
+{
+    return [NSString stringWithFormat:@"%@",object];
+}
 #pragma mark - 打招呼存储相关
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict
 {

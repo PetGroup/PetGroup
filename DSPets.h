@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * petHeadImgID;
 @property (nonatomic, retain) NSString * petGender;
 @property (nonatomic, retain) NSString * petAge;
+@property (nonatomic, retain) NSString * petID;
 @property (nonatomic, retain) NSDate * creatTime;
 
 @end

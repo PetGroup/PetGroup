@@ -82,8 +82,16 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"hahawhoareyou" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"282989bf-63d0-4959-967f-5eaa17ec157d" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];
+    }
+    else
+    {
+        [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
+        [self logInToServer];
     }
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -211,10 +219,53 @@
                         inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
-- (void)didReceiveMemoryWarning
+
+
+-(void)logInToServer
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:PASSWORD andServiceName:LOCALACCOUNT error:nil] forKey:@"password"];
+    [userInfoDict setObject:@"31" forKey:@"imgId"];
+    [userInfoDict setObject:@"2" forKey:@"type"];
+    [postDict setObject:userInfoDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"open" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        [self logInServerSuccessWithInfo:recDict];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self makeLogFailurePrompt];
+    }];
+}
+
+-(void)logInServerSuccessWithInfo:(NSDictionary *)dict
+{
+    if ([[dict objectForKey:@"forceUpdate"] intValue]>0) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+        alert.tag = 20;
+        [alert show];
+    }
+    else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
+        alert.tag = 21;
+        [alert show];
+    }
+    [self saveMyInfo:[dict objectForKey:@"petUserView"]];
+}
+
+-(void)logInToChatServer
+{
+    
 }
 
 -(void)toLoginPage
@@ -223,5 +274,18 @@
     WelcomeViewController * welcomeV = [[WelcomeViewController alloc] init];
         UINavigationController * navi = [[UINavigationController alloc] initWithRootViewController:welcomeV];
     [self presentModalViewController:navi animated:NO];
+}
+-(void)saveMyInfo:(NSDictionary *)dict
+{
+    [DataStoreManager saveMyInfo:dict];
+}
+-(void)makeLogFailurePrompt
+{
+    
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 @end

@@ -71,7 +71,9 @@
         <attribute name="nickName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="petsID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="signature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSMyDynamic" representedClassName="DSMyDynamic" syncable="YES">
@@ -95,6 +97,7 @@
         <attribute name="petAge" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petGender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petHeadImgID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="petID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petTrait" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petType" optional="YES" attributeType="String" syncable="YES"/>
@@ -162,9 +165,9 @@
         <element name="DSCommonMsgs" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSDynamicFriends" positionX="160" positionY="192" width="128" height="270"/>
         <element name="DSDynamicNearby" positionX="160" positionY="192" width="128" height="270"/>
-        <element name="DSFriends" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="DSFriends" positionX="160" positionY="192" width="128" height="210"/>
         <element name="DSMyDynamic" positionX="160" positionY="192" width="128" height="225"/>
-        <element name="DSPets" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="DSPets" positionX="160" positionY="192" width="128" height="195"/>
         <element name="DSPublicMsgs" positionX="160" positionY="192" width="128" height="165"/>
         <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="120"/>
         <element name="DSSayHellos" positionX="160" positionY="192" width="128" height="90"/>

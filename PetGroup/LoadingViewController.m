@@ -13,6 +13,7 @@
 #import "NearByViewController.h"
 #import "ContactsViewController.h"
 #import "PersonalCenterViewController.h"
+#import "JSON.h"
 @interface LoadingViewController ()
 
 @end
@@ -59,9 +60,57 @@
         }
     }
     [self.view addSubview:splashImageView];
+    
+    NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:path] == NO)
+    {
+        [self firtOpen];
+    }
+
     [self performSelector:@selector(toMainView) withObject:nil afterDelay:2];
 
 	// Do any additional setup after loading the view.
+}
+-(void)firtOpen
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
+    if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
+        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
+        NSString * macAddress = [dv macaddress];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:macAddress forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    }
+    [postDict setObject:userInfoDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"open" forKey:@"method"];
+    [postDict setObject:@"" forKey:@"token"];
+    [postDict setObject:@"2345" forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
+    [NetManager requestWithURLStr:BaseCoreUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self makeNotFirstOpen];
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        //存储返回的DeviceID，注册使用...
+        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+
+}
+
+-(void)makeNotFirstOpen
+{
+//    NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    
+    NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:path] == NO)
+    {  
+        [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
 }
 -(void)toMainView
 {

@@ -2,7 +2,7 @@
 //  DSFriends.m
 //  PetGroup
 //
-//  Created by Tolecen on 13-8-15.
+//  Created by Tolecen on 13-8-22.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
@@ -11,14 +11,16 @@
 
 @implementation DSFriends
 
-@dynamic userName;
-@dynamic nickName;
-@dynamic headImgID;
-@dynamic signature;
-@dynamic hobby;
-@dynamic gender;
 @dynamic age;
+@dynamic gender;
+@dynamic headImgID;
+@dynamic hobby;
+@dynamic nickName;
 @dynamic petCount;
 @dynamic petsID;
+@dynamic signature;
+@dynamic userName;
+@dynamic userId;
+@dynamic phoneNumber;
 
 @end

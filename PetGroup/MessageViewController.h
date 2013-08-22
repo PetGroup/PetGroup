@@ -41,8 +41,8 @@
 //    NSMutableData * dataSource;
     NSString * currentID;
     
-    NSMutableDictionary * userInfoDict;
-    NSMutableDictionary * postDict;
+//    NSMutableDictionary * userInfoDict;
+//    NSMutableDictionary * postDict;
     
     NSTimer * checkLocTimer;
     double userLatitude;

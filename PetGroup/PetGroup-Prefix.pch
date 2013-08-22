@@ -37,10 +37,14 @@
 #define ACCOUNT @"lovePetAccount"
 #define PASSWORD @"lovePetPassword"
 #define LOCALTOKEN @"lovePetLocalToken"
+#define MACADDRESS @"lovepetmacaddress"
 
 
 #define Host @"202.43.152.172"
 #define Domain @"@test.com"
+
+#define RootDocPath ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0])
+
 
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
 #ifndef __OPTIMIZE__

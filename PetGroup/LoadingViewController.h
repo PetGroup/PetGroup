@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MLNavigationController.h"
+#import "DeviceIdentifier.h"
 @class ViewController,CustomTabBar,LeveyTabBarController,MessageViewController,DynamicViewController,NearByViewController,ContactsViewController,MoreViewController,LoginViewController,DetailMessageViewController,KKChatController;
 @interface LoadingViewController : UIViewController
 {

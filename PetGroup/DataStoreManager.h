@@ -18,10 +18,10 @@
 #import "DSPublicMsgs.h"
 #import "DSCommonMsgs.h"
 #import "DSReceivedHellos.h"
-#import "DSFriends.h"
 #import "DSThumbSubscribedMsgs.h"
 #import "DSSubscribedMsgs.h"
 #import "DSPets.h"
+#import "DSFriends.h"
 @interface DataStoreManager : NSObject
 +(void)setDefaultDataBase:(NSString *)dataBaseName AndDefaultModel:(NSString *)modelName;
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype;
