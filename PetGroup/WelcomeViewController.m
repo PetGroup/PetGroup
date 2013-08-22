@@ -35,6 +35,7 @@
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
     
+    
     self.view.backgroundColor = [UIColor whiteColor];
     sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
 	//设置委托
