@@ -11,4 +11,40 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <SystemConfiguration/SystemConfiguration.h>
+    #import <MobileCoreServices/MobileCoreServices.h>
+    #import "AFNetworking.h"
+    #import "XMPPFramework.h"
+    #import "CoreData+MagicalRecord.h"
+    #import "SFHFKeychainUtils.h"
+    #import "DataStoreManager.h"
+    #import "NetManager.h"
+    #import "MakeDict.h"
+#endif
+
+#define BaseClientUrl @"http://123.178.27.74/pet/client/request"
+#define BaseCoreUrl @"http://123.178.27.74/pet/core/request"
+#define BaseImageUrl @"http://123.178.27.74/pet/static/"
+#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
+
+//define sender type
+#define COMMONUSER @"commonUser"
+#define PUBLICACCOUNT  @"publicAccount"
+#define SUBSCRIBEDACCOUNT  @"subscribedAccount"
+
+//define local account store in SFHFKeychainUtils
+#define LOCALACCOUNT @"lovePetLocalAccountTolecen"
+#define ACCOUNT @"lovePetAccount"
+#define PASSWORD @"lovePetPassword"
+#define LOCALTOKEN @"lovePetLocalToken"
+
+
+#define Host @"202.43.152.172"
+#define Domain @"@test.com"
+
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#define NSLog(...) {}
 #endif

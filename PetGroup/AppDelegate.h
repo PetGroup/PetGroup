@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Reachability.h"
+#import "TempData.h"
+#import "LoadingViewController.h"
 @class ViewController;
-
+@class XMPPHelper;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) LoadingViewController * loadingV;
 @property (strong, nonatomic) ViewController *viewController;
-
+@property (nonatomic,strong) XMPPHelper *xmppHelper;
 @end

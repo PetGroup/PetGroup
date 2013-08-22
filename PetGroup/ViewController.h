@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "DataStoreManager.h"
 @interface ViewController : UIViewController
-
+{
+    IBOutlet UIButton * doBTn;
+}
+-(IBAction)doit:(id)sender;
 @end

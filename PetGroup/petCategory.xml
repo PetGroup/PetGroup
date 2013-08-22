@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<petCategory>
+    <Dog name = "狗狗">
+        <name id = "01001">金毛</name>
+        <name id = "01002">萨摩耶</name>
+        <name id = "01003">贵宾/泰迪</name>
+        <name id = "01004">约克夏</name>
+        <name id = "01005">拉布拉多</name>
+        <name id = "01006">哈士奇</name>
+        <name id = "01007">喜乐蒂</name>
+        <name id = "01008">雪瑞那</name>
+        <name id = "01009">比熊</name>
+        <name id = "01010">博美</name>
+        <name id = "01011">边境牧羊犬</name>
+        <name id = "01012">苏格兰牧羊犬</name>
+        <name id = "01013">德国牧羊犬</name>
+        <name id = "01014">吉娃娃</name>
+        <name id = "01015">比格</name>
+        <name id = "01016">松狮</name>
+        <name id = "01017">巴哥犬</name>
+        <name id = "01018">柴犬</name>
+        <name id = "01019">阿拉斯加</name>
+        <name id = "01020">贝灵顿梗</name>
+        <name id = "01021">柯基</name>
+        <name id = "01022">可卡</name>
+        <name id = "01023">串串</name>
+        <name id = "01024">其他</name>
+    </Dog>
+    <Cat name = "猫咪">
+        <name id = "02001">美国短毛猫</name>
+        <name id = "02002">异国短毛猫</name>
+        <name id = "02003">英国短毛猫</name>
+        <name id = "02004">苏格兰折耳猫</name>
+        <name id = "02005">暹罗猫</name>
+        <name id = "02006">其他</name>
+    </Cat>
+    <Other name = "其他">
+        <name id = "03001">水族</name>
+        <name id = "03002">兔子</name>
+        <name id = "03003">仓鼠</name>
+        <name id = "03004">宠物鸟</name>
+        <name id = "03005">两栖及爬行类</name>
+        <name id = "03006">其他</name>
+    </Other>
+</petCategory>

@@ -6,18 +6,28 @@
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
+#include <netdb.h>
+#import <dlfcn.h>
 #import "AppDelegate.h"
+#import "XMPPHelper.h"
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+
 
 #import "ViewController.h"
-
+#define DataStoreModel @"LocalDataStore.sqlite"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+   // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+    self.loadingV = [[LoadingViewController alloc] init];
+    self.window.rootViewController = self.loadingV;
+    self.xmppHelper=[[XMPPHelper alloc] init];
+
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -46,6 +56,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [MagicalRecord cleanUp];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
