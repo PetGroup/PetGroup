@@ -82,9 +82,10 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"hahawhoareyou" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"7kela" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"282989bf-63d0-4959-967f-5eaa17ec157d" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"40664d5d-56b2-43cb-a8f6-9fabe8222c5e" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];
     }
@@ -123,12 +124,20 @@
     NSString * dd = [theName stringByReplacingOccurrencesOfString:@" " withString:@""];
     return dd;
 }
--(void)newAddReq:(NSString *)userID
+-(void)newAddReq:(NSDictionary *)userInfo
 {
+    //检查本地是否已有这个打招呼的人，有了就不存，没有就存
+    if (![DataStoreManager ifSayHellosHaveThisPerson:[userInfo objectForKey:@"fromUser"]]) {
+        [DataStoreManager addPersonToReceivedHellos:userInfo];
+    }
+    //检查打招呼这个人有没有详细信息，没有去请求详细信息
+    if([DataStoreManager checkSayHelloPersonIfHaveNickNameForUsername:[userInfo objectForKey:@"fromUser"]]){
+        
+    }
 
 }
 -(void)processFriend:(XMPPPresence *)processFriend{
-        
+    
 }
 
 -(void)newMessageReceived:(NSDictionary *)messageContent
@@ -261,11 +270,25 @@
         [alert show];
     }
     [self saveMyInfo:[dict objectForKey:@"petUserView"]];
+    [self logInToChatServer];
 }
 
 -(void)logInToChatServer
 {
-    
+    self.appDel.xmppHelper.xmpptype = login;
+    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:Domain] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:Host success:^(void){
+        NSLog(@"登陆成功xmpp");
+        self.appDel.xmppHelper.buddyListDelegate = self;
+        self.appDel.xmppHelper.chatDelegate = self;
+        self.appDel.xmppHelper.processFriendDelegate = self;
+        self.appDel.xmppHelper.addReqDelegate = self;
+        titleLabel.text = @"消息";
+        //            self.appDel.xmppHelper.processFriendDelegate = self;
+
+        
+    }fail:^(NSError *result){
+        
+    }];
 }
 
 -(void)toLoginPage
@@ -278,6 +301,11 @@
 -(void)saveMyInfo:(NSDictionary *)dict
 {
     [DataStoreManager saveMyInfo:dict];
+}
+
+-(void)requestPeopleInfoWithName:(NSString *)userName
+{
+    
 }
 -(void)makeLogFailurePrompt
 {

@@ -146,7 +146,12 @@
 
 //添加好友
 -(void)addFriend:(NSString *)user{
-    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nil];
+    NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
+    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName];
+}
+-(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID{
+    NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
+    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName Msg:msg HeadID:headID];
 }
 //删除好友
 -(void)delFriend:(NSString *)user{
@@ -290,11 +295,14 @@
     NSString *presenceType = [NSString stringWithFormat:@"%@", [presence type]]; //online/offline
     //请求的用户
     NSString *presenceFromUser =[NSString stringWithFormat:@"%@", [[presence from] user]];
-    NSLog(@"presenceType:%@",presenceType);
-    
+    NSString *fromnickName = [presence fromName];
+    NSString *additionMsg = [presence additionMsg];
+    NSString *headID = [presence headID];
+    NSLog(@"presenceType:%@,fromNickName:%@,additionMsg:%@",presenceType,fromnickName,additionMsg);
+    NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:presenceFromUser,@"fromUser",fromnickName,@"fromNickname",additionMsg,@"addtionMsg",headID,@"headID", nil];
     NSLog(@"presence2:%@  sender2:%@",presence,sender);
     if ([presenceType isEqualToString:@"subscribe"]) {
-        [self.addReqDelegate newAddReq:presenceFromUser];
+        [self.addReqDelegate newAddReq:uDict];
     }
     
    // [self.addReq newAddReq:@""];

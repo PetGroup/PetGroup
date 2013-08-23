@@ -70,6 +70,7 @@ typedef enum {
 -(void)getCompleteRoster:(XMPPRosterMemoryStorageCallBack)callback;
 -(void)addOrDenyFriend:(Boolean)issubscribe user:(NSString *)user;
 -(void)addFriend:(NSString *)user;
+-(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID;
 -(void)delFriend:(NSString *)user;
 -(void)getIt;
 -(void)disconnect;

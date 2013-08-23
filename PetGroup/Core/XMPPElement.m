@@ -94,6 +94,27 @@
 	return [[self attributeForName:@"from"] stringValue];
 }
 
+- (NSString *)fromName
+{
+    return [[self attributeForName:@"fromNickname"] stringValue];
+}
+
+-(NSString *)additionMsg
+{
+    if ([[self attributeForName:@"msg"] stringValue]) {
+        return [[self attributeForName:@"msg"] stringValue];
+    }
+    return @"";
+}
+
+-(NSString *)headID
+{
+    if ([[self attributeForName:@"headID"] stringValue]) {
+        return [[self attributeForName:@"headID"] stringValue];
+    }
+    return @"";
+}
+
 - (XMPPJID *)to
 {
 	return [XMPPJID jidWithString:[self toStr]];
@@ -102,6 +123,16 @@
 - (XMPPJID *)from
 {
 	return [XMPPJID jidWithString:[self fromStr]];
+}
+
+- (NSString *)nickName
+{
+    return [self fromName];
+}
+
+-(NSString *)additionalMsg
+{
+    return [self additionalMsg];
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

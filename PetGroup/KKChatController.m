@@ -149,7 +149,7 @@
     btnLongTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(btnLongTapAction:)];
     btnLongTap.minimumPressDuration = 1;
     
-
+    [self.appDel.xmppHelper addFriend:@"7kela" WithMsg:@"what's the fuck !" HeadID:@"20"];
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.

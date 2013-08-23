@@ -15,6 +15,7 @@
 @dynamic nickName;
 @dynamic headImgID;
 @dynamic ifFriend;
+@dynamic addtionMsg;
 @dynamic acceptStatus;
 
 @end

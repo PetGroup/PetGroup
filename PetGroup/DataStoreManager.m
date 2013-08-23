@@ -157,6 +157,7 @@
         }];
     }
 }
+
 +(NSString *)toString:(id)object
 {
     return [NSString stringWithFormat:@"%@",object];
@@ -169,7 +170,46 @@
 
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict
 {
-    
+    NSString * userName = [userInfoDict objectForKey:@"fromUser"];
+    NSString * userNickname = [userInfoDict objectForKey:@"fromNickname"];
+    NSString * addtionMsg = [userInfoDict objectForKey:@"addtionMsg"];
+    NSString * headID = [userInfoDict objectForKey:@"headID"];
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+        DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+        if (!dReceivedHellos)
+        {
+            dReceivedHellos = [DSReceivedHellos MR_createInContext:localContext];
+            dReceivedHellos.userName = userName;
+            dReceivedHellos.nickName = userNickname;
+            dReceivedHellos.addtionMsg = addtionMsg;
+            dReceivedHellos.headImgID = headID;
+        }
+    }];
+}
++(BOOL)ifSayHellosHaveThisPerson:(NSString *)username
+{
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
+    DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+    if (dReceivedHellos) {
+        return YES;
+    }
+    else
+        return NO;
+}
++(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username
+{
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
+    DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+    if (dReceivedHellos) {
+        if (dReceivedHellos.nickName.length>1) {
+            return YES;
+        }
+        else
+            return NO;
+    }
+    else
+        return NO;
 }
 
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName

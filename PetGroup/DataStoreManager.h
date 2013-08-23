@@ -34,6 +34,8 @@
 
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict;
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict;
++(BOOL)ifSayHellosHaveThisPerson:(NSString *)username;
++(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username;
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName;
 +(void)qureyAllFriends;
 @end

@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9736BABE17C44FA7007DFE36 /* 222222.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9736BABD17C44FA7007DFE36 /* 222222.jpg */; };
-		9736BAC017C45281007DFE36 /* 333.png in Resources */ = {isa = PBXBuildFile; fileRef = 9736BABF17C45281007DFE36 /* 333.png */; };
-		9736BAC217C45289007DFE36 /* 4444.png in Resources */ = {isa = PBXBuildFile; fileRef = 9736BAC117C45289007DFE36 /* 4444.png */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
 		9736BAFD17C4892A007DFE36 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BAD917C4892A007DFE36 /* GCDAsyncSocket.m */; };
@@ -452,9 +449,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9736BABD17C44FA7007DFE36 /* 222222.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 222222.jpg; sourceTree = "<group>"; };
-		9736BABF17C45281007DFE36 /* 333.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 333.png; sourceTree = "<group>"; };
-		9736BAC117C45289007DFE36 /* 4444.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4444.png; sourceTree = "<group>"; };
 		9736BAC917C472A1007DFE36 /* HostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfo.h; sourceTree = "<group>"; };
 		9736BACA17C472A1007DFE36 /* HostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostInfo.m; sourceTree = "<group>"; };
 		9736BACC17C472B2007DFE36 /* PetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PetInfo.h; sourceTree = "<group>"; };
@@ -2585,9 +2579,6 @@
 				97E25C3117C35367007E187D /* NetManager.m */,
 				97E25C3317C360E6007E187D /* MakeDict.h */,
 				97E25C3417C360E7007E187D /* MakeDict.m */,
-				9736BABD17C44FA7007DFE36 /* 222222.jpg */,
-				9736BABF17C45281007DFE36 /* 333.png */,
-				9736BAC117C45289007DFE36 /* 4444.png */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -2787,9 +2778,6 @@
 				979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */,
 				979546D417BA368F00D05874 /* ViewController.xib in Resources */,
 				97E25C3D17C3729A007E187D /* Localizable.strings in Resources */,
-				9736BABE17C44FA7007DFE36 /* 222222.jpg in Resources */,
-				9736BAC017C45281007DFE36 /* 333.png in Resources */,
-				9736BAC217C45289007DFE36 /* 4444.png in Resources */,
 				9736BB0517C4892A007DFE36 /* README.txt in Resources */,
 				9736BB0A17C4892A007DFE36 /* build-libidn.sh in Resources */,
 				9736BCC517C48B7B007DFE36 /* petCategory.xml in Resources */,
@@ -3264,7 +3252,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3280,6 +3269,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -3296,7 +3287,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -3305,6 +3297,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
