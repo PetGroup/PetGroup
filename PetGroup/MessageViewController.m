@@ -282,10 +282,7 @@
         self.appDel.xmppHelper.chatDelegate = self;
         self.appDel.xmppHelper.processFriendDelegate = self;
         self.appDel.xmppHelper.addReqDelegate = self;
-        titleLabel.text = @"消息";
-        //            self.appDel.xmppHelper.processFriendDelegate = self;
-
-        
+        titleLabel.text = @"消息";    
     }fail:^(NSError *result){
         
     }];
