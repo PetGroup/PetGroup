@@ -10,6 +10,7 @@
 
 @interface Common : NSObject
 +(NSString *)getCurrentTime;
++(NSString *)CurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
 +(NSDate *)getCurrentTimeFromString:(NSString *)datetime;
 +(NSString *)getCurrentTimeFromString2:(NSDate *)datetime;
 +(NSString *)getWeakDay:(NSDate *)datetime;

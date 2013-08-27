@@ -18,5 +18,6 @@
 @dynamic senderType;
 @dynamic sendTime;
 @dynamic receiver;
+@dynamic unRead;
 
 @end

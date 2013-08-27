@@ -24,13 +24,14 @@
     NSString * sender = [[msg objectForKey:@"sender"] substringToIndex:range.location];
     NSString * senderNickname = [msg objectForKey:@"nickname"];
     NSString * msgContent = [msg objectForKey:@"msg"];
-    NSDate * sendTime = [msg objectForKey:@"time"];
+    NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[[msg objectForKey:@"time"] doubleValue]];
+    //普通用户消息存储到DSCommonMsgs和DSThumbMsgs两个表里
     if ([sendertype isEqualToString:COMMONUSER]) {
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
             DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
             commonMsg.sender = sender;
-            commonMsg.senderNickname = senderNickname;
-            commonMsg.msgContent = msgContent;
+            commonMsg.senderNickname = senderNickname?senderNickname:@"";
+            commonMsg.msgContent = msgContent?msgContent:@"";
             commonMsg.senTime = sendTime;
             
             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
@@ -38,19 +39,118 @@
             if (!thumbMsgs) 
                 thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];    
             thumbMsgs.sender = sender;
-            thumbMsgs.senderNickname = senderNickname;
+            thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
             thumbMsgs.msgContent = msgContent;
             thumbMsgs.sendTime = sendTime;
             thumbMsgs.senderType = sendertype;
+            int unread = [thumbMsgs.unRead intValue];
+            thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
             
         }];
     }
+    //公共账号消息存储到DSThumbPuclicMsgs和DSPublicMsgs里面
     else if ([sendertype isEqualToString:PUBLICACCOUNT]){
         
     }
+    //订阅号信息存储到DSThumbSubscribedMsgs和DSSubscribedMsgs里面
     else if ([sendertype isEqualToString:SUBSCRIBEDACCOUNT]){
         
     }
+}
++(void)blankMsgUnreadCountForUser:(NSString *)username
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",username];
+        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+        if (thumbMsgs) {
+            thumbMsgs.unRead = @"0";
+        }
+    }];
+}
++(NSArray *)queryUnreadCountForCommonMsg
+{
+    NSMutableArray * unreadArray = [NSMutableArray array];
+    NSArray * allUnreadArray = [DSThumbMsgs MR_findAllSortedBy:@"sendTime" ascending:YES];
+    for (int i = 0; i<allUnreadArray.count; i++) {
+        [unreadArray addObject:[[allUnreadArray objectAtIndex:i]unRead]];
+    }
+    return unreadArray;
+}
++(void)deleteMsgsWithSender:(NSString *)sender
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+        [thumbMsgs MR_deleteInContext:localContext];
+        DSCommonMsgs * commonMsgs = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
+        [thumbMsgs MR_deleteInContext:localContext];
+        [commonMsgs MR_deleteInContext:localContext];
+    }];
+}
++(NSArray *)qureyAllThumbMessages
+{
+    NSMutableArray * allMsgArray = [NSMutableArray array];
+    NSArray * thumbCommonMsgsArray = [DSThumbMsgs MR_findAllSortedBy:@"sendTime" ascending:YES];
+    for (int i = 0; i<thumbCommonMsgsArray.count; i++) {
+        NSMutableDictionary * thumbMsgsDict = [NSMutableDictionary dictionary];
+        [thumbMsgsDict setObject:[[thumbCommonMsgsArray objectAtIndex:i] sender] forKey:@"sender"];
+//        [thumbMsgsDict setObject:[[thumbCommonMsgsArray objectAtIndex:i] senderNickname] forKey:@"nickname"];
+        [thumbMsgsDict setObject:[[thumbCommonMsgsArray objectAtIndex:i] msgContent] forKey:@"msg"];
+        NSDate * tt = [[thumbCommonMsgsArray objectAtIndex:i] sendTime];
+        NSTimeInterval uu = [tt timeIntervalSince1970];
+        [thumbMsgsDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
+        [allMsgArray addObject:thumbMsgsDict];
+        
+    } 
+    return allMsgArray;  
+}
+
++(NSArray *)queryAllThumbPublicMsgs
+{
+    NSArray * thumbPublicMsgs = [DSThumbPublicMsgs MR_findAllSortedBy:@"sendTime" ascending:NO];
+    return thumbPublicMsgs;
+}
+
++(NSDictionary *)queryLastPublicMsg
+{
+    NSArray * publicMsgs = [DSThumbPublicMsgs MR_findAllSortedBy:@"sendTime" ascending:YES];
+    NSMutableDictionary * lastMsgDict = [NSMutableDictionary dictionary];
+    [lastMsgDict setObject:@"公众账号" forKey:@"sender"];
+    if (publicMsgs.count>0) {
+        DSThumbPublicMsgs * lastRecHello = [publicMsgs lastObject];
+        NSDate * tt = [lastRecHello sendTime];
+        NSTimeInterval uu = [tt timeIntervalSince1970];
+        [lastMsgDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
+        [lastMsgDict setObject:[NSString stringWithFormat:@"%@给您发了一条消息",[lastRecHello senderNickname]] forKey:@"msg"];
+    }
+    else
+    {
+        NSTimeInterval uu = [[NSDate date] timeIntervalSince1970];
+        [lastMsgDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
+        [lastMsgDict setObject:@"暂时还没有公众账号消息" forKey:@"msg"];
+    }
+    return lastMsgDict;
+}
+
++(NSDictionary *)qureyLastReceivedHello
+{
+    NSArray * rechellos = [DSReceivedHellos MR_findAllSortedBy:@"receiveTime" ascending:YES];
+    NSMutableDictionary * lastHelloDict = [NSMutableDictionary dictionary];
+    [lastHelloDict setObject:@"收到的招呼" forKey:@"sender"];
+    if (rechellos.count>0) {
+        DSReceivedHellos * lastRecHello = [rechellos lastObject];
+        NSDate * tt = [lastRecHello receiveTime];
+        NSTimeInterval uu = [tt timeIntervalSince1970];
+        [lastHelloDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
+        [lastHelloDict setObject:[NSString stringWithFormat:@"%@向您打了一个招呼",[lastRecHello nickName]] forKey:@"msg"];
+    }
+    else
+    {
+        NSTimeInterval uu = [[NSDate date] timeIntervalSince1970];
+        [lastHelloDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
+        [lastHelloDict setObject:@"暂时还没有收到招呼" forKey:@"msg"];
+    }
+    return lastHelloDict;
 }
 
 #pragma mark - 存储联系人相关
@@ -99,30 +199,150 @@
 #pragma mark - 存储个人信息
 +(void)saveMyInfo:(NSDictionary *)myInfo
 {
-    NSString * myName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
-    NSString * nickName = [myInfo objectForKey:@"nickname"];
-    if (myName) {
+    NSString * myUserName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
+    NSString * nickName = [self toString:[myInfo objectForKey:@"nickname"]];
+    NSString * gender = [myInfo objectForKey:@"gender"];
+    NSString * headImgID = [self toString:[myInfo objectForKey:@"img"]];
+    NSString * signature = [myInfo objectForKey:@"signature"];
+    NSString * hobby = [myInfo objectForKey:@"hobby"];
+    NSString * age = [self toString:[myInfo objectForKey:@"birthdate"]];
+    NSString * userId = [self toString:[myInfo objectForKey:@"userid"]];
+ 
+    if (myUserName) {
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",myName];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",myUserName];
             DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
             if (!dFriend)
-                dFriend = [DSFriends MR_createInContext:localContext];    
-            dFriend.userName = myName;
-            dFriend.nickName = nickName;
-
+                dFriend = [DSFriends MR_createInContext:localContext]; 
+            dFriend.userName = myUserName;
+            dFriend.nickName = nickName?nickName:@"";
+            dFriend.gender = gender?gender:@"";
+            dFriend.userId = userId?userId:@"";
+            dFriend.hobby = hobby?hobby:@"";
+            dFriend.headImgID = headImgID?headImgID:@"";
+            dFriend.signature = signature?signature:@"";
+            dFriend.age = age?age:@"";
         }];
+        [self storePetInfo:myInfo];
       } 
 }
 
++(void)storePetInfo:(NSDictionary *)myInfo
+{
+    NSArray * petArray = [myInfo objectForKey:@"petInfos"];
+    for (int i = 0; i<petArray.count; i++) {
+        NSString * hostName = [myInfo objectForKey:@"username"];
+        NSString * hostNickName = [myInfo objectForKey:@"nickname"];
+        NSString * nickName = [[petArray objectAtIndex:i] objectForKey:@"nickname"];
+        NSString * gender = [[petArray objectAtIndex:i] objectForKey:@"gender"];
+        NSString * headImgID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"img"]];
+        NSString * trait = [[petArray objectAtIndex:i] objectForKey:@"trait"];
+        NSString * type = [self toString:[[petArray objectAtIndex:i] objectForKey:@"type"]];
+        NSString * age = [self toString:[[petArray objectAtIndex:i] objectForKey:@"birthdate"]];
+        NSString * petID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"id"]];
+        [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
+            DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
+            if (!dPet)
+                dPet = [DSPets MR_createInContext:localContext];
+            dPet.friendName = hostName?hostName:@"";
+            dPet.friendNickname = hostNickName?hostNickName:@"";
+            dPet.petNickname = nickName?nickName:@"";
+            dPet.petGender = gender?gender:@"";
+            dPet.petHeadImgID = headImgID?headImgID:@"";
+            dPet.petTrait = trait?trait:@"";
+            dPet.petType = type?type:@"";
+            dPet.petAge = age?age:@"";
+            dPet.petID = petID?petID:@"";
+        }];
+    }
+}
+
++(NSString *)toString:(id)object
+{
+    return [NSString stringWithFormat:@"%@",object];
+}
 #pragma mark - 打招呼存储相关
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict
 {
     
 }
 
++(void)deleteReceivedHelloWithUserName:(NSString *)userName
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+        NSArray * received = [DSReceivedHellos MR_findAllWithPredicate:predicate];
+        for (int i = 0; i<received.count; i++) {
+            DSReceivedHellos * rH = [received objectAtIndex:i];
+            [rH MR_deleteInContext:localContext];
+        }
+    }];
+
+}
+
++(NSString *)qureyUnreadForReceivedHellos
+{
+    DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
+    int theUnread = [unread.receivedHellosUnread intValue];
+    return [NSString stringWithFormat:@"%d",theUnread];
+}
+
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict
 {
-    
+    NSString * userName = [userInfoDict objectForKey:@"fromUser"];
+    NSString * userNickname = [userInfoDict objectForKey:@"fromNickname"];
+    NSString * addtionMsg = [userInfoDict objectForKey:@"addtionMsg"];
+    NSString * headID = [userInfoDict objectForKey:@"headID"];
+    NSDate * receiveTime = [NSDate date];
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+        DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+        if (!dReceivedHellos)
+        {
+            dReceivedHellos = [DSReceivedHellos MR_createInContext:localContext];
+            dReceivedHellos.userName = userName;
+            dReceivedHellos.nickName = userNickname?userNickname:userName;
+            dReceivedHellos.addtionMsg = addtionMsg?addtionMsg:@"";
+            dReceivedHellos.headImgID = headID?headID:@"";
+            dReceivedHellos.receiveTime = receiveTime;
+            dReceivedHellos.acceptStatus = @"waiting";
+        }
+        DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
+        if (!unread) {
+            unread = [DSUnreadCount MR_createInContext:localContext];
+            unread.receivedHellosUnread = @"0";
+        }
+        else
+        {
+            int theUnread = [unread.receivedHellosUnread intValue];
+            unread.receivedHellosUnread = [NSString stringWithFormat:@"%d",theUnread+1];
+        }
+    }];
+}
++(BOOL)ifSayHellosHaveThisPerson:(NSString *)username
+{
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
+    DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+    if (dReceivedHellos) {
+        return YES;
+    }
+    else
+        return NO;
+}
++(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username
+{
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
+    DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+    if (dReceivedHellos) {
+        if (dReceivedHellos.nickName.length>1) {
+            return YES;
+        }
+        else
+            return NO;
+    }
+    else
+        return NO;
 }
 
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName

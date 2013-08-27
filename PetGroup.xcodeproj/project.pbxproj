@@ -349,6 +349,7 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
+		97D0309317C5EB3900055EF6 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
 		97D501D217C4998300799BD4 /* KKChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501CF17C4998300799BD4 /* KKChatController.m */; };
 		97D501D317C4998300799BD4 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501D117C4998300799BD4 /* MessageViewController.m */; };
 		97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FA17C49A0500799BD4 /* NearByViewController.m */; };
@@ -452,10 +453,10 @@
 		97E25C3217C35367007E187D /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3117C35367007E187D /* NetManager.m */; };
 		97E25C3517C360E7007E187D /* MakeDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3417C360E7007E187D /* MakeDict.m */; };
 		97E25C3D17C3729A007E187D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E25C3F17C3729A007E187D /* Localizable.strings */; };
+		97E6BF3317CC522A00FFD154 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		97FB47D817BC79F00071FA12 /* DSPets.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47D717BC79F00071FA12 /* DSPets.m */; };
 		97FB47DB17BC79F00071FA12 /* DSSubscribedMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47DA17BC79F00071FA12 /* DSSubscribedMsgs.m */; };
 		97FB47DE17BC79F00071FA12 /* DSThumbSubscribedMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47DD17BC79F00071FA12 /* DSThumbSubscribedMsgs.m */; };
-		97FB47E117BC79F00071FA12 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47E017BC79F00071FA12 /* DSFriends.m */; };
 		97FB47E717BC79F00071FA12 /* DSCommonMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47E617BC79F00071FA12 /* DSCommonMsgs.m */; };
 		97FB47EA17BC79F00071FA12 /* DSPublicMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47E917BC79F00071FA12 /* DSPublicMsgs.m */; };
 		97FB47ED17BC79F00071FA12 /* DSDynamicNearby.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47EC17BC79F00071FA12 /* DSDynamicNearby.m */; };
@@ -1004,6 +1005,8 @@
 		9795471517BA36AE00D05874 /* CoreData+MagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreData+MagicalRecord.h"; sourceTree = "<group>"; };
 		9795473117BA36DA00D05874 /* LocalStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalStore.xcdatamodel; sourceTree = "<group>"; };
 		9795473317BA370C00D05874 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		97D0309117C5EB3900055EF6 /* DSFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSFriends.h; sourceTree = "<group>"; };
+		97D0309217C5EB3900055EF6 /* DSFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSFriends.m; sourceTree = "<group>"; };
 		97D501CE17C4998300799BD4 /* KKChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKChatController.h; sourceTree = "<group>"; };
 		97D501CF17C4998300799BD4 /* KKChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKChatController.m; sourceTree = "<group>"; };
 		97D501D017C4998300799BD4 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
@@ -1176,14 +1179,14 @@
 		97E25C3817C37177007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		97E25C3E17C3729A007E187D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSUnreadCount.h; sourceTree = "<group>"; };
+		97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSUnreadCount.m; sourceTree = "<group>"; };
 		97FB47D617BC79F00071FA12 /* DSPets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSPets.h; path = ../DSPets.h; sourceTree = "<group>"; };
 		97FB47D717BC79F00071FA12 /* DSPets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSPets.m; path = ../DSPets.m; sourceTree = "<group>"; };
 		97FB47D917BC79F00071FA12 /* DSSubscribedMsgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSSubscribedMsgs.h; path = ../DSSubscribedMsgs.h; sourceTree = "<group>"; };
 		97FB47DA17BC79F00071FA12 /* DSSubscribedMsgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSSubscribedMsgs.m; path = ../DSSubscribedMsgs.m; sourceTree = "<group>"; };
 		97FB47DC17BC79F00071FA12 /* DSThumbSubscribedMsgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSThumbSubscribedMsgs.h; path = ../DSThumbSubscribedMsgs.h; sourceTree = "<group>"; };
 		97FB47DD17BC79F00071FA12 /* DSThumbSubscribedMsgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSThumbSubscribedMsgs.m; path = ../DSThumbSubscribedMsgs.m; sourceTree = "<group>"; };
-		97FB47DF17BC79F00071FA12 /* DSFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFriends.h; path = ../DSFriends.h; sourceTree = "<group>"; };
-		97FB47E017BC79F00071FA12 /* DSFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFriends.m; path = ../DSFriends.m; sourceTree = "<group>"; };
 		97FB47E517BC79F00071FA12 /* DSCommonMsgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSCommonMsgs.h; path = ../DSCommonMsgs.h; sourceTree = "<group>"; };
 		97FB47E617BC79F00071FA12 /* DSCommonMsgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSCommonMsgs.m; path = ../DSCommonMsgs.m; sourceTree = "<group>"; };
 		97FB47E817BC79F00071FA12 /* DSPublicMsgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSPublicMsgs.h; path = ../DSPublicMsgs.h; sourceTree = "<group>"; };
@@ -2678,9 +2681,6 @@
 				97E25C3117C35367007E187D /* NetManager.m */,
 				97E25C3317C360E6007E187D /* MakeDict.h */,
 				97E25C3417C360E7007E187D /* MakeDict.m */,
-				9736BABD17C44FA7007DFE36 /* 222222.jpg */,
-				9736BABF17C45281007DFE36 /* 333.png */,
-				9736BAC117C45289007DFE36 /* 4444.png */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -2762,6 +2762,10 @@
 			isa = PBXGroup;
 			children = (
 				9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */,
+				97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */,
+				97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */,
+				97D0309117C5EB3900055EF6 /* DSFriends.h */,
+				97D0309217C5EB3900055EF6 /* DSFriends.m */,
 				97FB480717BC9CA40071FA12 /* DSReceivedHellos.h */,
 				97FB480817BC9CA40071FA12 /* DSReceivedHellos.m */,
 				97FB480017BC79F10071FA12 /* DSMyDynamic.h */,
@@ -2784,8 +2788,6 @@
 				97FB47E917BC79F00071FA12 /* DSPublicMsgs.m */,
 				97FB47E517BC79F00071FA12 /* DSCommonMsgs.h */,
 				97FB47E617BC79F00071FA12 /* DSCommonMsgs.m */,
-				97FB47DF17BC79F00071FA12 /* DSFriends.h */,
-				97FB47E017BC79F00071FA12 /* DSFriends.m */,
 				97FB47DC17BC79F00071FA12 /* DSThumbSubscribedMsgs.h */,
 				97FB47DD17BC79F00071FA12 /* DSThumbSubscribedMsgs.m */,
 				97FB47D917BC79F00071FA12 /* DSSubscribedMsgs.h */,
@@ -2880,9 +2882,6 @@
 				979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */,
 				979546D417BA368F00D05874 /* ViewController.xib in Resources */,
 				97E25C3D17C3729A007E187D /* Localizable.strings in Resources */,
-				9736BABE17C44FA7007DFE36 /* 222222.jpg in Resources */,
-				9736BAC017C45281007DFE36 /* 333.png in Resources */,
-				9736BAC217C45289007DFE36 /* 4444.png in Resources */,
 				9736BB0517C4892A007DFE36 /* README.txt in Resources */,
 				9736BB0A17C4892A007DFE36 /* build-libidn.sh in Resources */,
 				9736BCC517C48B7B007DFE36 /* petCategory.xml in Resources */,
@@ -3117,7 +3116,6 @@
 				97FB47D817BC79F00071FA12 /* DSPets.m in Sources */,
 				97FB47DB17BC79F00071FA12 /* DSSubscribedMsgs.m in Sources */,
 				97FB47DE17BC79F00071FA12 /* DSThumbSubscribedMsgs.m in Sources */,
-				97FB47E117BC79F00071FA12 /* DSFriends.m in Sources */,
 				97FB47E717BC79F00071FA12 /* DSCommonMsgs.m in Sources */,
 				97FB47EA17BC79F00071FA12 /* DSPublicMsgs.m in Sources */,
 				97FB47ED17BC79F00071FA12 /* DSDynamicNearby.m in Sources */,
@@ -3378,7 +3376,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3394,6 +3393,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -3410,7 +3411,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -3419,6 +3421,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

@@ -11,19 +11,97 @@
 @implementation Common
 
 +(NSString *)getCurrentTime{
-    
-//    NSDate *nowUTC = [NSDate date];
-//    
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-//    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-//    
-//    return [dateFormatter stringFromDate:nowUTC];
+
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
-    return [NSString stringWithFormat:@"%d",(int)nowTime];
+    return [NSString stringWithFormat:@"%f",nowTime];
     
 }
+
+//首页显示时间格式
++(NSString *)CurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime
+{
+    NSString * finalTime;
+    int theCurrentT = [currentTime intValue];
+    int theMessageT = [messageTime intValue];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //设定时间格式,这里可以设置成自己需要的格式
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *messageDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
+    NSString *currentStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT]];
+    NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+    [dateFormatter2 setDateFormat:@"HH:mm"];
+    NSString * msgT = [dateFormatter2 stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
+    NSString * nowT = [dateFormatter2 stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT]];
+    int msgHour = [[msgT substringToIndex:2] intValue];
+    int hours = [[nowT substringToIndex:2] intValue];
+    int minutes = [[nowT substringFromIndex:3] intValue];
+    // NSLog(@"hours:%d,minutes:%d",hours,minutes);
+    int currentDayBegin = theCurrentT-hours*3600-minutes*60;
+    int yesterdayBegin = currentDayBegin-3600*24;
+    int qiantianBegin = yesterdayBegin-3600*24;
+    //今天
+    if ([currentStr isEqualToString:messageDateStr]) {
+        
+        
+        if (msgHour>0&&msgHour<11) {
+            finalTime = [NSString stringWithFormat:@"早上 %@",msgT];
+        }
+        else if (msgHour>=11&&msgHour<13){
+            finalTime = [NSString stringWithFormat:@"中午 %@",msgT];
+        }
+        else if(msgHour>=13&&msgHour<18) {
+            finalTime = [NSString stringWithFormat:@"下午 %@",msgT];
+        }
+        else{
+            finalTime = [NSString stringWithFormat:@"晚上 %@",msgT];
+        }
+    }
+    //昨天
+    else if(theMessageT>=yesterdayBegin&&theMessageT<currentDayBegin){
+        if (msgHour>0&&msgHour<11) {
+            finalTime = @"昨天早上";
+        }
+        else if (msgHour>=11&&msgHour<13){
+            finalTime = @"昨天中午";
+        }
+        else if(msgHour>=13&&msgHour<18) {
+            finalTime = @"昨天下午";
+        }
+        else{
+            finalTime = @"昨天晚上";
+        }
+    }
+    //前天
+    else if (theMessageT>=qiantianBegin&&theMessageT<yesterdayBegin)
+    {
+        NSDate * msgDate = [NSDate dateWithTimeIntervalSince1970:theMessageT];
+        NSString * weekday = [Common getWeakDay:msgDate];
+        if (msgHour>0&&msgHour<11) {
+            finalTime = [NSString stringWithFormat:@"%@早晨",weekday];
+        }
+        else if (msgHour>=11&&msgHour<13){
+            finalTime = [NSString stringWithFormat:@"%@中午",weekday];
+        }
+        else if(msgHour>=13&&msgHour<18) {
+            finalTime = [NSString stringWithFormat:@"%@下午",weekday];
+        }
+        else{
+            finalTime = [NSString stringWithFormat:@"%@晚上",weekday];
+        }
+    }
+    //今年
+    else if([[messageDateStr substringToIndex:4] isEqualToString:[currentStr substringToIndex:4]]){
+        finalTime = [NSString stringWithFormat:@"%@月%@日",[[messageDateStr substringFromIndex:5] substringToIndex:2],[messageDateStr substringFromIndex:8]];
+    }
+    
+    else
+    {
+        finalTime = messageDateStr;
+    }
+    // NSLog(@"finalTime:%@",finalTime);
+    return finalTime;
+}
+
 
 +(NSDate *)getCurrentTimeFromString:(NSString *)datetime{
     //NSString* string = @"May 9, 2013, 2:28:19 PM";

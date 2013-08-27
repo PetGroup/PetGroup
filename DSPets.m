@@ -19,6 +19,7 @@
 @dynamic petHeadImgID;
 @dynamic petGender;
 @dynamic petAge;
+@dynamic petID;
 @dynamic creatTime;
 
 @end

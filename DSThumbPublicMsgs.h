@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSString * msgContent;
 @property (nonatomic, retain) NSString * msgType;
 @property (nonatomic, retain) NSDate * sendTime;
+@property (nonatomic, retain) NSString * unRead;
 
 @end

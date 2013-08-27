@@ -18,13 +18,20 @@
 #import "DSPublicMsgs.h"
 #import "DSCommonMsgs.h"
 #import "DSReceivedHellos.h"
-#import "DSFriends.h"
 #import "DSThumbSubscribedMsgs.h"
 #import "DSSubscribedMsgs.h"
 #import "DSPets.h"
+#import "DSFriends.h"
+#import "DSUnreadCount.h"
 @interface DataStoreManager : NSObject
 +(void)setDefaultDataBase:(NSString *)dataBaseName AndDefaultModel:(NSString *)modelName;
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype;
++(void)blankMsgUnreadCountForUser:(NSString *)username;
++(NSArray *)queryUnreadCountForCommonMsg;
++(void)deleteMsgsWithSender:(NSString *)sender;
++(NSArray *)qureyAllThumbMessages;
++(NSDictionary *)queryLastPublicMsg;
++(NSDictionary *)qureyLastReceivedHello;
 
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
 +(void)addFriendToLocal:(NSDictionary *)userInfoDict;
@@ -32,8 +39,12 @@
 
 +(void)saveMyInfo:(NSDictionary *)myInfo;
 
++(NSString *)qureyUnreadForReceivedHellos;
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict;
++(void)deleteReceivedHelloWithUserName:(NSString *)userName;
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict;
++(BOOL)ifSayHellosHaveThisPerson:(NSString *)username;
++(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username;
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName;
 +(void)qureyAllFriends;
 @end

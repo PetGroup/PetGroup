@@ -159,7 +159,7 @@
  * and requests permission to receive presence information from them.
 **/
 - (void)addUser:(XMPPJID *)jid withNickname:(NSString *)optionalName;
-
+- (void)addUser:(XMPPJID *)jid withNickname:(NSString *)optionalName Msg:(NSString *)msg HeadID:(NSString *)headID;
 /**
  * Adds the given user to the roster with an optional nickname, 
  * adds the given user to groups
@@ -173,7 +173,7 @@
  * and optionally requests permission to receive presence information from them.
 **/
 - (void)addUser:(XMPPJID *)jid withNickname:(NSString *)optionalName groups:(NSArray *)groups subscribeToPresence:(BOOL)subscribe;
-
+- (void)addUser:(XMPPJID *)jid withNickname:(NSString *)optionalName Msg:(NSString *)msg HeadID:(NSString *)headID groups:(NSArray *)groups subscribeToPresence:(BOOL)subscribe;
 /**
  * Sets/modifies the nickname for the given user.
 **/
@@ -201,7 +201,7 @@
  * @see addUser:withNickname:
 **/
 - (void)subscribePresenceToUser:(XMPPJID *)jid;
-
+- (void)subscribePresenceToUser:(XMPPJID *)jid Nickname:(NSString *)nickName Msg:(NSString *)msg HeadID:(NSString *)headID;
 /**
  * If we currently have a presence subscription to the given user,
  * this method then removes the subscription.

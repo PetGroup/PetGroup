@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @protocol AddReqDelegate <NSObject>
--(void)newAddReq:(NSString *)userID;
+-(void)newAddReq:(NSDictionary *)userInfo;
 @end

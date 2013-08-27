@@ -17,5 +17,5 @@
 @dynamic msgContent;
 @dynamic sendTime;
 @dynamic msgType;
-
+@dynamic unRead;
 @end

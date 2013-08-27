@@ -26,6 +26,12 @@
 
 - (NSString *)toStr;
 - (NSString *)fromStr;
+- (NSString *)fromName;
+- (NSString *)additionMsg;
+- (NSString *)headID;
+
+- (NSString *)nickName;
+- (NSString *)additionalMsg;
 
 #pragma mark To and From Methods
 

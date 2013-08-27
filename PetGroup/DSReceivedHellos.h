@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSString * nickName;
 @property (nonatomic, retain) NSString * headImgID;
 @property (nonatomic, retain) NSString * ifFriend;
+@property (nonatomic, retain) NSString * addtionMsg;
 @property (nonatomic, retain) NSString * acceptStatus;
+@property (nonatomic, retain) NSDate * receiveTime;
 
 @end
