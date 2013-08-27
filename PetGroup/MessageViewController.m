@@ -85,8 +85,12 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
-//        [self toLoginPage];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"7kela" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"40664d5d-56b2-43cb-a8f6-9fabe8222c5e" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+        [self toLoginPage];
     }
     else
     {
