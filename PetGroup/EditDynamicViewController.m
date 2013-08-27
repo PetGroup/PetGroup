@@ -22,6 +22,7 @@
 @property (nonatomic,strong)UIActionSheet* addActionSheet;
 @property (nonatomic,strong)UIActionSheet* deleteActionSheet;
 
+
 @end
 
 @implementation EditDynamicViewController
@@ -31,6 +32,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -113,8 +115,45 @@
 }
 -(void)next
 {
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.customTabBarController hidesTabBar:NO animated:YES];
+    if (self.dynamicTV.text.length>200) {
+        UIAlertView * aler = [[UIAlertView alloc]initWithTitle:nil message:@"动态字数最多不能超过200字" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [aler show];
+        return;
+    }
+    
+    if (self.pictureArray!=nil&&self.pictureArray.count>0) {
+        NSMutableArray* imageArray = [[NSMutableArray alloc]init];
+        for (UIImageView* a in self.pictureArray) {
+            [imageArray addObject:a.image];
+        }
+        [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            
+        } Success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+            
+            [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:responseObject] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+            }];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            UIAlertView * aler = [[UIAlertView alloc]initWithTitle:nil message:@"图片上传传失败，请检查网络后重新上传" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [aler show];
+        }];
+    }
+    
+//    [self.navigationController popViewControllerAnimated:YES];
+//    [self.customTabBarController hidesTabBar:NO animated:YES];
+}
+-(NSDictionary*)putDynamic:(NSArray*)imageDI
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+    [params setObject:@"0" forKey:@"ifTransmitMsg"];
+    [params setObject:self.dynamicTV.text forKey:@"msg"];
+    [params setObject:imageDI forKey:@"imgid"];
+//    [params setObject:<#(id)#> forKey:@"petUserid"];
+    
 }
 -(void)addPhoto
 {

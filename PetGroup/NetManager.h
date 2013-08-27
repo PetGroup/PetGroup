@@ -18,4 +18,6 @@
            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 +(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, NSArray * responseObject))success
             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
++(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr  Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSArray *responseObject))success
+            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 @end

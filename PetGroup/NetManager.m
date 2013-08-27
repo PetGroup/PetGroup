@@ -76,4 +76,19 @@
         } failure:failure];
     }
 }
+//上传多张图片,不带图片名
++(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr  Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSArray *responseObject))success
+            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSMutableArray * reponseStrArray = [NSMutableArray array];
+    for (int i = 0; i<imageArray.count; i++) {
+        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:@"temp" Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *response = [operation responseString];
+            [reponseStrArray addObject:response];
+            if (reponseStrArray.count==imageArray.count) {
+                success(operation,reponseStrArray);
+            }
+        } failure:failure];
+    }
+}
 @end
