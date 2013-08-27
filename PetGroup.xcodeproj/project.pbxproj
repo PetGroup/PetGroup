@@ -310,6 +310,7 @@
 		9736BE0417C49146007DFE36 /* tupian5.png in Resources */ = {isa = PBXBuildFile; fileRef = 9736BD7017C49146007DFE36 /* tupian5.png */; };
 		9736BE0817C49146007DFE36 /* yanzhengma_click.png in Resources */ = {isa = PBXBuildFile; fileRef = 9736BD7417C49146007DFE36 /* yanzhengma_click.png */; };
 		9736BE0917C49146007DFE36 /* yanzhengma_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9736BD7517C49146007DFE36 /* yanzhengma_normal.png */; };
+		973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */; };
 		979546B817BA368F00D05874 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B717BA368F00D05874 /* UIKit.framework */; };
 		979546BA17BA368F00D05874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B917BA368F00D05874 /* Foundation.framework */; };
 		979546BC17BA368F00D05874 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546BB17BA368F00D05874 /* CoreGraphics.framework */; };
@@ -929,6 +930,8 @@
 		9736BD7017C49146007DFE36 /* tupian5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tupian5.png; path = ../tupian5.png; sourceTree = "<group>"; };
 		9736BD7417C49146007DFE36 /* yanzhengma_click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yanzhengma_click.png; path = ../yanzhengma_click.png; sourceTree = "<group>"; };
 		9736BD7517C49146007DFE36 /* yanzhengma_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yanzhengma_normal.png; path = ../yanzhengma_normal.png; sourceTree = "<group>"; };
+		973EAB5E17CC786600A8F945 /* FriendsReqsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsReqsViewController.h; sourceTree = "<group>"; };
+		973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsReqsViewController.m; sourceTree = "<group>"; };
 		979546B417BA368F00D05874 /* PetGroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979546B717BA368F00D05874 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		979546B917BA368F00D05874 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1289,6 +1292,8 @@
 				97D501CF17C4998300799BD4 /* KKChatController.m */,
 				86FF42B117CC66D7007F8DE2 /* MessageViewController.h */,
 				86FF42B217CC66D7007F8DE2 /* MessageViewController.m */,
+				973EAB5E17CC786600A8F945 /* FriendsReqsViewController.h */,
+				973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */,
 			);
 			name = MessageView;
 			sourceTree = "<group>";
@@ -3325,6 +3330,7 @@
 				86D5C29717CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m in Sources */,
 				86D5C29A17CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m in Sources */,
 				86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */,
+				973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

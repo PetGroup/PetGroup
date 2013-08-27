@@ -132,6 +132,23 @@
     return lastMsgDict;
 }
 
++(NSArray *)queryAllReceivedHellos
+{
+    NSArray * rechellos = [DSReceivedHellos MR_findAllSortedBy:@"receiveTime" ascending:NO];
+    NSMutableArray * hellosArray = [NSMutableArray array];
+    for (int i = 0; i<rechellos.count; i++) {
+        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+        [dict setObject:[[rechellos objectAtIndex:i] userName] forKey:@"userName"];
+        [dict setObject:[[rechellos objectAtIndex:i] nickName] forKey:@"nickName"];
+        [dict setObject:[[rechellos objectAtIndex:i] headImgID] forKey:@"headImgID"];
+        [dict setObject:[[rechellos objectAtIndex:i] addtionMsg] forKey:@"addtionMsg"];
+        [dict setObject:[[rechellos objectAtIndex:i] acceptStatus] forKey:@"acceptStatus"];
+        [dict setObject:[[rechellos objectAtIndex:i] receiveTime] forKey:@"receiveTime"];
+        [hellosArray addObject:dict];
+    }
+    return hellosArray;
+}
+
 +(NSDictionary *)qureyLastReceivedHello
 {
     NSArray * rechellos = [DSReceivedHellos MR_findAllSortedBy:@"receiveTime" ascending:YES];
@@ -195,11 +212,20 @@
     }];
 
 }
-
-#pragma mark - 存储个人信息
-+(void)saveMyInfo:(NSDictionary *)myInfo
++(NSString *)getMyUserID
 {
-    NSString * myUserName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
+    if (dFriend) {
+        return dFriend.userId;
+    }
+    else
+        return @"";
+}
+#pragma mark - 存储个人信息
++(void)saveUserInfo:(NSDictionary *)myInfo
+{
+    NSString * myUserName = [myInfo objectForKey:@"username"];
     NSString * nickName = [self toString:[myInfo objectForKey:@"nickname"]];
     NSString * gender = [myInfo objectForKey:@"gender"];
     NSString * headImgID = [self toString:[myInfo objectForKey:@"img"]];
@@ -288,6 +314,12 @@
     return [NSString stringWithFormat:@"%d",theUnread];
 }
 
++(void)blankReceivedHellosUnreadCount
+{
+    DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
+    unread.receivedHellosUnread = @"0";
+}
+
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict
 {
     NSString * userName = [userInfoDict objectForKey:@"fromUser"];
@@ -347,7 +379,14 @@
 
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName
 {
-    
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+        DSReceivedHellos * dReceivedHellos = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+        if (dReceivedHellos)
+        {
+            dReceivedHellos.acceptStatus = theStatus;
+        }
+    }];
 }
 
 +(void)qureyAllFriends

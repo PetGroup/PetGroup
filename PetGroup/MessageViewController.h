@@ -19,6 +19,7 @@
 #import "SRRefreshView.h"
 #import "StoreMsgDelegate.h"
 #import "WelcomeViewController.h"
+#import "FriendsReqsViewController.h"
 
 @class XMPPHelper;
 @interface MessageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,NotConnectDelegate,UISearchBarDelegate,SRRefreshDelegate,StoreMsgDelegate>
