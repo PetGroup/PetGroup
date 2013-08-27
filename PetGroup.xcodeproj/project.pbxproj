@@ -349,7 +349,6 @@
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
 		97D501D217C4998300799BD4 /* KKChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501CF17C4998300799BD4 /* KKChatController.m */; };
-		97D501D317C4998300799BD4 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501D117C4998300799BD4 /* MessageViewController.m */; };
 		97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FA17C49A0500799BD4 /* NearByViewController.m */; };
 		97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FD17C49A0F00799BD4 /* ContactsViewController.m */; };
 		97D5020117C49AB300799BD4 /* DynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5020017C49AB300799BD4 /* DynamicViewController.m */; };
@@ -1003,8 +1002,6 @@
 		97D0309217C5EB3900055EF6 /* DSFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSFriends.m; sourceTree = "<group>"; };
 		97D501CE17C4998300799BD4 /* KKChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKChatController.h; sourceTree = "<group>"; };
 		97D501CF17C4998300799BD4 /* KKChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKChatController.m; sourceTree = "<group>"; };
-		97D501D017C4998300799BD4 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
-		97D501D117C4998300799BD4 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		97D501F917C49A0500799BD4 /* NearByViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByViewController.h; sourceTree = "<group>"; };
 		97D501FA17C49A0500799BD4 /* NearByViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearByViewController.m; sourceTree = "<group>"; };
 		97D501FC17C49A0F00799BD4 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
@@ -1287,8 +1284,6 @@
 			children = (
 				97D501CE17C4998300799BD4 /* KKChatController.h */,
 				97D501CF17C4998300799BD4 /* KKChatController.m */,
-				97D501D017C4998300799BD4 /* MessageViewController.h */,
-				97D501D117C4998300799BD4 /* MessageViewController.m */,
 			);
 			name = MessageView;
 			sourceTree = "<group>";
@@ -3280,7 +3275,6 @@
 				9736BCCF17C48B7B007DFE36 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				9736BCD017C48B7B007DFE36 /* XMPPHelper.m in Sources */,
 				97D501D217C4998300799BD4 /* KKChatController.m in Sources */,
-				97D501D317C4998300799BD4 /* MessageViewController.m in Sources */,
 				97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */,
 				97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */,
 				97D5020117C49AB300799BD4 /* DynamicViewController.m in Sources */,
