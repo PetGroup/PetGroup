@@ -7,6 +7,7 @@
 //
 
 #import "PersonDetailViewController.h"
+#import "CustomTabBar.h"
 
 @interface PersonDetailViewController ()
 
@@ -49,8 +50,8 @@
 }
 -(void)back
 {
-    [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
+    [self.customTabBarController hidesTabBar:NO animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

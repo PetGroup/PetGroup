@@ -8,8 +8,29 @@
 
 #import "DynamicViewController.h"
 #import "CustomTabBar.h"
+#import "NearbyDynamicDelegateAndDataSource.h"
+#import "FriendDynamicDelegateAndDataSource.h"
+#import "EditDynamicViewController.h"
+#import "DynamicCell.h"
 @interface DynamicViewController ()
-
+{
+    UIButton* nearByB;
+    UIButton* friendB;
+    
+    UIButton * praiseB;
+    UIButton * assessB;
+    UIButton * reprintB;
+}
+@property (nonatomic,strong)UIView* footV;
+@property (nonatomic,strong)UITableView* tableV;
+@property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
+@property (nonatomic,strong)FriendDynamicDelegateAndDataSource* friendDDS;
+@property (nonatomic,strong)UIActivityIndicatorView * act;
+@property (nonatomic,strong)UIActivityIndicatorView * footAct;
+@property (nonatomic,strong)UIImageView*  actionIV;
+@property (nonatomic,weak)UITableViewCell* mycell;
+@property (nonatomic,strong)UITextField* inputTF;
+@property (nonatomic,strong)UITextField* cheatTF;
 @end
 
 @implementation DynamicViewController
@@ -19,6 +40,10 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.nearbyDDS = [[NearbyDynamicDelegateAndDataSource alloc]init];
+        _nearbyDDS.viewC = self;
+        self.friendDDS = [[FriendDynamicDelegateAndDataSource alloc]init];
+        _friendDDS.viewC = self;
     }
     return self;
 }
@@ -27,152 +52,87 @@
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
-    UIImageView * bgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-    [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
-    [self.view addSubview:bgV];
+    
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
     
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
-    titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"动态"];
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
-    titleLabel.textColor=[UIColor whiteColor];
-    [self.view addSubview:titleLabel];
-
+    UIImageView * top = [[UIImageView alloc]initWithFrame:CGRectMake(90, 7, 140, 28)];
+    top.image = [UIImage imageNamed:@"toubuhuakuaibeijing"];
+    [self.view addSubview:top];
+    top.userInteractionEnabled = YES;
+    
+    nearByB = [UIButton buttonWithType:UIButtonTypeCustom];
+    nearByB.frame = CGRectMake(1, 1, 68, 26);
+    [nearByB setTitle:@"附近动态" forState:UIControlStateNormal];
+    nearByB.titleLabel.font = [UIFont boldSystemFontOfSize:11];
+    [nearByB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [nearByB addTarget:self action:@selector(showNearby) forControlEvents:UIControlEventTouchUpInside];
+    [top addSubview:nearByB];
+    
+    friendB = [UIButton buttonWithType:UIButtonTypeCustom];
+    friendB.frame = CGRectMake(71, 1, 68, 26);
+    [friendB setTitle:@"好友动态" forState:UIControlStateNormal];
+    friendB.titleLabel.font = [UIFont boldSystemFontOfSize:11];
+    [friendB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [friendB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
+    [friendB addTarget:self action:@selector(showfriend) forControlEvents:UIControlEventTouchUpInside];
+    [top addSubview:friendB];
+    
     UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 6, 32, 26.6);
-    [publishButton setBackgroundImage:[UIImage imageNamed:@"publish.png"] forState:UIControlStateNormal];
-    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
+    publishButton.frame=CGRectMake(278, 3, 35, 33);
+    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+    [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
-    [publishButton addTarget:self action:@selector(publishBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel2=[[UILabel alloc] initWithFrame:CGRectMake(0, 20, 320, 60)];
-    titleLabel2.backgroundColor=[UIColor clearColor];
-    [titleLabel2 setText:@"Happy Every Day..."];
-    [titleLabel2 setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel2.textAlignment=UITextAlignmentCenter;
-    titleLabel2.textColor=[UIColor grayColor];
-    [bgV addSubview:titleLabel2];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    _tableV.dataSource = self.nearbyDDS;
+    [self.view addSubview:_tableV];
+    _tableV.showsVerticalScrollIndicator=NO;
+    _tableV.contentSize = _tableV.frame.size;
+    _tableV.delegate = self;
+    _tableV.contentOffset = CGPointMake(0, 100);
     
-    self.headBigImageV = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, 140)];
-    [self.headBigImageV setBackgroundColor:[UIColor redColor]];
-    //  [self.view addSubview:self.headBigImageV];
-    //大图片imageview
-    self.headBigImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 140)];
-    [self.headBigImage setBackgroundColor:[UIColor clearColor]];
-    [self.headBigImageV addSubview:self.headBigImage];
-    self.hostNameLabel = [[UILabel alloc] init];
-    self.hostNameLabel.backgroundColor = [UIColor clearColor];
-    [self.hostNameLabel setNumberOfLines:0];
-    [self.hostNameLabel setTextColor:[UIColor whiteColor]];
-    [self.hostNameLabel setLineBreakMode:UILineBreakModeCharacterWrap];
-    [self.hostNameLabel setFont:[UIFont systemFontOfSize:18]];
-    [self.headBigImageV addSubview:self.hostNameLabel];
+    UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
+    headV.image = [UIImage imageNamed:@"morenbeijing"];
+    self.tableV.tableHeaderView = headV;
     
-    self.genderImageV = [[UIImageView alloc] init];
-    [self.headBigImageV addSubview:self.genderImageV];
+    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
+    nameL.text = @"汤唯";
+    nameL.backgroundColor = [UIColor clearColor];
+    nameL.textColor = [UIColor whiteColor];
+    [headV addSubview:nameL];
     
+    UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
+    photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
+    [headV addSubview:photoIV];
     
-    UIView * sigV = [[UIView alloc] initWithFrame:CGRectMake(0, self.headBigImageV.frame.size.height-30, 320, 30)];
-    [sigV setBackgroundColor:[UIColor blackColor]];
-    [sigV setAlpha:0.6];
-    [self.headBigImageV addSubview:sigV];
-    self.headSignatureL = [[UILabel alloc] initWithFrame:CGRectMake(10, self.headBigImageV.frame.size.height-25, 320, 20)];
-    [self.headSignatureL setBackgroundColor:[UIColor clearColor]];
-    [self.headSignatureL setTextColor:[UIColor whiteColor]];
-    [self.headSignatureL setFont:[UIFont systemFontOfSize:14]];
-    [self.headBigImageV addSubview:self.headSignatureL];
-    [self.headSignatureL setText:@"Whole World,Only for You!"];
+    self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
+    _footAct.backgroundColor = [UIColor redColor];
+    self.footAct= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+    _footAct.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [_footV addSubview:_footAct];
+    UILabel* loadmoveL = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 120, 20)];
+    loadmoveL.text = @"加载更多";
+    loadmoveL.textAlignment = NSTextAlignmentCenter;
+    [_footV addSubview:loadmoveL];
     
-    self.loveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.loveBtn setFrame:CGRectMake(240, 82.5, 22.5, 22.5)];
-    [self.loveBtn setImage:[UIImage imageNamed:@"loveit.png"] forState:UIControlStateNormal];
-    [self.headBigImageV addSubview:self.loveBtn];
-    
-    self.loveLabel = [[UILabel alloc] initWithFrame:CGRectMake(267.5, 83, 40, 20)];
-    [self.loveLabel setBackgroundColor:[UIColor clearColor]];
-    [self.loveLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.loveLabel setTextColor:[UIColor whiteColor]];
-    [self.loveLabel setFont:[UIFont systemFontOfSize:12]];
-    [self.hostNameLabel setNumberOfLines:0];
-    [self.hostNameLabel setLineBreakMode:UILineBreakModeCharacterWrap];
-    [self.headBigImageV addSubview:self.loveLabel];
-    
-    [self setSometh];//设置头部的方法，必要时修改...
-    
-    self.infoTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStylePlain];
-    [self.view addSubview:self.infoTableV];
-    self.infoTableV.tableHeaderView = self.headBigImageV;
-    self.infoTableV.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"chat_bg.png"]];
-    self.infoTableV.dataSource = self;
-    self.infoTableV.delegate = self;
     
 	// Do any additional setup after loading the view.
-}
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    return self.headBigImageV;
-//}
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return self.headBigImageV.frame.size.height;
-//}
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 100;
-}
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *identifier = @"infoCell";
+    self.inputTF = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
+    _inputTF.borderStyle=UITextBorderStyleRoundedRect;
+    UIToolbar* aToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 44)];
+    aToolbar.tintColor = [UIColor blackColor];
+    UIBarButtonItem*arb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didInput)];
+    UIBarButtonItem*rb = [[UIBarButtonItem alloc]initWithCustomView:_inputTF];
+    arb.tintColor = [UIColor blackColor];
+    aToolbar.items = @[rb,arb];
     
-    UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier];
+    self.cheatTF = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [self.view addSubview:_cheatTF];
+    _cheatTF.inputAccessoryView = aToolbar;
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    [cell.contentView setBackgroundColor:[UIColor whiteColor]];
-    return cell;
-}
--(void)setSometh
-{
-    NSString * hostName = @"Tolecen";
-    int theGender = 1;
-    CGSize textSize = {220.0 , 100.0};
-    CGSize size = [hostName sizeWithFont:[UIFont systemFontOfSize:18] constrainedToSize:textSize lineBreakMode:UILineBreakModeCharacterWrap];
-    [self.hostNameLabel setText:hostName];
-    [self.hostNameLabel setFrame:CGRectMake(10, 10, size.width, size.height)];
     
-    UIImage * genderImg = theGender==1?[UIImage imageNamed:@"manicon.png"]:[UIImage imageNamed:@"womenicon.png"];
-    [self.genderImageV setImage:genderImg];
-    [self.genderImageV setFrame:CGRectMake(10+size.width+3, 16, genderImg.size.width/2, genderImg.size.height/2)];
- 
-    NSString * loveCount = @"132";
-    CGSize textSize2 = {220.0 , 20.0};
-    CGSize size2 = [loveCount sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:textSize2 lineBreakMode:UILineBreakModeCharacterWrap];
-    [self.loveLabel setText:loveCount];
-    [self.loveLabel setFrame:CGRectMake(320-10-size2.width, 83, size2.width, 20)];
-    [self.loveBtn setFrame:CGRectMake(310-size2.width-22.5-5, 82.5, 22.5, 22.5)];
-    
-    [self.headBigImage setImage:[UIImage imageNamed:@"temp_02.png"]];
-}
--(void)publishBtnClicked
-{
-    
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    //[self.leveyTabBarController removeNotificatonOfIndex:1];
-//     [self.customTabBarController hidesTabBar:NO animated:YES];
-//    [self.customTabBarController removeNotificatonOfIndex:1];
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,5 +140,209 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - button action
+-(void)showNearby
+{
+    [self removeActionImageView];
+    if (_tableV.dataSource != self.nearbyDDS) {
+        [nearByB setBackgroundImage:nil forState:UIControlStateNormal];
+        [nearByB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [friendB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
+        [friendB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _tableV.dataSource = self.nearbyDDS;
+        [_tableV reloadData];
+    }
+}
+-(void)showfriend
+{
+    [self removeActionImageView];
+    if (_tableV.dataSource != self.friendDDS) {
+        [friendB setBackgroundImage:nil forState:UIControlStateNormal];
+        [friendB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [nearByB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
+        [nearByB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _tableV.dataSource = self.friendDDS;
+        [_tableV reloadData];
+    }
+}
+-(void)updateSelfMassage
+{
+    EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
+    [self.navigationController pushViewController:editVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
+-(void)praise
+{
+    [self removeActionImageView];
+}
+-(void)assess
+{
+    [self removeActionImageView];
+    [_cheatTF becomeFirstResponder];
+}
+-(void)reprint
+{
+    [self removeActionImageView];
+    [_cheatTF becomeFirstResponder];
+}
+-(void)didInput
+{
+    [self keyBoardResign];
+}
+-(void)keyBoardResign
+{
+    [_inputTF resignFirstResponder];
+    [_cheatTF resignFirstResponder];
+}
+#pragma mark - tableView delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self removeActionImageView];
+    [self keyBoardResign];    
+}
+#pragma mark - scrollView delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self removeActionImageView];
+    [self keyBoardResign];
+    if (_tableV.contentOffset.y<0) {
+        if (self.act == nil) {
+            self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+            _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+            [_act startAnimating];
+            [_tableV.tableHeaderView addSubview:_act];
+            
+        }
+        
+    }
+    if (_tableV.contentOffset.y>_tableV.contentSize.height-367) {
+        if (_tableV.tableFooterView == nil) {
+            _tableV.tableFooterView = _footV;
+            
+        }else{
+            [_footAct startAnimating];
+        }
+    }
+}
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    [self removeActionImageView];
+    [self keyBoardResign];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        _tableV.contentOffset = CGPointMake(0, 100);
+    }];
+    
+    return NO;
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    //停止滑动
+    if (_tableV.contentOffset.y<=100) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.contentOffset = CGPointMake(0, 100);
+        }];
+    }
+    if (_tableV.contentOffset.y>=_tableV.contentSize.height-367-30) {
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
+    }
+}
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //停止回弹
+    if (_tableV.contentOffset.y<=100) {
+        [_act stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.contentOffset = CGPointMake(0, 100);
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.act = nil;
+            }
+        }];
+    }
+    if (_tableV.contentOffset.y>=_tableV.contentSize.height-367) {
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
+    }
+}
+#pragma mark - cell button action
+-(void)showButton:(UITableViewCell*)cell
+{
+    CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
+    if (_actionIV == nil) {
+        self.actionIV = [[UIImageView alloc]initWithFrame:CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44)];
+        _actionIV.userInteractionEnabled = YES;
+        _actionIV.image = [UIImage imageNamed:@"tanchuanniu_bg"];
+        [self.view addSubview:_actionIV];
+        
+        praiseB = [UIButton buttonWithType:UIButtonTypeCustom];
+        praiseB.frame = CGRectMake(0, 6,0, 31);
+        [praiseB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
+        [praiseB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
+        [praiseB setTitle:@"赞" forState:UIControlStateNormal];
+        [praiseB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [praiseB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
+        [_actionIV addSubview:praiseB];
+        
+        
+        assessB = [UIButton buttonWithType:UIButtonTypeCustom];
+        assessB.frame = CGRectMake(0, 6, 0,31);
+        [assessB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
+        [assessB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
+        [assessB setTitle:@"评论" forState:UIControlStateNormal];
+        [assessB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [assessB addTarget:self action:@selector(assess) forControlEvents:UIControlEventTouchUpInside];
+        [_actionIV addSubview:assessB];
+    }else{
+        if (cell != _mycell) {
+            [self removeActionImageView];
+            _actionIV.frame = CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44);
+            [self.view addSubview:_actionIV];
+            self.mycell = cell;
+        }else{
+            [self removeActionImageView];
+        }
+    }
+    if (_tableV.dataSource == self.friendDDS) {
+        if (reprintB == nil) {
+            reprintB = [UIButton buttonWithType:UIButtonTypeCustom];
+            reprintB.frame = CGRectMake(0, 6, 0, 31);
+            [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
+            [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
+            [reprintB setTitle:@"转载" forState:UIControlStateNormal];
+            [reprintB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [reprintB addTarget:self action:@selector(reprint) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if (reprintB.superview==nil) {
+            [_actionIV addSubview:reprintB];
+        }
+        [UIView animateWithDuration:3 animations:^{
+            _actionIV.frame = CGRectMake( 108, cellRect.origin.y+cellRect.size.height - 10, 182, 44);
+            praiseB.frame = CGRectMake(6, 6, 53, 31);
+            assessB.frame = CGRectMake(65, 6, 53, 31);
+            reprintB.frame = CGRectMake(124, 6, 53, 31);
+        }];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            _actionIV.frame = CGRectMake( 157, cellRect.origin.y+cellRect.size.height - 10, 123, 44);
+            praiseB.frame = CGRectMake(6, 6, 53, 31);
+            assessB.frame = CGRectMake(65, 6, 53, 31);
+        }];
+    }
+}
+-(void)removeActionImageView
+{
+        praiseB.frame = CGRectMake(0, 6, 0, 31);
+        assessB.frame = CGRectMake(0, 6, 0,31);
+        reprintB.frame = CGRectMake(0, 6, 0, 31);
+        [_actionIV removeFromSuperview];
+        self.mycell = nil;
+    
+}
 @end

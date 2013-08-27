@@ -83,7 +83,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
-        [self toLoginPage];
+//        [self toLoginPage];
     }
 }
 -(void)viewWillAppear:(BOOL)animated{

@@ -6,9 +6,8 @@
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-//特别说明：网络解析结果放在nearByArray里，petArray存放的是XML解析出的宠物列表,选择“显示宠物”得时候将所有宠物信息存入appearPetArray组织显示
+
 #import "NearByViewController.h"
-#import "ProfileHeadCell.h"
 #import "CustomTabBar.h"
 #import "JSON.h"
 #import "GDataXMLNode.h"
@@ -32,18 +31,6 @@
     }
     return self;
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    //[self.leveyTabBarController removeNotificatonOfIndex:1];
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,7 +44,6 @@
     UIButton *filterButton=[UIButton buttonWithType:UIButtonTypeCustom];
     filterButton.frame=CGRectMake(275, 5, 45, 32.5);
     [filterButton setBackgroundImage:[UIImage imageNamed:@"shaixuan.png"] forState:UIControlStateNormal];
-    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [self.view addSubview:filterButton];
     [filterButton addTarget:self action:@selector(filterButtonDo:) forControlEvents:UIControlEventTouchUpInside];
     
