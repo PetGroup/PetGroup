@@ -31,15 +31,20 @@
 +(void)deleteMsgsWithSender:(NSString *)sender;
 +(NSArray *)qureyAllThumbMessages;
 +(NSDictionary *)queryLastPublicMsg;
+
++(NSArray *)queryAllReceivedHellos;
 +(NSDictionary *)qureyLastReceivedHello;
 
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
 +(void)addFriendToLocal:(NSDictionary *)userInfoDict;
 +(void)updateFriendInfo:(NSDictionary *)userInfoDict ForUser:(NSString *)username;
 
-+(void)saveMyInfo:(NSDictionary *)myInfo;
++(NSString *)getMyUserID;
++(void)saveUserInfo:(NSDictionary *)myInfo;
 
 +(NSString *)qureyUnreadForReceivedHellos;
++(void)blankReceivedHellosUnreadCount;
+
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict;
 +(void)deleteReceivedHelloWithUserName:(NSString *)userName;
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict;

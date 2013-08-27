@@ -85,9 +85,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"7kela" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"40664d5d-56b2-43cb-a8f6-9fabe8222c5e" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];
@@ -95,25 +95,28 @@
     else
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-        [self logInToServer];
-        [self tempMakeSomeData];
+        if (![self.appDel.xmppHelper ifXMPPConnected]) {
+            [self logInToServer];
+        }
+        
+//        [self tempMakeSomeData];
 //        [self performSelector:@selector(displayMsgsForDefaultView) withObject:nil afterDelay:4];
     }
 }
--(void)tempMakeSomeData
-{
-    for (int i = 0; i<100; i++) {
-        NSTimeInterval nowT = [[NSDate date] timeIntervalSince1970];
-        NSString * timeStr = [NSString stringWithFormat:@"%f",nowT];
-        NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"message_%d",i],@"msg",[NSString stringWithFormat:@"sender_%d@test.com",i],@"sender",timeStr,@"time", nil];
-        NSDictionary * dict2 = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"addtional message_%d",i],@"addtionMsg",[NSString stringWithFormat:@"sender_%d@test.com",i],@"fromUser", nil];
-//        [DataStoreManager storeNewMsgs:dict senderType:COMMONUSER];
-        [DataStoreManager addPersonToReceivedHellos:dict2];
-       // [DataStoreManager deleteReceivedHelloWithUserName:[NSString stringWithFormat:@"sender_%d@test.com",i]];
-        //[DataStoreManager deleteMsgsWithSender:[NSString stringWithFormat:@"sender_%d",i]];
-    }
-    [self displayMsgsForDefaultView];
-}
+//-(void)tempMakeSomeData
+//{
+//    for (int i = 0; i<100; i++) {
+//        NSTimeInterval nowT = [[NSDate date] timeIntervalSince1970];
+//        NSString * timeStr = [NSString stringWithFormat:@"%f",nowT];
+//        NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"message_%d",i],@"msg",[NSString stringWithFormat:@"sender_%d@test.com",i],@"sender",timeStr,@"time", nil];
+//        NSDictionary * dict2 = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"addtional message_%d",i],@"addtionMsg",[NSString stringWithFormat:@"sender_%d@test.com",i],@"fromUser", nil];
+////        [DataStoreManager storeNewMsgs:dict senderType:COMMONUSER];
+//        [DataStoreManager addPersonToReceivedHellos:dict2];
+//       // [DataStoreManager deleteReceivedHelloWithUserName:[NSString stringWithFormat:@"sender_%d@test.com",i]];
+//        //[DataStoreManager deleteMsgsWithSender:[NSString stringWithFormat:@"sender_%d",i]];
+//    }
+//    [self displayMsgsForDefaultView];
+//}
 -(void)viewWillAppear:(BOOL)animated{
     [self.mlNavigationController setGestureEnableNO];
     if ([[TempData sharedInstance] ifPanned]) {
@@ -157,12 +160,12 @@
     [self displayMsgsForDefaultView];
 }
 -(void)processFriend:(XMPPPresence *)processFriend{
-    NSString *username=[[processFriend from] user];
-    NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",username];
-    NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-    NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",username,Domain],@"sender",ctime,@"time", nil];
-    [self storeNewMessage:newM];
-    [self requestPeopleInfoWithName:username ForType:1];
+//    NSString *username=[[processFriend from] user];
+//    NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",username];
+//    NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+//    NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",username,Domain],@"sender",ctime,@"time", nil];
+//    [self storeNewMessage:newM];
+//    [self requestPeopleInfoWithName:username ForType:1];
 }
 
 -(void)newMessageReceived:(NSDictionary *)messageContent
@@ -236,6 +239,19 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    switch (indexPath.row) {
+        case 0:
+        {
+            FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
+            [self.navigationController pushViewController:friq animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+            return;
+        }
+            break;
+            
+        default:
+            break;
+    }
     KKChatController * kkchat = [[KKChatController alloc] init];
     [self.navigationController pushViewController:kkchat animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -339,7 +355,7 @@
 }
 -(void)saveMyInfo:(NSDictionary *)dict
 {
-    [DataStoreManager saveMyInfo:dict];
+    [DataStoreManager saveUserInfo:dict];
 }
 
 -(void)requestPeopleInfoWithName:(NSString *)userName ForType:(int)type
@@ -365,7 +381,7 @@
             [DataStoreManager addPersonToReceivedHellos:uDict];
         }
         else if (type==1){
-            
+            [DataStoreManager saveUserInfo:recDict];
         }
 
     }];

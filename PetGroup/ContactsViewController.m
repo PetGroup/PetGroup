@@ -46,6 +46,7 @@
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
+    self.appDel = [[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
@@ -82,13 +83,13 @@
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
 
-//    [self arrayToPY];
     
-    self.appDel = [[UIApplication sharedApplication] delegate];
- 
-    
-//    [self getFriendsList];
+    [self getFriendsList];
 	// Do any additional setup after loading the view.
+}
+-(void)getFriendsList
+{
+    
 }
 -(void)addButton:(UIButton *)sender
 {
