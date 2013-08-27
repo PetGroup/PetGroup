@@ -31,6 +31,7 @@
 #define COMMONUSER @"commonUser"
 #define PUBLICACCOUNT  @"publicAccount"
 #define SUBSCRIBEDACCOUNT  @"subscribedAccount"
+#define SAYHELLOS @"sayhellos"
 
 //define local account store in SFHFKeychainUtils
 #define LOCALACCOUNT @"lovePetLocalAccountTolecen"
@@ -39,6 +40,8 @@
 #define PASSWORD @"lovePetPassword"
 #define LOCALTOKEN @"lovePetLocalToken"
 #define MACADDRESS @"lovepetmacaddress"
+
+#define ExceptCommonMsgCount 1   //首页除了显示普通用户消息还要显示的其他消息栏，目前只有打招呼一个
 
 
 #define Host @"202.43.152.172"

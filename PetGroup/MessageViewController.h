@@ -25,16 +25,16 @@
 {
     UISearchBar * searchBar;
     UISearchDisplayController * searchDisplay;
-    NSMutableArray *friendsUsers;
-    NSDictionary * theDict;
-    NSString *chatUserName;
+//    NSMutableArray *friendsUsers;
+//    NSDictionary * theDict;
+//    NSString *chatUserName;
     @public
     UILabel *titleLabel;
     
-    NSUserDefaults * uDefault;
-    NSMutableArray * allNameKeys;
-    NSDictionary * unReadDict;
-    NSDictionary * contentDict;
+//    NSUserDefaults * uDefault;
+//    NSMutableArray * allNameKeys;
+//    NSDictionary * unReadDict;
+//    NSDictionary * contentDict;
     NSArray * searchResultArray;
     NSMutableArray * pyAndCnArray;
     int nameCount;
@@ -60,6 +60,11 @@
     NSMutableArray * sayHelloArray;
     
     SystemSoundID soundID;
+    
+    NSMutableArray * newReceivedMsgArray;
+    NSMutableArray * allMsgArray;
+    
+    NSMutableArray * allMsgUnreadArray;
 }
 
 

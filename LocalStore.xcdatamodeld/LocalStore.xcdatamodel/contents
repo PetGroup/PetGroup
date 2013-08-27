@@ -118,6 +118,7 @@
         <attribute name="headImgID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ifFriend" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nickName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiveTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSSayHellos" representedClassName="DSSayHellos" syncable="YES">
@@ -143,6 +144,7 @@
         <attribute name="senderNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sendTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unRead" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSThumbPublicMsgs" representedClassName="DSThumbPublicMsgs" syncable="YES">
         <attribute name="msgContent" optional="YES" attributeType="String" syncable="YES"/>
@@ -151,6 +153,7 @@
         <attribute name="sender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sendTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unRead" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSThumbSubscribedMsgs" representedClassName="DSThumbSubscribedMsgs" syncable="YES">
         <attribute name="msgContent" optional="YES" attributeType="String" syncable="YES"/>
@@ -159,6 +162,12 @@
         <attribute name="sender" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sendTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unRead" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="DSUnreadCount" representedClassName="UnreadCount" syncable="YES">
+        <attribute name="publicUnread" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receivedHellosUnread" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subscribedUnread" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="DSArticles" positionX="160" positionY="192" width="128" height="180"/>
@@ -170,11 +179,12 @@
         <element name="DSMyDynamic" positionX="160" positionY="192" width="128" height="225"/>
         <element name="DSPets" positionX="160" positionY="192" width="128" height="195"/>
         <element name="DSPublicMsgs" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSSayHellos" positionX="160" positionY="192" width="128" height="90"/>
         <element name="DSSubscribedMsgs" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="DSThumbMsgs" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="DSThumbPublicMsgs" positionX="160" positionY="192" width="128" height="135"/>
-        <element name="DSThumbSubscribedMsgs" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="DSThumbMsgs" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="DSThumbPublicMsgs" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DSThumbSubscribedMsgs" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DSUnreadCount" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

@@ -18,5 +18,6 @@
 @property (nonatomic, retain) NSString * ifFriend;
 @property (nonatomic, retain) NSString * addtionMsg;
 @property (nonatomic, retain) NSString * acceptStatus;
+@property (nonatomic, retain) NSDate * receiveTime;
 
 @end

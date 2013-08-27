@@ -17,5 +17,6 @@
 @dynamic ifFriend;
 @dynamic addtionMsg;
 @dynamic acceptStatus;
+@dynamic receiveTime;
 
 @end
