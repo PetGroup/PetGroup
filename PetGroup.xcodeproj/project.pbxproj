@@ -31,6 +31,7 @@
 		86D69D1617C72CD600FFFBDD /* tianjiazhaopian.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1017C72CD300FFFBDD /* tianjiazhaopian.png */; };
 		86D69D1717C72CD600FFFBDD /* xiaobeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1117C72CD400FFFBDD /* xiaobeijing.png */; };
 		86D69D1817C72CD600FFFBDD /* zhaoxiangji.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1217C72CD500FFFBDD /* zhaoxiangji.png */; };
+		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
 		9736BAFD17C4892A007DFE36 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BAD917C4892A007DFE36 /* GCDAsyncSocket.m */; };
@@ -499,6 +500,8 @@
 		86D69D1017C72CD300FFFBDD /* tianjiazhaopian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tianjiazhaopian.png; sourceTree = "<group>"; };
 		86D69D1117C72CD400FFFBDD /* xiaobeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiaobeijing.png; sourceTree = "<group>"; };
 		86D69D1217C72CD500FFFBDD /* zhaoxiangji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zhaoxiangji.png; sourceTree = "<group>"; };
+		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9736BAC917C472A1007DFE36 /* HostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfo.h; sourceTree = "<group>"; };
 		9736BACA17C472A1007DFE36 /* HostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostInfo.m; sourceTree = "<group>"; };
 		9736BACC17C472B2007DFE36 /* PetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PetInfo.h; sourceTree = "<group>"; };
@@ -1284,6 +1287,8 @@
 			children = (
 				97D501CE17C4998300799BD4 /* KKChatController.h */,
 				97D501CF17C4998300799BD4 /* KKChatController.m */,
+				86FF42B117CC66D7007F8DE2 /* MessageViewController.h */,
+				86FF42B217CC66D7007F8DE2 /* MessageViewController.m */,
 			);
 			name = MessageView;
 			sourceTree = "<group>";
@@ -3319,6 +3324,7 @@
 				86D69D0C17C7265300FFFBDD /* EditDynamicViewController.m in Sources */,
 				86D5C29717CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m in Sources */,
 				86D5C29A17CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m in Sources */,
+				86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
