@@ -17,13 +17,22 @@
    [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
        self.dataSourceArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
        NSLog(@"%@",self.dataSourceArray);
+       self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue];
+       success();
    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-       NSLog(@"%@",error);
+       failure();
    }];
 }
 -(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
-    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.dataSourceArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",self.dataSourceArray);
+        self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
 }
 -(NSDictionary*)parameter
 {
