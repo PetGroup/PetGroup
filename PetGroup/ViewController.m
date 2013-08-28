@@ -96,16 +96,16 @@
 }
 -(void)testUploadMoreThanOnePics
 {
-    NSArray * imageArray = [NSArray arrayWithObjects:[UIImage imageNamed:@"222222.jpg"],[UIImage imageNamed:@"333.png"],[UIImage imageNamed:@"4444.png"], [UIImage imageNamed:@"tupian1.png"],[UIImage imageNamed:@"tupian2.png"],[UIImage imageNamed:@"tupian3.png"],nil];
-    NSArray * imageNameArray = [NSArray arrayWithObjects:@"222222.jpg",@"333.jpg",@"444.jpg",@"tupian1.jpg",@"tupian2.jpg",@"tupian3.jpg", nil];
-    [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:imageNameArray Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-    } Success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
-       // NSString *response = [operation responseString];
-        NSLog(@"uploadImg:%@",responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error:%@",error);
-    }];
+//    NSArray * imageArray = [NSArray arrayWithObjects:[UIImage imageNamed:@"222222.jpg"],[UIImage imageNamed:@"333.png"],[UIImage imageNamed:@"4444.png"], [UIImage imageNamed:@"tupian1.png"],[UIImage imageNamed:@"tupian2.png"],[UIImage imageNamed:@"tupian3.png"],nil];
+//    NSArray * imageNameArray = [NSArray arrayWithObjects:@"222222.jpg",@"333.jpg",@"444.jpg",@"tupian1.jpg",@"tupian2.jpg",@"tupian3.jpg", nil];
+//    [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:imageNameArray Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+//        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+//    } Success:^(AFHTTPRequestOperation *operation, NSArray *responseObject) {
+//       // NSString *response = [operation responseString];
+//        NSLog(@"uploadImg:%@",responseObject);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"Error:%@",error);
+//    }];
 }
 - (void)didReceiveMemoryWarning
 {

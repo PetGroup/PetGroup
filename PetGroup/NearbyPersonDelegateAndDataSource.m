@@ -9,7 +9,14 @@
 #import "NearbyPersonDelegateAndDataSource.h"
 
 @implementation NearbyPersonDelegateAndDataSource
-
+-(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
+{
+    
+}
+-(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
+{
+    
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"FriendCell";

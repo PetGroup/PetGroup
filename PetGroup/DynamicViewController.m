@@ -132,7 +132,11 @@
     [self.view addSubview:_cheatTF];
     _cheatTF.inputAccessoryView = aToolbar;
     
-    
+    [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
+        
+    } failure:^{
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,7 +7,7 @@
 //
 
 #import "NetManager.h"
-#define CompressionQuality 0.5  //图片上传时压缩质量
+#define CompressionQuality 0.3  //图片上传时压缩质量
 @implementation NetManager
 
 //post请求，需自己设置失败提示
@@ -44,8 +44,8 @@
 
 }
 
-//上传单张图片
-+(void)uploadImage:(UIImage *)uploadImage WithURLStr:(NSString *)urlStr ImageName:(NSString *)imageName Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+//上传单张图片,压缩
++(void)uploadImageWithCompres:(UIImage *)uploadImage WithURLStr:(NSString *)urlStr ImageName:(NSString *)imageName  Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -60,35 +60,51 @@
     [operation setCompletionBlockWithSuccess:success failure:failure];
     [httpClient enqueueHTTPRequestOperation:operation];
 }
-
-//上传多张图片
-+(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSArray *responseObject))success
+//上传单张图片,不压缩
++(void)uploadImage:(UIImage *)uploadImage WithURLStr:(NSString *)urlStr ImageName:(NSString *)imageName  Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                      failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    NSData *imageData = UIImageJPEGRepresentation(uploadImage, 1);
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
+    }];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setUploadProgressBlock:block];
+    [operation setCompletionBlockWithSuccess:success failure:failure];
+    [httpClient enqueueHTTPRequestOperation:operation];
+}
+//上传多张图片，压缩
++(void)uploadImagesWithCompres:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
-    NSMutableArray * reponseStrArray = [NSMutableArray array];
+    NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
-        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager uploadImageWithCompres:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSString *response = [operation responseString];
-                [reponseStrArray addObject:[response stringByAppendingFormat:@"+%@",[imageNameArray objectAtIndex:i]]];
+                [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
                 if (reponseStrArray.count==imageArray.count) {
                     success(operation,reponseStrArray);
             }
         } failure:failure];
     }
 }
-//上传多张图片,不带图片名
-+(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr  Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSArray *responseObject))success
+//上传多张图片，不压缩
++(void)uploadImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
-    NSMutableArray * reponseStrArray = [NSMutableArray array];
+    NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
-        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:@"temp" Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *response = [operation responseString];
-            [reponseStrArray addObject:response];
+            [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
             if (reponseStrArray.count==imageArray.count) {
                 success(operation,reponseStrArray);
             }
         } failure:failure];
     }
 }
+
 @end
