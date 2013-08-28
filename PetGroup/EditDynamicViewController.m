@@ -8,11 +8,13 @@
 
 #import "EditDynamicViewController.h"
 #import "CustomTabBar.h"
+#import "MBProgressHUD.h"
 
-@interface EditDynamicViewController ()
+@interface EditDynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
     UIImageView* deleteIV;
+    MBProgressHUD * hud;
 }
 @property (nonatomic,strong)UITextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
@@ -21,6 +23,8 @@
 @property (nonatomic,strong)NSMutableArray* pictureArray;
 @property (nonatomic,strong)UIActionSheet* addActionSheet;
 @property (nonatomic,strong)UIActionSheet* deleteActionSheet;
+@property (nonatomic,strong)NSMutableString* imageId;
+
 
 @end
 
@@ -31,6 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -92,12 +97,31 @@
     _placeholderL.text = @"今天想跟别人说点什么……";
     [self.view addSubview:_placeholderL];
     
+    self.pictureV = [[UIImageView alloc]initWithFrame:CGRectMake(6, 228, 308, 62.5)];
+    _pictureV.image = [UIImage imageNamed:@"xiaobeijing"];
+    _pictureV.userInteractionEnabled = YES;
+    _pictureV.autoresizesSubviews = YES;
+    _pictureV.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [self.view addSubview:_pictureV];
+    
+    PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
+    PhotoB.frame = CGRectMake(7, 7, 48.5, 48.5);
+    [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
+    [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
+    [_pictureV addSubview:PhotoB];
+    
+    _pictureV.hidden = YES;
+    
     self.tishiL = [[UILabel alloc]initWithFrame:CGRectMake(200, 190, 115, 20)];
     _tishiL.text = @"还可以输入200字";
     _tishiL.backgroundColor = [UIColor clearColor];
     _tishiL.font = [UIFont boldSystemFontOfSize:14];
     _tishiL.textColor = [UIColor grayColor];
     [self.view addSubview:_tishiL];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -113,26 +137,82 @@
 }
 -(void)next
 {
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.customTabBarController hidesTabBar:NO animated:YES];
+    if (self.dynamicTV.text.length>200||self.dynamicTV.text.length<1) {
+        UIAlertView * aler = [[UIAlertView alloc]initWithTitle:nil message:@"动态字数不能超过200字且不能为空" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [aler show];
+        return;
+    }
+    [hud show:YES];
+    if (self.pictureArray!=nil&&self.pictureArray.count>0) {
+        NSMutableArray* imageArray = [[NSMutableArray alloc]init];
+        NSMutableArray* nameArray = [[NSMutableArray alloc]init];
+        for (int i = 0;i< self.pictureArray.count;i++) {
+            [imageArray addObject:((UIImageView*)self.pictureArray[i]).image];
+            [nameArray addObject:[NSString stringWithFormat:@"%d",i]];
+        }
+        [NetManager uploadImagesWithCompres:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSDictionary* CompresID = responseObject;
+            [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+                self.imageId = [[NSMutableString alloc]init];
+                for (NSString*a in responseObject) {
+                    [_imageId appendFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+                }
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:_imageId] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [self backButton:nil];
+                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [self showAlerView];
+                    [hud hide:YES];
+                }];
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self showAlerView];
+               [hud hide:YES];
+            }];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self showAlerView];
+            [hud hide:YES];
+        }];
+    }else{
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:@""] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self backButton:nil];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self showAlerView];
+            [hud hide:YES];
+        }];
+    }
+    
+    
+}
+-(void)showAlerView
+{
+    UIAlertView* aler  = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请检查网络是否正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    [aler show];
+}
+-(NSDictionary*)putDynamic:(NSString*)imageDI
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:@"" forKey:@"transmitUrl"];
+    [params setObject:@"" forKey:@"transmitMsg"];
+    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+    [params setObject:@"0" forKey:@"ifTransmitMsg"];
+    [params setObject:self.dynamicTV.text forKey:@"msg"];
+    [params setObject:imageDI forKey:@"imgid"];
+    [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"addUserState" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    return body;
 }
 -(void)addPhoto
 {
-    if (self.pictureV == nil) {
-        self.pictureV = [[UIImageView alloc]initWithFrame:CGRectMake(6, 228, 308, 62.5)];
-        _pictureV.image = [UIImage imageNamed:@"xiaobeijing"];
-        _pictureV.userInteractionEnabled = YES;
-        _pictureV.autoresizesSubviews = YES;
-        _pictureV.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [self.view addSubview:_pictureV];
-        
-        PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
-        PhotoB.frame = CGRectMake(7, 7, 48.5, 48.5);
-        [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
-        [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
-        [_pictureV addSubview:PhotoB];
-
-    }
+    self.pictureV.hidden = NO;
 }
 -(void)getAnActionSheet
 {

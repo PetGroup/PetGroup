@@ -132,7 +132,11 @@
     [self.view addSubview:_cheatTF];
     _cheatTF.inputAccessoryView = aToolbar;
     
-    
+    [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
+        
+    } failure:^{
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -322,7 +326,7 @@
         if (reprintB.superview==nil) {
             [_actionIV addSubview:reprintB];
         }
-        [UIView animateWithDuration:3 animations:^{
+        [UIView animateWithDuration:0.3 animations:^{
             _actionIV.frame = CGRectMake( 108, cellRect.origin.y+cellRect.size.height - 10, 182, 44);
             praiseB.frame = CGRectMake(6, 6, 53, 31);
             assessB.frame = CGRectMake(65, 6, 53, 31);
