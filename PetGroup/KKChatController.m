@@ -27,6 +27,7 @@
 @synthesize tView;
 @synthesize messageTextField;
 @synthesize chatWithUser;
+@synthesize nickName;
 
 
 - (void)loadView
@@ -48,8 +49,7 @@
     touchTimePre = 0;
     uDefault = [NSUserDefaults standardUserDefaults];
     currentID = [uDefault objectForKey:@"account"];
-    userInfoDict = [NSMutableDictionary dictionary];
-    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
+
     
     NSLog(@"wwwwwww:%@",currentID);
 //    if (currentID) {
@@ -63,7 +63,7 @@
     UIImageView * bgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
     [self.view addSubview:bgV];
-    messages = [NSMutableArray array];
+    messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
     
     self.tView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-50) style:UITableViewStylePlain];
    // NSLog(@"wwwwww%f",self.view.frame.size.height);
@@ -95,7 +95,7 @@
     
     titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text=@"";
+    titleLabel.text=self.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -149,7 +149,7 @@
     btnLongTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(btnLongTapAction:)];
     btnLongTap.minimumPressDuration = 1;
     
-    [self.appDel.xmppHelper addFriend:@"7kela" WithMsg:@"what's the fuck !" HeadID:@"20"];
+    [DataStoreManager blankMsgUnreadCountForUser:self.chatWithUser];
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
@@ -158,12 +158,7 @@
 {
 
 }
--(NSDictionary*)makeUserInfo:(int)row
-{
-    [userInfoDict setObject:userName forKey:@"username"];
 
-    return userInfoDict;
-}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self sendButton:nil];
@@ -387,8 +382,8 @@
         [cell.headImgV setFrame:CGRectMake(10, padding*2-15, 40, 40)];
         [cell.chattoHeadBtn setFrame:cell.headImgV.frame];
         [cell.chattoHeadBtn addTarget:self action:@selector(chatToBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-        NSRange range = [sender rangeOfString:@"@"];
-        sender = [sender substringToIndex:range.location];
+//        NSRange range = [sender rangeOfString:@"@"];
+//        sender = [sender substringToIndex:range.location];
         [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
             
         if ([userName isEqualToString:@"爱宠小助手"])
@@ -422,7 +417,7 @@
     }
     else
     {
-        cell.senderAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@", sender, timeStr];
+        cell.senderAndTimeLabel.text = [NSString stringWithFormat:@"%@ %@", self.nickName, timeStr];
         CGRect rect = [self.view convertRect:cell.frame fromView:self.tView];
         NSLog(@"dsdsdsdsdsd%@",NSStringFromCGRect(rect));
     }
@@ -627,10 +622,10 @@
         //消息类型
         [mes addAttributeWithName:@"type" stringValue:@"chat"];
         //发送给谁
-        [mes addAttributeWithName:@"to" stringValue:[chatWithUser stringByAppendingString:Domain]];
+        [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:Domain]];
      //   NSLog(@"chatWithUser:%@",chatWithUser);
         //由谁发送
-        [mes addAttributeWithName:@"from" stringValue:@""];
+        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:Domain]];
     //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
         //组合
         [mes addChild:body];
@@ -647,9 +642,9 @@
         [dictionary setObject:@"you" forKey:@"sender"];
         //加入发送时间
         [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
-
+        [dictionary setObject:self.chatWithUser forKey:@"receiver"];
         [messages addObject:dictionary];
-        
+        [DataStoreManager storeMyMessage:dictionary];
         //重新刷新tableView
         [self.tView reloadData];
         if (messages.count>0) {
@@ -676,7 +671,8 @@
     
     NSRange range = [[messageCotent objectForKey:@"sender"] rangeOfString:@"@"];
     NSString * sender = [[messageCotent objectForKey:@"sender"] substringToIndex:range.location];
-    if ([sender isEqualToString:userName]) {
+    if ([sender isEqualToString:self.chatWithUser]) {
+        [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
         [messages addObject:messageCotent];
         [self.tView reloadData];
         if (messages.count>0) {
@@ -785,6 +781,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [DataStoreManager blankMsgUnreadCountForUser:self.chatWithUser];
 }
 //-(KKAppDelegate *)appDelegate{
 //    

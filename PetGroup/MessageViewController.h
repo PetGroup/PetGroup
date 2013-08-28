@@ -66,6 +66,9 @@
     NSMutableArray * allMsgArray;
     
     NSMutableArray * allMsgUnreadArray;
+    
+    NSMutableArray * allNickNameArray;
+    NSMutableArray * allHeadImgArray;
 }
 
 

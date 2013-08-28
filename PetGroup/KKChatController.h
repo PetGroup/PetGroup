@@ -45,6 +45,7 @@
 @property (strong, nonatomic)  UITextField *messageTextField;
 //@property (strong, nonatomic)  UIButton * sendBtn;
 @property(nonatomic, retain) NSString *chatWithUser;
+@property(nonatomic, retain) NSString *nickName;
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic) UIExpandingTextView *textView;
 @property (assign,nonatomic) id<StoreMsgDelegate> msgDelegate;

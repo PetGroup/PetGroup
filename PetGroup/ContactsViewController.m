@@ -89,7 +89,20 @@
 }
 -(void)getFriendsList
 {
-    
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSDictionary * getFriendDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0",@"pageIndex", nil];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getFriends" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:getFriendDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"%@",recDict);
+    }];
 }
 -(void)addButton:(UIButton *)sender
 {

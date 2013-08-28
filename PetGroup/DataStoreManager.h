@@ -26,17 +26,23 @@
 @interface DataStoreManager : NSObject
 +(void)setDefaultDataBase:(NSString *)dataBaseName AndDefaultModel:(NSString *)modelName;
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype;
++(void)storeMyMessage:(NSDictionary *)message;
 +(void)blankMsgUnreadCountForUser:(NSString *)username;
 +(NSArray *)queryUnreadCountForCommonMsg;
 +(void)deleteMsgsWithSender:(NSString *)sender;
+
++(NSMutableArray *)qureyAllCommonMessages:(NSString *)username;
 +(NSArray *)qureyAllThumbMessages;
 +(NSDictionary *)queryLastPublicMsg;
+
 
 +(NSArray *)queryAllReceivedHellos;
 +(NSDictionary *)qureyLastReceivedHello;
 
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
 +(void)addFriendToLocal:(NSDictionary *)userInfoDict;
++(NSString *)queryNickNameForUser:(NSString *)userName;
++(NSString *)queryFirstHeadImageForUser:(NSString *)userName;
 +(void)updateFriendInfo:(NSDictionary *)userInfoDict ForUser:(NSString *)username;
 
 +(NSString *)getMyUserID;
