@@ -25,6 +25,8 @@
         allMsgArray = [NSMutableArray array];
         allMsgUnreadArray = [NSMutableArray array];
         newReceivedMsgArray = [NSMutableArray array];
+        allNickNameArray = [NSMutableArray array];
+        allHeadImgArray = [NSMutableArray array];
     }
     return self;
 }
@@ -34,11 +36,13 @@
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
 
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
-    
+
     titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     
@@ -85,9 +89,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"ghost" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"94e0aed4-5cc8-4f00-bdce-c012089651b9" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];
@@ -102,6 +106,7 @@
 //        [self tempMakeSomeData];
 //        [self performSelector:@selector(displayMsgsForDefaultView) withObject:nil afterDelay:4];
     }
+    [self displayMsgsForDefaultView];
 }
 //-(void)tempMakeSomeData
 //{
@@ -127,6 +132,10 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
+    self.appDel.xmppHelper.buddyListDelegate = self;
+    self.appDel.xmppHelper.chatDelegate = self;
+    self.appDel.xmppHelper.processFriendDelegate = self;
+    self.appDel.xmppHelper.addReqDelegate = self;
 }
 
 -(void)notConnectted
@@ -150,22 +159,19 @@
 {
     //检查本地是否已有这个打招呼的人，有了就不存，没有就存
     if (![DataStoreManager ifSayHellosHaveThisPerson:[userInfo objectForKey:@"fromUser"]]) {
-        AudioServicesPlayAlertSound(1007);
-        [DataStoreManager addPersonToReceivedHellos:userInfo];
-        //检查打招呼这个人有没有详细信息，没有去请求详细信息
-        if(![DataStoreManager checkSayHelloPersonIfHaveNickNameForUsername:[userInfo objectForKey:@"fromUser"]]){
-            [self requestPeopleInfoWithName:[userInfo objectForKey:@"fromUser"] ForType:0];
-        }
+//        AudioServicesPlayAlertSound(1007);
+//        [DataStoreManager addPersonToReceivedHellos:userInfo];
+//        //检查打招呼这个人有没有详细信息，没有去请求详细信息
+//        if(![DataStoreManager checkSayHelloPersonIfHaveNickNameForUsername:[userInfo objectForKey:@"fromUser"]]){
+//            [self requestPeopleInfoWithName:[userInfo objectForKey:@"fromUser"] ForType:0];
+//        }
+        [self requestPeopleInfoWithName:[userInfo objectForKey:@"fromUser"] ForType:0];
     }
-    [self displayMsgsForDefaultView];
+//    [self displayMsgsForDefaultView];
 }
 -(void)processFriend:(XMPPPresence *)processFriend{
-//    NSString *username=[[processFriend from] user];
-//    NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",username];
-//    NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-//    NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",username,Domain],@"sender",ctime,@"time", nil];
-//    [self storeNewMessage:newM];
-//    [self requestPeopleInfoWithName:username ForType:1];
+    NSString *username=[[processFriend from] user];
+    [self requestPeopleInfoWithName:username ForType:1];
 }
 
 -(void)newMessageReceived:(NSDictionary *)messageContent
@@ -218,6 +224,8 @@
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+    NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
+    [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
     if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>0) {
         cell.unreadCountLabel.hidden = NO;
         cell.notiBgV.hidden = NO;
@@ -232,6 +240,9 @@
         cell.notiBgV.hidden = YES;
     }
     cell.nameLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
+    if (![[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
+        cell.nameLabel.text = [allNickNameArray objectAtIndex:indexPath.row];
+    }
     cell.contentLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"msg"]; 
     cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"time"]];
     return cell;
@@ -239,6 +250,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:
         {
@@ -253,7 +265,10 @@
             break;
     }
     KKChatController * kkchat = [[KKChatController alloc] init];
+    kkchat.chatWithUser = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
+    kkchat.nickName = [allNickNameArray objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:kkchat animated:YES];
+    kkchat.msgDelegate = self;
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -377,11 +392,17 @@
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         if (type==0) {
-            NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",[NSString stringWithFormat:@"Hi~我是%@，加我好友吧",[recDict objectForKey:@"username"]],@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
+            NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",[NSString stringWithFormat:@"Hi~我是%@，加我好友吧",[recDict objectForKey:@"nickname"]],@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
             [DataStoreManager addPersonToReceivedHellos:uDict];
+            [self displayMsgsForDefaultView];
         }
         else if (type==1){
             [DataStoreManager saveUserInfo:recDict];
+            NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[recDict objectForKey:@"nickname"]];
+            NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+            NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",[recDict objectForKey:@"username"],Domain],@"sender",ctime,@"time", nil];
+            [self storeNewMessage:newM];
+            [self displayMsgsForDefaultView];
         }
 
     }];
@@ -391,12 +412,24 @@
 {
     allMsgArray = (NSMutableArray *)[DataStoreManager qureyAllThumbMessages];
     [allMsgArray insertObject:[DataStoreManager qureyLastReceivedHello] atIndex:0];
-    
+    [self readAllnickNameAndImage];
     allMsgUnreadArray = (NSMutableArray *)[DataStoreManager queryUnreadCountForCommonMsg];
     [allMsgUnreadArray insertObject:[DataStoreManager qureyUnreadForReceivedHellos] atIndex:0];
 //    [allMsgArray insertObject:[DataStoreManager queryLastPublicMsg] atIndex:0];
     [self.messageTable reloadData];
     [self displayTabbarNotification];
+}
+-(void)readAllnickNameAndImage
+{
+    NSMutableArray * nickName = [NSMutableArray array];
+    NSMutableArray * headimg = [NSMutableArray array];
+    for (int i = 0; i<allMsgArray.count; i++) {
+        [nickName addObject:[DataStoreManager queryNickNameForUser:[[allMsgArray objectAtIndex:i] objectForKey:@"sender"]]];
+        [headimg addObject:[DataStoreManager queryFirstHeadImageForUser:[[allMsgArray objectAtIndex:i] objectForKey:@"sender"]]];
+    }
+    allNickNameArray = nickName;
+    allHeadImgArray = headimg;
+    NSLog(@"hhhhhhead:%@",allHeadImgArray);
 }
 -(void)displayTabbarNotification
 {
@@ -404,11 +437,17 @@
     for (int i = 0; i<allMsgUnreadArray.count; i++) {
         allUnread = allUnread+[[allMsgUnreadArray objectAtIndex:i] intValue];
     }
-    
-    [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:0];
-    if (allUnread>99) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:0];
+    if (allUnread>0) {
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:0];
+        if (allUnread>99) {
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:0];
+        }
     }
+    else
+    {
+        [self.customTabBarController removeNotificatonOfIndex:0];
+    }
+ 
 }
 -(void)makeLogFailurePrompt
 {

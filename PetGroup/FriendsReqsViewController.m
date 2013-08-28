@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
     self.appDel = [[UIApplication sharedApplication] delegate];
+    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
+    
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
@@ -80,6 +82,7 @@
         cell = [[addFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:stringCell3];
     }
     [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+    [cell.headImageV setImageWithURL:[NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]] placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]]];
     cell.nameLabel.text = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"nickName"];
     cell.agreeBtn.tag = indexPath.row+1;
     cell.rejectBtn.tag = indexPath.row+1;
@@ -103,15 +106,15 @@
 }
 -(void)acceptAddReq:(UIButton *)sender
 {
-    [self.appDel.xmppHelper addOrDenyFriend:YES user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"username"]];
-    [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"username"]];
+    [self.appDel.xmppHelper addOrDenyFriend:YES user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
+    [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self loadTableviewData];
     
 }
 -(void)rejectAddreq:(UIButton *)sender
 {
-    [self.appDel.xmppHelper addOrDenyFriend:NO user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"username"]];
-    [DataStoreManager updateReceivedHellosStatus:@"rejected" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"username"]];
+    [self.appDel.xmppHelper addOrDenyFriend:NO user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
+    [DataStoreManager updateReceivedHellosStatus:@"rejected" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self loadTableviewData];
 }
 -(void)loadTableviewData
@@ -121,6 +124,7 @@
 }
 -(void)back
 {
+    [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning
