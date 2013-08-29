@@ -36,7 +36,7 @@
 //    NSMutableArray * allNameKeys;
 //    NSDictionary * unReadDict;
 //    NSDictionary * contentDict;
-    NSArray * searchResultArray;
+    
     NSMutableArray * pyAndCnArray;
     int nameCount;
 //    NSMutableData * dataSource;
@@ -64,6 +64,9 @@
     
     NSMutableArray * newReceivedMsgArray;
     NSMutableArray * allMsgArray;
+    
+    NSMutableArray * pyChineseArray;
+    NSArray * searchResultArray;
     
     NSMutableArray * allMsgUnreadArray;
     

@@ -217,7 +217,7 @@
 {
     NSArray * rechellos = [DSReceivedHellos MR_findAllSortedBy:@"receiveTime" ascending:YES];
     NSMutableDictionary * lastHelloDict = [NSMutableDictionary dictionary];
-    [lastHelloDict setObject:@"收到的招呼" forKey:@"sender"];
+    [lastHelloDict setObject:ZhaoHuLan forKey:@"sender"];
     if (rechellos.count>0) {
         DSReceivedHellos * lastRecHello = [rechellos lastObject];
         NSDate * tt = [lastRecHello receiveTime];
@@ -298,7 +298,7 @@
             return dFriend.userName;
     }
     else
-        return @"no";
+        return userName;
 }
 +(NSString *)queryFirstHeadImageForUser:(NSString *)userName
 {

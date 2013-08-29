@@ -27,6 +27,8 @@
         newReceivedMsgArray = [NSMutableArray array];
         allNickNameArray = [NSMutableArray array];
         allHeadImgArray = [NSMutableArray array];
+        pyChineseArray = [NSMutableArray array];
+        searchResultArray = [NSArray array];
     }
     return self;
 }
@@ -207,8 +209,18 @@
     return 1;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return allMsgArray.count;
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",searchBar.text];
+    NSLog(@"%@",searchBar.text);
+    
+    searchResultArray = [pyChineseArray filteredArrayUsingPredicate:resultPredicate ]; //注意retain
+    NSLog(@"%@",searchResultArray);
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return [searchResultArray count];
+    }
+    else
+        return allMsgArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -224,45 +236,84 @@
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
-    NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
-    [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
-    if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>0) {
-        cell.unreadCountLabel.hidden = NO;
-        cell.notiBgV.hidden = NO;
-        [cell.unreadCountLabel setText:[allMsgUnreadArray objectAtIndex:indexPath.row]];
-        if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>99) {
-            [cell.unreadCountLabel setText:@"99"];
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
+        NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
+        NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]];
+        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]]];
+        if ([[allMsgUnreadArray objectAtIndex:theIndex] intValue]>0) {
+            cell.unreadCountLabel.hidden = NO;
+            cell.notiBgV.hidden = NO;
+            [cell.unreadCountLabel setText:[allMsgUnreadArray objectAtIndex:theIndex]];
+            if ([[allMsgUnreadArray objectAtIndex:theIndex] intValue]>99) {
+                [cell.unreadCountLabel setText:@"99"];
+            }
         }
+        else
+        {
+            cell.unreadCountLabel.hidden = YES;
+            cell.notiBgV.hidden = YES;
+        }
+//        cell.nameLabel.text = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"];
+//        if (![[allNickNameArray objectAtIndex:theIndex] isEqualToString:@"no"]) {
+            cell.nameLabel.text = [allNickNameArray objectAtIndex:theIndex];
+//        }
+        cell.contentLabel.text = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"msg"];
+        cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[[allMsgArray objectAtIndex:theIndex] objectForKey:@"time"]];
+
     }
     else
     {
-        cell.unreadCountLabel.hidden = YES;
-        cell.notiBgV.hidden = YES;
+        NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
+        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
+        if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>0) {
+            cell.unreadCountLabel.hidden = NO;
+            cell.notiBgV.hidden = NO;
+            [cell.unreadCountLabel setText:[allMsgUnreadArray objectAtIndex:indexPath.row]];
+            if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>99) {
+                [cell.unreadCountLabel setText:@"99"];
+            }
+        }
+        else
+        {
+            cell.unreadCountLabel.hidden = YES;
+            cell.notiBgV.hidden = YES;
+        }
+//        cell.nameLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
+//        if (![[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
+            cell.nameLabel.text = [allNickNameArray objectAtIndex:indexPath.row];
+//        }
+        cell.contentLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"msg"]; 
+        cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"time"]];
     }
-    cell.nameLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
-    if (![[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:@"no"]) {
-        cell.nameLabel.text = [allNickNameArray objectAtIndex:indexPath.row];
-    }
-    cell.contentLabel.text = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"msg"]; 
-    cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"time"]];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [searchDisplay setActive:NO animated:NO];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    switch (indexPath.row) {
-        case 0:
-        {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
+        NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
+        if ([[allNickNameArray objectAtIndex:theIndex] isEqualToString:ZhaoHuLan]) {
             FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
             [self.navigationController pushViewController:friq animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
             return;
         }
-            break;
-            
-        default:
-            break;
+        KKChatController * kkchat = [[KKChatController alloc] init];
+        kkchat.chatWithUser = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"];
+        kkchat.nickName = [allNickNameArray objectAtIndex:theIndex];
+        [self.navigationController pushViewController:kkchat animated:YES];
+        kkchat.msgDelegate = self;
+        return;
+    }
+    if ([[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:ZhaoHuLan]) {
+        FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
+        [self.navigationController pushViewController:friq animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        return;
     }
     KKChatController * kkchat = [[KKChatController alloc] init];
     kkchat.chatWithUser = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
@@ -424,12 +475,17 @@
 {
     NSMutableArray * nickName = [NSMutableArray array];
     NSMutableArray * headimg = [NSMutableArray array];
+    NSMutableArray * pinyin = [NSMutableArray array];
     for (int i = 0; i<allMsgArray.count; i++) {
-        [nickName addObject:[DataStoreManager queryNickNameForUser:[[allMsgArray objectAtIndex:i] objectForKey:@"sender"]]];
+        NSString * nickName2 = [DataStoreManager queryNickNameForUser:[[allMsgArray objectAtIndex:i] objectForKey:@"sender"]];
+        [nickName addObject:nickName2];
+        NSString * pinyin2 = [self convertChineseToPinYin:nickName2];
+        [pinyin addObject:[pinyin2 stringByAppendingFormat:@"+%@",nickName2]];
         [headimg addObject:[DataStoreManager queryFirstHeadImageForUser:[[allMsgArray objectAtIndex:i] objectForKey:@"sender"]]];
     }
     allNickNameArray = nickName;
     allHeadImgArray = headimg;
+    pyChineseArray = pinyin;
     NSLog(@"hhhhhhead:%@",allHeadImgArray);
 }
 -(void)displayTabbarNotification
