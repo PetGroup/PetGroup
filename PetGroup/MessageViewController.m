@@ -89,9 +89,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"ghost" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"94e0aed4-5cc8-4f00-bdce-c012089651b9" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];

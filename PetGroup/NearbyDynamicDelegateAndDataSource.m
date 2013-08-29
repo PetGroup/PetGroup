@@ -15,9 +15,11 @@
 {
     self.pageIndex = 0;
    [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       self.dataSourceArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-       NSLog(@"%@",self.dataSourceArray);
-       self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue];
+       NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+       [self.dataSourceArray removeAllObjects];
+       [self.dataSourceArray addObjectsFromArray:array];
+       NSLog(@"%@",array);
+       self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
        success();
    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
        failure();
@@ -26,10 +28,17 @@
 -(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
     [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.dataSourceArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",self.dataSourceArray);
-        self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
-        success();
+        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",array);
+        if (array.count>0) {
+            [self.dataSourceArray addObjectsFromArray:array];
+            self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+            success();
+        }else{
+            UIAlertView *aler = [[UIAlertView alloc]initWithTitle:nil message:@"没有更多动态啦" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [aler show];
+        }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
     }];
@@ -50,6 +59,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     return body;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"NearbyCell";

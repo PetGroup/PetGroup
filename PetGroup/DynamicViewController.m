@@ -12,7 +12,8 @@
 #import "FriendDynamicDelegateAndDataSource.h"
 #import "EditDynamicViewController.h"
 #import "DynamicCell.h"
-@interface DynamicViewController ()
+#import "MBProgressHUD.h"
+@interface DynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* nearByB;
     UIButton* friendB;
@@ -20,6 +21,8 @@
     UIButton * praiseB;
     UIButton * assessB;
     UIButton * reprintB;
+    
+     MBProgressHUD * hud;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)UITableView* tableV;
@@ -86,19 +89,21 @@
     [self.view addSubview:publishButton];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    _tableV.delegate = self;
     _tableV.dataSource = self.nearbyDDS;
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
-    _tableV.contentSize = _tableV.frame.size;
-    _tableV.delegate = self;
-    _tableV.contentOffset = CGPointMake(0, 100);
+    
     
     UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
     headV.image = [UIImage imageNamed:@"morenbeijing"];
     self.tableV.tableHeaderView = headV;
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
-    nameL.text = @"汤唯";
+    nameL.font = [UIFont systemFontOfSize:16];
+    nameL.text = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
     nameL.backgroundColor = [UIColor clearColor];
     nameL.textColor = [UIColor whiteColor];
     [headV addSubview:nameL];
@@ -132,13 +137,23 @@
     [self.view addSubview:_cheatTF];
     _cheatTF.inputAccessoryView = aToolbar;
     
-    [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
-        
-    } failure:^{
-        
-    }];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在发送，请稍后";
+    
+    [self reloadData];
+    [hud show:YES];
 }
-
+-(void)showAlertView
+{
+    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"加载失败，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    [alert show];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    _tableV.contentOffset = CGPointMake(0, 100);
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -155,6 +170,9 @@
         [friendB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _tableV.dataSource = self.nearbyDDS;
         [_tableV reloadData];
+        if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
+            [self reloadData];
+        }
     }
 }
 -(void)showfriend
@@ -167,6 +185,9 @@
         [nearByB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _tableV.dataSource = self.friendDDS;
         [_tableV reloadData];
+        if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
+            [self reloadData];
+        }
     }
 }
 -(void)updateSelfMassage
@@ -215,16 +236,16 @@
             _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
             [_act startAnimating];
             [_tableV.tableHeaderView addSubview:_act];
-            
         }
-        
     }
-    if (_tableV.contentOffset.y>_tableV.contentSize.height-367) {
-        if (_tableV.tableFooterView == nil) {
-            _tableV.tableFooterView = _footV;
-            
-        }else{
-            [_footAct startAnimating];
+    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
+        if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-100) {
+            if (_tableV.tableFooterView == nil) {
+                _tableV.tableFooterView = _footV;
+                
+            }else{
+                [_footAct startAnimating];
+            }
         }
     }
 }
@@ -247,38 +268,38 @@
             _tableV.contentOffset = CGPointMake(0, 100);
         }];
     }
-    if (_tableV.contentOffset.y>=_tableV.contentSize.height-367-30) {
-        [_footAct stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.tableFooterView = nil;
-        }];
+    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
+        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-130) {
+            [_footAct stopAnimating];
+            [UIView animateWithDuration:0.3 animations:^{
+                _tableV.tableFooterView = nil;
+            }];
+        }
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //停止回弹
-    if (_tableV.contentOffset.y<=100) {
-        [_act stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.contentOffset = CGPointMake(0, 100);
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.act = nil;
-            }
-        }];
+    if (_tableV.contentOffset.y<=0) {
+        [self reloadData];
     }
-    if (_tableV.contentOffset.y>=_tableV.contentSize.height-367) {
-        [_footAct stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.tableFooterView = nil;
-        }];
+    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
+        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height) {
+            [self loadMoreData];
+        }
     }
+}
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    //开始回弹
+    NSLog(@"B%f==%f==%f",_tableV.contentSize.height,_tableV.frame.size.height,_tableV.contentOffset.y);
 }
 #pragma mark - cell button action
 -(void)showButton:(UITableViewCell*)cell
 {
     CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
+    NSLog(@"%f",cellRect.size.height);
     if (_actionIV == nil) {
         self.actionIV = [[UIImageView alloc]initWithFrame:CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44)];
         _actionIV.userInteractionEnabled = YES;
@@ -348,5 +369,50 @@
         [_actionIV removeFromSuperview];
         self.mycell = nil;
     
+}
+#pragma mark - reload and loadmore
+-(void)reloadData
+{
+    [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
+        [self.tableV reloadData];
+        [_act stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.contentOffset = CGPointMake(0, 100);
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.act = nil;
+            }
+        }];
+        [hud hide:YES];
+    } failure:^{
+        [self showAlertView];
+        [_act stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.contentOffset = CGPointMake(0, 100);
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.act = nil;
+            }
+        }];
+        [hud hide:YES];
+    }];
+}
+-(void)loadMoreData
+{
+    [(DelegateAndDataSource*)self.tableV.dataSource loadMoreDataSuccess:^{
+        [self.tableV reloadData];
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
+        [hud hide:YES];
+    } failure:^{
+        [self showAlertView];
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
+        [hud hide:YES];
+    }];
 }
 @end
