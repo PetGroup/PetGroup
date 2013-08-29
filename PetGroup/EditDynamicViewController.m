@@ -212,6 +212,7 @@
 }
 -(void)addPhoto
 {
+    [_dynamicTV resignFirstResponder];
     self.pictureV.hidden = NO;
 }
 -(void)getAnActionSheet

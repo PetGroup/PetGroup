@@ -17,13 +17,14 @@
     self = [super init];
     if (self) {
         self.dataSourceArray = [[NSMutableArray alloc]init];
-        self.pageIndex = 0;
+
     }
     return self;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 15;
+    return self.dataSourceArray.count;
+//    return 1;
 }
 
 @end
