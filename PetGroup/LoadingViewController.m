@@ -67,10 +67,40 @@
     {
         [self firtOpen];
     }
-
+    [[LocationManager sharedInstance] initLocation];
+    [self getUserLocation];
     [self performSelector:@selector(toMainView) withObject:nil afterDelay:2];
 
 	// Do any additional setup after loading the view.
+}
+
+-(void)getUserLocation
+{
+    [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {
+        if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+            [self upLoadUserLocationWithLat:lat Lon:lon];
+        }
+    } Failure:^{
+        
+    }];
+}
+
+-(void)upLoadUserLocationWithLat:(double)userLongitude Lon:(double)userLatitude
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"setUserLocation" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"rrrrrrrr:%@",recDict);
+    }];
 }
 
 -(void)firtOpen
@@ -86,7 +116,7 @@
     [postDict setObject:@"1" forKey:@"channel"];
     [postDict setObject:@"open" forKey:@"method"];
     [postDict setObject:@"" forKey:@"token"];
-    [postDict setObject:@"2345" forKey:@"mac"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict setObject:@"iphone" forKey:@"imei"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -95,6 +125,7 @@
         [self makeNotFirstOpen];
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"eeeeee:%@",recDict);
         //存储返回的DeviceID，注册使用...
         [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
         [[NSUserDefaults standardUserDefaults] synchronize];

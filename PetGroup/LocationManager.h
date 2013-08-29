@@ -15,8 +15,12 @@
     CLLocation *startPoint;
     //  CLLocationManager *_locationManager;
     MKMapView * _mapView;
+    NSTimer * checkTimer;
 }
 @property(nonatomic,strong)CLLocation *userPoint;
++ (id)sharedInstance;
 -(void)initLocation;
--(void)getUserLocation;
+-(void)startCheckLocationWithSuccess:(void(^)(double lat,double lon))success Failure:(void(^)(void))failure;
+-(double)getLatitude;
+-(double)getLongitude;
 @end

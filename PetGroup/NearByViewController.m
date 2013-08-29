@@ -28,6 +28,15 @@
     if (self) {
         // Custom initialization
         personOrPet = YES;
+        self.canRefresh = YES;
+        theType = @"";
+        theGender = @"";
+        theCity = @"北京市";
+        self.currentPage = 0;
+        latitude = 0.0f;
+        longitude = 0.0f;
+        self.nearbyArray = [NSMutableArray array];
+        self.appearPetArray = [NSMutableArray array];
     }
     return self;
 }
@@ -89,8 +98,133 @@
     [self.view addSubview:hud];
     hud.delegate = self;
     hud.labelText = @"搜索中...";
-    
+    [hud show:YES];
     [self addFiterPage];
+    [self getUserLocation];
+   // [self getCheatUser];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+
+}
+-(void)showAlertWithMessage:(NSString *)msg
+{
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+    [alert show];
+}
+-(void)getUserLocation
+{
+    [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {
+        latitude = lat;
+        longitude = lon;
+        [self getNearByUser];
+    } Failure:^{
+        [self showAlertWithMessage:@"暂时获取不到您的位置哦，稍后再试一下吧~"];
+    }];
+}
+-(void)getNearByUser
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+    [locationDict setObject:theGender forKey:@"gender"];
+    [locationDict setObject:theType forKey:@"type"];
+    [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getNearbyUser" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSArray * recArray = [receiveStr JSONValue];
+        [self parseData:recArray];
+        [hud hide:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+    }];
+
+}
+-(void)getNearByPet
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+    [locationDict setObject:theGender forKey:@"gender"];
+    [locationDict setObject:theType forKey:@"type"];
+    [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getNearbyUserAndPet" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSArray * recArray = [receiveStr JSONValue];
+        [self parseData:recArray];
+        [hud hide:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+    }];
+    
+}
+
+-(void)getCheatUser
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:theCity forKey:@"city"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"cheatUser" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSArray * recArray = [receiveStr JSONValue];
+        [self parseData:recArray];
+        [hud hide:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+    }];
+}
+-(void)parseData:(NSArray *)recArray
+{
+ //   self.currentPage = [self getIndex:recArray];
+    [self.nearbyArray removeAllObjects];
+    [self.nearbyArray addObjectsFromArray:recArray];
+    NSLog(@"ggggg:%@",recArray);
+    if (recArray.count<10) {
+        
+    }
+    if (!personOrPet) {
+        [self.appearPetArray removeAllObjects];
+        for (int i = 0;i<self.nearbyArray.count;i++) {
+            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfos"]];
+        }
+    }
+    NSLog(@"rrrrrrr:%@",self.appearPetArray);
+    [self.messageTable reloadData];
+    [_slimeView endRefresh];
+    self.canRefresh = YES;
+}
+-(int)getIndex:(NSArray *)recArray
+{
+    int tempIndex = 0;
+    for (int i = 0; i<recArray.count; i++) {
+        int theIndex = [[[recArray objectAtIndex:i] objectForKey:@"pageIndex"] intValue];
+        tempIndex = theIndex>tempIndex?theIndex:tempIndex;
+        
+    }
+    return tempIndex;
 }
 -(void)endrefresh
 {
@@ -102,8 +236,15 @@
     return 1;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView==self.petTypeTable) {
+        return self.petArray.count;
+    }
+//    if (!personOrPet) {
+//        return self.appearPetArray.count;
+//    }
+    return self.nearbyArray.count;
     
 }
 
@@ -137,7 +278,22 @@
         if (cell == nil) {
             cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+        if (![[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
+            NSString * imgStr = [self getFistHeadImg:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"]];
+            
+            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgStr]] placeholderImage:[UIImage imageNamed:imgStr]];
+        }
+        [cell.nameLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"]];
+        NSString* sigStr = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"signature"];
+        if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
+            [cell.signatureLabel setText:sigStr];
+        }else{
+            [cell.signatureLabel setText:@"该用户没有设置签名"];
+        }
         
+        [cell.distLabel setText:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"distance"]];
+
         return cell;
     }else{
         static NSString *identifier = @"petCell";
@@ -147,6 +303,19 @@
         if (cell == nil) {
             cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
+        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
+        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",[pet objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"profile-image-placeholder"]];
+        [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
+        [cell.distLabel setText:@"100米"];
+        NSString* sigStr = [pet objectForKey:@"trait"];
+        if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
+            [cell.signatureLabel setText:[pet objectForKey:@"trait"]];
+        }else{
+            [cell.signatureLabel setText:@"这只宠物很平凡"];
+        }
+        [cell.signatureLabel setText:[[pet objectForKey:@"trait"] isKindOfClass:[NSNull class]]?@"":[pet objectForKey:@"trait"]];
         return cell;
     }
 }
@@ -163,7 +332,7 @@
             case 5:{
                 
                 if (indexPath.row==0) {
-                    a = [NSNumber numberWithInt:1];
+                    a = [NSNumber numberWithInt:2];
                     [petCat setTitle:@"所有" forState:UIControlStateNormal];
                 }
                 else
@@ -177,7 +346,7 @@
             case 6:{
                 
                 if (indexPath.row==0) {
-                    a=[NSNumber numberWithInt:2];
+                    a=[NSNumber numberWithInt:1];
                     [petDog setTitle:@"所有" forState:UIControlStateNormal];
                 }
                 else
@@ -205,7 +374,7 @@
             default:
                 break;
         }
-    
+        theType = [NSString stringWithFormat:@"%@",a];
         
     }
     else if(personOrPet)
@@ -233,6 +402,11 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
+    if (self.canRefresh) {
+        self.canRefresh = NO;
+        [self getUserLocation];
+    }
+    
 //    [_slimeView performSelector:@selector(endRefresh)
 //                     withObject:nil afterDelay:3
 //                        inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
@@ -385,18 +559,21 @@
 
 //            [locationDict removeObjectForKey:@"gender"];
             self.titleLabel.text = @"附近的人（全部）";
+            theGender = @"";
         }
             break;
         case 2:
         {
 
             self.titleLabel.text = @"附近的人（男）";
+            theGender = @"male";
         }
             break;
         case 3:
         {
 
             self.titleLabel.text = @"附近的人（女）";
+            theGender = @"female";
         }
             break;
             
@@ -426,6 +603,7 @@
         filterBGV.hidden = YES;
         [showPetBtn setTitle:@"显示宠物" forState:UIControlStateNormal];
         [hud show:YES];
+        [self getNearByPet];
     }];
     
     
@@ -523,6 +701,16 @@
     if (sender.tag==4||sender.tag==5||sender.tag==6||sender.tag==7) {
         petType = sender.tag;
     }
+}
+-(NSString *)getFistHeadImg:(NSString *)headImgStr
+{
+    NSRange range=[headImgStr rangeOfString:@","];
+    if (range.location!=NSNotFound) {
+        NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
+        return [imageArray objectAtIndex:0];
+    }
+    else
+        return headImgStr;
 }
 - (void)didReceiveMemoryWarning
 {

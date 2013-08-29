@@ -33,9 +33,16 @@
     UIButton * petOther;
     
 
-
+    double latitude;
+    double longitude;
+    NSString * theGender;
+    NSString * theType; 
+    NSString * theCity;
     
 }
 @property (strong,nonatomic) UITableView * messageTable;
 @property (strong,nonatomic) UITableView * petTypeTable;
+@property (assign,nonatomic) int currentPage;
+@property (assign,nonatomic) BOOL canRefresh;
+@property (strong,nonatomic) NSMutableArray * nearbyArray;
 @end

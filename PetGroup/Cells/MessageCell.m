@@ -16,7 +16,7 @@
     if (self) {
         // Initialization code
         self.contentView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1];
-        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7.5, 50, 50)];
         self.headImageV.backgroundColor = [UIColor clearColor];
         self.headImageV.layer.cornerRadius = 5;
         self.headImageV.layer.masksToBounds=YES;
@@ -38,21 +38,22 @@
         [self.notiBgV addSubview:self.unreadCountLabel];
         [self.notiBgV setHidden:YES];
         self.unreadCountLabel.hidden = YES;
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 180, 20)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 8.5, 180, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         self.nameLabel.backgroundColor = [UIColor clearColor];
-        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
+        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:17]];
         [self.contentView addSubview:self.nameLabel];
-        self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 240, 20)];
+        self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 36.5, 240, 20)];
         self.contentLabel.backgroundColor = [UIColor clearColor];
         [self.contentLabel setTextAlignment:NSTextAlignmentLeft];
+        [self.contentLabel setFont:[UIFont systemFontOfSize:15]];
         [self.contentLabel setTextColor:[UIColor grayColor]];
         [self.contentView addSubview:self.contentLabel];
-        self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, 10, 100, 20)];
+        self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(210, 7.5, 100, 20)];
         [self.timeLabel setTextAlignment:NSTextAlignmentRight];
         [self.timeLabel setTextColor:[UIColor grayColor]];
         self.timeLabel.backgroundColor = [UIColor clearColor];
-        [self.timeLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.timeLabel setFont:[UIFont systemFontOfSize:13]];
         [self.timeLabel setAdjustsFontSizeToFitWidth:YES];
         [self.contentView addSubview:self.timeLabel];
         
