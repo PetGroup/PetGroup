@@ -29,9 +29,11 @@
 +(void)storeMyMessage:(NSDictionary *)message;
 +(void)blankMsgUnreadCountForUser:(NSString *)username;
 +(NSArray *)queryUnreadCountForCommonMsg;
-+(void)deleteMsgsWithSender:(NSString *)sender;
++(void)deleteMsgsWithSender:(NSString *)sender Type:(NSString *)senderType;
 
 +(NSMutableArray *)qureyAllCommonMessages:(NSString *)username;
++(void)deleteCommonMsg:(NSString *)content Time:(NSString *)theTime;
++(void)refreshThumbMsgsAfterDeleteCommonMsg:(NSDictionary *)message ForUser:(NSString *)username ifDel:(BOOL)del;
 +(NSArray *)qureyAllThumbMessages;
 +(NSDictionary *)queryLastPublicMsg;
 

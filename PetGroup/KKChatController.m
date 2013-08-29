@@ -567,16 +567,17 @@
     if ([clearView superview]) {
         [clearView removeFromSuperview];
     }
+    [DataStoreManager deleteCommonMsg:[[messages objectAtIndex:readyIndex] objectForKey:@"msg"] Time:[[messages objectAtIndex:readyIndex] objectForKey:@"time"]];
      [messages removeObjectAtIndex:readyIndex];
+    if (messages.count>0) {
+        [DataStoreManager refreshThumbMsgsAfterDeleteCommonMsg:[messages lastObject] ForUser:self.chatWithUser ifDel:NO];
+    }
+    else
+        [DataStoreManager refreshThumbMsgsAfterDeleteCommonMsg:[messages lastObject] ForUser:self.chatWithUser ifDel:YES];
     [self.tView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathTo] withRowAnimation:UITableViewRowAnimationRight];
    
     [self.tView reloadData];
-    NSDictionary * userDefaults2 = [uDefault objectForKey:currentID];
-    NSMutableDictionary * userDefaults = [NSMutableDictionary dictionaryWithDictionary:userDefaults2];
-    [peopleDict setObject:messages forKey:userName];
-    [userDefaults setObject:peopleDict forKey:LocalMessage];
-    [uDefault setObject:userDefaults forKey:currentID];
-    [uDefault synchronize];
+
 }
 -(void)btnLongTapAction:(UILongPressGestureRecognizer *)gestureRecognizer
 {if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) 

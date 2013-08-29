@@ -55,7 +55,7 @@ static  LocationManager *sharedInstance=nil;
 //    theRegion.center=theCoordinate;
 //    theRegion.span=theSpan;
 //    [_mapView setRegion:theRegion];
-    _mapView.showsUserLocation = YES;
+    _mapView.showsUserLocation = NO;
     _mapView.delegate = self;
     [self.view addSubview:_mapView];
     //赋予个初值
@@ -75,7 +75,6 @@ static  LocationManager *sharedInstance=nil;
 }
 -(void)startCheckLocationWithSuccess:(void(^)(double lat,double lon))success Failure:(void(^)(void))failure
 {
-    if (!_mapView.showsUserLocation) {
         _mapView.showsUserLocation = YES;
         dispatch_queue_t queue = dispatch_queue_create("com.pet.getLatLon", NULL);
         dispatch_async(queue, ^{
@@ -95,7 +94,6 @@ static  LocationManager *sharedInstance=nil;
             }
         });
 
-    }
     
 }
 

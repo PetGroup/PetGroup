@@ -116,15 +116,22 @@
     }
     return unreadArray;
 }
-+(void)deleteMsgsWithSender:(NSString *)sender
++(void)deleteMsgsWithSender:(NSString *)sender Type:(NSString *)senderType
 {
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
-        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
-        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
-        [thumbMsgs MR_deleteInContext:localContext];
-        DSCommonMsgs * commonMsgs = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
-        [thumbMsgs MR_deleteInContext:localContext];
-        [commonMsgs MR_deleteInContext:localContext];
+        if ([senderType isEqualToString:COMMONUSER]) {
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+            DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+            [thumbMsgs MR_deleteInContext:localContext];
+            NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"sender==[c]%@ OR receiver==[c]%@",sender,sender];
+            NSArray * commonMsgs = [DSCommonMsgs MR_findAllWithPredicate:predicate2];
+            for (int i = 0; i<commonMsgs.count; i++) {
+                DSCommonMsgs * rH = [commonMsgs objectAtIndex:i];
+                [rH MR_deleteInContext:localContext];
+            }
+        }
+
+        
     }];
 }
 +(NSMutableArray *)qureyAllCommonMessages:(NSString *)username
@@ -145,6 +152,45 @@
     }
     return allMsgArray;
 }
+
++(void)deleteCommonMsg:(NSString *)content Time:(NSString *)theTime
+{
+    NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[theTime doubleValue]];
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"msgContent==[c]%@ OR senTime==[c]%@",content,sendTime];
+        DSCommonMsgs * commonMsgs = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
+        if (commonMsgs) {
+            [commonMsgs MR_deleteInContext:localContext];
+        }
+     
+    }];
+}
+
++(void)refreshThumbMsgsAfterDeleteCommonMsg:(NSDictionary *)message ForUser:(NSString *)username ifDel:(BOOL)del
+{
+    NSString * msgContent = [message objectForKey:@"msg"];
+    NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[[message objectForKey:@"time"] doubleValue]];
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate;
+
+        predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",username];
+
+        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+
+        if (thumbMsgs){
+            if (del) {
+                [thumbMsgs MR_deleteInContext:localContext];
+            }
+            else
+            {
+                thumbMsgs.msgContent = msgContent;
+                thumbMsgs.sendTime = sendTime;
+            }
+        }
+        
+    }];
+}
+
 +(NSArray *)qureyAllThumbMessages
 {
     NSMutableArray * allMsgArray = [NSMutableArray array];
