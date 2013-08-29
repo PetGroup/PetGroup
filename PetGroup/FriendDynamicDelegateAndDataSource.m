@@ -34,6 +34,7 @@
         }else{
             UIAlertView *aler = [[UIAlertView alloc]initWithTitle:nil message:@"没有更多动态啦" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [aler show];
+            success();
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

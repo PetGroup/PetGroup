@@ -24,7 +24,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.dataSourceArray.count;
-//    return 1;
+    return 1;
 }
 
 @end
