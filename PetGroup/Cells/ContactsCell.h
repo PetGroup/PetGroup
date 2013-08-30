@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "EGOImageView.h"
 @interface ContactsCell : UITableViewCell
 @property (strong,nonatomic) UIImageView * backgroudImageV;
-@property (strong,nonatomic) UIImageView * headImageV;
+@property (strong,nonatomic) EGOImageView * headImageV;
 @property (strong,nonatomic) UILabel * nameLabel;
 @property (strong,nonatomic) UILabel * distLabel;
 @property (strong,nonatomic) UILabel * signatureLabel;

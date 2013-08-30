@@ -39,7 +39,7 @@
         [chattoHeadBtn setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:chattoHeadBtn];
         
-        headImgV = [[UIImageView alloc] initWithFrame:CGRectZero];
+        headImgV = [[EGOImageView alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:headImgV];
         
         bgImageView = [UIButton buttonWithType:UIButtonTypeCustom];

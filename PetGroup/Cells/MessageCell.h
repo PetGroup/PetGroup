@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "EGOImageView.h"
 @interface MessageCell : UITableViewCell
 
 @property (strong,nonatomic) UIImageView * backgroudImageV;
-@property (strong,nonatomic) UIImageView * headImageV;
+@property (strong,nonatomic) EGOImageView * headImageV;
 @property (strong,nonatomic) UILabel * nameLabel;
 @property (strong,nonatomic) UILabel * contentLabel;
 @property (strong,nonatomic) UILabel * timeLabel;

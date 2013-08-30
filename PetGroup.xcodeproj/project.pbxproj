@@ -355,6 +355,7 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
+		97D20A3417D05AAB001C8162 /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		97D501D217C4998300799BD4 /* KKChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501CF17C4998300799BD4 /* KKChatController.m */; };
 		97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FA17C49A0500799BD4 /* NearByViewController.m */; };
 		97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FD17C49A0F00799BD4 /* ContactsViewController.m */; };
@@ -1021,6 +1022,8 @@
 		9795473317BA370C00D05874 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		97D0309117C5EB3900055EF6 /* DSFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSFriends.h; sourceTree = "<group>"; };
 		97D0309217C5EB3900055EF6 /* DSFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSFriends.m; sourceTree = "<group>"; };
+		97D20A3217D05AAB001C8162 /* DSNameIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSNameIndex.h; sourceTree = "<group>"; };
+		97D20A3317D05AAB001C8162 /* DSNameIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSNameIndex.m; sourceTree = "<group>"; };
 		97D501CE17C4998300799BD4 /* KKChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKChatController.h; sourceTree = "<group>"; };
 		97D501CF17C4998300799BD4 /* KKChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KKChatController.m; sourceTree = "<group>"; };
 		97D501F917C49A0500799BD4 /* NearByViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearByViewController.h; sourceTree = "<group>"; };
@@ -2814,6 +2817,8 @@
 			isa = PBXGroup;
 			children = (
 				9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */,
+				97D20A3217D05AAB001C8162 /* DSNameIndex.h */,
+				97D20A3317D05AAB001C8162 /* DSNameIndex.m */,
 				97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */,
 				97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */,
 				97D0309117C5EB3900055EF6 /* DSFriends.h */,
@@ -3393,6 +3398,7 @@
 				86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */,
 				86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */,
 				86EEB14917CF0F36000162E8 /* EGOImageView.m in Sources */,
+				97D20A3417D05AAB001C8162 /* DSNameIndex.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

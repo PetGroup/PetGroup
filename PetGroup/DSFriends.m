@@ -22,5 +22,8 @@
 @dynamic userName;
 @dynamic userId;
 @dynamic phoneNumber;
+@dynamic remarkName;
+@dynamic nameIndex;
+@dynamic nameKey;
 
 @end

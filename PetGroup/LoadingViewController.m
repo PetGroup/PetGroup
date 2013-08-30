@@ -73,7 +73,13 @@
 
 	// Do any additional setup after loading the view.
 }
-
+-(void)setLabelTitle:(NSString *)title
+{
+    if (messageV) {
+        messageV->titleLabel.text=title;
+    }
+    
+}
 -(void)getUserLocation
 {
     [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {

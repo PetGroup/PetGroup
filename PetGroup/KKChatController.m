@@ -64,6 +64,8 @@
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
     [self.view addSubview:bgV];
     messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+    myHeadImg = @"";
+    myHeadImg = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     
     self.tView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-50) style:UITableViewStylePlain];
    // NSLog(@"wwwwww%f",self.view.frame.size.height);
@@ -360,11 +362,14 @@
    // cell.userInteractionEnabled = NO;
     
     UIImage *bgImage = nil;
-    NSString * imgid = [[[[NSUserDefaults standardUserDefaults] objectForKey:@"pUserView"] objectForKey:@"petUserView"] objectForKey:@"img"];
+//    NSString * imgid = [[[[NSUserDefaults standardUserDefaults] objectForKey:@"pUserView"] objectForKey:@"petUserView"] objectForKey:@"img"];
     //发送消息
     if ([sender isEqualToString:@"you"]) {
-        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
-        [cell.headImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgid]] placeholderImage:[UIImage imageNamed:imgid]];
+//        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
+//        [cell.headImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgid]] placeholderImage:[UIImage imageNamed:imgid]];
+        cell.headImgV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+        NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",myHeadImg]];
+        cell.headImgV.imageURL = theUrl;
         [cell.headImgV setFrame:CGRectMake(320-10-40, padding*2-15, 40, 40)];
         bgImage = [[UIImage imageNamed:@"bubble_02.png"]
                    stretchableImageWithLeftCapWidth:20 topCapHeight:20];
@@ -384,7 +389,10 @@
         [cell.chattoHeadBtn addTarget:self action:@selector(chatToBtnClicked) forControlEvents:UIControlEventTouchUpInside];
 //        NSRange range = [sender rangeOfString:@"@"];
 //        sender = [sender substringToIndex:range.location];
-        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
+//        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
+        cell.headImgV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+        NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",self.chatUserImg]];
+        cell.headImgV.imageURL = theUrl;
             
         if ([userName isEqualToString:@"爱宠小助手"])
             [cell.headImgV setImage:[UIImage imageNamed:@"sss.png"]];

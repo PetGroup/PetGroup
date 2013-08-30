@@ -114,7 +114,14 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-
+    if ([[TempData sharedInstance] ifPanned]) {
+        [self.customTabBarController hidesTabBar:NO animated:NO];
+    }
+    else
+    {
+        [self.customTabBarController hidesTabBar:NO animated:YES];
+        [[TempData sharedInstance] Panned:YES];
+    }
 }
 -(void)showAlertWithMessage:(NSString *)msg
 {
@@ -260,7 +267,7 @@
     if (recArray.count<20) {
         self.canReq = NO; //如果请求数据小于20，说明已经没有数据，不能向下请求
     }
-    if (self.nearbyArray.count<10) {
+    if (self.nearbyArray.count<10&&personOrPet) {
         self.requestNextPage = YES;
         [self getCheatUser];
     }

@@ -16,6 +16,12 @@
 {
     UISearchBar * searchBar;
     UISearchDisplayController * searchDisplay;
+    NSMutableArray * friendsArray;
+    NSMutableDictionary * friendDict;
+    NSMutableArray * sectionArray;
+    NSMutableArray * rowsArray;
+    NSArray * searchResultArray;
+    NSMutableArray * sectionIndexArray;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic)UITableView *contactsTable;

@@ -50,8 +50,8 @@
 }
 -(void)back
 {
+    [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
-    [self.customTabBarController hidesTabBar:NO animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

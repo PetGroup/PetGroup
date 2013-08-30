@@ -20,7 +20,7 @@
         [self addSubview:bgV];
         self.backgroudImageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
         [bgV addSubview:self.backgroudImageV];
-        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
+        self.headImageV = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         self.headImageV.backgroundColor = [UIColor whiteColor];
         self.headImageV.layer.cornerRadius = 5;
         self.headImageV.layer.masksToBounds=YES;
