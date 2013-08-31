@@ -507,7 +507,7 @@
 
 +(void)storePetInfo:(NSDictionary *)myInfo
 {
-    NSArray * petArray = [myInfo objectForKey:@"petInfos"];
+    NSArray * petArray = [myInfo objectForKey:@"petInfoViews"];
     for (int i = 0; i<petArray.count; i++) {
         NSString * hostName = [myInfo objectForKey:@"username"];
         NSString * hostNickName = [myInfo objectForKey:@"nickname"];

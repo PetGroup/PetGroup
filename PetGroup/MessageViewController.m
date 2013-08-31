@@ -141,7 +141,7 @@
     self.appDel.xmppHelper.chatDelegate = self;
     self.appDel.xmppHelper.processFriendDelegate = self;
     self.appDel.xmppHelper.addReqDelegate = self;
-    self.appDel.xmppHelper.notConnect = self;
+//    self.appDel.xmppHelper.notConnect = self;
 }
 
 -(void)notConnectted
@@ -425,7 +425,7 @@
         self.appDel.xmppHelper.addReqDelegate = self;
         titleLabel.text = @"消息";    
     }fail:^(NSError *result){
-        
+        titleLabel.text = @"消息(未连接)"; 
     }];
 }
 

@@ -256,7 +256,7 @@
     if (!personOrPet) {
         [self.appearPetArray removeAllObjects];
         for (int i = 0;i<self.nearbyArray.count;i++) {
-            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfos"]];
+            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfoViews"]];
         }
     }
     NSLog(@"rrrrrrr:%@",self.appearPetArray);
@@ -456,8 +456,9 @@
         [self.navigationController pushViewController:detailV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else{
-               
-
+        PetDetailViewController * petDetailV = [[PetDetailViewController alloc] init];
+        [self.navigationController pushViewController:petDetailV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
