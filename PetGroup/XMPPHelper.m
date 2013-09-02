@@ -250,6 +250,7 @@
                // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
                 if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]) {
                     [self.rosters addObject:sender];
+                    [DataStoreManager addFriendToLocal:sender];
                 }
             }
         }

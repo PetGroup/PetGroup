@@ -23,5 +23,8 @@
 @property (nonatomic, retain) NSString * userName;
 @property (nonatomic, retain) NSString * userId;
 @property (nonatomic, retain) NSString * phoneNumber;
+@property (nonatomic, retain) NSString * remarkName;
+@property (nonatomic, retain) NSString * nameIndex;
+@property (nonatomic, retain) NSString * nameKey;
 
 @end

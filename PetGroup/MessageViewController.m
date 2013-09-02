@@ -91,9 +91,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"ghost" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"94e0aed4-5cc8-4f00-bdce-c012089651b9" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         [self toLoginPage];
@@ -134,10 +134,14 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
+    if (![self.appDel.xmppHelper ifXMPPConnected]) {
+        titleLabel.text = @"消息(未连接)";
+    }
     self.appDel.xmppHelper.buddyListDelegate = self;
     self.appDel.xmppHelper.chatDelegate = self;
     self.appDel.xmppHelper.processFriendDelegate = self;
     self.appDel.xmppHelper.addReqDelegate = self;
+//    self.appDel.xmppHelper.notConnect = self;
 }
 
 -(void)notConnectted
@@ -235,12 +239,13 @@
     if (cell == nil) {
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
         NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]];
-        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]]];
+        cell.headImageV.imageURL = theUrl;
+//        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]]];
         if ([[allMsgUnreadArray objectAtIndex:theIndex] intValue]>0) {
             cell.unreadCountLabel.hidden = NO;
             cell.notiBgV.hidden = NO;
@@ -265,7 +270,8 @@
     else
     {
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
-        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
+        cell.headImageV.imageURL = theUrl;
+//        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
         if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>0) {
             cell.unreadCountLabel.hidden = NO;
             cell.notiBgV.hidden = NO;
@@ -305,6 +311,7 @@
         KKChatController * kkchat = [[KKChatController alloc] init];
         kkchat.chatWithUser = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"];
         kkchat.nickName = [allNickNameArray objectAtIndex:theIndex];
+        kkchat.chatUserImg = [allHeadImgArray objectAtIndex:theIndex];
         [self.navigationController pushViewController:kkchat animated:YES];
         kkchat.msgDelegate = self;
         return;
@@ -318,19 +325,27 @@
     KKChatController * kkchat = [[KKChatController alloc] init];
     kkchat.chatWithUser = [[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"];
     kkchat.nickName = [allNickNameArray objectAtIndex:indexPath.row];
+    kkchat.chatUserImg = [allHeadImgArray objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:kkchat animated:YES];
     kkchat.msgDelegate = self;
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.row==0) {
+        return NO;
+    }
     return YES;
 }
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle==UITableViewCellEditingStyleDelete)
     {
-
+        [DataStoreManager deleteMsgsWithSender:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] Type:COMMONUSER];
+        [allMsgArray removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        [self displayMsgsForDefaultView];
+        
+        
     }
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -356,6 +371,7 @@
 
 -(void)logInToServer
 {
+    titleLabel.text = @"消息(连接中...)";
     NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
@@ -399,6 +415,7 @@
 
 -(void)logInToChatServer
 {
+    self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
     [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:Domain] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:Host success:^(void){
         NSLog(@"登陆成功xmpp");
@@ -408,7 +425,7 @@
         self.appDel.xmppHelper.addReqDelegate = self;
         titleLabel.text = @"消息";    
     }fail:^(NSError *result){
-        
+        titleLabel.text = @"消息(未连接)"; 
     }];
 }
 
@@ -456,6 +473,8 @@
             [self displayMsgsForDefaultView];
         }
 
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
     }];
 }
 

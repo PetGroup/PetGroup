@@ -22,26 +22,14 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-
+        friendDict = [NSMutableDictionary dictionary];
+        sectionArray = [NSMutableArray array];
+        rowsArray = [NSMutableArray array];
+        sectionIndexArray = [NSMutableArray array];
     }
     return self;
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"needchat"]) {
-        [self.customTabBarController setSelectedPage:0];
-        return;
-    }
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
 
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,8 +72,72 @@
     searchDisplay.searchResultsDelegate = self;
 
     
-    [self getFriendsList];
+ //   [self getFriendsList];
 	// Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"needchat"]) {
+        [self.customTabBarController setSelectedPage:0];
+        return;
+    }
+    if ([[TempData sharedInstance] ifPanned]) {
+        [self.customTabBarController hidesTabBar:NO animated:NO];
+    }
+    else
+    {
+        [self.customTabBarController hidesTabBar:NO animated:YES];
+        [[TempData sharedInstance] Panned:YES];
+    }
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    
+    [self refreshFriendList];
+
+ //   [self getFriendInfo:@"england"];
+}
+
+-(void)refreshFriendList
+{
+    friendDict = [DataStoreManager queryAllFriends];
+    sectionArray = [DataStoreManager querySections];
+    [sectionIndexArray removeAllObjects];
+    for (int i = 0; i<sectionArray.count; i++) {
+        [sectionIndexArray addObject:[[sectionArray objectAtIndex:i] objectAtIndex:0]];
+    }
+    
+    friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
+    [friendsArray sortUsingSelector:@selector(compare:)];
+    [self.contactsTable reloadData];
+    for (int i = 0; i<friendsArray.count; i++) {
+        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
+            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
+        }
+    }
+}
+-(void)getFriendInfo:(NSString *)userName withIndex:(int)index
+{
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [paramDict setObject:userName forKey:@"username"];
+    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        [DataStoreManager saveUserInfo:recDict];
+        [self refreshFriendList];
+    }];
+
 }
 -(void)getFriendsList
 {
@@ -127,12 +179,37 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",searchBar.text];
+    NSLog(@"%@",searchBar.text);
+    
+    searchResultArray = [friendsArray filteredArrayUsingPredicate:resultPredicate ]; //注意retain
+    NSLog(@"%@",searchResultArray);
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return [searchResultArray count];
+    }
+
+    return [[[sectionArray objectAtIndex:section] objectAtIndex:1] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    static NSString * stringCell3 = @"cell33";
+    ContactsCell * cell = [tableView dequeueReusableCellWithIdentifier:stringCell3];
+    if (!cell) {
+        cell = [[ContactsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:stringCell3];
+    }
+    NSDictionary * tempDict;
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+    }
+    else
+        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingString:[tempDict objectForKey:@"img"]]];
+    cell.nameLabel.text = [tempDict objectForKey:@"displayName"];
+    cell.signatureLabel.text = [tempDict objectForKey:@"signature"];
+    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -141,18 +218,28 @@
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return 1;
+    }
+
+    return sectionArray.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 {
-    return @"";
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return @"";
+    }
+    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
 }
-
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return sectionIndexArray;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

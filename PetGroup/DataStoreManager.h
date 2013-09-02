@@ -23,15 +23,18 @@
 #import "DSPets.h"
 #import "DSFriends.h"
 #import "DSUnreadCount.h"
+#import "DSNameIndex.h"
 @interface DataStoreManager : NSObject
 +(void)setDefaultDataBase:(NSString *)dataBaseName AndDefaultModel:(NSString *)modelName;
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype;
 +(void)storeMyMessage:(NSDictionary *)message;
 +(void)blankMsgUnreadCountForUser:(NSString *)username;
 +(NSArray *)queryUnreadCountForCommonMsg;
-+(void)deleteMsgsWithSender:(NSString *)sender;
++(void)deleteMsgsWithSender:(NSString *)sender Type:(NSString *)senderType;
 
 +(NSMutableArray *)qureyAllCommonMessages:(NSString *)username;
++(void)deleteCommonMsg:(NSString *)content Time:(NSString *)theTime;
++(void)refreshThumbMsgsAfterDeleteCommonMsg:(NSDictionary *)message ForUser:(NSString *)username ifDel:(BOOL)del;
 +(NSArray *)qureyAllThumbMessages;
 +(NSDictionary *)queryLastPublicMsg;
 
@@ -40,7 +43,11 @@
 +(NSDictionary *)qureyLastReceivedHello;
 
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
-+(void)addFriendToLocal:(NSDictionary *)userInfoDict;
++(BOOL)ifFriendHaveNicknameAboutUser:(NSString *)username;
++(NSMutableArray *)querySections;
++(NSMutableDictionary *)queryAllFriends;
+//+(void)addFriendToLocal:(NSDictionary *)userInfoDict;
++(void)addFriendToLocal:(NSString *)username;
 +(NSString *)queryNickNameForUser:(NSString *)userName;
 +(NSString *)queryFirstHeadImageForUser:(NSString *)userName;
 +(void)updateFriendInfo:(NSDictionary *)userInfoDict ForUser:(NSString *)username;

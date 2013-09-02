@@ -45,7 +45,7 @@
 #define ExceptCommonMsgCount 1   //首页除了显示普通用户消息还要显示的其他消息栏，目前只有打招呼一个
 #define ZhaoHuLan  @"新朋友"
 
-#define Host @"202.43.152.172"
+#define Host @"61.51.110.55" //@"202.43.152.172"
 #define Domain @"@test.com"
 
 #define RootDocPath ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0])

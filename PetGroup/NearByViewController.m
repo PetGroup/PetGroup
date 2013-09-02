@@ -29,6 +29,9 @@
         // Custom initialization
         personOrPet = YES;
         self.canRefresh = YES;
+        self.requestNextPage = NO;
+        self.cheatUser = NO;
+        self.canReq = YES;
         theType = @"";
         theGender = @"";
         theCity = @"北京市";
@@ -84,14 +87,20 @@
     
     __weak NearByViewController *weakSelf = self;
     [self.messageTable addInfiniteScrollingWithActionHandler:^{
-        if (1) {
-            
-          
+        if (!weakSelf.cheatUser&&weakSelf.canReq) { //如果不是假数据，请求下一页
+            [weakSelf getNextPage];
         }
         else
-        {
-            [weakSelf performSelector:@selector(endrefresh) withObject:nil afterDelay:2];
-        }
+            [weakSelf endrefresh];
+        
+//        if (1) {
+//
+//
+//        }
+//        else
+//        {
+//            [weakSelf performSelector:@selector(endrefresh) withObject:nil afterDelay:2];
+//        }
     }];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -105,7 +114,14 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-
+    if ([[TempData sharedInstance] ifPanned]) {
+        [self.customTabBarController hidesTabBar:NO animated:NO];
+    }
+    else
+    {
+        [self.customTabBarController hidesTabBar:NO animated:YES];
+        [[TempData sharedInstance] Panned:YES];
+    }
 }
 -(void)showAlertWithMessage:(NSString *)msg
 {
@@ -117,13 +133,20 @@
     [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {
         latitude = lat;
         longitude = lon;
-        [self getNearByUser];
+        if (personOrPet) {
+            [self getNearByUser];
+        }
+        else
+            [self getNearByPet];
+     
     } Failure:^{
         [self showAlertWithMessage:@"暂时获取不到您的位置哦，稍后再试一下吧~"];
     }];
 }
 -(void)getNearByUser
 {
+    self.cheatUser = NO;
+    self.canReq = YES;
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
@@ -145,11 +168,16 @@
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
+        [_slimeView endRefresh];
+        [self endrefresh];
+        self.canRefresh = YES;
     }];
 
 }
 -(void)getNearByPet
 {
+    self.cheatUser = NO;
+    self.canReq = YES;
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
@@ -171,12 +199,26 @@
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
+        [_slimeView endRefresh];
+        [self endrefresh];
+        self.canRefresh = YES;
     }];
     
 }
 
+-(void)getNextPage
+{
+    self.requestNextPage = YES;
+    if (personOrPet) {
+        [self getNearByUser];
+    }
+    else
+        [self getNearByPet];
+}
+
 -(void)getCheatUser
 {
+    self.cheatUser = YES;
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:theCity forKey:@"city"];
@@ -194,27 +236,41 @@
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
+        [_slimeView endRefresh];
+        [self endrefresh];
+        self.canRefresh = YES;
     }];
 }
 -(void)parseData:(NSArray *)recArray
 {
- //   self.currentPage = [self getIndex:recArray];
-    [self.nearbyArray removeAllObjects];
+    if (recArray.count>0) {
+        self.currentPage = [self getIndex:recArray];
+    }
+    if (!self.requestNextPage) {
+        [self.nearbyArray removeAllObjects];
+    }
     [self.nearbyArray addObjectsFromArray:recArray];
     NSLog(@"ggggg:%@",recArray);
-    if (recArray.count<10) {
-        
-    }
+
+
     if (!personOrPet) {
         [self.appearPetArray removeAllObjects];
         for (int i = 0;i<self.nearbyArray.count;i++) {
-            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfos"]];
+            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfoViews"]];
         }
     }
     NSLog(@"rrrrrrr:%@",self.appearPetArray);
     [self.messageTable reloadData];
     [_slimeView endRefresh];
+    [self endrefresh];
     self.canRefresh = YES;
+    if (recArray.count<20) {
+        self.canReq = NO; //如果请求数据小于20，说明已经没有数据，不能向下请求
+    }
+    if (self.nearbyArray.count<10&&personOrPet) {
+        self.requestNextPage = YES;
+        [self getCheatUser];
+    }
 }
 -(int)getIndex:(NSArray *)recArray
 {
@@ -224,11 +280,25 @@
         tempIndex = theIndex>tempIndex?theIndex:tempIndex;
         
     }
-    return tempIndex;
+    return tempIndex+1;
 }
 -(void)endrefresh
 {
     [self.messageTable.infiniteScrollingView stopAnimating];
+    if (self.messageTable.contentSize.height>self.view.frame.size.height-44-49-20&&!self.canReq&&!self.cheatUser) {
+        if (personOrPet) {
+            [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.nearbyArray.count-2 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        else
+            [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.appearPetArray.count-2 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    }
+    if (!self.requestNextPage) {
+        if (self.nearbyArray.count>0||self.appearPetArray.count>0) {
+            [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        
+    }
     
 
 }
@@ -240,6 +310,9 @@
 {
     if (tableView==self.petTypeTable) {
         return self.petArray.count;
+    }
+    if (!personOrPet) {
+        return self.appearPetArray.count;
     }
 //    if (!personOrPet) {
 //        return self.appearPetArray.count;
@@ -383,8 +456,9 @@
         [self.navigationController pushViewController:detailV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else{
-               
-
+        PetDetailViewController * petDetailV = [[PetDetailViewController alloc] init];
+        [self.navigationController pushViewController:petDetailV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -403,6 +477,8 @@
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
     if (self.canRefresh) {
+        self.currentPage = 0;
+        self.requestNextPage = NO;
         self.canRefresh = NO;
         [self getUserLocation];
     }
@@ -588,10 +664,18 @@
     if (sender.tag==10) {
         //搜索主人
         personOrPet = YES;
+        self.currentPage = 0;
+        self.requestNextPage = NO;
+        [hud show:YES];
+        [self getNearByUser];
     }
     else
     {
         //搜索宠物
+        self.currentPage = 0;
+        self.requestNextPage = NO;
+        [self getNearByPet];
+        [hud show:YES];
         personOrPet = NO;
         self.titleLabel.text = @"附近的宠物";
     }
@@ -599,11 +683,11 @@
     [UIView animateWithDuration:0.3 animations:^(void){
         [filterPage setFrame:CGRectMake(8.25, -400, 303.5, 340)];
     }completion:^(BOOL finished){
+ 
         filterPage.hidden = YES;
         filterBGV.hidden = YES;
-        [showPetBtn setTitle:@"显示宠物" forState:UIControlStateNormal];
-        [hud show:YES];
-        [self getNearByPet];
+        
+        
     }];
     
     
@@ -656,12 +740,13 @@
         }
     }
     if (sender.tag == 4) {
+        theType = @"";
         [petDog setTitle:@"狗" forState:UIControlStateNormal];
         [petCat setTitle:@"猫" forState:UIControlStateNormal];
         [petOther setTitle:@"其他" forState:UIControlStateNormal];
     }
     if (sender.tag==5) {
-
+        theType = @"2";
         self.petArray = [XMLMatcher allCats];
         
         [showPetBtn setTitle:@"显示猫咪" forState:UIControlStateNormal];
@@ -671,7 +756,7 @@
         [self.petTypeTable reloadData];
     }
     else if (sender.tag==6) {
-
+        theType = @"1";
         self.petArray = [XMLMatcher allDogs];
         
         [showPetBtn setTitle:@"显示狗狗" forState:UIControlStateNormal];
@@ -681,6 +766,7 @@
         [self.petTypeTable reloadData];
     }
     else if(sender.tag==7){
+        theType = @"3";
         [showPetBtn setTitle:@"显示宠物" forState:UIControlStateNormal];
         self.petArray = [XMLMatcher allother];
         [UIView animateWithDuration:0.3 animations:^(void){

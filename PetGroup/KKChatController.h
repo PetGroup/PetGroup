@@ -40,12 +40,14 @@
     int touchTimeFinal;
     NSMutableDictionary * userInfoDict;
     NSMutableDictionary * postDict;
+    NSString * myHeadImg;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  UITextField *messageTextField;
 //@property (strong, nonatomic)  UIButton * sendBtn;
 @property(nonatomic, retain) NSString *chatWithUser;
 @property(nonatomic, retain) NSString *nickName;
+@property(nonatomic, retain) NSString *chatUserImg;
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic) UIExpandingTextView *textView;
 @property (assign,nonatomic) id<StoreMsgDelegate> msgDelegate;

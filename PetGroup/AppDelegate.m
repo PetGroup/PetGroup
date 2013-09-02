@@ -34,6 +34,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
@@ -51,6 +52,41 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    //暂时注释
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    //   // Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+    Reachability * reach = [Reachability reachabilityForInternetConnection];
+    if (reach) {
+        // messageV->titleLabel.text=@"消息";
+        [_loadingV setLabelTitle:@"消息"];
+    }
+    else{
+        // messageV->titleLabel.text=@"消息(未连接)";
+        [_loadingV setLabelTitle:@"消息(未连接)"];
+    }
+    reach.reachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //    messageV->titleLabel.text=@"消息";
+            [_loadingV setLabelTitle:@"消息"];
+            //[self logIn];
+        });
+    };
+    
+    reach.unreachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //   messageV->titleLabel.text=@"消息（未连接）";
+            [_loadingV setLabelTitle:@"消息(未连接)"];
+        });
+    };
+    
+    [reach startNotifier];
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -58,6 +94,19 @@
 {
     [MagicalRecord cleanUp];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+-(void)reachabilityChanged:(NSNotification*)note
+{
+    Reachability * reach = [note object];
+    
+    if([reach isReachable])
+    {
+        //  NSLog( @"Notification Says Reachable");
+    }
+    else
+    {
+        //    NSLog( @"Notification Says Unreachable");
+    }
 }
 
 @end

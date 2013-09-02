@@ -44,5 +44,8 @@
 @property (strong,nonatomic) UITableView * petTypeTable;
 @property (assign,nonatomic) int currentPage;
 @property (assign,nonatomic) BOOL canRefresh;
+@property (assign,nonatomic) BOOL requestNextPage;
+@property (assign,nonatomic) BOOL cheatUser;
+@property (assign,nonatomic) BOOL canReq;
 @property (strong,nonatomic) NSMutableArray * nearbyArray;
 @end
