@@ -112,8 +112,8 @@
     
     _pictureV.hidden = YES;
     
-    self.tishiL = [[UILabel alloc]initWithFrame:CGRectMake(200, 190, 115, 20)];
-    _tishiL.text = @"还可以输入200字";
+    self.tishiL = [[UILabel alloc]initWithFrame:CGRectMake(180, 190, 135, 20)];
+    _tishiL.text = @"还可以输入5000字";
     _tishiL.backgroundColor = [UIColor clearColor];
     _tishiL.font = [UIFont boldSystemFontOfSize:14];
     _tishiL.textColor = [UIColor grayColor];
@@ -132,13 +132,14 @@
 #pragma mark - button action
 -(void)backButton:(UIButton*)button
 {
+    [hud hide:YES];
     [self.navigationController popViewControllerAnimated:YES];
     [self.customTabBarController hidesTabBar:NO animated:YES];
 }
 -(void)next
 {
-    if (self.dynamicTV.text.length>200||self.dynamicTV.text.length<1) {
-        UIAlertView * aler = [[UIAlertView alloc]initWithTitle:nil message:@"动态字数不能超过200字且不能为空" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    if (self.dynamicTV.text.length>5000||self.dynamicTV.text.length<1) {
+        UIAlertView * aler = [[UIAlertView alloc]initWithTitle:nil message:@"动态字数不能超过5000字且不能为空" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [aler show];
         return;
     }
@@ -234,7 +235,7 @@
     }else{
         _placeholderL.text = @"今天想跟别人说点什么……";
     }
-    _tishiL.text = [NSString stringWithFormat:@"还可以输入%d字",200-textView.text.length];
+    _tishiL.text = [NSString stringWithFormat:@"还可以输入%d字",5000-textView.text.length];
     
 }
 #pragma mark - touch

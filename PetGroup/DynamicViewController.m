@@ -13,6 +13,8 @@
 #import "EditDynamicViewController.h"
 #import "DynamicCell.h"
 #import "MBProgressHUD.h"
+#import "EGOImageView.h"
+
 @interface DynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* nearByB;
@@ -25,7 +27,7 @@
      MBProgressHUD * hud;
 }
 @property (nonatomic,strong)UIView* footV;
-@property (nonatomic,strong)UITableView* tableV;
+@property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
 @property (nonatomic,strong)FriendDynamicDelegateAndDataSource* friendDDS;
 @property (nonatomic,strong)UIActivityIndicatorView * act;
@@ -93,6 +95,7 @@
     _tableV.dataSource = self.nearbyDDS;
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
+    _tableV.contentOffset = CGPointMake(0, 100);
     
     
     UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
@@ -108,9 +111,14 @@
     nameL.textColor = [UIColor whiteColor];
     [headV addSubview:nameL];
     
+    NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
     photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
     [headV addSubview:photoIV];
+    EGOImageView* headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    headIV.frame = CGRectMake(5, 5, 70, 70);
+    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imageID]];
+    [photoIV addSubview:headIV];
     
     self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
     _footAct.backgroundColor = [UIColor redColor];
@@ -152,7 +160,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    _tableV.contentOffset = CGPointMake(0, 100);
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -224,6 +232,12 @@
 {
     [self removeActionImageView];
     [self keyBoardResign];    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DelegateAndDataSource * dad  = (DelegateAndDataSource *)self.tableV.dataSource;
+    Dynamic*dyn = dad.dataSourceArray[indexPath.row];
+    return dyn.rowHigh;
 }
 #pragma mark - scrollView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -299,7 +313,6 @@
 -(void)showButton:(UITableViewCell*)cell
 {
     CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
-    NSLog(@"%f",cellRect.size.height);
     if (_actionIV == nil) {
         self.actionIV = [[UIImageView alloc]initWithFrame:CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44)];
         _actionIV.userInteractionEnabled = YES;
@@ -324,42 +337,30 @@
         [assessB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [assessB addTarget:self action:@selector(assess) forControlEvents:UIControlEventTouchUpInside];
         [_actionIV addSubview:assessB];
-    }else{
-        if (cell != _mycell) {
-            [self removeActionImageView];
-            _actionIV.frame = CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44);
-            [self.view addSubview:_actionIV];
-            self.mycell = cell;
-        }else{
-            [self removeActionImageView];
-        }
+        
+        reprintB = [UIButton buttonWithType:UIButtonTypeCustom];
+        reprintB.frame = CGRectMake(0, 6, 0, 31);
+        [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
+        [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
+        [reprintB setTitle:@"转载" forState:UIControlStateNormal];
+        [reprintB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [reprintB addTarget:self action:@selector(reprint) forControlEvents:UIControlEventTouchUpInside];
+        [_actionIV addSubview:reprintB];
     }
-    if (_tableV.dataSource == self.friendDDS) {
-        if (reprintB == nil) {
-            reprintB = [UIButton buttonWithType:UIButtonTypeCustom];
-            reprintB.frame = CGRectMake(0, 6, 0, 31);
-            [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
-            [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
-            [reprintB setTitle:@"转载" forState:UIControlStateNormal];
-            [reprintB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [reprintB addTarget:self action:@selector(reprint) forControlEvents:UIControlEventTouchUpInside];
-        }
-        if (reprintB.superview==nil) {
-            [_actionIV addSubview:reprintB];
-        }
-        [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 108, cellRect.origin.y+cellRect.size.height - 10, 182, 44);
-            praiseB.frame = CGRectMake(6, 6, 53, 31);
-            assessB.frame = CGRectMake(65, 6, 53, 31);
-            reprintB.frame = CGRectMake(124, 6, 53, 31);
-        }];
+    if (cell != _mycell) {
+        [self removeActionImageView];
+        _actionIV.frame = CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44);
+        [self.view addSubview:_actionIV];
+        self.mycell = cell;
     }else{
-        [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 157, cellRect.origin.y+cellRect.size.height - 10, 123, 44);
-            praiseB.frame = CGRectMake(6, 6, 53, 31);
-            assessB.frame = CGRectMake(65, 6, 53, 31);
-        }];
+        [self removeActionImageView];
     }
+    [UIView animateWithDuration:0.3 animations:^{
+        _actionIV.frame = CGRectMake( 108, cellRect.origin.y+cellRect.size.height - 10, 182, 44);
+        praiseB.frame = CGRectMake(6, 6, 53, 31);
+        assessB.frame = CGRectMake(65, 6, 53, 31);
+        reprintB.frame = CGRectMake(124, 6, 53, 31);
+    }];
 }
 -(void)removeActionImageView
 {
