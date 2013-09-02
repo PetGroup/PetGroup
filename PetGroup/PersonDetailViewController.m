@@ -45,8 +45,81 @@
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-58.5-44) style:UITableViewStyleGrouped];
+    [self.view addSubview:self.profileTableV];
+    self.profileTableV.backgroundView = nil;
+    self.profileTableV.dataSource = self;
+    self.profileTableV.delegate = self;
+    
+    UIImageView * bottomBG = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-58.5, 320, 58.5)];
+    [bottomBG setImage:[UIImage imageNamed:@"bottomgray.png"]];
+    [self.view addSubview:bottomBG];
+    
+    self.helloBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 300, 40)];
+    [self.helloBtn setBackgroundImage:[UIImage imageNamed:@"daanniu_click.png"] forState:UIControlStateNormal];
+    [self.helloBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.helloBtn addTarget:self action:@selector(helloBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+    [self.view addSubview:self.helloBtn];
 
 	// Do any additional setup after loading the view.
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;
+}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+{
+    return @"暂时的";
+}
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 4;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+        {
+            return 1;
+        }
+            break;
+        case 1:
+        {
+            return 2;
+        }
+            break;
+        case 2:
+        {
+            return 1;
+        }
+            break;
+        case 3:
+        {
+            return 1;
+        }
+            break;
+        default:
+        {
+            return 1;
+        }
+            break;
+    }
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *identifier = @"profileCell";
+    
+    UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    return cell;
 }
 -(void)back
 {

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "TempData.h"
-@interface PersonDetailViewController : UIViewController
+@interface PersonDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
+@property (strong,nonatomic) UITableView * profileTableV;
+@property (strong,nonatomic) UIButton * helloBtn;
 @end
