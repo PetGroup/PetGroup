@@ -8,9 +8,9 @@
 
 #import "NearbyDynamicDelegateAndDataSource.h"
 #import "DynamicCell.h"
+#import "Dynamic.h"
 
 @implementation NearbyDynamicDelegateAndDataSource
-
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
     self.pageIndex = 0;
@@ -18,8 +18,11 @@
        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
        [self.dataSourceArray removeAllObjects];
-       [self.dataSourceArray addObjectsFromArray:array];
-       self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+       for (NSDictionary*a in array) {
+           Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+           [self.dataSourceArray addObject:b];
+       }
+       self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
        success();
    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
        failure();
@@ -31,8 +34,11 @@
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         if (array.count>0) {
-            [self.dataSourceArray addObjectsFromArray:array];
-            self.pageIndex = [[[self.dataSourceArray lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+            self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
             success();
         }else{
             UIAlertView *aler = [[UIAlertView alloc]initWithTitle:nil message:@"没有更多动态啦" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
@@ -69,7 +75,7 @@
         cell = [[DynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     cell.viewC = self.viewC;
-    cell.textLabel.text = @"哈哈";
+    cell.dynamic = self.dataSourceArray[indexPath.row];
     return cell;
 }
 

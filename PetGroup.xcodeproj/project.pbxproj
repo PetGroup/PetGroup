@@ -7,10 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
-		86D5C29717CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C29617CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m */; };
-		86D5C29A17CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C29917CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
 		86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */; };
@@ -31,6 +30,8 @@
 		86D69D1617C72CD600FFFBDD /* tianjiazhaopian.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1017C72CD300FFFBDD /* tianjiazhaopian.png */; };
 		86D69D1717C72CD600FFFBDD /* xiaobeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1117C72CD400FFFBDD /* xiaobeijing.png */; };
 		86D69D1817C72CD600FFFBDD /* zhaoxiangji.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69D1217C72CD500FFFBDD /* zhaoxiangji.png */; };
+		86D90B8317D04FA600345D59 /* FullTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D90B8217D04FA600345D59 /* FullTextViewController.m */; };
+		86D90B8617D0848700345D59 /* Dynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D90B8517D0848700345D59 /* Dynamic.m */; };
 		86EEB14517CF0F36000162E8 /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13917CF0F35000162E8 /* EGOCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14617CF0F36000162E8 /* EGOImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13C17CF0F36000162E8 /* EGOImageButton.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13F17CF0F36000162E8 /* EGOImageLoadConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -355,7 +356,6 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
-		97D20A3417D05AAB001C8162 /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		97D501D217C4998300799BD4 /* KKChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501CF17C4998300799BD4 /* KKChatController.m */; };
 		97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FA17C49A0500799BD4 /* NearByViewController.m */; };
 		97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FD17C49A0F00799BD4 /* ContactsViewController.m */; };
@@ -478,10 +478,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		86D5C29517CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyPersonDelegateAndDataSource.h; sourceTree = "<group>"; };
-		86D5C29617CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyPersonDelegateAndDataSource.m; sourceTree = "<group>"; };
-		86D5C29817CC3A36007354F7 /* NearbyPetDelegateAndDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyPetDelegateAndDataSource.h; sourceTree = "<group>"; };
-		86D5C29917CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyPetDelegateAndDataSource.m; sourceTree = "<group>"; };
 		86D69CEA17C5EFC200FFFBDD /* fabu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fabu.png; sourceTree = "<group>"; };
 		86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibeijing.png; sourceTree = "<group>"; };
 		86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibtn.png; sourceTree = "<group>"; };
@@ -507,6 +503,10 @@
 		86D69D1017C72CD300FFFBDD /* tianjiazhaopian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tianjiazhaopian.png; sourceTree = "<group>"; };
 		86D69D1117C72CD400FFFBDD /* xiaobeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiaobeijing.png; sourceTree = "<group>"; };
 		86D69D1217C72CD500FFFBDD /* zhaoxiangji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zhaoxiangji.png; sourceTree = "<group>"; };
+		86D90B8117D04FA600345D59 /* FullTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullTextViewController.h; sourceTree = "<group>"; };
+		86D90B8217D04FA600345D59 /* FullTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullTextViewController.m; sourceTree = "<group>"; };
+		86D90B8417D0848700345D59 /* Dynamic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dynamic.h; sourceTree = "<group>"; };
+		86D90B8517D0848700345D59 /* Dynamic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dynamic.m; sourceTree = "<group>"; };
 		86EEB13817CF0F35000162E8 /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOCache.h; sourceTree = "<group>"; };
 		86EEB13917CF0F35000162E8 /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOCache.m; sourceTree = "<group>"; };
 		86EEB13B17CF0F36000162E8 /* EGOImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOImageButton.h; sourceTree = "<group>"; };
@@ -1267,10 +1267,6 @@
 				86D69CF517C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.m */,
 				86D69CF717C6068B00FFFBDD /* FriendDynamicDelegateAndDataSource.h */,
 				86D69CF817C6068B00FFFBDD /* FriendDynamicDelegateAndDataSource.m */,
-				86D5C29517CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.h */,
-				86D5C29617CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m */,
-				86D5C29817CC3A36007354F7 /* NearbyPetDelegateAndDataSource.h */,
-				86D5C29917CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m */,
 			);
 			name = DelegateAndDataSource;
 			sourceTree = "<group>";
@@ -1361,6 +1357,8 @@
 				97D5020017C49AB300799BD4 /* DynamicViewController.m */,
 				86D69D0A17C7265300FFFBDD /* EditDynamicViewController.h */,
 				86D69D0B17C7265300FFFBDD /* EditDynamicViewController.m */,
+				86D90B8117D04FA600345D59 /* FullTextViewController.h */,
+				86D90B8217D04FA600345D59 /* FullTextViewController.m */,
 			);
 			name = DynamicView;
 			sourceTree = "<group>";
@@ -2809,6 +2807,8 @@
 				9736BACA17C472A1007DFE36 /* HostInfo.m */,
 				9736BACC17C472B2007DFE36 /* PetInfo.h */,
 				9736BACD17C472B2007DFE36 /* PetInfo.m */,
+				86D90B8417D0848700345D59 /* Dynamic.h */,
+				86D90B8517D0848700345D59 /* Dynamic.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -3144,6 +3144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */,
 				863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */,
 				863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */,
 				979546C417BA368F00D05874 /* main.m in Sources */,
@@ -3389,8 +3390,6 @@
 				86D69CFD17C6083D00FFFBDD /* DelegateAndDataSource.m in Sources */,
 				86D69D0017C6120D00FFFBDD /* DynamicCell.m in Sources */,
 				86D69D0C17C7265300FFFBDD /* EditDynamicViewController.m in Sources */,
-				86D5C29717CC39FE007354F7 /* NearbyPersonDelegateAndDataSource.m in Sources */,
-				86D5C29A17CC3A36007354F7 /* NearbyPetDelegateAndDataSource.m in Sources */,
 				86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */,
 				973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */,
 				86EEB14517CF0F36000162E8 /* EGOCache.m in Sources */,
@@ -3398,7 +3397,8 @@
 				86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */,
 				86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */,
 				86EEB14917CF0F36000162E8 /* EGOImageView.m in Sources */,
-				97D20A3417D05AAB001C8162 /* DSNameIndex.m in Sources */,
+				86D90B8317D04FA600345D59 /* FullTextViewController.m in Sources */,
+				86D90B8617D0848700345D59 /* Dynamic.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Dynamic.h"
 @interface DynamicCell : UITableViewCell
 
+@property (nonatomic,weak)Dynamic*dynamic;
 @property (nonatomic,weak)UIViewController* viewC;
 
 @end
