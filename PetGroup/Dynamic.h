@@ -20,11 +20,12 @@
 @property (nonatomic,strong)NSString*submitTime;
 @property (nonatomic,assign)int ifTransmitMsg;
 @property (nonatomic,strong)NSString*transmitMsg;
-@property (nonatomic,strong)NSString*zanString;
-@property (nonatomic,assign)int ifIZaned;
+@property (nonatomic,assign)int countZan;
+@property (nonatomic,assign)BOOL ifIZaned;
 @property (nonatomic,assign)int ifZhankaied;
 @property (nonatomic,strong)NSDictionary*petUser;
 @property (nonatomic,strong)NSArray* replyViews;
 @property (nonatomic,assign)float rowHigh;
+@property (nonatomic,strong)NSString *imageID;
 -(id)initWithNSDictionary:(NSDictionary*)dic;
 @end

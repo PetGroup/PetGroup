@@ -37,6 +37,7 @@
 		86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13F17CF0F36000162E8 /* EGOImageLoadConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14117CF0F36000162E8 /* EGOImageLoader.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14917CF0F36000162E8 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14417CF0F36000162E8 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		86FC7AE417D4844300082E98 /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE317D4844300082E98 /* zan.png */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
@@ -517,6 +518,7 @@
 		86EEB14117CF0F36000162E8 /* EGOImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOImageLoader.m; sourceTree = "<group>"; };
 		86EEB14317CF0F36000162E8 /* EGOImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOImageView.h; sourceTree = "<group>"; };
 		86EEB14417CF0F36000162E8 /* EGOImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOImageView.m; sourceTree = "<group>"; };
+		86FC7AE317D4844300082E98 /* zan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zan.png; sourceTree = "<group>"; };
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9736BAC917C472A1007DFE36 /* HostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfo.h; sourceTree = "<group>"; };
@@ -1274,6 +1276,7 @@
 		86D69D0117C703A300FFFBDD /* dynamic */ = {
 			isa = PBXGroup;
 			children = (
+				86FC7AE317D4844300082E98 /* zan.png */,
 				86D69D0D17C72CD000FFFBDD /* biaoqing.png */,
 				86D69D0E17C72CD100FFFBDD /* dabeijing.png */,
 				86D69D0F17C72CD200FFFBDD /* edit_bg.png */,
@@ -3134,6 +3137,7 @@
 				86D69D1617C72CD600FFFBDD /* tianjiazhaopian.png in Resources */,
 				86D69D1717C72CD600FFFBDD /* xiaobeijing.png in Resources */,
 				86D69D1817C72CD600FFFBDD /* zhaoxiangji.png in Resources */,
+				86FC7AE417D4844300082E98 /* zan.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

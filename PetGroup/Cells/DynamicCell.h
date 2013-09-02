@@ -10,6 +10,7 @@
 #import "Dynamic.h"
 @interface DynamicCell : UITableViewCell
 
+@property (nonatomic,weak)UIButton* moveB;
 @property (nonatomic,weak)Dynamic*dynamic;
 @property (nonatomic,weak)UIViewController* viewC;
 
