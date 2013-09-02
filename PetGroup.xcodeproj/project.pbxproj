@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
@@ -355,7 +356,6 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
-		97D20A3417D05AAB001C8162 /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		97D501D217C4998300799BD4 /* KKChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501CF17C4998300799BD4 /* KKChatController.m */; };
 		97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FA17C49A0500799BD4 /* NearByViewController.m */; };
 		97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D501FD17C49A0F00799BD4 /* ContactsViewController.m */; };
@@ -3144,6 +3144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */,
 				863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */,
 				863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */,
 				979546C417BA368F00D05874 /* main.m in Sources */,
