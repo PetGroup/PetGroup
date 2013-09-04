@@ -21,6 +21,7 @@
         self.msg = [dic objectForKey:@"msg"];//动态内容
         self.dynamicID = [dic objectForKey:@"id"];//动态ID
         self.userID = [_petUser objectForKey:@"id"];//动态用户得ID
+        self.imageID = [dic objectForKey:@"imgid"];//动态的imageID,转发时使用
         NSArray* i = [[dic objectForKey:@"imgid"] componentsSeparatedByString:@","];
         if (i.count>1) {
             self.smallImage = [NSMutableArray array];
@@ -37,12 +38,12 @@
         self.submitTime =[Common CurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",[[dic objectForKey:@"submitTime"]doubleValue]/1000 ]];//发布时间
         self.ifTransmitMsg = [[dic objectForKey:@"ifTransmitMsg"]intValue];//是否是转发
         self.transmitMsg = [dic objectForKey:@"transmitMsg"];//转发内容
-        self.zanString = [dic objectForKey:@"countZan"];//赞的数目
-        self.ifIZaned = [[dic objectForKey:@"countZan"]boolValue];//我是否赞过，0 没攒，1 赞。
+        self.countZan = [[dic objectForKey:@"countZan"] intValue];//赞的数目
+        self.ifIZaned = [[dic objectForKey:@"ifIZaned"]boolValue];//我是否赞过，0 没攒，1 赞。
         
         self.rowHigh = 65;
         if (self.ifTransmitMsg!=0) {
-            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 75) lineBreakMode:NSLineBreakByWordWrapping];
             self.rowHigh+=(size.height+10);
              CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
             if (msgSize.height>75) {
@@ -60,13 +61,13 @@
                 self.rowHigh+=(size.height+10);
             }
         }
-        if (self.smallImage.count>=1&&self.smallImage.count<=3) {
-            self.rowHigh+=80;
-        }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-            self.rowHigh+=160;
-        }else if(self.smallImage.count>6){
-            self.rowHigh+=240;
-        }
+    }
+    if (self.smallImage.count>=1&&self.smallImage.count<=3) {
+        self.rowHigh+=80;
+    }else if(self.smallImage.count>3&&self.smallImage.count<=6){
+        self.rowHigh+=160;
+    }else if(self.smallImage.count>6){
+        self.rowHigh+=240;
     }
     return self;
 }

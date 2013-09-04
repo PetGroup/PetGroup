@@ -17,10 +17,11 @@
 
 {
     UIButton* nameB;
+    UIButton* zanB;
+    UIButton* delB;
     EGOImageButton* headB;
     UIButton * quanwenB;
     UIButton * pushB;
-    UIButton* moveB;
     CGSize msgSize;
     CGSize msgMinSize;
     float origin;
@@ -30,7 +31,7 @@
 @property (nonatomic,retain)UILabel* timeL;
 @property (nonatomic,retain)UILabel* transmitMsgL;
 @property (nonatomic,retain)UILabel* beijingL;
-
+@property (nonatomic,retain)UILabel* zanL;
 @end
 @implementation DynamicCell
 
@@ -42,7 +43,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.beijingL = [[UILabel alloc]init];
-        _beijingL.backgroundColor = [UIColor grayColor];
+        _beijingL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];;
         [self.contentView addSubview:_beijingL];
         
         nameB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -65,7 +66,6 @@
         _msgL.font = [UIFont systemFontOfSize:12];
         
         quanwenB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
         [quanwenB setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         quanwenB.titleLabel.font = [UIFont systemFontOfSize:12];
         [quanwenB addTarget:self action:@selector(quanwen) forControlEvents:UIControlEventTouchUpInside];
@@ -89,10 +89,29 @@
         _timeL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_timeL];
         
-        moveB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [moveB setBackgroundImage:[UIImage imageNamed:@"pinglun"] forState:UIControlStateNormal];
-        [self.contentView addSubview:moveB];
-        [moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
+        zanB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:zanB];
+        UIImageView* zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
+        zanimage.frame = CGRectMake(0, 0, 15, 15);
+        [zanB addSubview:zanimage];
+        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 35, 15)];
+        _zanL.textAlignment = NSTextAlignmentCenter;
+        _zanL.font = [UIFont systemFontOfSize:12];
+        _zanL.textColor = [UIColor grayColor];
+        [zanB addSubview:_zanL];
+        
+        delB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [delB addTarget:self action:@selector(deleteDynamic) forControlEvents:UIControlEventTouchUpInside];
+        [delB setTitle:@"删除" forState:UIControlStateNormal];
+        delB.titleLabel.font = [UIFont systemFontOfSize:12];
+        [delB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [self.contentView addSubview:delB];
+        
+        _moveB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_moveB setBackgroundImage:[UIImage imageNamed:@"pinglun"] forState:UIControlStateNormal];
+        [self.contentView addSubview:_moveB];
+        [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
 }
@@ -118,6 +137,7 @@
         origin += (size.height+10);
         
         msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        self.msgL.backgroundColor = [UIColor clearColor];
         if (msgSize.height<75) {
             self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
             origin+=(msgSize.height+10);
@@ -126,14 +146,57 @@
             origin+=25;
             pushB.frame = _msgL.frame;
         }
+        self.msgL.text = self.dynamic.msg;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
+            int originX = 60;
+            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin, 70, 70);
+                originX+=80;
+            }
             origin+=80;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            origin=160;
+            int originX = 60;
+            for (int i = 0; i<3; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin, 70, 70);
+                originX+=80;
+            }
+            originX = 60;
+            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                originX+=80;
+            }
+            origin+=160;
         }else if(self.dynamic.smallImage.count>6){
+            int originX = 60;
+            for (int i = 0; i<3; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin, 70, 70);
+                originX+=80;
+            }
+            originX = 60;
+            for (int i = 3; i<6; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                originX+=80;
+            }
+            originX = 60;
+            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
+                EGOImageButton * a = self.imageViews[i];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.frame = CGRectMake(originX, origin+160, 70, 70);
+                originX+=80;
+            }
             origin+=240;
         }
-        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x, self.msgL.frame.origin.y, 240, origin-self.msgL.frame.origin.x);
+        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y, 260, origin-self.msgL.frame.origin.x-10);
     }else{
         _msgL.backgroundColor= [UIColor whiteColor];
         msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 75) lineBreakMode:NSLineBreakByWordWrapping];
@@ -148,6 +211,7 @@
             if (msgSize.height<150) {
                 if(self.dynamic.ifZhankaied == 0)
                 {
+                    [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
                     _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
                     origin+=(msgMinSize.height+10);
                     quanwenB.frame = CGRectMake(60, origin, 30, 15);
@@ -219,7 +283,12 @@
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.text = self.dynamic.submitTime;
     _timeL.frame = CGRectMake(60, origin, timeSize.width, timeSize.height);
-    moveB.frame = CGRectMake(290, origin, 20, 10);
+    _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
+    if ([[DataStoreManager getMyUserID] intValue] == [[self.dynamic.petUser objectForKey:@"id"]intValue]) {
+        delB.frame = CGRectMake(150, origin, 30, 15);
+    }
+    zanB.frame = CGRectMake(220, origin, 50, 15);
+    _moveB.frame = CGRectMake(280, origin, 30, 15);
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -258,5 +327,39 @@
     fullTextVC.text = _msgL.text;
     [self.viewC.navigationController pushViewController:fullTextVC animated:YES];
     [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
+}
+-(void)praise//赞
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:[self.dynamic.petUser objectForKey:@"id"] forKey:@"zanUserid"];
+    [params setObject:self.dynamic.dynamicID forKey:@"userStateid"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    if (self.dynamic.ifIZaned) {
+        [body setObject:@"delZan" forKey:@"method"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
+            _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+        }];
+    }else{
+        [body setObject:@"addZan" forKey:@"method"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
+            _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
+        }];
+    }
+}
+-(void)deleteDynamic
+{
+    
 }
 @end

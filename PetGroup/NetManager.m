@@ -25,6 +25,7 @@
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlStr]];
     [httpClient setParameterEncoding:AFFormURLParameterEncoding];
     [httpClient postPath:@"" parameters:parameters success:success failure:^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"%@",error);
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
     }];

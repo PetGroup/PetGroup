@@ -14,17 +14,19 @@
 #import "DynamicCell.h"
 #import "MBProgressHUD.h"
 #import "EGOImageView.h"
+#import "DynamicCell.h"
 
 @interface DynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* nearByB;
     UIButton* friendB;
     
-    UIButton * praiseB;
     UIButton * assessB;
     UIButton * reprintB;
     
-     MBProgressHUD * hud;
+    MBProgressHUD * hud;
+    
+    int assessOrPraise;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,retain)UITableView* tableV;
@@ -33,7 +35,7 @@
 @property (nonatomic,strong)UIActivityIndicatorView * act;
 @property (nonatomic,strong)UIActivityIndicatorView * footAct;
 @property (nonatomic,strong)UIImageView*  actionIV;
-@property (nonatomic,weak)UITableViewCell* mycell;
+@property (nonatomic,weak)DynamicCell* mycell;
 @property (nonatomic,strong)UITextField* inputTF;
 @property (nonatomic,strong)UITextField* cheatTF;
 @end
@@ -171,6 +173,7 @@
 -(void)showNearby
 {
     [self removeActionImageView];
+    self.mycell = nil;
     if (_tableV.dataSource != self.nearbyDDS) {
         [nearByB setBackgroundImage:nil forState:UIControlStateNormal];
         [nearByB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -186,6 +189,7 @@
 -(void)showfriend
 {
     [self removeActionImageView];
+    self.mycell = nil;
     if (_tableV.dataSource != self.friendDDS) {
         [friendB setBackgroundImage:nil forState:UIControlStateNormal];
         [friendB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -204,23 +208,81 @@
     [self.navigationController pushViewController:editVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
--(void)praise
-{
-    [self removeActionImageView];
-}
--(void)assess
+-(void)assess//评论
 {
     [self removeActionImageView];
     [_cheatTF becomeFirstResponder];
+    assessOrPraise = 1;
 }
--(void)reprint
+-(void)reprint//转发
 {
     [self removeActionImageView];
     [_cheatTF becomeFirstResponder];
+    assessOrPraise = 2;
+    
 }
 -(void)didInput
 {
-    [self keyBoardResign];
+    if (_inputTF.text.length>0) {
+        [self keyBoardResign];
+        switch (assessOrPraise) {
+            case 1:
+            {
+                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+                long long a = (long long)(cT*1000);
+                [params setObject:[self.mycell.dynamic.petUser objectForKey:@"id"] forKey:@"petuserId"];
+                [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
+                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
+                [params setObject:self.inputTF.text forKey:@"msg"];
+                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+                [body setObject:@"1" forKey:@"channel"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+                [body setObject:@"iphone" forKey:@"imei"];
+                [body setObject:params forKey:@"params"];
+                [body setObject:@"addReply" forKey:@"method"];
+                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+                [hud show:YES];
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [hud hide:YES];
+                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] );
+                }];
+            }break;
+            case 2:
+            {
+                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+                long long a = (long long)(cT*1000);
+                [params setObject:@"" forKey:@"transmitUrl"];
+                [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+                [params setObject:@"1" forKey:@"ifTransmitMsg"];
+                [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
+                [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
+                [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
+                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+                [body setObject:@"1" forKey:@"channel"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+                [body setObject:@"iphone" forKey:@"imei"];
+                [body setObject:params forKey:@"params"];
+                [body setObject:@"addUserState" forKey:@"method"];
+                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+                [hud show:YES];
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [hud hide:YES];
+                    NSLog(@"++%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
+                    [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+                    [self.tableV reloadData];
+                }];
+            }break;
+            default:
+                break;
+        }
+    }
 }
 -(void)keyBoardResign
 {
@@ -231,6 +293,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self removeActionImageView];
+    self.mycell = nil;
     [self keyBoardResign];    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -240,9 +303,14 @@
     return dyn.rowHigh;
 }
 #pragma mark - scrollView delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{//开始拖拽
+    
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self removeActionImageView];
+    self.mycell = nil;
     [self keyBoardResign];
     if (_tableV.contentOffset.y<0) {
         if (self.act == nil) {
@@ -266,6 +334,7 @@
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
     [self removeActionImageView];
+    self.mycell = nil;
     [self keyBoardResign];
     
     [UIView animateWithDuration:0.3 animations:^{
@@ -307,27 +376,16 @@
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     //开始回弹
-    NSLog(@"B%f==%f==%f",_tableV.contentSize.height,_tableV.frame.size.height,_tableV.contentOffset.y);
 }
 #pragma mark - cell button action
--(void)showButton:(UITableViewCell*)cell
+-(void)showButton:(DynamicCell*)cell
 {
     CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
     if (_actionIV == nil) {
-        self.actionIV = [[UIImageView alloc]initWithFrame:CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44)];
+        self.actionIV = [[UIImageView alloc]init];
         _actionIV.userInteractionEnabled = YES;
         _actionIV.image = [UIImage imageNamed:@"tanchuanniu_bg"];
         [self.view addSubview:_actionIV];
-        
-        praiseB = [UIButton buttonWithType:UIButtonTypeCustom];
-        praiseB.frame = CGRectMake(0, 6,0, 31);
-        [praiseB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
-        [praiseB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
-        [praiseB setTitle:@"赞" forState:UIControlStateNormal];
-        [praiseB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [praiseB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
-        [_actionIV addSubview:praiseB];
-        
         
         assessB = [UIButton buttonWithType:UIButtonTypeCustom];
         assessB.frame = CGRectMake(0, 6, 0,31);
@@ -349,26 +407,25 @@
     }
     if (cell != _mycell) {
         [self removeActionImageView];
-        _actionIV.frame = CGRectMake(280, cellRect.origin.y+cellRect.size.height - 10, 0, 44);
+        self.mycell = nil;
+        _actionIV.frame = CGRectMake(280, cellRect.origin.y+cell.moveB.frame.origin.y, 0, 44);
         [self.view addSubview:_actionIV];
         self.mycell = cell;
+        [UIView animateWithDuration:0.3 animations:^{
+            _actionIV.frame = CGRectMake( 158, cellRect.origin.y+cell.moveB.frame.origin.y, 127, 44);
+            assessB.frame = CGRectMake(6, 6, 53, 31);
+            reprintB.frame = CGRectMake(65, 6, 53, 31);
+        }];
     }else{
+        self.mycell = nil;
         [self removeActionImageView];
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        _actionIV.frame = CGRectMake( 108, cellRect.origin.y+cellRect.size.height - 10, 182, 44);
-        praiseB.frame = CGRectMake(6, 6, 53, 31);
-        assessB.frame = CGRectMake(65, 6, 53, 31);
-        reprintB.frame = CGRectMake(124, 6, 53, 31);
-    }];
 }
 -(void)removeActionImageView
 {
-        praiseB.frame = CGRectMake(0, 6, 0, 31);
         assessB.frame = CGRectMake(0, 6, 0,31);
         reprintB.frame = CGRectMake(0, 6, 0, 31);
         [_actionIV removeFromSuperview];
-        self.mycell = nil;
     
 }
 #pragma mark - reload and loadmore
