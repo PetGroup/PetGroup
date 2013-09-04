@@ -20,10 +20,9 @@
         [self.titleLabel setTextColor:[UIColor blackColor]];
         [self.contentView addSubview:self.titleLabel];
         
-        self.modifyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.modifyBtn setFrame:CGRectMake(290-61.5, 7.25, 61.5, 25.5)];
-        [self.modifyBtn setImage:[UIImage imageNamed:@"modifynormal.png"] forState:UIControlStateNormal];
-        [self.contentView addSubview:self.modifyBtn];
+        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 13.75, 8.5, 12.5)];
+        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
+        [self.contentView addSubview:arrow];
     }
     return self;
 }

@@ -1,25 +1,24 @@
 //
-//  MyPetProfileViewController.m
+//  NormalPetDetailViewController.m
 //  PetGroup
 //
-//  Created by Tolecen on 13-8-22.
+//  Created by Tolecen on 13-9-3.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "MyPetProfileViewController.h"
+#import "NormalPetDetailViewController.h"
 
-@interface MyPetProfileViewController ()
+@interface NormalPetDetailViewController ()
 
 @end
 
-@implementation MyPetProfileViewController
+@implementation NormalPetDetailViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.pageType = PageStyleChange;
     }
     return self;
 }
@@ -38,26 +37,17 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-
-    
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    if (self.pageType==PageStyleAdd) {
-        titleLabel.text=@"添加新宠物";
-    }
-    else
-        titleLabel.text=self.petInfo.petNickname;
+    titleLabel.text=self.petInfo.petNickname;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
-    self.photoWall.descriptionType = DescriptionTypeImage;
     [self.photoWall setPhotos:[self imageToURL:self.petInfo.headImgArray]];
     self.photoWall.delegate = self;
-    [self.photoWall setEditModel:YES];
     self.photoWall.tag =1;
     
     self.petInfo.petType = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
@@ -71,14 +61,10 @@
     else
         self.petInfo.petGender = @"还不知道呢";
     self.petInfo.petAge = [NSString stringWithFormat:@"%@岁",self.petInfo.petAge];
-
-
-
-
+    
     [self makeHeight];
     self.titleArray = [NSArray arrayWithObjects:@"品种",@"昵称",@"性别",@"年龄",@"特点", nil];
-    self.placeHolderArray = [NSMutableArray arrayWithObjects:@"告诉大家宝贝的品种吧",@"给宝贝起个昵称吧",@"请选择宝贝性别",@"请选择宝贝年龄",@"说说宝贝的特点吧", nil];
-    self.discribeArray = [NSMutableArray arrayWithObjects:self.petInfo.petType?self.petInfo.petType:PlaceHolder,self.petInfo.petNickname?self.petInfo.petNickname:PlaceHolder,self.petInfo.petGender?self.petInfo.petGender:PlaceHolder,self.petInfo.petAge?self.petInfo.petAge:PlaceHolder,self.petInfo.petTrait?self.petInfo.petTrait:PlaceHolder, nil];
+    self.discribeArray = [NSArray arrayWithObjects:self.petInfo.petType,self.petInfo.petNickname,self.petInfo.petGender,self.petInfo.petAge,self.petInfo.petTrait, nil];
     
     self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
@@ -112,7 +98,7 @@
     return temp;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 2;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,11 +106,8 @@
     if (indexPath.section==0) {
         return self.photoWall.frame.size.height;
     }
-    else if (indexPath.section==2){
-        return 40;
-    }
     else
-        return [[self.heightArray objectAtIndex:indexPath.row] floatValue]+20<40?40:[[self.heightArray objectAtIndex:indexPath.row] floatValue]+20;
+        return [[self.heightArray objectAtIndex:indexPath.row] floatValue]+20;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -169,49 +152,22 @@
         {
             static NSString *Cell = @"profile";
             
-            PetProfileCell *cell = (PetProfileCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+            ProfileCell *cell = (ProfileCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
             if (cell == nil) {
-                cell = [[PetProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+                cell = [[ProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.titleLabel.text = [self.titleArray objectAtIndex:indexPath.row];
-            
             cell.describeLabel.textAlignment = NSTextAlignmentRight;
-            if (![[self.discribeArray objectAtIndex:indexPath.row] isEqualToString:PlaceHolder]) {
-                cell.describeLabel.text = [self.discribeArray objectAtIndex:indexPath.row];
-                cell.describeLabel.frame = CGRectMake(cell.describeLabel.frame.origin.x, cell.describeLabel.frame.origin.y, cell.describeLabel.frame.size.width, [[self.heightArray objectAtIndex:indexPath.row] floatValue]);
-            }
-            else
-            {
-                cell.describeLabel.text = [self.placeHolderArray objectAtIndex:indexPath.row];
-                cell.describeLabel.textColor = [UIColor grayColor];
-            }
-            
+            cell.describeLabel.text = [self.discribeArray objectAtIndex:indexPath.row];
+            cell.describeLabel.frame = CGRectMake(cell.describeLabel.frame.origin.x, cell.describeLabel.frame.origin.y, cell.describeLabel.frame.size.width, [[self.heightArray objectAtIndex:indexPath.row] floatValue]);
             return cell;
         }
             break;
         default:
-        {
-            static NSString *Cell = @"buttton";
-            
-            ButtonCell *cell = (ButtonCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
-            if (cell == nil) {
-                cell = [[ButtonCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
-            }
-            if (self.pageType==PageStyleAdd) {
-                [cell.saveBtn setTitle:@"确认添加" forState:UIControlStateNormal];
-            }
-            else
-                [cell.saveBtn setTitle:@"保存修改" forState:UIControlStateNormal];
-            return cell;
-
-        }
+            return nil;
             break;
     }
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {

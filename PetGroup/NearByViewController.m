@@ -351,11 +351,11 @@
         if (cell == nil) {
             cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
-        [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+        //[cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
         if (![[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
             NSString * imgStr = [self getFistHeadImg:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"]];
             
-            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgStr]] placeholderImage:[UIImage imageNamed:imgStr]];
+            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
         }
         [cell.nameLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"]];
         NSString* sigStr = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"signature"];
@@ -378,8 +378,8 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
-        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
-        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",[pet objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"profile-image-placeholder"]];
+//        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
+        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,[pet objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
         [cell.distLabel setText:@"100米"];
         NSString* sigStr = [pet objectForKey:@"trait"];
@@ -453,14 +453,34 @@
     else if(personOrPet)
     {
         PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+        HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[self.nearbyArray objectAtIndex:indexPath.row]];
+        detailV.hostInfo = hostInfo;
         [self.navigationController pushViewController:detailV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else{
         PetDetailViewController * petDetailV = [[PetDetailViewController alloc] init];
+        PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[self.appearPetArray objectAtIndex:indexPath.row]];
+        petDetailV.petInfo = petInfo;
+        NSDictionary * uDict = [self getUserInfoByUserId:[[self.appearPetArray objectAtIndex:indexPath.row] objectForKey:@"userid"]];
+        if (uDict) {
+            HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:uDict];
+            petDetailV.hostInfo = hostInfo;
+        }
         [self.navigationController pushViewController:petDetailV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+-(NSDictionary *)getUserInfoByUserId:(id)uid
+{
+    NSString * userID = [NSString stringWithFormat:@"%@",uid];
+    for (NSDictionary * uDict in self.nearbyArray) {
+        NSString * tempID = [NSString stringWithFormat:@"%@",[uDict objectForKey:@"userid"]];
+        if ([tempID isEqualToString:userID]) {
+            return uDict;
+        }
+    }
+    return nil;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

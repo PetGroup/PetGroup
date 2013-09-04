@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface PersonalCenterViewController : UIViewController
-
+#import "HGPhotoWall.h"
+#import "HostInfo.h"
+#import "PetInfo.h"
+#import "MyInfoCell.h"
+#import "MoreCell.h"
+#import "MyPetProfileViewController.h"
+#import "MyProfileViewController.h"
+@class CustomTabBar;
+@interface PersonalCenterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
+@property (strong,nonatomic) UITableView * profileTableV;
+@property (strong, nonatomic) HGPhotoWall *photoWall;
+@property (strong,nonatomic) HostInfo * hostInfo;
 @end
