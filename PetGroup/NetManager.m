@@ -7,6 +7,7 @@
 //
 
 #import "NetManager.h"
+#import "ImageHelper.h"
 #define CompressionQuality 0.3  //图片上传时压缩质量
 @implementation NetManager
 
