@@ -10,8 +10,6 @@
 		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
-		8642967D17D6CF1300B1B1C9 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */; };
-		8642968017D70E7600B1B1C9 /* Reply.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967F17D70E7500B1B1C9 /* Reply.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
 		86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */; };
@@ -39,9 +37,6 @@
 		86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13F17CF0F36000162E8 /* EGOImageLoadConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14117CF0F36000162E8 /* EGOImageLoader.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14917CF0F36000162E8 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14417CF0F36000162E8 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		86FC7AE417D4844300082E98 /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE317D4844300082E98 /* zan.png */; };
-		86FC7AE617D58EC400082E98 /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE517D58EC400082E98 /* zaned.png */; };
-		86FC7AE917D5C6CD00082E98 /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7AE817D5C6CD00082E98 /* ImageHelper.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
@@ -382,6 +377,8 @@
 		97D5022617C4BD7C00799BD4 /* select_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021C17C4BD7C00799BD4 /* select_04.png */; };
 		97D5022717C4BD7C00799BD4 /* select_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021D17C4BD7C00799BD4 /* select_05.png */; };
 		97D5022817C4BD7C00799BD4 /* select_06.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021E17C4BD7C00799BD4 /* select_06.png */; };
+		97D6B6CC17D83124009C0524 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */; };
+		97D6B6CD17D8313F009C0524 /* Reply.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967F17D70E7500B1B1C9 /* Reply.m */; };
 		97DA1C0717D42A5A00F7B507 /* HGPhotoWall.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DA1C0317D42A5A00F7B507 /* HGPhotoWall.m */; };
 		97DA1C0817D42A5A00F7B507 /* HGPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DA1C0517D42A5A00F7B507 /* HGPhoto.m */; };
 		97DA1C0917D42A5A00F7B507 /* addPhoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DA1C0617D42A5A00F7B507 /* addPhoto@2x.png */; };
@@ -3217,6 +3214,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97D6B6CD17D8313F009C0524 /* Reply.m in Sources */,
+				97D6B6CC17D83124009C0524 /* PhotoViewController.m in Sources */,
 				862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */,
 				863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */,
 				863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */,
