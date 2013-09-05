@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DynamicViewController : UIViewController<UITableViewDelegate>
-
+@property (nonatomic,retain)UITableView* tableV;
 @end

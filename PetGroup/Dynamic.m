@@ -7,7 +7,9 @@
 //
 
 #import "Dynamic.h"
+#import "Reply.h"
 #import "Common.h"
+
 @implementation Dynamic
 - (id)initWithNSDictionary:(NSDictionary*)dic
 {
@@ -15,7 +17,12 @@
     if (self) {
         self.ifZhankaied = 0;
         self.petUser = [dic objectForKey:@"petUser"];//动态的用户字典
-        self.replyViews = [dic objectForKey:@"replyViews"];//动态的评论字典
+        self.replyViews = [[NSMutableArray alloc]init];
+        NSArray *replys = [dic objectForKey:@"replyViews"];
+        for (NSDictionary* a in replys) {
+            Reply* reply = [[Reply alloc]initWithDictionary:a];
+            [_replyViews addObject:reply];
+        }
         self.name = [_petUser objectForKey:@"nickname"];//动态的用户昵称
         self.headID = [_petUser objectForKey:@"img"];//动态用户得头像ID
         self.msg = [dic objectForKey:@"msg"];//动态内容
@@ -69,6 +76,7 @@
     }else if(self.smallImage.count>6){
         self.rowHigh+=240;
     }
+//    self.rowHigh +=20*self.replyViews.count;
     return self;
 }
 @end

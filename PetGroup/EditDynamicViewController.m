@@ -9,7 +9,9 @@
 #import "EditDynamicViewController.h"
 #import "CustomTabBar.h"
 #import "MBProgressHUD.h"
-
+#import "Dynamic.h"
+#import "DynamicViewController.h"
+#import "DelegateAndDataSource.h"
 @interface EditDynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
@@ -133,6 +135,7 @@
 -(void)backButton:(UIButton*)button
 {
     [hud hide:YES];
+    [_dynamicTV resignFirstResponder];
     [self.navigationController popViewControllerAnimated:YES];
     [self.customTabBarController hidesTabBar:NO animated:YES];
 }
@@ -159,6 +162,10 @@
                     [_imageId appendFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
                 }
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:_imageId] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
+                    [((DelegateAndDataSource*)_viewC.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+                    [_viewC.tableV reloadData];
                     [self backButton:nil];
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [self showAlerView];
@@ -175,6 +182,10 @@
         }];
     }else{
         [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:@""] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
+            [((DelegateAndDataSource*)_viewC.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+            [_viewC.tableV reloadData];
             [self backButton:nil];
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self showAlerView];

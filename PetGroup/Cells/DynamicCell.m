@@ -9,9 +9,12 @@
 #import "DynamicCell.h"
 #import "Common.h"
 #import "EGOImageButton.h"
+#import "EGOImageView.h"
 #import "PersonDetailViewController.h"
 #import "CustomTabBar.h"
 #import "FullTextViewController.h"
+#import "PhotoViewController.h"
+
 
 @interface DynamicCell ()
 
@@ -26,6 +29,7 @@
     CGSize msgMinSize;
     float origin;
 }
+@property (nonatomic,retain)UIImageView* zanimage;
 @property (nonatomic,retain)NSArray* imageViews;
 @property (nonatomic,retain)UILabel* msgL;
 @property (nonatomic,retain)UILabel* timeL;
@@ -80,6 +84,7 @@
             EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
             [self.contentView addSubview:a];
             a.tag = 1000+i;
+            [a addTarget:self action:@selector(loadBagImage:)  forControlEvents:UIControlEventTouchUpInside];
             [arr addObject:a];
         }
         self.imageViews = arr;
@@ -92,9 +97,9 @@
         zanB = [UIButton buttonWithType:UIButtonTypeCustom];
         [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:zanB];
-        UIImageView* zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
-        zanimage.frame = CGRectMake(0, 0, 15, 15);
-        [zanB addSubview:zanimage];
+        self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
+        _zanimage.frame = CGRectMake(0, 0, 15, 15);
+        [zanB addSubview:_zanimage];
         self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 35, 15)];
         _zanL.textAlignment = NSTextAlignmentCenter;
         _zanL.font = [UIFont systemFontOfSize:12];
@@ -122,7 +127,7 @@
         a.frame = CGRectZero;
     }
 
-    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.headID]];
+    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.headID]];
     headB.frame = CGRectMake(10, 10, 40, 40);
     [nameB setTitle:self.dynamic.name forState:UIControlStateNormal];
     CGSize nameSize = [self.dynamic.name sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
@@ -151,7 +156,7 @@
             int originX = 60;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
@@ -160,14 +165,14 @@
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+80, 70, 70);
                 originX+=80;
             }
@@ -176,21 +181,21 @@
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+80, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+160, 70, 70);
                 originX+=80;
             }
@@ -234,7 +239,7 @@
             int originX = 60;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
@@ -243,14 +248,14 @@
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+80, 70, 70);
                 originX+=80;
             }
@@ -259,21 +264,21 @@
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+80, 70, 70);
                 originX+=80;
             }
             originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",self.dynamic.smallImage[i]]];
+                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
                 a.frame = CGRectMake(originX, origin+160, 70, 70);
                 originX+=80;
             }
@@ -283,9 +288,14 @@
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.text = self.dynamic.submitTime;
     _timeL.frame = CGRectMake(60, origin, timeSize.width, timeSize.height);
-    _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
     if ([[DataStoreManager getMyUserID] intValue] == [[self.dynamic.petUser objectForKey:@"id"]intValue]) {
         delB.frame = CGRectMake(150, origin, 30, 15);
+    }
+    _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
+    if (self.dynamic.ifIZaned) {
+        _zanimage.image = [UIImage imageNamed:@"zaned"];
+    }else{
+        _zanimage.image = [UIImage imageNamed:@"zan"];
     }
     zanB.frame = CGRectMake(220, origin, 50, 15);
     _moveB.frame = CGRectMake(280, origin, 30, 15);
@@ -296,10 +306,16 @@
 
     // Configure the view for the selected state
 }
+#pragma mark - button action
 -(void)showButton
 {
     [self.viewC performSelector:@selector(showButton:) withObject:self];
 }
+-(void)deleteDynamic
+{
+    [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
+}
+
 -(void)PersonDetail
 {
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
@@ -333,6 +349,8 @@
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
+    [params setObject:@"0" forKey:@"zanType"];
+    [params setObject:@"" forKey:@"petid"];
     [params setObject:[self.dynamic.petUser objectForKey:@"id"] forKey:@"zanUserid"];
     [params setObject:self.dynamic.dynamicID forKey:@"userStateid"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
@@ -348,6 +366,7 @@
             NSLog(@"%@",responseObject);
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+            _zanimage.image = [UIImage imageNamed:@"zan"];
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
@@ -355,11 +374,13 @@
             NSLog(@"%@",responseObject);
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
+            _zanimage.image = [UIImage imageNamed:@"zaned"];
         }];
     }
 }
--(void)deleteDynamic
+-(void)loadBagImage:(UIButton*)button
 {
-    
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:self.dynamic.smallImage images:self.dynamic.imgIDArray indext:button.tag-1000];
+    [self.viewC presentViewController:vc animated:NO completion:nil];
 }
 @end

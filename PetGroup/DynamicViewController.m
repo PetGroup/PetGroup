@@ -13,8 +13,9 @@
 #import "EditDynamicViewController.h"
 #import "DynamicCell.h"
 #import "MBProgressHUD.h"
-#import "EGOImageView.h"
+#import "EGOImageButton.h"
 #import "DynamicCell.h"
+#import "EGOCache.h"
 
 @interface DynamicViewController ()<MBProgressHUDDelegate>
 {
@@ -29,7 +30,6 @@
     int assessOrPraise;
 }
 @property (nonatomic,strong)UIView* footV;
-@property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
 @property (nonatomic,strong)FriendDynamicDelegateAndDataSource* friendDDS;
 @property (nonatomic,strong)UIActivityIndicatorView * act;
@@ -103,6 +103,7 @@
     UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
     headV.image = [UIImage imageNamed:@"morenbeijing"];
     self.tableV.tableHeaderView = headV;
+    headV.userInteractionEnabled = YES;
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -117,10 +118,14 @@
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
     photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
     [headV addSubview:photoIV];
-    EGOImageView* headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    photoIV.userInteractionEnabled = YES;
+    
+    EGOImageButton* headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
     headIV.frame = CGRectMake(5, 5, 70, 70);
-    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imageID]];
+    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     [photoIV addSubview:headIV];
+    [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
+    
     
     self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
     _footAct.backgroundColor = [UIColor redColor];
@@ -162,7 +167,9 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    
+    if (self.tableV.contentOffset.y<100) {
+        self.tableV.contentOffset = CGPointMake(0, 100);
+    }
 }
 - (void)didReceiveMemoryWarning
 {
@@ -170,6 +177,10 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)headAct
+{
+    [[EGOCache globalCache] clearCache];
+}
 -(void)showNearby
 {
     [self removeActionImageView];
@@ -184,6 +195,7 @@
         if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
             [self reloadData];
         }
+        self.tableV.contentOffset = CGPointMake(0, 100);
     }
 }
 -(void)showfriend
@@ -200,11 +212,13 @@
         if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
             [self reloadData];
         }
+        self.tableV.contentOffset = CGPointMake(0, 100);
     }
 }
 -(void)updateSelfMassage
 {
     EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
+    editVC.viewC = self;
     [self.navigationController pushViewController:editVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
@@ -224,7 +238,6 @@
 -(void)didInput
 {
     if (_inputTF.text.length>0) {
-        [self keyBoardResign];
         switch (assessOrPraise) {
             case 1:
             {
@@ -272,7 +285,6 @@
                 [hud show:YES];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [hud hide:YES];
-                    NSLog(@"++%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
                     [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
@@ -282,12 +294,14 @@
             default:
                 break;
         }
+        [self keyBoardResign];
     }
 }
 -(void)keyBoardResign
 {
     [_inputTF resignFirstResponder];
     [_cheatTF resignFirstResponder];
+    _inputTF.text = @"";
 }
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -363,7 +377,12 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    //停止回弹
+    //停止减速
+    if (_tableV.contentOffset.y<100&&_tableV.contentOffset.y>0) {
+        [UIView animateWithDuration:0.3 animations:^{
+             _tableV.contentOffset = CGPointMake(0, 100);
+        }];
+    }
     if (_tableV.contentOffset.y<=0) {
         [self reloadData];
     }
@@ -375,7 +394,7 @@
 }
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    //开始回弹
+    //开始减速
 }
 #pragma mark - cell button action
 -(void)showButton:(DynamicCell*)cell
@@ -427,6 +446,32 @@
         reprintB.frame = CGRectMake(0, 6, 0, 31);
         [_actionIV removeFromSuperview];
     
+}
+-(void)deleteDynamic:(Dynamic*)dyn
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:@"" forKey:@"transmitUrl"];
+    [params setObject:dyn.transmitMsg forKey:@"transmitMsg"];
+    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+    [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
+    [params setObject:dyn.msg forKey:@"msg"];
+    [params setObject:dyn.imageID forKey:@"imgid"];
+    [params setObject:[dyn.petUser objectForKey:@"id"] forKey:@"userid"];
+    [params setObject:dyn.dynamicID forKey:@"userStateId"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"delUserState" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray removeObject:dyn];
+        [self.tableV reloadData];
+    }];
 }
 #pragma mark - reload and loadmore
 -(void)reloadData

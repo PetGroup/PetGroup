@@ -24,7 +24,7 @@
 @property (nonatomic,assign)BOOL ifIZaned;
 @property (nonatomic,assign)int ifZhankaied;
 @property (nonatomic,strong)NSDictionary*petUser;
-@property (nonatomic,strong)NSArray* replyViews;
+@property (nonatomic,strong)NSMutableArray* replyViews;
 @property (nonatomic,assign)float rowHigh;
 @property (nonatomic,strong)NSString *imageID;
 -(id)initWithNSDictionary:(NSDictionary*)dic;
