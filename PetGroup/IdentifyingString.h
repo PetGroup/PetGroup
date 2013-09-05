@@ -12,5 +12,5 @@
 
 +(BOOL)isValidatePassWord:(NSString*)password;//验证密码格式知否正确
 +(BOOL)validateMobile:(NSString* )mobile;//验证手机号格式是否正确
-
++(BOOL)isValidateIdentionCode:(NSString*)identionCode;//验证码格式
 @end

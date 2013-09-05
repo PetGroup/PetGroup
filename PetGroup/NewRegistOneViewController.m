@@ -9,9 +9,13 @@
 #import "NewRegistOneViewController.h"
 #import "NewRegistTwoViewController.h"
 #import "UserTreatyViewController.h"
+#import "IdentifyingString.h"
 
 @interface NewRegistOneViewController ()
-
+{
+    BOOL canNext;
+    UIActivityIndicatorView * act;
+}
 @property (nonatomic, strong) UITextField * phoneTF;
 
 @end
@@ -23,6 +27,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        canNext = NO;
     }
     return self;
 }
@@ -93,6 +98,9 @@
     _phoneTF.placeholder = @"请输入手机号";
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_phoneTF];
+    
+    act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(250, 100, 20, 20)];
+    [self.view addSubview:act];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,10 +115,55 @@
 }
 -(void)next
 {
-
-    NewRegistTwoViewController* newReg = [[NewRegistTwoViewController alloc]init];
-    newReg.phoneNo = self.phoneTF.text;
-    [self.navigationController pushViewController:newReg animated:YES];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:_phoneTF.text forKey:@"username"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"isUsernameInuse" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [act startAnimating];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"true"]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"该手机号已被注册" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+        }else{
+            [act stopAnimating];
+            [self puchNextView];
+        }
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [act stopAnimating];
+    }];
+}
+-(void)puchNextView
+{
+    if ([IdentifyingString validateMobile:_phoneTF.text]) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:_phoneTF.text forKey:@"phoneNum"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"getVerificationCode" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NewRegistTwoViewController* newReg = [[NewRegistTwoViewController alloc]init];
+            newReg.phoneNo = self.phoneTF.text;
+            [self.navigationController pushViewController:newReg animated:YES];
+        }];
+    }else{
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }
 }
 
 -(void)userTreaty:(UIGestureRecognizer*)gr
@@ -118,16 +171,6 @@
     ((UILabel*)gr.view).textColor = [UIColor blueColor];
     UserTreatyViewController* userTreatyVC = [[UserTreatyViewController alloc]init];
     [self.navigationController pushViewController:userTreatyVC animated:YES];
-}
-#pragma mark - PetRequest callback
-
--(void)callBack:(NSData*)data
-{
-    if (data == nil) {
-        
-    }else {
-        
-    }
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

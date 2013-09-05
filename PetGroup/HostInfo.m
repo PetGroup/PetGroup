@@ -13,16 +13,16 @@
 {
     self = [super init];
     if (self) {
-        self.userName = [info objectForKey:@"username"];
-        self.userId = [NSString stringWithFormat:@"%@",[info objectForKey:@"userid"]];
-        self.nickName = [info objectForKey:@"nickname"];
-        self.telNumber = [info objectForKey:@"username"];
-        self.gender = [info objectForKey:@"gender"];
-        self.age = [NSString stringWithFormat:@"%@",[info objectForKey:@"birthdate"]];
-        self.signature = [info objectForKey:@"signature"];
-        self.hobby = [info objectForKey:@"hobby"];
-        self.latitude = [NSString stringWithFormat:@"%@",[info objectForKey:@"latitude"]];
-        self.longitude = [NSString stringWithFormat:@"%@",[info objectForKey:@"longitude"]];
+        self.userName = ![[info objectForKey:@"username"] isKindOfClass:[NSNull class]]?[info objectForKey:@"username"]:@"";
+        self.userId = [NSString stringWithFormat:@"%@",![[info objectForKey:@"userid"] isKindOfClass:[NSNull class]]?[info objectForKey:@"userid"]:@""];
+        self.nickName = ![[info objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?[info objectForKey:@"nickname"]:@"";
+        self.telNumber = ![[info objectForKey:@"username"] isKindOfClass:[NSNull class]]?[info objectForKey:@"username"]:@"";
+        self.gender = ![[info objectForKey:@"gender"] isKindOfClass:[NSNull class]]?[info objectForKey:@"gender"]:@"";
+        self.age = [NSString stringWithFormat:@"%@",![[info objectForKey:@"birthdate"] isKindOfClass:[NSNull class]]?[info objectForKey:@"birthdate"]:@""];
+        self.signature = ![[info objectForKey:@"signature"] isKindOfClass:[NSNull class]]?[info objectForKey:@"signature"]:@"用户暂时还没有设置签名";
+        self.hobby = ![[info objectForKey:@"hobby"] isKindOfClass:[NSNull class]]?[info objectForKey:@"hobby"]:@"用户暂时还没有设置爱好";
+        self.latitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"latitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"latitude"]:@""];
+        self.longitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"longitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"longitude"]:@""];
         self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
         NSArray * petTempArray = [info objectForKey:@"petInfoViews"];
         NSMutableArray * tempArray = [NSMutableArray array];

@@ -164,49 +164,49 @@
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
-            origin+=80;
+            origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
                 originX+=80;
             }
-            origin+=160;
+            origin+=170;
         }else if(self.dynamic.smallImage.count>6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 70, 70);
+                a.frame = CGRectMake(originX, origin+160, 75, 75);
                 originX+=80;
             }
-            origin+=240;
+            origin+=255;
         }
         self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y, 260, origin-self.msgL.frame.origin.x-10);
     }else{
@@ -247,49 +247,49 @@
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
-            origin+=80;
+            origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
                 originX+=80;
             }
-            origin+=160;
+            origin+=170;
         }else if(self.dynamic.smallImage.count>6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 70, 70);
+                a.frame = CGRectMake(originX, origin, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 70, 70);
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
                 originX+=80;
             }
             originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 70, 70);
+                a.frame = CGRectMake(originX, origin+160, 75, 75);
                 originX+=80;
             }
-            origin+=240;
+            origin+=255;
         }
     }
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
