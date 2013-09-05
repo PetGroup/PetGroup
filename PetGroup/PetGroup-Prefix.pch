@@ -28,6 +28,12 @@
 #define BaseImageUrl @"http://123.178.27.74/pet/static/"
 #define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
 
+//#define BaseClientUrl @"http://192.168.2.118:8080/pet/client/request"
+////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
+//#define BaseCoreUrl @"http://192.168.2.118:8080/pet/core/request"
+//#define BaseImageUrl @"http://192.168.2.118:8080/pet/static/"
+//#define BaseUploadImageUrl @"http://192.168.2.118:8080/pet/client/upload"
+
 //define sender type
 #define COMMONUSER @"commonUser"
 #define PUBLICACCOUNT  @"publicAccount"
@@ -42,10 +48,13 @@
 #define LOCALTOKEN @"lovePetLocalToken"
 #define MACADDRESS @"lovepetmacaddress"
 
+#define PlaceHolder @"petGroup_thisisplaceholder..."
+
 #define ExceptCommonMsgCount 1   //首页除了显示普通用户消息还要显示的其他消息栏，目前只有打招呼一个
 #define ZhaoHuLan  @"新朋友"
 
 #define Host @"61.51.110.55" //@"202.43.152.172"
+//#define Host @"202.43.152.172"
 #define Domain @"@test.com"
 
 #define RootDocPath ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0])

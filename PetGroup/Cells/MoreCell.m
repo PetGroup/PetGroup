@@ -15,17 +15,17 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 30, 30)];
+        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 30, 30)];
         [self.headImageV setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:self.headImageV];
         
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 15, 100, 30)];
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 10, 100, 20)];
         [self.titleLabel setBackgroundColor:[UIColor clearColor]];
 //        [self.titleLabel setAdjustsFontSizeToFitWidth:YES];
         [self.titleLabel setTextColor:[UIColor blackColor]];
         [self.contentView addSubview:self.titleLabel];
         
-        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 22.7, 8.5, 12.5)];
+        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 12.7, 8.5, 12.5)];
         [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
         [self.contentView addSubview:arrow];
     }

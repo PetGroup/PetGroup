@@ -7,7 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface MyProfileViewController : UIViewController
+#import "XMLMatcher.h"
+#import "HostInfo.h"
+#import "HGPhotoWall.h"
+#import "PhotoWallCell.h"
+#import "TempData.h"
+#import "PetProfileCell.h"
+#import "ButtonCell.h"
+typedef  enum
+{
+    ActionSheetTypeChoosePic = 1,
+    ActionSheetTypeOperationPic
+}ActionSheetType;
+@interface MyProfileViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,HGPhotoWallDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@property (strong, nonatomic) HGPhotoWall *photoWall;
+@property (strong,nonatomic) UITableView * profileTableV;
+@property (strong,nonatomic) HostInfo * hostInfo;
+@property (strong,nonatomic) NSArray * titleArray;
+@property (assign,nonatomic) ActionSheetType actionSheetStyle;
+@property (strong,nonatomic) NSMutableArray * discribeArray;
+@property (strong,nonatomic) NSMutableArray * heightArray;
+@property (strong,nonatomic) NSMutableArray * placeHolderArray;
 
 @end
