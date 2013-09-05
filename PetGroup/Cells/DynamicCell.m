@@ -36,6 +36,7 @@
 @property (nonatomic,retain)UILabel* transmitMsgL;
 @property (nonatomic,retain)UILabel* beijingL;
 @property (nonatomic,retain)UILabel* zanL;
+@property (nonatomic,retain)UILabel* distancevL;
 @end
 @implementation DynamicCell
 
@@ -59,6 +60,10 @@
         [headB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
         headB.tintColor = [UIColor grayColor];
         [self.contentView addSubview:headB];
+        
+        self.distancevL = [[UILabel alloc]init];
+        _distancevL.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:_distancevL];
         
         self.transmitMsgL = [[UILabel alloc]init];
         [self.contentView addSubview:_transmitMsgL];
@@ -132,6 +137,8 @@
     [nameB setTitle:self.dynamic.name forState:UIControlStateNormal];
     CGSize nameSize = [self.dynamic.name sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
+    _distancevL.text = self.dynamic.distance;
+    _distancevL.frame = CGRectMake(150, 10, 50, 15);
     
     origin = 40;
     

@@ -326,6 +326,10 @@
     [self removeActionImageView];
     self.mycell = nil;
     [self keyBoardResign];
+    if (scrollView.contentSize.height<_tableV.frame.size.height+100) {
+        scrollView.contentSize = CGSizeMake(320, _tableV.frame.size.height+100);
+        scrollView.contentOffset = CGPointMake(0, 100);
+    }
     if (_tableV.contentOffset.y<0) {
         if (self.act == nil) {
             self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
