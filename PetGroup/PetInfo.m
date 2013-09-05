@@ -33,11 +33,16 @@
         self.firstHead = [imageArray objectAtIndex:0];
         return imageArray;
     }
-    else
+    else if(headImgStr.length>0)
     {
         NSArray * imageArray = [NSArray arrayWithObject:headImgStr];
         self.firstHead = headImgStr;
         return imageArray;
+    }
+    else
+    {
+        self.firstHead = headImgStr;
+        return nil;
     }
   
 }

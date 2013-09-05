@@ -16,7 +16,7 @@
 #import "ButtonCell.h"
 typedef  enum
 {
-    PageStyleAdd,
+    PageStyleAdd = 0,
     PageStyleChange
 }PageType;
 @interface MyPetProfileViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>

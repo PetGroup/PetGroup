@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class HGPhoto;
+#import "QuartzCore/QuartzCore.h"
+@class HGPhoto,HGPhotoWall;
 
 @protocol HGPhotoDelegate <NSObject>
 
@@ -24,9 +24,13 @@ typedef NS_ENUM(NSInteger, PhotoType) {
 };
 
 @interface HGPhoto : UIView
-
+{
+    CALayer*viewLayer;
+    
+}
 @property (assign) id<HGPhotoDelegate> delegate;
-
+@property (assign,nonatomic) BOOL wiggle;
+@property (assign,nonatomic) BOOL moved;
 - (id)initWithOrigin:(CGPoint)origin;
 
 - (void)setPhotoType:(PhotoType)type;

@@ -121,6 +121,9 @@
     for (id headID in imageArray) {
         [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,headID]];
     }
+    if (!imageArray) {
+        [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,@""]];
+    }
     return temp;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

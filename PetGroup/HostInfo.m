@@ -45,11 +45,13 @@
         NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
         return imageArray;
     }
-    else
+    else if(headImgStr.length>0)
     {
         NSArray * imageArray = [NSArray arrayWithObject:headImgStr];
         return imageArray;
     }
+    else
+        return nil;
     
     
 }

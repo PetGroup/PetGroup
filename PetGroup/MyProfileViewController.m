@@ -192,13 +192,13 @@
 
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
-    if (photoWall.tag==1) {
-        NSLog(@"1");
-    }
-    else
-    {
-        NSLog(@"2");
-    }
+    UIActionSheet *actionSheetTemp = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"取消"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"相册选择",@"拍照", nil];
+    actionSheetTemp.tag = ActionSheetTypeChoosePic;
+    [actionSheetTemp showInView:self.view];
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex
@@ -208,7 +208,13 @@
 
 - (void)photoWallAddAction
 {
-    
+    UIActionSheet *actionSheetTemp = [[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"取消"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"相册选择",@"拍照", nil];
+    actionSheetTemp.tag = ActionSheetTypeChoosePic;
+    [actionSheetTemp showInView:self.view];
 }
 
 - (void)photoWallAddFinish
@@ -219,6 +225,44 @@
 - (void)photoWallDeleteFinish
 {
     
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==ActionSheetTypeChoosePic) {
+        UIImagePickerController * imagePicker;
+        if (buttonIndex==1)
+            //这里捕捉“毁灭键”,其实该键的index是0，从上到下从0开始，称之为毁灭是因为是红的
+        {
+            if (imagePicker==nil) {
+                imagePicker=[[UIImagePickerController alloc]init];
+                imagePicker.delegate=self;
+                imagePicker.allowsEditing = YES;
+            }
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
+                [self presentModalViewController:imagePicker animated:YES];
+            }
+            else {
+                UIAlertView *cameraAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相机" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil];
+                [cameraAlert show];
+            }
+        }
+        else if (buttonIndex==0) {
+            if (imagePicker==nil) {
+                imagePicker=[[UIImagePickerController alloc]init];
+                imagePicker.delegate=self;
+                imagePicker.allowsEditing = YES;
+            }
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+                imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+                [self presentModalViewController:imagePicker animated:YES];
+            }
+            else {
+                UIAlertView *libraryAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相册" delegate:self cancelButtonTitle:@"了解" otherButtonTitles:nil];
+                [libraryAlert show];
+            }
+        }
+    }
 }
 -(void)back
 {

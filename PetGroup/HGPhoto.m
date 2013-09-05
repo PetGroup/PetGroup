@@ -7,7 +7,7 @@
 //
 
 #import "HGPhoto.h"
-
+#import "HGPhotoWall.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+AFNetworking.h"
 
@@ -107,6 +107,11 @@
 
 - (void)tapPress:(id)sender
 {
+    if (self.wiggle) {
+        self.moved = NO;
+        [viewLayer removeAllAnimations];
+        return;
+    }
     if ([self.delegate respondsToSelector:@selector(photoTaped:)]) {
         [self.delegate photoTaped:self];
     }
@@ -114,6 +119,27 @@
 
 - (void)handleLongPress:(id)sender
 {
+    HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
+    yyy.labelDescription.text = @"按住并拖动可移动照片位置，松开可执行删除";
+    for (UIView * it in self.superview.subviews) {
+        [[it layer] removeAllAnimations];
+    }
+    self.wiggle = YES;
+    viewLayer=[self layer];
+    CABasicAnimation*animation=[CABasicAnimation
+                                
+                                animationWithKeyPath:@"transform"];
+    animation.duration=0.2;
+    animation.repeatCount = MAXFLOAT;
+    animation.autoreverses=YES;
+    animation.fromValue=[NSValue valueWithCATransform3D:CATransform3DRotate
+                         
+                         (viewLayer.transform, -0.03, 0.0, 0.0, 0.03)];
+    animation.toValue=[NSValue valueWithCATransform3D:CATransform3DRotate
+                       
+                       (viewLayer.transform, 0.03, 0.0, 0.0, 0.03)];
+    [viewLayer addAnimation:animation forKey:@"wiggle"];
+    
     UILongPressGestureRecognizer *recognizer = sender;
     CGPoint point = [recognizer locationInView:self];
     
@@ -129,7 +155,13 @@
         if ([self.delegate respondsToSelector:@selector(photoMoveFinished:)]) {
             [self.delegate photoMoveFinished:self];
         }
+        if (self.moved) {
+            [viewLayer removeAllAnimations];
+            self.moved = NO;
+        }
+        
     } else {
+        self.moved = YES;
         diffx = point.x - self.pointOrigin.x;
         diffy = point.y - self.pointOrigin.y;
     }
@@ -138,6 +170,7 @@
     CGFloat originy = self.frame.origin.y +diffy;
     
     self.frame = CGRectMake(originx, originy, self.frame.size.width, self.frame.size.height);
+
 }
 
 @end

@@ -23,7 +23,7 @@ typedef  enum
     DescriptionTypeImage
 }DescriptionType;
 @interface HGPhotoWall : UIView
-
+@property (strong, nonatomic) UILabel *labelDescription;
 @property (assign) id<HGPhotoWallDelegate> delegate;
 @property (strong,nonatomic)UIView *bg;
 @property (assign,nonatomic)DescriptionType descriptionType;
@@ -31,5 +31,6 @@ typedef  enum
 - (void)setEditModel:(BOOL)canEdit;
 - (void)addPhoto:(NSString*)string;
 - (void)deletePhotoByIndex:(NSUInteger)index;
+-(void)setAnimationNO;
 
 @end

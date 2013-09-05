@@ -151,6 +151,7 @@
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
     [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+    [locationDict setObject:@"" forKey:@"city"];
     [locationDict setObject:theGender forKey:@"gender"];
     [locationDict setObject:theType forKey:@"type"];
     [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
@@ -221,9 +222,14 @@
     self.cheatUser = YES;
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
-    [locationDict setObject:theCity forKey:@"city"];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
+    [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
+    [locationDict setObject:@"假的" forKey:@"city"];
+    [locationDict setObject:theGender forKey:@"gender"];
+    [locationDict setObject:theType forKey:@"type"];
+    [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"cheatUser" forKey:@"method"];
+    [postDict setObject:@"getNearbyUser" forKey:@"method"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
@@ -267,9 +273,9 @@
     if (recArray.count<20) {
         self.canReq = NO; //如果请求数据小于20，说明已经没有数据，不能向下请求
     }
-    if (self.nearbyArray.count<10&&personOrPet) {
-        self.requestNextPage = YES;
-        [self getCheatUser];
+    if (self.nearbyArray.count<10&&personOrPet&&!self.cheatUser) {
+//        self.requestNextPage = YES;
+//        [self getCheatUser];
     }
 }
 -(int)getIndex:(NSArray *)recArray

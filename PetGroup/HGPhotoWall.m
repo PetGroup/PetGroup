@@ -14,7 +14,7 @@
 {
     
 }
-@property (strong, nonatomic) UILabel *labelDescription;
+
 
 @property (strong, nonatomic) NSArray *arrayPositions;
 @property (strong, nonatomic) NSMutableArray *arrayPhotos;
@@ -249,6 +249,15 @@
     float x = point.x - otherPoint.x;
     float y = point.y - otherPoint.y;
     return sqrt(x * x + y * y);
+}
+
+-(void)setAnimationNO
+{
+    for (HGPhoto * it in self.subviews) {
+        [[it layer] removeAllAnimations];
+        it.moved = NO;
+        it.wiggle = NO;
+    }
 }
 
 @end
