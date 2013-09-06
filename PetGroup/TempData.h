@@ -13,6 +13,7 @@
     BOOL panned;
     BOOL needConnectChatServer;
     NSString * serverAddress;
+    NSString * serverDomain;
     
     double latitude;
     double longitude;
@@ -26,8 +27,9 @@
 -(BOOL)ifPanned;
 -(void)needConnectChatServer:(BOOL)flag;
 -(BOOL)ifNeedConnectChatServer;
--(NSString *)GetServer;
--(void)SetServer:(NSString *)server;
+-(NSString *)getServer;
+-(NSString *)getDomain;
+-(void)SetServer:(NSString *)server TheDomain:(NSString *)domain;
 -(void)setLat:(double)lat Lon:(double)lon;
 -(double)returnLat;
 -(double)returnLon;

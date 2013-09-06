@@ -324,8 +324,12 @@
         NSArray * fri = [DSFriends MR_findAllSortedBy:@"nameKey" ascending:YES withPredicate:predicate];
         NSMutableArray * nameKeyArray = [NSMutableArray array];
         for (int i = 0; i<fri.count; i++) {
+            NSString * thename = [[fri objectAtIndex:i]userName];
             NSString * nameK = [[fri objectAtIndex:i]nameKey];
-            [nameKeyArray addObject:nameK];
+            if (![thename isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+                [nameKeyArray addObject:nameK];
+            }
+        
         }
         [array addObject:[nameIndexArray objectAtIndex:i]];
         [array addObject:nameKeyArray];
@@ -335,6 +339,17 @@
 
 }
 
++(NSMutableArray *)queryAllFriendsNickname
+{
+    NSMutableArray * array = [NSMutableArray array];
+    NSArray * fri = [DSFriends MR_findAll];
+    for (DSFriends * ggf in fri) {
+        NSArray * arry = [NSArray arrayWithObjects:ggf.nickName?ggf.nickName:@"1",ggf.userName, nil];
+        [array addObject:arry];
+    }
+    return array;
+}
+
 +(NSMutableDictionary *)queryAllFriends
 {
     NSArray * fri = [DSFriends MR_findAll];
@@ -342,13 +357,14 @@
     NSMutableDictionary * theDict = [NSMutableDictionary dictionary];
     for (int i = 0; i<fri.count; i++) {
         NSString * nameK = [[fri objectAtIndex:i]nameKey];
+        if (nameK)
         [nameKeyArray addObject:nameK];
         NSString * userName = [[fri objectAtIndex:i] userName];
         NSString * nickName = [[fri objectAtIndex:i] nickName];
         NSString * remarkName = [[fri objectAtIndex:i] remarkName];
         NSString * headImg = [DataStoreManager queryFirstHeadImageForUser:userName];
         NSString * signature = [[fri objectAtIndex:i] signature];
-        if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+        if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
             NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
             [friendDict setObject:userName forKey:@"userName"];
             [friendDict setObject:nickName?nickName:@"" forKey:@"nickName"];
@@ -388,9 +404,15 @@
                 dFriend = [DSFriends MR_createInContext:localContext];
             dFriend.userName = username;
             if (dFriend.nameKey.length<1) {
-                NSString * nameKey = [[DataStoreManager convertChineseToPinYin:username] stringByAppendingFormat:@"+%@",username];
-                dFriend.nameKey = nameKey;
-                dFriend.nameIndex = [[nameKey substringToIndex:1] uppercaseString];
+//                NSString * nameKey = [[DataStoreManager convertChineseToPinYin:username] stringByAppendingFormat:@"+%@",username];
+//                dFriend.nameKey = nameKey;
+//                dFriend.nameIndex = [[nameKey substringToIndex:1] uppercaseString];
+//                NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"index==[c]%@",dFriend.nameIndex];
+//                DSNameIndex * dFname = [DSNameIndex MR_findFirstWithPredicate:predicate2];
+//                if (!dFname)
+//                    dFname = [DSNameIndex MR_createInContext:localContext];
+//                
+//                dFname.index = dFriend.nameIndex;
             }
             
         }];
@@ -441,7 +463,7 @@
 {
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
-    if (dFriend) {
+    if (dFriend.headImgID) {
         NSRange range=[dFriend.headImgID rangeOfString:@","];
         if (range.location!=NSNotFound) {
             NSArray *imageArray = [dFriend.headImgID componentsSeparatedByString:@","];
@@ -481,24 +503,29 @@
             dFriend.age = age?age:@"";
             NSString * nameIndex;
             NSString * nameKey;
-            if (nickName) {
+            if (nickName.length>1) {
                 nameKey = [[DataStoreManager convertChineseToPinYin:nickName] stringByAppendingFormat:@"+%@",nickName];
                 dFriend.nameKey = nameKey;
                 nameIndex = [[nameKey substringToIndex:1] uppercaseString];
                 dFriend.nameIndex = nameIndex;
             }
-            else{
-                nameKey = [[DataStoreManager convertChineseToPinYin:myUserName] stringByAppendingFormat:@"+%@",myUserName];;
-                dFriend.nameKey = nameKey;
-                nameIndex = [[nameKey substringToIndex:1] uppercaseString];
-                dFriend.nameIndex = nameIndex;
-            }
+//            else{
+//                nameKey = [[DataStoreManager convertChineseToPinYin:myUserName] stringByAppendingFormat:@"+%@",myUserName];;
+//                dFriend.nameKey = nameKey;
+//                nameIndex = [[nameKey substringToIndex:1] uppercaseString];
+//                dFriend.nameIndex = nameIndex;
+//            }
             if (![myUserName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+                if (nickName.length>1) {
                 NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"index==[c]%@",nameIndex];
                 DSNameIndex * dFname = [DSNameIndex MR_findFirstWithPredicate:predicate2];
                 if (!dFname)
                     dFname = [DSNameIndex MR_createInContext:localContext];
+                
                 dFname.index = nameIndex;
+                }
+            
+                
             }
         }];
         [self storePetInfo:myInfo];
@@ -573,7 +600,7 @@
 
 +(NSString *)toString:(id)object
 {
-    return [NSString stringWithFormat:@"%@",object];
+    return [NSString stringWithFormat:@"%@",object?object:@""];
 }
 #pragma mark - 打招呼存储相关
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict

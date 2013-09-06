@@ -57,14 +57,21 @@ static TempData *sharedInstance=nil;
 {
     return needConnectChatServer;
 }
--(void)SetServer:(NSString *)server
+-(void)SetServer:(NSString *)server TheDomain:(NSString *)idomain
 {
     serverAddress = server;
+    serverDomain = idomain;
 }
--(NSString *)GetServer
+-(NSString *)getServer
 {
     return serverAddress;
 }
+
+-(NSString *)getDomain
+{
+    return [NSString stringWithFormat:@"@%@",serverDomain];
+}
+
 -(void)setLat:(double)lat Lon:(double)lon
 {
     latitude = lat;
