@@ -13,13 +13,13 @@
 {
     self = [super init];
     if (self) {
-        self.petNickname = [info objectForKey:@"nickname"];
-        self.petType = [NSString stringWithFormat:@"%@",[info objectForKey:@"type"]];
-        self.petTrait = [info objectForKey:@"trait"];
+        self.petNickname = ![[info objectForKey:@"nickname"]isKindOfClass:[NSNull class]]?[info objectForKey:@"nickname"]:@"宠物";
+        self.petType = [NSString stringWithFormat:@"%@",![[info objectForKey:@"type"]isKindOfClass:[NSNull class]]?[info objectForKey:@"type"]:@""];
+        self.petTrait = ![[info objectForKey:@"trait"] isKindOfClass:[NSNull class]]?[info objectForKey:@"trait"]:@"平凡";
         self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
-        self.petGender = [info objectForKey:@"gender"];
-        self.petAge = [NSString stringWithFormat:@"%@",[info objectForKey:@"birthdate"]];
-        self.hostID = [NSString stringWithFormat:@"%@",[info objectForKey:@"userid"]];
+        self.petGender = [info objectForKey:@"gender"]?[info objectForKey:@"gender"]:@"";
+        self.petAge = [NSString stringWithFormat:@"%@",[info objectForKey:@"birthdate"]?[info objectForKey:@"birthdate"]:@""];
+        self.hostID = [NSString stringWithFormat:@"%@",[info objectForKey:@"userid"]?[info objectForKey:@"userid"]:@""];
         
     }
     return self;

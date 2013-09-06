@@ -60,6 +60,11 @@
         }
     }
     [self.view addSubview:splashImageView];
+    if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
+        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
+        NSString * macAddress = [dv macaddress];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:macAddress forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    }
     
     NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -115,11 +120,7 @@
 {
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
-    if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
-        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
-        NSString * macAddress = [dv macaddress];
-        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:macAddress forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    }
+
     [postDict setObject:userInfoDict forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
     [postDict setObject:@"open" forKey:@"method"];

@@ -7,8 +7,7 @@
 //
 
 #import "NetManager.h"
-#import "ImageHelper.h"
-#define CompressionQuality 0.3  //图片上传时压缩质量
+#define CompressionQuality 1  //图片上传时压缩质量
 @implementation NetManager
 
 //post请求，需自己设置失败提示
@@ -52,7 +51,9 @@
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSData *imageData = UIImageJPEGRepresentation(uploadImage, CompressionQuality);
+    UIImage* a = [NetManager compressImageDownToPhoneScreenSize:uploadImage targetSizeX:100 targetSizeY:100];
+    UIImage* upImage = [NetManager image:a centerInSize:CGSizeMake(100, 100)];
+    NSData *imageData = UIImageJPEGRepresentation(upImage, CompressionQuality);
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
@@ -108,5 +109,53 @@
         } failure:failure];
     }
 }
+//图片压缩 两个方法组合
++(UIImage*)compressImageDownToPhoneScreenSize:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY
+{
+	
+	UIImage * bigImage = theImage;
+	
+	float actualHeight = bigImage.size.height;
+	float actualWidth = bigImage.size.width;
+	
+	float imgRatio = actualWidth / actualHeight;
+	if(actualWidth > sizeX || actualHeight > sizeY)
+	{
+		float maxRatio = sizeX / sizeY;
+		
+		if(imgRatio < maxRatio){
+            imgRatio = sizeX / actualWidth;
+			actualHeight = imgRatio * actualHeight;
+			actualWidth = sizeX;
+		} else {
+            imgRatio = sizeY / actualHeight;
+			actualWidth = imgRatio * actualWidth;
+			actualHeight = sizeY;
 
+		}
+        
+	}
+	CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+	UIGraphicsBeginImageContext(rect.size);
+	[bigImage drawInRect:rect];  // scales image to rect
+	theImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return theImage;
+}
++ (UIImage *) image: (UIImage *) image centerInSize: (CGSize) viewsize
+{
+	CGSize size = image.size;
+	
+	UIGraphicsBeginImageContext(viewsize);
+	float dwidth = (viewsize.width - size.width) / 2.0f;
+	float dheight = (viewsize.height - size.height) / 2.0f;
+	
+	CGRect rect = CGRectMake(dwidth, dheight, size.width, size.height);
+	[image drawInRect:rect];
+	
+    UIImage *newimg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+	
+    return newimg;
+}
 @end

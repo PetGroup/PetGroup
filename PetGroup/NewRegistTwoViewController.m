@@ -8,6 +8,7 @@
 
 #import "NewRegistTwoViewController.h"
 #import "NewRegistThreeViewController.h"
+#import "IdentifyingString.h"
 
 @interface NewRegistTwoViewController ()
 {
@@ -99,7 +100,6 @@
     self.identifyingCodeTF = [[UITextField alloc]initWithFrame:CGRectMake(32.25, 150, 255.5, 20)];
     _identifyingCodeTF.placeholder = @"请输入验证码";
     _identifyingCodeTF.textAlignment = NSTextAlignmentCenter;
-    _identifyingCodeTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_identifyingCodeTF];
     
     reGetB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -122,6 +122,21 @@
 #pragma mark - button action
 -(void)reGetIdentifyingCode
 {
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:self.phoneNo forKey:@"phoneNum"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getVerificationCode" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"验证码已重新发送到您的手机" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }];
     [reGetB setTitle:@"重新发送验证码（60s）" forState:UIControlStateNormal];
     reGetB.userInteractionEnabled = NO;
     if (timer != nil) {
@@ -146,18 +161,39 @@
 }
 -(void)next
 {
-    NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
-    newReg.phoneNo = self.phoneNo;
-    [self.navigationController pushViewController:newReg animated:YES];
-}
-#pragma mark - PetRequest callback
--(void)callBack:(NSData*)data
-{
-    if (data == nil) {
-        
-    }else {
-        
+    if ([IdentifyingString isValidateIdentionCode:_identifyingCodeTF.text]) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:self.phoneNo forKey:@"phoneNum"];
+        [params setObject:_identifyingCodeTF.text forKey:@"verificationCode"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"verifyCode" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
+                NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
+                newReg.phoneNo = self.phoneNo;
+                [self.navigationController pushViewController:newReg animated:YES];
+            }else{
+                [self showAlertView];
+            }
+        }];
+    }else{
+        [self showAlertView];
     }
+    
+    
+}
+-(void)showAlertView
+{
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确得验证码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    [alert show];
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

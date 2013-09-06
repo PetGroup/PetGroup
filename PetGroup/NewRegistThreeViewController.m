@@ -8,8 +8,9 @@
 
 #import "NewRegistThreeViewController.h"
 #import "DedLoginViewController.h"
+#import "IdentifyingString.h"
 
-@interface NewRegistThreeViewController ()
+@interface NewRegistThreeViewController ()<UITextFieldDelegate>
 {
     UIButton * manB;
     UIButton * womanB;
@@ -159,16 +160,19 @@
     self.nameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 90, 175, 20)];
     _nameTF.placeholder = @"不少于6位且不要过于简单";
     _nameTF.font = [UIFont systemFontOfSize:13];
+    _nameTF.delegate = self;
     [self.view addSubview:_nameTF];
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 130, 175, 20)];
     _passWordTF.placeholder = @"再次输入密码";
     _passWordTF.font = [UIFont systemFontOfSize:13];
+    _passWordTF.delegate = self;
     [self.view addSubview:_passWordTF];
     
     self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 200, 175, 20)];
     _nickNameTF.placeholder = @"使用真实姓名方便别人找到你";
     _nickNameTF.font = [UIFont systemFontOfSize:13];
+    _nickNameTF.delegate = self;
     [self.view addSubview:_nickNameTF];
     
     manB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -197,7 +201,7 @@
     
     self.cityTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 340, 0, 0)];
     [self.view addSubview:_cityTF];
-    
+    _cityTF.delegate = self;
     self.cityPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
     _cityPV.dataSource = self;
     _cityPV.delegate = self;
@@ -213,6 +217,7 @@
     
     self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 382, 0, 0)];
     [self.view addSubview:_ageTF];
+    _ageTF.delegate = self;
     
     self.agePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
     _agePV.showsSelectionIndicator = YES; 
@@ -262,20 +267,56 @@
 }
 -(void)next
 {
-    //    if ([self validateMobile:self.phoneTF.text]) {
-    //        if (self.request != nil) {
-    //            [_request cancelRequest];
-    //        }
-    //        _request  = [[PetRequest alloc]init];
-    //
-    //        return;
-    //    }
-    //    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"了解" otherButtonTitles: nil];
-    //    [alert show];
-    
-    //text
-    DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
-    [self.navigationController pushViewController:newReg animated:YES];
+    if (![IdentifyingString isValidatePassWord:_nameTF.text]) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的密码格式" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (![_passWordTF.text isEqualToString:_nameTF.text]) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请确保两次密码输入一致" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (_nickNameTF.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入昵称" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (self.sexS == nil) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择你的性别" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (_cityL.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您所在得城市" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (_ageL.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您的年龄" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:self.phoneNo forKey:@"username"];
+    [params setObject:_passWordTF.text forKey:@"password"];
+    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
+    [params setObject:self.phoneNo forKey:@"phonenumber"];
+    [params setObject:@"" forKey:@"email"];
+    [params setObject:@"" forKey:@"deviceId"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"register" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
+        [self.navigationController pushViewController:newReg animated:YES];
+    }];
 }
 -(void)selectCity
 {
@@ -289,23 +330,31 @@
 {
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-click"] forState:UIControlStateNormal];
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
-    self.sexS = @"男";
+    self.sexS = @"male";
+    [self allTextFieldResignFirstResponder];
 }
 -(void)setSexIsWoman
 {
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-click"] forState:UIControlStateNormal];
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
-    self.sexS = @"女";
+    self.sexS = @"female";
+    [self allTextFieldResignFirstResponder];
 }
 -(void)didselectCity
 {
     self.cityL.text = [NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]];
     [_cityTF resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    }];
 }
 -(void)didselectAge
 {
     self.ageL.text = _ageArray[[_agePV selectedRowInComponent:0]];
     [_ageTF resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    }];
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -319,10 +368,10 @@
     [_nameTF resignFirstResponder];
     [_passWordTF resignFirstResponder];
     [_nickNameTF resignFirstResponder];
-    self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    }];
 }
-#pragma mark - PetRequest callback
-
 #pragma mark - UIPicker View delegate and data source
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -358,6 +407,43 @@
         if (component == 0) {
             self.cityArray = [self.ProvinceArray[row] objectForKey:@"city"];
             [_cityPV reloadComponent:1];
+        }
+    }
+}
+#pragma mark - UITextField dele
+- (void)textFieldDidBeginEditing:(UITextField *)textField;
+{
+    if (iPhone5) {
+        if (textField == _nickNameTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -60, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _cityTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -140, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _ageTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -140, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+    }else{
+        if (textField == _nickNameTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -160, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _cityTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -200, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _ageTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -200, self.view.frame.size.width, self.view.frame.size.height);
+            }];
         }
     }
 }

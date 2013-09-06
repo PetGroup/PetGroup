@@ -70,11 +70,11 @@
         }
     }
     if (self.smallImage.count>=1&&self.smallImage.count<=3) {
-        self.rowHigh+=80;
+        self.rowHigh+=85;
     }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-        self.rowHigh+=160;
+        self.rowHigh+=170;
     }else if(self.smallImage.count>6){
-        self.rowHigh+=240;
+        self.rowHigh+=255;
     }
 //    self.rowHigh +=20*self.replyViews.count;
     return self;
