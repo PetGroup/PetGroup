@@ -66,4 +66,5 @@
 +(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username;
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName;
 +(void)qureyAllFriends;
++(NSMutableArray *)queryAllFriendsNickname;
 @end

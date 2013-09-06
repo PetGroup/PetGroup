@@ -250,7 +250,9 @@
                // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
                 if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]) {
                     [self.rosters addObject:sender];
+                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
                     [DataStoreManager addFriendToLocal:sender];
+                    //[DataStoreManager saveUserInfo:dict];
                 }
             }
         }

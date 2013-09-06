@@ -264,6 +264,10 @@
         }
     }
 }
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSLog(@"%@",info);
+}
 -(void)back
 {
     [[TempData sharedInstance] Panned:NO];

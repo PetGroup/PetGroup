@@ -411,6 +411,7 @@
         alert.tag = 21;
         [alert show];
     }
+    [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     [self saveMyInfo:[dict objectForKey:@"petUserView"]];
     [self logInToChatServer];
 }
@@ -419,7 +420,7 @@
 {
     self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
-    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:Domain] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:Host success:^(void){
+    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
         NSLog(@"登陆成功xmpp");
         self.appDel.xmppHelper.buddyListDelegate = self;
         self.appDel.xmppHelper.chatDelegate = self;
@@ -529,7 +530,7 @@
 }
 -(void)makeLogFailurePrompt
 {
-    
+    titleLabel.text = @"消息(未连接)";
 }
 - (void)didReceiveMemoryWarning
 {

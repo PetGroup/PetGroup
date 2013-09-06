@@ -58,7 +58,7 @@
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    //   // Reachability * reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+       // Reachability * reach2 = [Reachability reachabilityWithHostname:@"www.google.com"];
     Reachability * reach = [Reachability reachabilityForInternetConnection];
     if (reach) {
         // messageV->titleLabel.text=@"消息";

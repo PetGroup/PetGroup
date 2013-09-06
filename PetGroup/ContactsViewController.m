@@ -110,9 +110,13 @@
     friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
     [friendsArray sortUsingSelector:@selector(compare:)];
     [self.contactsTable reloadData];
-    for (int i = 0; i<friendsArray.count; i++) {
-        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
-            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
+    NSMutableArray * tempF = [DataStoreManager queryAllFriendsNickname];
+    for (int i = 0; i<tempF.count; i++) {
+//        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
+//            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
+//        }
+        if ([[[tempF objectAtIndex:i] objectAtIndex:0] length]<=1) {
+            [self getFriendInfo:[[tempF objectAtIndex:i] objectAtIndex:1] withIndex:i];
         }
     }
 }
