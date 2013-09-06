@@ -12,6 +12,8 @@
 {
     int clicked;
 }
+@property (nonatomic,strong)NSString* hostIMG;
+@property (nonatomic,strong)NSString* petIMG;
 @property (nonatomic,strong)UIImageView* hostPhoto;
 @property (nonatomic,strong)UIImageView* petPhoto;
 
@@ -98,7 +100,6 @@
         UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
         backButton.frame=CGRectMake(0, 0, 80, 44);
         [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
-        //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
         [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [self.view addSubview:backButton];
         [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -150,6 +151,74 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma mark - upload image
+-(void)uploadUserImage
+{
+    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:@"" ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        
+    } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString* a = [operation responseString];
+        [NetManager uploadImage:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            
+        } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString* b = [operation responseString];
+            self.hostIMG = [NSString stringWithFormat:@"%@_%@,",a,b];
+            [self updataUserAndPetInFo];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self showAlertView];
+    }];
+}
+-(void)uploadPetImage
+{
+    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        
+    } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString* a = [operation responseString];
+        [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:@"" ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            
+        } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString* b = [operation responseString];
+            self.petIMG = [NSString stringWithFormat:@"%@_%@,",a,b];
+            [self uploadUserImage];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self showAlertView];
+    }];
+}
+-(void)updataUserAndPetInFo
+{
+    if (self.petType == PetTypeStyleNone) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }else{
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
+}
+-(void)saveUserInfo:(NSDictionary*)dic
+{
+    
+}
+-(void)savePetInfo:(NSDictionary*)dic
+{
+    
+}
+-(void)showAlertView
+{
+    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    [alert show];
+}
 #pragma mark - button action
 -(void)backButton:(UIButton*)button
 {
@@ -157,7 +226,11 @@
 }
 -(void)next
 {
-    
+    if (self.petType == PetTypeStyleNone) {
+        [self uploadUserImage];
+    }else{
+        [self uploadPetImage];
+    }
 }
 -(void)btnClicked:(UIButton *)sender
 {

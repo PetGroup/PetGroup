@@ -16,6 +16,7 @@
     UIButton * typeB;
     UIButton * ageB;
 }
+@property (nonatomic,strong) NSString* trait;
 @property (nonatomic ,strong) NSMutableArray* ageArray;
 @property (nonatomic ,strong) NSArray* typeArray;
 @property (nonatomic,strong)UIPickerView* typePV;
@@ -37,6 +38,7 @@
         self.ageArray = [[NSMutableArray alloc]init];
         for (int i = 1; i <= 100; i++) {
             [_ageArray addObject:[NSString stringWithFormat:@"%d",i]];
+            self.sexS = nil;
         }
     }
     return self;
@@ -56,7 +58,6 @@
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
-    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -88,14 +89,17 @@
     [self.view addSubview:petIV];
     switch (self.petType) {
         case 1:{
+            self.trait = @"一只平凡的狗";
             petIV.image = [UIImage imageNamed:@"xuanzegou"];
             self.typeArray = [XMLMatcher allDogs];
         }break;
         case 2:{
+            self.trait = @"一只平凡的猫";
             petIV.image = [UIImage imageNamed:@"xuanzemao"];
             self.typeArray = [XMLMatcher allCats];
         }break;
         case 3:{
+            self.trait = @"一只平凡的宠物";
             petIV.image = [UIImage imageNamed:@"xuanzeqita"];
             self.typeArray = [XMLMatcher allother];
         }break;
@@ -149,13 +153,13 @@
     [self.view addSubview:womanB];
     
     UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 250, 20, 20)];
-    manL.text = @"男";
+    manL.text = @"公";
     manL.textColor = [UIColor grayColor];
     manL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:manL];
     
     UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 250, 20, 20)];
-    womanL.text = @"女";
+    womanL.text = @"母";
     womanL.textColor = [UIColor grayColor];
     womanL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:womanL];
@@ -227,21 +231,77 @@
 }
 -(void)next
 {
-    UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
-    upLoadVC.petType = self.petType;
-    [self.navigationController pushViewController:upLoadVC animated:YES];
+    if (self.sexS == nil) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物的性别" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (self.typeL.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物的品种" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (self.ageL.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物的年龄" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:_typeL.text forKey:@"nickname"];
+    [params setObject:[self fendTypeCodeWithString] forKey:@"type"];
+    [params setObject:@""forKey:@"img"];
+    [params setObject:self.trait forKey:@"trait"];
+    [params setObject:self.sexS forKey:@"gender"];
+    [params setObject:self.ageL.text forKey:@"birthdate"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"savePetinfo" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self savePetInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+        UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
+        upLoadVC.petType = self.petType;
+        [self.navigationController pushViewController:upLoadVC animated:YES];
+    }];
+}
+-(void)savePetInFo:(NSDictionary*)dic
+{
+    
+}
+-(NSNumber*)fendTypeCodeWithString
+{
+    switch (self.petType) {
+        case 1:{
+            return [XMLMatcher typeWithString1:@"Dog" andString2:_typeL.text];
+        }break;
+        case 2:{
+            return [XMLMatcher typeWithString1:@"Cat" andString2:_typeL.text];
+        }break;
+        case 3:{
+            return [XMLMatcher typeWithString1:@"Other" andString2:_typeL.text];
+        }break;
+        default:
+            return 0;
+            break;
+    }
 }
 -(void)setSexIsMan
 {
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-click"] forState:UIControlStateNormal];
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
-    self.sexS = @"男";
+    self.sexS = @"male";
 }
 -(void)setSexIsWoman
 {
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-click"] forState:UIControlStateNormal];
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
-    self.sexS = @"女";
+    self.sexS = @"female";
 }
 -(void)selectCity
 {

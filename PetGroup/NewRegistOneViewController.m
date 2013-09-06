@@ -10,11 +10,12 @@
 #import "NewRegistTwoViewController.h"
 #import "UserTreatyViewController.h"
 #import "IdentifyingString.h"
+#import "MBProgressHUD.h"
 
-@interface NewRegistOneViewController ()
+@interface NewRegistOneViewController ()<MBProgressHUDDelegate>
 {
     BOOL canNext;
-    UIActivityIndicatorView * act;
+    MBProgressHUD * hud;
 }
 @property (nonatomic, strong) UITextField * phoneTF;
 
@@ -99,8 +100,10 @@
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_phoneTF];
     
-    act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(250, 100, 20, 20)];
-    [self.view addSubview:act];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,19 +129,19 @@
     [body setObject:params forKey:@"params"];
     [body setObject:@"isUsernameInuse" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [act startAnimating];
+    [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"true"]) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"该手机号已被注册" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
         }else{
-            [act stopAnimating];
+            [hud hide:YES];
             [self puchNextView];
         }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
-        [act stopAnimating];
+        [hud hide:YES];
     }];
 }
 -(void)puchNextView

@@ -85,7 +85,7 @@
 {
     NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
-        [NetManager uploadImageWithCompres:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager uploadImageWithCompres:[imageArray objectAtIndex:i] WithURLStr:urlStr ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSString *response = [operation responseString];
                 [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
                 if (reponseStrArray.count==imageArray.count) {
@@ -100,7 +100,7 @@
 {
     NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
-        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:BaseUploadImageUrl ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:urlStr ImageName:[imageNameArray objectAtIndex:i] Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString *response = [operation responseString];
             [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
             if (reponseStrArray.count==imageArray.count) {

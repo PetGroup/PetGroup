@@ -9,6 +9,8 @@
 #import "NewRegistThreeViewController.h"
 #import "DedLoginViewController.h"
 #import "IdentifyingString.h"
+#import <CoreLocation/CoreLocation.h>
+#import "TempData.h"
 
 @interface NewRegistThreeViewController ()<UITextFieldDelegate>
 {
@@ -306,6 +308,9 @@
     [params setObject:self.phoneNo forKey:@"phonenumber"];
     [params setObject:@"" forKey:@"email"];
     [params setObject:@"" forKey:@"deviceId"];
+    [params setObject:self.sexS forKey:@"gender"];
+    [params setObject:self.ageL.text forKey:@"birthdate"];
+    [params setObject:self.cityL.text forKey:@"city"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -314,13 +319,35 @@
     [body setObject:@"register" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
         [self.navigationController pushViewController:newReg animated:YES];
     }];
 }
+-(void)saveSelfUserInFo:(NSDictionary*)dic
+{
+    NSLog(@"%@",dic);
+}
 -(void)selectCity
 {
     [_cityTF becomeFirstResponder];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    CLLocation* location = [[CLLocation alloc]initWithLatitude:[[TempData sharedInstance] returnLat] longitude:[[TempData sharedInstance] returnLon]];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray* placemarks,NSError *error)
+     {
+         if (placemarks.count >0   )
+         {
+             CLPlacemark * plmark = [placemarks objectAtIndex:0];
+             NSString* state = plmark.subAdministrativeArea;
+             for (int i = 0; i<self.ProvinceArray.count; i++) {
+                 if ([state isEqualToString:[self.ProvinceArray[i] objectForKey:@"Province"]]) {
+                     [_cityPV selectRow:i inComponent:0 animated:YES];
+                     break;
+                 }
+             }
+             
+         }
+     }];
 }
 -(void)selectAge
 {
