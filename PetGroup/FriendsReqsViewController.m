@@ -95,6 +95,7 @@
     else if([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"rejected"]){
         cell.agreeBtn.hidden = YES;
         [cell.rejectBtn setTitle:@"已拒绝" forState:UIControlStateNormal];
+        [cell.rejectBtn setEnabled:NO];
     }
     else if([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"waiting"]){
         cell.agreeBtn.hidden = NO;

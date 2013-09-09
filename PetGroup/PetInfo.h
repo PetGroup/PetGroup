@@ -13,6 +13,7 @@
 @property (strong,nonatomic) NSString * petType;
 @property (strong,nonatomic) NSString * petTrait;
 @property (strong,nonatomic) NSArray * headImgArray;
+@property (strong,nonatomic) NSArray * headBigImgArray;
 @property (strong,nonatomic) NSString * petGender;
 @property (strong,nonatomic) NSString * petAge;
 @property (strong,nonatomic) NSString * hostID;

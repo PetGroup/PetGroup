@@ -91,11 +91,20 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self toLoginPage];
-    return;
-    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    if ([[TempData sharedInstance] needChat]) {
+        NSDictionary * theDict = (NSDictionary *)[DataStoreManager queryOneFriendInfoWithUserName:[[TempData sharedInstance] getNeedChatUser]];
+        KKChatController * kkchat = [[KKChatController alloc] init];
+        kkchat.chatWithUser = [theDict objectForKey:@"username"];
+        kkchat.nickName = [theDict objectForKey:@"nickname"];
+        kkchat.chatUserImg = [DataStoreManager queryFirstHeadImageForUser:[theDict objectForKey:@"username"]];
+        [self.navigationController pushViewController:kkchat animated:YES];
+        kkchat.msgDelegate = self;
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        [[TempData sharedInstance] setNeedChatNO];
+    }
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"ghost" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"94e0aed4-5cc8-4f00-bdce-c012089651b9" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [SFHFKeychainUtils storeUsername:USERNICKNAME andPassword:@"ewew" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
         

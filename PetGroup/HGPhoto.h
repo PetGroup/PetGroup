@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "QuartzCore/QuartzCore.h"
+#import "EGOImageView.h"
 @class HGPhoto,HGPhotoWall;
 
 @protocol HGPhotoDelegate <NSObject>
@@ -15,6 +16,7 @@
 @optional
 - (void)photoTaped:(HGPhoto*)photo;
 - (void)photoMoveFinished:(HGPhoto*)photo;
+- (void)delPhoto:(HGPhoto *)photo;
 
 @end
 
@@ -26,11 +28,14 @@ typedef NS_ENUM(NSInteger, PhotoType) {
 @interface HGPhoto : UIView
 {
     CALayer*viewLayer;
+    UIButton * delBtn;
     
 }
 @property (assign) id<HGPhotoDelegate> delegate;
 @property (assign,nonatomic) BOOL wiggle;
 @property (assign,nonatomic) BOOL moved;
+@property (assign,nonatomic) BOOL useCache;
+
 - (id)initWithOrigin:(CGPoint)origin;
 
 - (void)setPhotoType:(PhotoType)type;
@@ -38,5 +43,6 @@ typedef NS_ENUM(NSInteger, PhotoType) {
 - (void)setPhotoUrl:(NSString*)photoUrl;
 - (void)moveToPosition:(CGPoint)point;
 - (void)setEditModel:(BOOL)edit;
+-(void)SetPhotoUrlWithCache:(NSString *)url;
 
 @end

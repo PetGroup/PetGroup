@@ -366,8 +366,8 @@
         NSString * signature = [[fri objectAtIndex:i] signature];
         if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
             NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:userName forKey:@"userName"];
-            [friendDict setObject:nickName?nickName:@"" forKey:@"nickName"];
+            [friendDict setObject:userName forKey:@"username"];
+            [friendDict setObject:nickName?nickName:@"" forKey:@"nickname"];
             if (remarkName) {
                 [friendDict setObject:remarkName forKey:@"displayName"];    
             }
@@ -561,6 +561,42 @@
             dPet.petID = petID?petID:@"";
         }];
     }
+}
+
++(NSMutableDictionary *)queryOneFriendInfoWithUserName:(NSString *)userName
+{
+    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+    DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
+    if (dFriend) {
+        [dict setObject:dFriend.userName forKey:@"username"];
+        [dict setObject:dFriend.userId forKey:@"userid"];
+        [dict setObject:dFriend.nickName forKey:@"nickname"];
+        [dict setObject:dFriend.gender forKey:@"gender"];
+        [dict setObject:dFriend.signature forKey:@"signature"];
+        [dict setObject:dFriend.hobby forKey:@"hobby"];
+        [dict setObject:@"0" forKey:@"latitude"];
+        [dict setObject:@"0" forKey:@"longitude"];
+        [dict setObject:dFriend.age forKey:@"birthdate"];
+        [dict setObject:dFriend.headImgID forKey:@"img"];
+        NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"friendName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        NSArray * tempArray = [DSPets MR_findAllWithPredicate:predicate2];
+        NSMutableArray * petArray = [NSMutableArray array];
+        for (DSPets * petThis in tempArray) {
+            NSMutableDictionary * petDict = [NSMutableDictionary dictionary];
+            [petDict setObject:petThis.petNickname forKey:@"nickname"];
+            [petDict setObject:petThis.petType forKey:@"type"];
+            [petDict setObject:petThis.petTrait forKey:@"trait"];
+            [petDict setObject:petThis.petGender forKey:@"gender"];
+            [petDict setObject:petThis.petAge forKey:@"birthdate"];
+            [petDict setObject:petThis.petHeadImgID forKey:@"img"];
+            [petArray addObject:petDict];
+        }
+        [dict setObject:petArray forKey:@"petInfoViews"];
+        
+    }
+    return dict;
+
 }
 
 +(NSDictionary *)queryMyInfo

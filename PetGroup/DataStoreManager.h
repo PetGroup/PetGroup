@@ -55,7 +55,7 @@
 +(NSString *)getMyUserID;
 +(void)saveUserInfo:(NSDictionary *)myInfo;
 +(NSDictionary *)queryMyInfo;
-
++(NSMutableDictionary *)queryOneFriendInfoWithUserName:(NSString *)userName;
 +(NSString *)qureyUnreadForReceivedHellos;
 +(void)blankReceivedHellosUnreadCount;
 

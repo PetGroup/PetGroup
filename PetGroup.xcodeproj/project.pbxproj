@@ -525,6 +525,7 @@
 		97E25C3217C35367007E187D /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3117C35367007E187D /* NetManager.m */; };
 		97E25C3517C360E7007E187D /* MakeDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3417C360E7007E187D /* MakeDict.m */; };
 		97E25C3D17C3729A007E187D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E25C3F17C3729A007E187D /* Localizable.strings */; };
+		97E49B0117DD7CA7001ECD09 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E49B0017DD7CA7001ECD09 /* ReportViewController.m */; };
 		97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17917D596C2003A4A4C /* NormalPetDetailViewController.m */; };
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
@@ -1346,6 +1347,8 @@
 		97E25C3817C37177007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		97E25C3E17C3729A007E187D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		97E49AFF17DD7CA6001ECD09 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		97E49B0017DD7CA7001ECD09 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSUnreadCount.h; sourceTree = "<group>"; };
 		97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSUnreadCount.m; sourceTree = "<group>"; };
 		97E9D17817D596C1003A4A4C /* NormalPetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalPetDetailViewController.h; sourceTree = "<group>"; };
@@ -1636,6 +1639,8 @@
 				97DB08F917C5A1EE000EC195 /* MyProfileViewController.m */,
 				97DB08FB17C5A1FF000EC195 /* MyPetProfileViewController.h */,
 				97DB08FC17C5A1FF000EC195 /* MyPetProfileViewController.m */,
+				97E49AFF17DD7CA6001ECD09 /* ReportViewController.h */,
+				97E49B0017DD7CA7001ECD09 /* ReportViewController.m */,
 			);
 			name = PersonalCenterView;
 			sourceTree = "<group>";
@@ -3743,6 +3748,7 @@
 				9727937817D9C8380001E863 /* OHAttributedLabel.m in Sources */,
 				9727937917D9C8380001E863 /* RegexKitLite.m in Sources */,
 				9727937A17D9C8380001E863 /* SCGIFImageView.m in Sources */,
+				97E49B0117DD7CA7001ECD09 /* ReportViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

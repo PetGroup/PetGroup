@@ -7,8 +7,10 @@
 //
 
 #import "PersonDetailViewController.h"
+#import "AppDelegate.h"
+#import "XMPPHelper.h"
 #import "CustomTabBar.h"
-
+#import "JSON.h"
 @interface PersonDetailViewController ()
 
 @end
@@ -20,6 +22,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.needRequest = NO;
+        self.myFriend = NO;
     }
     return self;
 }
@@ -46,6 +50,7 @@
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    self.appDel = [[UIApplication sharedApplication] delegate];
     
     NSString * gender = self.hostInfo.gender;
     NSString * age = self.hostInfo.age;
@@ -105,15 +110,41 @@
     [self.helloBtn addTarget:self action:@selector(helloBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     if ([DataStoreManager ifHaveThisFriend:self.hostInfo.userName]) {
         [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+        self.myFriend = YES;
     }
     else
     {
         [self.helloBtn setTitle:@"打招呼" forState:UIControlStateNormal];
+        self.myFriend = NO;
     }
     
     [self.view addSubview:self.helloBtn];
-
+    if (self.needRequest) {
+        [self getUserInfoWithUserName:self.hostInfo.userName];
+    }
 	// Do any additional setup after loading the view.
+}
+-(void)reloadTheViews
+{
+    NSString * gender = self.hostInfo.gender;
+    NSString * age = self.hostInfo.age;
+    NSString * region = @"北京市朝阳区";
+    UIImage * genderImg = [gender isEqualToString:@"male"]?[UIImage imageNamed:@"manicon.png"]:[UIImage imageNamed:@"womenicon.png"];
+    [self.ageLabel setText:age];
+    [self.genderIV setImage:genderImg];
+    [self.genderIV setFrame:CGRectMake(13, 9, genderImg.size.width/2, genderImg.size.height/2)];
+    [self.regionLabel setText:region];
+    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
+    [self.photoWall2 setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
+    self.hostInfo.signature = self.hostInfo.signature.length>1?self.hostInfo.signature:@"用户暂时还没有设置签名";
+    self.hostInfo.hobby = self.hostInfo.hobby.length>1?self.hostInfo.hobby:@"用户暂时还没有设置签名";
+    
+    CGSize size1 = [self.hostInfo.signature sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    NSNumber * height1 = [NSNumber numberWithFloat:size1.height];
+    CGSize size2 = [self.hostInfo.hobby sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    NSNumber * height2 = [NSNumber numberWithFloat:size2.height];
+    self.heightArray = [NSArray arrayWithObjects:height1,height2, nil];
+    [self.profileTableV reloadData];
 }
 -(NSArray *)imageToURL:(NSArray *)imageArray;
 {
@@ -307,6 +338,65 @@
             return nil;
             break;
     }
+}
+-(void)getUserInfoWithUserName:(NSString *)userName
+{
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [paramDict setObject:userName forKey:@"username"];
+    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        self.hostInfo = [[HostInfo alloc] initWithHostInfo:recDict];
+        [self reloadTheViews];
+        [DataStoreManager saveUserInfo:recDict];
+
+    }];
+
+}
+-(void)helloBtnClicked:(UIButton *)sender
+{
+    if (self.myFriend) {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        [[TempData sharedInstance] setNeedChatToUser:self.hostInfo.userName];
+    }
+    else
+    {
+      //  [self.appDel.xmppHelper addFriend:self.hostInfo.userName];
+//        [sayHelloArray addObject:[self.userInFo objectForKey:@"username"]];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"发送验证请求" message:[NSString stringWithFormat:@"您已经和%@打招呼了，如果对方同意，您和%@就可以成为好友啦~",[self.userInFo objectForKey:@"username"],[self.userInFo objectForKey:@"username"]] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//        [alert show];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"打招呼的时候说点什么吧" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alert.tag = 11;
+        locationTextF = [[UITextField alloc] initWithFrame:CGRectMake(20, 50, 240, 35)];
+        locationTextF.borderStyle = UITextBorderStyleLine;
+        [locationTextF setBackgroundColor:[UIColor whiteColor]];
+        [alert addSubview:locationTextF];
+        [alert show];
+
+    }
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==11) {
+        if (buttonIndex==1) {
+            [self.appDel.xmppHelper addFriend:self.hostInfo.userName];
+        }
+    }
+}
+-(void)sendHelloWithMsg:(NSString *)message
+{
+    
 }
 -(void)back
 {

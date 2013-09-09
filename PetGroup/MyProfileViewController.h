@@ -14,6 +14,8 @@
 #import "TempData.h"
 #import "PetProfileCell.h"
 #import "ButtonCell.h"
+#import "PhotoViewController.h"
+#import "ReportViewController.h"
 typedef  enum
 {
     ActionSheetTypeChoosePic = 1,
@@ -28,5 +30,7 @@ typedef  enum
 @property (strong,nonatomic) NSMutableArray * discribeArray;
 @property (strong,nonatomic) NSMutableArray * heightArray;
 @property (strong,nonatomic) NSMutableArray * placeHolderArray;
+@property (strong,nonatomic) NSMutableArray * waitingUploadImgArray;
+@property (strong,nonatomic) NSMutableArray * waitingUploadStrArray;
 
 @end

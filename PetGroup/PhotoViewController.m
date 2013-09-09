@@ -47,7 +47,20 @@
         [act startAnimating];
         [subSC addSubview:act];
         imageV.delegate = self;
-        imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.imgIDArray[i]]];
+        NSRange range=[self.imgIDArray[i] rangeOfString:@"<local>"];
+        if (range.location!=NSNotFound) {
+            //        self.viewPhoto.image =
+            NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+            NSString  *openImgPath = [NSString stringWithFormat:@"%@/%@",path,[self.imgIDArray[i] substringFromIndex:7]];
+            NSData * nsData= [NSData dataWithContentsOfFile:openImgPath];
+            UIImage * openPic= [UIImage imageWithData:nsData];
+            imageV.image = openPic;
+            [self imageViewLoadedImage:imageV];
+        }
+        else
+            imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.imgIDArray[i]]];
+//            self.viewPhoto.imageURL = [NSURL URLWithString:url];
+        
         subSC.maximumZoomScale = 2.0;
         subSC.bouncesZoom = NO;
         subSC.delegate = self;

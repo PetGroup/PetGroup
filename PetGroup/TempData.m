@@ -32,6 +32,8 @@ static TempData *sharedInstance=nil;
     longitude = 0;
     self.newFriendsReq = NO;
     loggedIn = NO;
+    ifNeedChat = NO;
+    needChatUserName = @"";
 }
 -(void)makeLogged:(BOOL)logged
 {
@@ -84,5 +86,22 @@ static TempData *sharedInstance=nil;
 -(double)returnLon
 {
     return longitude;
+}
+-(void)setNeedChatToUser:(NSString *)user
+{
+    ifNeedChat = YES;
+    needChatUserName = user;
+}
+-(void)setNeedChatNO
+{
+    ifNeedChat = NO;
+}
+-(NSString *)getNeedChatUser
+{
+    return needChatUserName;
+}
+-(BOOL)needChat
+{
+    return ifNeedChat;
 }
 @end

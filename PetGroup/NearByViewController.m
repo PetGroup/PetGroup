@@ -140,7 +140,10 @@
             [self getNearByPet];
      
     } Failure:^{
-        [self showAlertWithMessage:@"暂时获取不到您的位置哦，稍后再试一下吧~"];
+        [hud hide:YES];
+        [_slimeView endRefresh];
+        [self endrefresh];
+        self.canRefresh = YES;
     }];
 }
 -(void)getNearByUser
@@ -151,7 +154,7 @@
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
     [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
-    [locationDict setObject:@"" forKey:@"city"];
+ //   [locationDict setObject:@"" forKey:@"city"];
     [locationDict setObject:theGender forKey:@"gender"];
     [locationDict setObject:theType forKey:@"type"];
     [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];

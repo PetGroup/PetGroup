@@ -19,6 +19,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.waitingUploadImgArray = [NSMutableArray array];
+        self.waitingUploadStrArray = [NSMutableArray array];
     }
     return self;
 }
@@ -54,6 +56,7 @@
     self.photoWall.delegate = self;
     [self.photoWall setEditModel:YES];
     self.photoWall.tag =1;
+    self.photoWall.useCache = YES;
     
     self.hostInfo.age = [NSString stringWithFormat:@"%@岁",self.hostInfo.age];
  
@@ -69,6 +72,14 @@
     self.profileTableV.delegate = self;
 
 	// Do any additional setup after loading the view.
+}
+-(void)reloadViews
+{
+    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
+    self.hostInfo.age = [NSString stringWithFormat:@"%@岁",self.hostInfo.age];
+    self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
+    [self makeHeight];
+    [self.profileTableV reloadData];
 }
 -(void)makeHeight
 {
@@ -87,7 +98,12 @@
 {
     NSMutableArray * temp = [NSMutableArray array];
     for (id headID in imageArray) {
-        [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,headID]];
+        NSRange range=[headID rangeOfString:@"<local>"];
+        if (range.location!=NSNotFound) {
+            [temp addObject:headID];
+        }
+        else
+            [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,headID]];
     }
     return temp;
 }
@@ -188,17 +204,25 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section==1) {
+        if (indexPath.row==0||indexPath.row==4||indexPath.row==5) {
+            ReportViewController * reportV = [[ReportViewController alloc] init];
+            reportV.theTitle = [self.titleArray objectAtIndex:indexPath.row];
+            reportV.defaultContent = [self.discribeArray objectAtIndex:indexPath.row];
+            if (indexPath.row==0) {
+                reportV.maxCount = 16;
+            }
+            else
+                reportV.maxCount = 50;
+            [self.navigationController pushViewController:reportV animated:YES];
+        }
+    }
 }
 
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
-    UIActionSheet *actionSheetTemp = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"取消"
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"相册选择",@"拍照", nil];
-    actionSheetTemp.tag = ActionSheetTypeChoosePic;
-    [actionSheetTemp showInView:self.view];
+    PhotoViewController * photoV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.hostInfo.headBigImgArray indext:index];
+    [self presentModalViewController:photoV animated:NO];
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex
@@ -221,10 +245,33 @@
 {
     
 }
-
+-(void)photoWallDelPhotoAtIndex:(NSInteger)index
+{
+    NSLog(@"%d",index);
+    NSMutableArray * tempH = [NSMutableArray arrayWithArray:self.hostInfo.headImgArray];
+    NSMutableArray * tempHBig = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
+    NSString * tempStr = [tempH objectAtIndex:index];
+    if ([self.waitingUploadStrArray containsObject:tempStr]) {
+        [self.waitingUploadStrArray removeObject:tempStr];
+        [self.waitingUploadImgArray removeObjectAtIndex:index];
+    }
+    [tempH removeObjectAtIndex:index];
+    [tempHBig removeObjectAtIndex:index];
+    self.hostInfo.headImgArray = tempH;
+    self.hostInfo.headBigImgArray = tempHBig;
+//    [self.photoWall reloadPhotos:YES];
+    [self.profileTableV reloadData];
+    
+    
+    
+}
 - (void)photoWallDeleteFinish
 {
     
+}
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.photoWall setAnimationNO];
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -267,6 +314,46 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSLog(@"%@",info);
+    UIImage * upImage = (UIImage *)[info objectForKey:@"UIImagePickerControllerEditedImage"];
+//    UIImage* a = [NetManager compressImageDownToPhoneScreenSize:image targetSizeX:100 targetSizeY:100];
+//    UIImage* upImage = [NetManager image:a centerInSize:CGSizeMake(100, 100)];
+    NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:path] == NO)
+    {
+        [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString  *openImgPath = [NSString stringWithFormat:@"%@/%d_me.jpg",path,self.hostInfo.headImgArray.count];
+    
+    if ([UIImageJPEGRepresentation(upImage, 1.0) writeToFile:openImgPath atomically:YES]) {
+        NSLog(@"success///");
+    }
+    else
+    {
+        NSLog(@"fail");
+    }
+    NSMutableArray * tempArray;
+    NSMutableArray * tempBigArray;
+    if (self.hostInfo.headImgArray) {
+        tempArray = [NSMutableArray arrayWithArray:self.hostInfo.headImgArray];
+        tempBigArray = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
+    }
+    else
+    {
+        tempArray = [NSMutableArray array];
+        tempBigArray = [NSMutableArray array];
+    }
+    [tempArray addObject:[NSString stringWithFormat:@"<local>%d_me.jpg",self.hostInfo.headImgArray.count]];
+    [tempBigArray addObject:[NSString stringWithFormat:@"<local>%d_me.jpg",self.hostInfo.headImgArray.count]];
+    [self.waitingUploadImgArray addObject:upImage];
+    [self.waitingUploadStrArray addObject:[NSString stringWithFormat:@"<local>%d_me.jpg",self.hostInfo.headImgArray.count]];
+    [self.photoWall addPhoto:[NSString stringWithFormat:@"<local>%d_me.jpg",self.hostInfo.headImgArray.count]];
+    self.hostInfo.headImgArray = tempArray;
+    self.hostInfo.headBigImgArray = tempBigArray;
+    NSLog(@"%f",self.photoWall.frame.size.height);
+    [self.profileTableV reloadData];
+    [picker dismissModalViewControllerAnimated:YES];
+    
 }
 -(void)back
 {

@@ -140,7 +140,10 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
-            cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,[self.hostInfo.headImgArray objectAtIndex:0]]];
+
+            cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,self.hostInfo.headImgArray.count>0? [self.hostInfo.headImgArray objectAtIndex:0]:@""]];
+          
+            
             cell.nameLabel.text = self.hostInfo.nickName;
             cell.signatureLabel.text = self.hostInfo.signature;
             

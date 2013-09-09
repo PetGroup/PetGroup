@@ -11,6 +11,8 @@
 #import "MBProgressHUD.h"
 #import "TempData.h"
 #import "UIScrollView+SVInfiniteScrolling.h"
+#import "PersonDetailViewController.h"
+#import "HostInfo.h"
 @interface AddContactViewController : UIViewController<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate>
 {
     UISearchBar * asearchBar;
@@ -18,5 +20,6 @@
     MBProgressHUD * hud;
 }
 @property (strong,nonatomic) UITableView * resultTable;
+@property (strong,nonatomic) NSArray * resultArray;
 @property (assign,nonatomic) int pageIndex;
 @end
