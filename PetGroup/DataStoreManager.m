@@ -563,6 +563,32 @@
     }
 }
 
++(void)storeOnePetInfo:(NSDictionary *)petInfo
+{
+    
+    NSString * nickName = [petInfo objectForKey:@"nickname"];
+    NSString * gender = [petInfo objectForKey:@"gender"];
+    NSString * headImgID = [self toString:[petInfo objectForKey:@"img"]];
+    NSString * trait = [petInfo objectForKey:@"trait"];
+    NSString * type = [self toString:[petInfo objectForKey:@"type"]];
+    NSString * age = [self toString:[petInfo objectForKey:@"birthdate"]];
+    NSString * petID = [self toString:[petInfo objectForKey:@"id"]];
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
+        DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
+        if (!dPet)
+            dPet = [DSPets MR_createInContext:localContext];
+        dPet.petNickname = nickName?nickName:@"";
+        dPet.petGender = gender?gender:@"";
+        dPet.petHeadImgID = headImgID?headImgID:@"";
+        dPet.petTrait = trait?trait:@"";
+        dPet.petType = type?type:@"";
+        dPet.petAge = age?age:@"";
+        dPet.petID = petID?petID:@"";
+    }];
+}
+
+
 +(NSMutableDictionary *)queryOneFriendInfoWithUserName:(NSString *)userName
 {
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
