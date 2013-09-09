@@ -17,7 +17,7 @@
 
 
 @property (strong, nonatomic) NSArray *arrayPositions;
-@property (strong, nonatomic) NSMutableArray *arrayPhotos;
+
 @property (nonatomic) BOOL isEditModel;
 
 @end
@@ -34,6 +34,7 @@
 {
     self = [super initWithFrame:CGRectMake(0., 0., 300., 0.)];
     if (self) {
+        self.useCache = NO;
       //  self.backgroundColor = [UIColor clearColor];
         self.bg = [[UIView alloc] initWithFrame:CGRectMake(10., 0., 300., 0.)];
         self.bg.backgroundColor = [UIColor whiteColor];
@@ -84,7 +85,11 @@
         CGFloat originy = [[dictionaryTemp objectForKey:kImagePositiony] floatValue];
         HGPhoto *photoTemp = [[HGPhoto alloc] initWithOrigin:CGPointMake(originx, originy)];
         photoTemp.delegate = self;
-        [photoTemp setPhotoUrl:[photos objectAtIndex:i]];
+        if (!self.useCache) {
+            [photoTemp setPhotoUrl:[photos objectAtIndex:i]];
+        }
+        else
+            [photoTemp SetPhotoUrlWithCache:[photos objectAtIndex:i]];
         [self addSubview:photoTemp];
         [self.arrayPhotos addObject:photoTemp];
     }
@@ -96,6 +101,7 @@
     photoTemp.delegate = self;
     photoTemp.hidden = YES;
     [photoTemp setPhotoType:PhotoTypeAdd];
+    [photoTemp setEditModel:self.isEditModel];
     [self.arrayPhotos addObject:photoTemp];
     [self addSubview:photoTemp];
     
@@ -139,7 +145,11 @@
     
     HGPhoto *photoTemp = [[HGPhoto alloc] initWithOrigin:CGPointMake(originx, originy)];
     photoTemp.delegate = self;
-    [photoTemp setPhotoUrl:string];
+    if (!self.useCache) {
+        [photoTemp setPhotoUrl:string];
+    }
+    else
+        [photoTemp SetPhotoUrlWithCache:string];
     [photoTemp setEditModel:self.isEditModel];
     
     [self.arrayPhotos insertObject:photoTemp atIndex:index];
@@ -169,6 +179,18 @@
         if ([self.delegate respondsToSelector:@selector(photoWallPhotoTaped:WithPhotoWall:)]) {
             [self.delegate photoWallPhotoTaped:index WithPhotoWall:self];
         }
+    }
+}
+
+-(void)delPhoto:(HGPhoto *)photo
+{
+    NSUInteger index = [self.arrayPhotos indexOfObject:photo];
+    HGPhoto *photoTemp = [self.arrayPhotos objectAtIndex:index];
+    [self.arrayPhotos removeObject:photoTemp];
+    [photoTemp removeFromSuperview];
+    [self reloadPhotos:YES];
+    if ([self.delegate respondsToSelector:@selector(photoWallDelPhotoAtIndex:)]) {
+        [self.delegate photoWallDelPhotoAtIndex:index];
     }
 }
 
@@ -254,10 +276,14 @@
 -(void)setAnimationNO
 {
     for (HGPhoto * it in self.subviews) {
-        [[it layer] removeAllAnimations];
-        it.moved = NO;
-        it.wiggle = NO;
+        if ([it isKindOfClass:[HGPhoto class]]) {
+            [[it layer] removeAllAnimations];
+            it.moved = NO;
+            it.wiggle = NO;
+        }
+
     }
+    self.labelDescription.text = self.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
 }
 
 @end

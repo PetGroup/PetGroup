@@ -637,7 +637,11 @@
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:Domain]];
     //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
         //组合
+        
+//        NSXMLElement * kind = [NSXMLElement elementWithName:@"kind"];
+//        [kind setStringValue:@"chat"];
         [mes addChild:body];
+//        [mes addChild:kind];
         
         //发送消息
         

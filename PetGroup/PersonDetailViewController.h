@@ -14,7 +14,12 @@
 #import "ProfileCell.h"
 #import "MyProfileACell.h"
 #import "NormalPetDetailViewController.h"
-@interface PersonDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
+@class XMPPHelper,AppDelegate;
+@interface PersonDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate,UIAlertViewDelegate>
+{
+    UITextField * locationTextF;
+}
+@property (strong,nonatomic) AppDelegate * appDel;
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong, nonatomic) UIView *photoWallBG;
 @property (strong, nonatomic) HGPhotoWall *photoWall2;
@@ -27,4 +32,6 @@
 @property (strong,nonatomic) UILabel * regionLabel;
 @property (strong,nonatomic) HostInfo * hostInfo;
 @property (strong,nonatomic) NSArray * heightArray;
+@property (assign,nonatomic) BOOL needRequest;
+@property (assign,nonatomic) BOOL myFriend;
 @end

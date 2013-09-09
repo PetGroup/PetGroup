@@ -23,7 +23,8 @@
         self.hobby = ![[info objectForKey:@"hobby"] isKindOfClass:[NSNull class]]?[info objectForKey:@"hobby"]:@"用户暂时还没有设置爱好";
         self.latitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"latitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"latitude"]:@""];
         self.longitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"longitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"longitude"]:@""];
-        self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
+//        self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
+        [self getHead:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
         NSArray * petTempArray = [info objectForKey:@"petInfoViews"];
         NSMutableArray * tempArray = [NSMutableArray array];
         NSMutableArray * petH = [NSMutableArray array];
@@ -54,5 +55,22 @@
         return nil;
     
     
+}
+-(void)getHead:(NSString *)headImgStr
+{
+    NSMutableArray * littleHeadArray = [NSMutableArray array];
+    NSMutableArray * bigHeadArray = [NSMutableArray array];
+    NSArray* i = [headImgStr componentsSeparatedByString:@","];
+    if (i.count>1) {     
+        for (NSString* a in i) {
+            NSArray *arr = [a componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                [littleHeadArray addObject:arr[0]];
+                [bigHeadArray addObject:arr[1]];
+            }
+        }
+    }//动态大图ID数组和小图ID数组
+    self.headImgArray = littleHeadArray;
+    self.headBigImgArray = bigHeadArray;
 }
 @end

@@ -15,6 +15,7 @@
 - (void)photoWallAddAction;
 - (void)photoWallAddFinish;
 - (void)photoWallDeleteFinish;
+- (void)photoWallDelPhotoAtIndex:(NSInteger)index;
 
 @end
 typedef  enum
@@ -26,11 +27,14 @@ typedef  enum
 @property (strong, nonatomic) UILabel *labelDescription;
 @property (assign) id<HGPhotoWallDelegate> delegate;
 @property (strong,nonatomic)UIView *bg;
+@property (strong, nonatomic) NSMutableArray *arrayPhotos;
 @property (assign,nonatomic)DescriptionType descriptionType;
+@property (assign,nonatomic) BOOL useCache;
 - (void)setPhotos:(NSArray*)photos;
 - (void)setEditModel:(BOOL)canEdit;
 - (void)addPhoto:(NSString*)string;
 - (void)deletePhotoByIndex:(NSUInteger)index;
 -(void)setAnimationNO;
+- (void)reloadPhotos:(BOOL)add;
 
 @end

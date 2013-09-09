@@ -21,6 +21,7 @@
 @property (strong,nonatomic) NSString * latitude;
 @property (strong,nonatomic) NSString * longitude;
 @property (strong,nonatomic) NSArray * headImgArray;
+@property (strong,nonatomic) NSArray * headBigImgArray;
 @property (strong,nonatomic) NSArray * petsArray;
 @property (strong,nonatomic) NSArray * petsHeadArray;
 - (id)initWithHostInfo:(NSDictionary*)info;

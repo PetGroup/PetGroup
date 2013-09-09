@@ -366,8 +366,8 @@
         NSString * signature = [[fri objectAtIndex:i] signature];
         if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
             NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
-            [friendDict setObject:userName forKey:@"userName"];
-            [friendDict setObject:nickName?nickName:@"" forKey:@"nickName"];
+            [friendDict setObject:userName forKey:@"username"];
+            [friendDict setObject:nickName?nickName:@"" forKey:@"nickname"];
             if (remarkName) {
                 [friendDict setObject:remarkName forKey:@"displayName"];    
             }

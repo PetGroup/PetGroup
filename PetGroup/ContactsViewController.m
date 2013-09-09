@@ -77,7 +77,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"needchat"]) {
+    if ([[TempData sharedInstance] needChat]) {
         [self.customTabBarController setSelectedPage:0];
         return;
     }
@@ -218,7 +218,22 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-       [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary * tempDict;
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+    }
+    else
+    {
+        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+    }
+    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:tempDict];
+    detailV.hostInfo = hostInfo;
+    detailV.needRequest = YES;
+    [self.navigationController pushViewController:detailV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+    
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

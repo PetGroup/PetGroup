@@ -19,6 +19,8 @@
     double longitude;
     
     BOOL loggedIn;
+    BOOL ifNeedChat;
+    NSString * needChatUserName;
 }
 @property (assign,nonatomic)BOOL newFriendsReq;
 
@@ -35,4 +37,8 @@
 -(double)returnLon;
 -(void)makeLogged:(BOOL)logged;
 -(BOOL)LoggedIn;
+-(void)setNeedChatToUser:(NSString *)user;
+-(void)setNeedChatNO;
+-(BOOL)needChat;
+-(NSString *)getNeedChatUser;
 @end

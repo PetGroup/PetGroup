@@ -11,6 +11,8 @@
 #import "addFriendCell.h"
 #import "TempData.h"
 #import "AddContactViewController.h"
+#import "PersonDetailViewController.h"
+#import "HostInfo.h"
 @class AppDelegate, XMPPHelper;
 @interface ContactsViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 {

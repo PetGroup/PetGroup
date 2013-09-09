@@ -22,4 +22,7 @@
             failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 +(void)uploadImagesWithCompres:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
++(UIImage*)compressImageDownToPhoneScreenSize:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY;
++ (UIImage *) image: (UIImage *) image centerInSize: (CGSize) viewsize;
+
 @end

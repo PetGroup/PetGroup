@@ -7,7 +7,7 @@
 //
 
 #import "AddContactViewController.h"
-
+#import "JSON.h"
 
 @interface AddContactViewController ()
 
@@ -20,6 +20,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.pageIndex = 0;
+        self.resultArray = [NSArray array];
     }
     return self;
 }
@@ -72,19 +74,34 @@
     [asearchBar insertSubview:dd atIndex:1];
     asearchBar.delegate = self;
     
-    __weak AddContactViewController *weakSelf = self;
-    [self.resultTable addInfiniteScrollingWithActionHandler:^{
-        if (1) {
-            
-        }
-        else
-        {
-            [weakSelf.resultTable.infiniteScrollingView stopAnimating];
-        }
-        
-    }];
     // Do any additional setup after loading the view.
 }
+-(void)searchUser
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:asearchBar.text forKey:@"unname"];
+    [locationDict setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getUesr" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        self.resultArray = [receiveStr JSONValue];
+        [self.resultTable reloadData];
+        [hud hide:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+
+        
+    }];
+    
+}
+
 #pragma mark -
 #pragma mark TableView 
 
@@ -93,7 +110,7 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    return self.resultArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -103,13 +120,40 @@
         cell = [[ContactsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:stringCell];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-
+    if (![[[self.resultArray objectAtIndex:indexPath.row] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
+        NSString * imgStr = [self getFistHeadImg:[[self.resultArray objectAtIndex:indexPath.row] objectForKey:@"img"]];
+        
+        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    }
+    [cell.nameLabel setText:[[[self.resultArray objectAtIndex:indexPath.row] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[self.resultArray objectAtIndex:indexPath.row] objectForKey:@"nickname"]];
+    NSString* sigStr = [[self.resultArray objectAtIndex:indexPath.row] objectForKey:@"signature"];
+    if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
+        [cell.signatureLabel setText:sigStr];
+    }else{
+        [cell.signatureLabel setText:@"该用户没有设置签名"];
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[self.resultArray objectAtIndex:indexPath.row]];
+    detailV.hostInfo = hostInfo;
+    [self.navigationController pushViewController:detailV animated:YES];
+    
 }
+-(NSString *)getFistHeadImg:(NSString *)headImgStr
+{
+    NSRange range=[headImgStr rangeOfString:@","];
+    if (range.location!=NSNotFound) {
+        NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
+        return [imageArray objectAtIndex:0];
+    }
+    else
+        return headImgStr;
+}
+
 #pragma mark -
 #pragma mark searchBar Delegate
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -125,6 +169,7 @@
     [hud show:YES];
     
     [asearchBar resignFirstResponder];
+    [self searchUser];
 
 }
 

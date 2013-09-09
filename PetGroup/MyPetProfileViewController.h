@@ -14,6 +14,7 @@
 #import "TempData.h"
 #import "PetProfileCell.h"
 #import "ButtonCell.h"
+#import "ReportViewController.h"
 typedef  enum
 {
     PageStyleAdd = 0,

@@ -14,7 +14,7 @@
 @interface HGPhoto() <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UIView *viewMask;
-@property (strong, nonatomic) UIImageView *viewPhoto;
+@property (strong, nonatomic) EGOImageView *viewPhoto;
 
 @property (strong, nonatomic) NSString *stringImageUrl;
 @property (nonatomic) CGPoint pointOrigin;
@@ -34,23 +34,33 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         
-        self.viewPhoto = [[UIImageView alloc] initWithFrame:self.bounds];
+        self.viewPhoto = [[EGOImageView alloc] initWithFrame:self.bounds];
 //        self.viewPhoto.layer.cornerRadius = 12;
 //        self.viewPhoto.layer.masksToBounds = YES;
         
         self.viewMask = [[UIView alloc] initWithFrame:self.bounds];
         self.viewMask.alpha = 0.6;
         self.viewMask.backgroundColor = [UIColor blackColor];
-        self.viewMask.layer.cornerRadius = 11;
         self.viewMask.layer.masksToBounds = YES;
+        
+        
         
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPress:)];
         
         [self addSubview:self.viewPhoto];
         [self addSubview:self.viewMask];
+        
+        delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [delBtn setBackgroundColor:[UIColor redColor]];
+        [delBtn setFrame:CGRectMake(-5, -5, 15, 15)];
+        [self addSubview:delBtn];
+        [delBtn addTarget:self action:@selector(delSelf) forControlEvents:UIControlEventTouchUpInside];
+        delBtn.hidden = YES;
+        
         [self addGestureRecognizer:tapRecognizer];
         
         self.editModel = NO;
+        self.useCache = NO;
         self.viewMask.hidden = YES;
     }
     return self;
@@ -72,6 +82,22 @@
 - (void)setPhotoUrl:(NSString*)photoUrl
 {
     [self.viewPhoto setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"cat.png"]];
+}
+
+-(void)SetPhotoUrlWithCache:(NSString *)url
+{
+    self.viewPhoto.placeholderImage = [UIImage imageNamed:@"cat.png"];
+    NSRange range=[url rangeOfString:@"<local>"];
+    if (range.location!=NSNotFound) {
+//        self.viewPhoto.image =
+        NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+        NSString  *openImgPath = [NSString stringWithFormat:@"%@/%@",path,[url substringFromIndex:7]];
+        NSData * nsData= [NSData dataWithContentsOfFile:openImgPath];
+        UIImage * openPic= [UIImage imageWithData:nsData];
+        self.viewPhoto.image = openPic;
+    }
+    else
+        self.viewPhoto.imageURL = [NSURL URLWithString:url];
 }
 
 - (void)moveToPosition:(CGPoint)point
@@ -103,13 +129,22 @@
     }
 }
 
+-(void)delSelf
+{
+    [self.delegate delPhoto:self];
+    
+}
+
 #pragma mark - UIGestureRecognizer
 
 - (void)tapPress:(id)sender
 {
     if (self.wiggle) {
+        delBtn.hidden = YES;
         self.moved = NO;
         [viewLayer removeAllAnimations];
+        HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
+        yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
         return;
     }
     if ([self.delegate respondsToSelector:@selector(photoTaped:)]) {
@@ -125,6 +160,7 @@
         [[it layer] removeAllAnimations];
     }
     self.wiggle = YES;
+    [delBtn setHidden:NO];
     viewLayer=[self layer];
     CABasicAnimation*animation=[CABasicAnimation
                                 
@@ -153,12 +189,16 @@
     } else if (UIGestureRecognizerStateEnded == recognizer.state) {
         self.viewMask.hidden = YES;
         if ([self.delegate respondsToSelector:@selector(photoMoveFinished:)]) {
+            
             [self.delegate photoMoveFinished:self];
         }
         if (self.moved) {
+            [delBtn setHidden:YES];
             [viewLayer removeAllAnimations];
             self.moved = NO;
         }
+        HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
+        yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
         
     } else {
         self.moved = YES;

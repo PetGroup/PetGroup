@@ -16,7 +16,8 @@
         self.petNickname = ![[info objectForKey:@"nickname"]isKindOfClass:[NSNull class]]?[info objectForKey:@"nickname"]:@"宠物";
         self.petType = [NSString stringWithFormat:@"%@",![[info objectForKey:@"type"]isKindOfClass:[NSNull class]]?[info objectForKey:@"type"]:@""];
         self.petTrait = ![[info objectForKey:@"trait"] isKindOfClass:[NSNull class]]?[info objectForKey:@"trait"]:@"平凡";
-        self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
+      //  self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
+        [self getHead:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
         self.petGender = [info objectForKey:@"gender"]?[info objectForKey:@"gender"]:@"";
         self.petAge = [NSString stringWithFormat:@"%@",[info objectForKey:@"birthdate"]?[info objectForKey:@"birthdate"]:@""];
         self.hostID = [NSString stringWithFormat:@"%@",[info objectForKey:@"userid"]?[info objectForKey:@"userid"]:@""];
@@ -45,5 +46,24 @@
         return nil;
     }
   
+}
+-(void)getHead:(NSString *)headImgStr
+{
+    NSMutableArray * littleHeadArray = [NSMutableArray array];
+    NSMutableArray * bigHeadArray = [NSMutableArray array];
+    NSArray* i = [headImgStr componentsSeparatedByString:@","];
+    if (i.count>1) {
+        for (NSString* a in i) {
+            NSArray *arr = [a componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                [littleHeadArray addObject:arr[0]];
+                [bigHeadArray addObject:arr[1]];
+            }
+        }
+        
+    }//动态大图ID数组和小图ID数组
+    self.headImgArray = littleHeadArray;
+    self.headBigImgArray = bigHeadArray;
+    self.firstHead = self.headImgArray.count>0?[self.headImgArray objectAtIndex:0]:headImgStr;
 }
 @end
