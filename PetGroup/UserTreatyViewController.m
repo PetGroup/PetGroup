@@ -27,6 +27,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
+    [self.view addSubview:bgimgV];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
@@ -46,8 +50,12 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UILabel*a = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 90, 20)];
-    a.text = @"重要通知:";
+    UITextView*a = [[UITextView alloc]initWithFrame:CGRectMake(0, 44, 320,self.view.frame.size.height-44)];
+    NSString *path =[[NSString alloc]initWithString:[[NSBundle mainBundle]pathForResource:@"UserTreaty"ofType:@"txt"]];
+    NSData* data = [[NSData alloc]initWithContentsOfFile:path];
+    a.font = [UIFont systemFontOfSize:14];
+    a.backgroundColor = [UIColor clearColor];
+    a.text = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     [self.view addSubview:a];
 
 }

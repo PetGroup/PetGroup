@@ -1,17 +1,19 @@
 //
-//  NewRegistTwoViewController.m
-//  NewXMPPTest
+//  ResetPassOneViewController.m
+//  PetGroup
 //
-//  Created by 阿铛 on 13-8-19.
+//  Created by 阿铛 on 13-9-7.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "NewRegistTwoViewController.h"
-#import "NewRegistThreeViewController.h"
-#import "IdentifyingString.h"
+#import "ResetPassOneViewController.h"
 #import "MBProgressHUD.h"
+#import "IdentifyingString.h"
+#import "ResetPassTwoViewController.h"
 
-@interface NewRegistTwoViewController ()<MBProgressHUDDelegate>
+
+@interface ResetPassOneViewController ()
+
 {
     UIButton * reGetB;
     NSTimer* timer;
@@ -22,7 +24,7 @@
 
 @end
 
-@implementation NewRegistTwoViewController
+@implementation ResetPassOneViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,7 +66,7 @@
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"输入验证码(2/3)"];
+    [titleLabel setText:@"输入验证码"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -92,7 +94,7 @@
     xieyiL.font = [UIFont systemFontOfSize:15];
     xieyiL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:xieyiL];
-   
+    
     UILabel* phoneL = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 100, 290, 20)];
     phoneL.text = [NSString stringWithFormat:@"+86 %@",self.phoneNo];
     phoneL.font = [UIFont systemFontOfSize:15];
@@ -117,7 +119,6 @@
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.delegate = self;
     hud.labelText = @"正在发送，请稍后";
 }
 
@@ -192,7 +193,7 @@
             [hud hide:YES];
             NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
             if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
-                NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
+                ResetPassTwoViewController* newReg = [[ResetPassTwoViewController alloc]init];
                 newReg.phoneNo = self.phoneNo;
                 [self.navigationController pushViewController:newReg animated:YES];
             }else{
@@ -206,6 +207,8 @@
     }else{
         [self showAlertView];
     }
+    
+    
 }
 -(void)showAlertView
 {
@@ -217,4 +220,5 @@
 {
     [_identifyingCodeTF resignFirstResponder];
 }
+
 @end

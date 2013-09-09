@@ -8,13 +8,15 @@
 
 #import "AddPetViewController.h"
 #import "XMLMatcher.h"
-
+#import "MBProgressHUD.h"
+#import "DataStoreManager.h"
 @interface AddPetViewController ()
 {
     UIButton * manB;
     UIButton * womanB;
     UIButton * typeB;
     UIButton * ageB;
+    MBProgressHUD *hud;
 }
 @property (nonatomic,strong) NSString* trait;
 @property (nonatomic ,strong) NSMutableArray* ageArray;
@@ -217,6 +219,10 @@
     _ageL.backgroundColor = [UIColor clearColor];
     _ageL.textColor = [UIColor grayColor];
     [self.view addSubview:_ageL];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -263,16 +269,27 @@
     [body setObject:@"savePetinfo" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self savePetInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+        [hud hide:YES];
+        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
         UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
         upLoadVC.petType = self.petType;
+        upLoadVC.hostDic = self.hostDic;
+        [params setObject:[dic objectForKey:@"id"] forKey:@"id"];
+        upLoadVC.petDic = params;
         [self.navigationController pushViewController:upLoadVC animated:YES];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
     }];
 }
 -(void)savePetInFo:(NSDictionary*)dic
 {
-    
+    NSLog(@"%@",dic);
+//    [DataStoreManager storeOnePetInfo:dic];
 }
 -(NSNumber*)fendTypeCodeWithString
 {

@@ -17,5 +17,7 @@ typedef  enum
 @interface UpLoadPhotoViewController : UIViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @property (nonatomic ,assign) PetTypeStyle petType;
+@property (nonatomic ,strong) NSDictionary *hostDic;
+@property (nonatomic ,strong) NSDictionary *petDic;
 
 @end

@@ -7,10 +7,14 @@
 //
 
 #import "ReSetPassWordViewController.h"
-#import "ResetPassTwoViewController.h"
+#import "ResetPassOneViewController.h"
+#import "IdentifyingString.h"
+#import "MBProgressHUD.h"
 
 @interface ReSetPassWordViewController ()
-
+{
+    MBProgressHUD *hud;
+}
 @property (nonatomic,strong)UITextField* phoneNoTF;
 
 @end
@@ -80,6 +84,10 @@
     _phoneNoTF.placeholder = @"请输入手机号";
     [self.view addSubview:_phoneNoTF];
     _phoneNoTF.keyboardType = UIKeyboardTypeNumberPad;
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,8 +102,33 @@
 }
 -(void)next
 {
-    ResetPassTwoViewController* resetPassVC = [[ResetPassTwoViewController alloc]init];
-    [self.navigationController pushViewController:resetPassVC animated:YES];
+    if ([IdentifyingString validateMobile:_phoneNoTF.text]) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:_phoneNoTF.text forKey:@"phoneNum"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"getVerificationCode" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [hud hide:YES];
+            ResetPassOneViewController* resetPassVC = [[ResetPassOneViewController alloc]init];
+            resetPassVC.phoneNo = _phoneNoTF.text;
+            [self.navigationController pushViewController:resetPassVC animated:YES];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+            [hud hide:YES];
+        }];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }
+    
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

@@ -1,14 +1,14 @@
 //
-//  ResetPassTwoViewController.h
-//  NewXMPPTest
+//  ResetPassOneViewController.h
+//  PetGroup
 //
-//  Created by 阿铛 on 13-8-21.
+//  Created by 阿铛 on 13-9-7.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ResetPassTwoViewController : UIViewController
+@interface ResetPassOneViewController : UIViewController
 
 @property (nonatomic ,strong) NSString* phoneNo;
 

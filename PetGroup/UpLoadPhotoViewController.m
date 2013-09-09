@@ -8,9 +8,13 @@
 
 #import "UpLoadPhotoViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "DataStoreManager.h"
+#import "MBProgressHUD.h"
+
 @interface UpLoadPhotoViewController ()
 {
     int clicked;
+    MBProgressHUD * hud;
 }
 @property (nonatomic,strong)NSString* hostIMG;
 @property (nonatomic,strong)NSString* petIMG;
@@ -144,6 +148,10 @@
         [tpic22 addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:tpic22];
     }
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -151,10 +159,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#pragma mark - upload image
+#pragma mark - upload image 
 -(void)uploadUserImage
 {
-    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:@"" ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* a = [operation responseString];
@@ -165,7 +173,7 @@
             self.hostIMG = [NSString stringWithFormat:@"%@_%@,",a,b];
             [self updataUserAndPetInFo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            [self showAlertView];
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self showAlertView];
@@ -177,14 +185,14 @@
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* a = [operation responseString];
-        [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:@"" ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        [NetManager uploadImage:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             
         } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString* b = [operation responseString];
             self.petIMG = [NSString stringWithFormat:@"%@_%@,",a,b];
             [self uploadUserImage];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            [self showAlertView];
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self showAlertView];
@@ -192,27 +200,98 @@
 }
 -(void)updataUserAndPetInFo
 {
+    
     if (self.petType == PetTypeStyleNone) {
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
+        [self updataUserInfo];
     }else{
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        [params setObject:[self.petDic objectForKey:@"nickname"] forKey:@"nickname"];
+        [params setObject:[self.petDic objectForKey:@"gender"] forKey:@"gender"];
+        [params setObject:[self.petDic objectForKey:@"type"] forKey:@"type"];
+        [params setObject:[self.petDic objectForKey:@"birthdate"] forKey:@"birthdate"];
+        [params setObject:self.petIMG forKey:@"img"];
+        [params setObject:[self.petDic objectForKey:@"trait"] forKey:@"trait"];
+        [params setObject:[self.petDic objectForKey:@"id"] forKey:@"id"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"updatePetinfo" forKey:@"method"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self savePetInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+            [self updataUserInfo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            [self showAlertView];
+            [hud hide:YES];
         }];
     }
 }
+-(void)updataUserInfo
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    [params setObject:[self.hostDic objectForKey:@"nickname"] forKey:@"nickname"];
+    [params setObject:[self.hostDic objectForKey:@"gender"] forKey:@"gender"];
+    [params setObject:[self.hostDic objectForKey:@"birthdate"] forKey:@"birthdate"];
+    [params setObject:[self.hostDic objectForKey:@"city"] forKey:@"city"];
+    [params setObject:self.hostIMG forKey:@"img"];
+    switch (self.petType) {
+        case 1:
+        {
+            [params setObject:@"" forKey:@"signature"];
+            [params setObject:@"" forKey:@"hobby"];
+        }break;
+        case 2:
+        {
+            [params setObject:@"" forKey:@"signature"];
+            [params setObject:@"" forKey:@"hobby"];
+        }break;
+        case 3:
+        {
+            [params setObject:@"" forKey:@"signature"];
+            [params setObject:@"" forKey:@"hobby"];
+        }break;
+        case 4:
+        {
+            [params setObject:@"" forKey:@"signature"];
+            [params setObject:@"" forKey:@"hobby"];
+        }break;
+        default:
+            break;
+    }
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"saveUserinfo2" forKey:@"method"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self saveUserInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+        [hud hide:YES];
+        [self dismissModalViewControllerAnimated:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self showAlertView];
+        [hud hide:YES];
+    }];
+
+}
 -(void)saveUserInfo:(NSDictionary*)dic
 {
-    
+    NSLog(@"%@",dic);
+//    [DataStoreManager saveUserInfo:dic];
 }
 -(void)savePetInfo:(NSDictionary*)dic
 {
-    
+    NSLog(@"%@",dic);
+//    [DataStoreManager saveUserInfo:dic];
 }
 -(void)showAlertView
 {
@@ -227,10 +306,26 @@
 -(void)next
 {
     if (self.petType == PetTypeStyleNone) {
+        if ([_hostPhoto.image isEqual:[UIImage imageNamed:@"zhuren"]]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
         [self uploadUserImage];
     }else{
+        if ([_hostPhoto.image isEqual:[UIImage imageNamed:@"zhuren"]]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
+        if ([_petPhoto.image isEqual:[UIImage imageNamed:@"chongwu"]]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
         [self uploadPetImage];
     }
+    [hud show:YES];
 }
 -(void)btnClicked:(UIButton *)sender
 {

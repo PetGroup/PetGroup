@@ -84,11 +84,12 @@
 #pragma mark - button action
 -(void)laterBtnClicked
 {
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 -(void)goBtnClicked
 {
     SelectorPetViewController* selPetVC = [[SelectorPetViewController alloc]init];
+    selPetVC.dic = self.dic;
     [self.navigationController pushViewController:selPetVC animated:YES];
 }
 @end

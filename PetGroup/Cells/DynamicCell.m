@@ -14,7 +14,7 @@
 #import "CustomTabBar.h"
 #import "FullTextViewController.h"
 #import "PhotoViewController.h"
-
+#import "OHAttributedLabel.h"
 
 @interface DynamicCell ()
 
@@ -37,6 +37,7 @@
 @property (nonatomic,retain)UILabel* beijingL;
 @property (nonatomic,retain)UILabel* zanL;
 @property (nonatomic,retain)UILabel* distancevL;
+@property (nonatomic,retain)NSMutableArray* OHALabelArray;
 @end
 @implementation DynamicCell
 

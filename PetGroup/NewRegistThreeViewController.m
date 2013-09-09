@@ -11,6 +11,8 @@
 #import "IdentifyingString.h"
 #import <CoreLocation/CoreLocation.h>
 #import "TempData.h"
+#import "MBProgressHUD.h"
+#import "DataStoreManager.h"
 
 @interface NewRegistThreeViewController ()<UITextFieldDelegate>
 {
@@ -18,6 +20,7 @@
     UIButton * womanB;
     UIButton * cityB;
     UIButton* ageB;
+    MBProgressHUD *hud;
 }
 @property (nonatomic ,strong) NSMutableArray* ageArray;
 @property (nonatomic ,strong) NSArray* ProvinceArray;
@@ -163,12 +166,14 @@
     _nameTF.placeholder = @"不少于6位且不要过于简单";
     _nameTF.font = [UIFont systemFontOfSize:13];
     _nameTF.delegate = self;
+    _nameTF.secureTextEntry = YES;
     [self.view addSubview:_nameTF];
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 130, 175, 20)];
     _passWordTF.placeholder = @"再次输入密码";
     _passWordTF.font = [UIFont systemFontOfSize:13];
     _passWordTF.delegate = self;
+    _passWordTF.secureTextEntry = YES;
     [self.view addSubview:_passWordTF];
     
     self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 200, 175, 20)];
@@ -255,6 +260,10 @@
     _ageL.backgroundColor = [UIColor clearColor];
     _ageL.textColor = [UIColor grayColor];
     [self.view addSubview:_ageL];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -302,6 +311,7 @@
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
+    [params setObject:self.nickNameTF.text forKey:@"nickname"];
     [params setObject:self.phoneNo forKey:@"username"];
     [params setObject:_passWordTF.text forKey:@"password"];
     [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
@@ -316,17 +326,27 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"register" forKey:@"method"];
+    [body setObject:@"register2" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
         [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+        [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.phoneNo forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
         DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
+        newReg.dic = params;
         [self.navigationController pushViewController:newReg animated:YES];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
     }];
 }
--(void)saveSelfUserInFo:(NSDictionary*)dic
+-(void)saveSelfUserInFo:(NSDictionary*)dic /* 未完待续 */
 {
     NSLog(@"%@",dic);
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[dic objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 }
 -(void)selectCity
 {

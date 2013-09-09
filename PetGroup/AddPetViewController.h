@@ -12,5 +12,6 @@
 @interface AddPetViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic ,assign) PetTypeStyle petType;
+@property (nonatomic ,strong) NSDictionary *hostDic;
 
 @end

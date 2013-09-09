@@ -9,9 +9,13 @@
 #import "NewLoginViewController.h"
 #import "NewRegistOneViewController.h"
 #import "ReSetPassWordViewController.h"
+#import "IdentifyingString.h"
+#import "MBProgressHUD.h"
 
 @interface NewLoginViewController ()
-
+{
+    MBProgressHUD* hud;
+}
 @property (nonatomic,strong) UITextField* PhoneNoTF;
 @property (nonatomic,strong) UITextField* passWordTF;
 
@@ -118,6 +122,9 @@
     [registB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registB];
     
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -132,7 +139,44 @@
 }
 -(void)next
 {
-    
+//    if (![IdentifyingString validateMobile:_PhoneNoTF.text]) {
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//        [alert show];
+//        return;
+//    }
+    if (![IdentifyingString isValidatePassWord:_passWordTF.text]) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的密码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:_PhoneNoTF.text forKey:@"username"];
+    [params setObject:_passWordTF.text forKey:@"password"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"login" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"\"用户不存在\""]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户不存在" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+        }else{
+            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            [self dismissModalViewControllerAnimated:YES];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
 }
 -(void)resetPassWord
 {

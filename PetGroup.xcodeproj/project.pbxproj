@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */; };
+		8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8629653F17DAFCBC00236F3E /* UserTreaty.txt */; };
 		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
@@ -549,6 +551,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
+		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
+		8629653F17DAFCBC00236F3E /* UserTreaty.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserTreaty.txt; sourceTree = "<group>"; };
 		8642967B17D6CF1300B1B1C9 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		8642967E17D70E7500B1B1C9 /* Reply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reply.h; sourceTree = "<group>"; };
@@ -2494,6 +2499,7 @@
 			isa = PBXGroup;
 			children = (
 				97DB09D817C5B045000EC195 /* city.txt */,
+				8629653F17DAFCBC00236F3E /* UserTreaty.txt */,
 				97DB099A17C5B037000EC195 /* anjiao.png */,
 				97DB099B17C5B037000EC195 /* cat_click.png */,
 				97DB099C17C5B037000EC195 /* cat_normal.png */,
@@ -2971,6 +2977,8 @@
 				97DB09E917C5B167000EC195 /* ResetPassTwoViewController.m */,
 				97DB09EA17C5B167000EC195 /* ReSetPassWordViewController.h */,
 				97DB09EB17C5B167000EC195 /* ReSetPassWordViewController.m */,
+				8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */,
+				8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */,
 				97DB09EC17C5B167000EC195 /* SelectorPetViewController.h */,
 				97DB09ED17C5B167000EC195 /* SelectorPetViewController.m */,
 				97DB09EE17C5B167000EC195 /* UpLoadPhotoViewController.h */,
@@ -3462,6 +3470,7 @@
 				972793E517D9CADA0001E863 /* biaoqing149.png in Resources */,
 				972793E617D9CADA0001E863 /* emotionImageThird.plist in Resources */,
 				972793E717D9CADA0001E863 /* emotionThird.plist in Resources */,
+				8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3743,6 +3752,7 @@
 				9727937817D9C8380001E863 /* OHAttributedLabel.m in Sources */,
 				9727937917D9C8380001E863 /* RegexKitLite.m in Sources */,
 				9727937A17D9C8380001E863 /* SCGIFImageView.m in Sources */,
+				8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

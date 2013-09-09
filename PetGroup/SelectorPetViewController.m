@@ -105,10 +105,12 @@
     if (self.petType>0&&self.petType<4) {
         AddPetViewController* addPetVC = [[AddPetViewController alloc]init];
         addPetVC.petType = self.petType;
+        addPetVC.hostDic = self.dic;
         [self.navigationController pushViewController:addPetVC animated:YES];
     }else if(self.petType==4){
         UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
         upLoadVC.petType = self.petType;
+        upLoadVC.hostDic = self.dic;
         [self.navigationController pushViewController:upLoadVC animated:YES];
     }
 }

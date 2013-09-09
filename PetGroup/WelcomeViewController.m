@@ -34,8 +34,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
-    
-    
     self.view.backgroundColor = [UIColor whiteColor];
     sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
 	//设置委托
@@ -50,8 +48,14 @@
         imgView.tag=i;
 		//将imgView添加到sc(scrollerView)上
 	    [sc addSubview:imgView];
-        
 	}
+    NSString *str=[NSString stringWithFormat:@"tupian%d",1];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*5, 0, 320, self.view.frame.size.height)];
+    [imgView setImage:[UIImage imageNamed:str]];
+    imgView.tag=6;
+    //将imgView添加到sc(scrollerView)上
+    [sc addSubview:imgView];
+    
     [self layoutAllImages];
 	//将sc添加到视图上
     sc.pagingEnabled=YES;
@@ -118,11 +122,15 @@
         }
     }
 	//设置sc内容大小
-	[sc setContentSize:CGSizeMake(5*320, self.view.frame.size.height)];
+	[sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height)];
 }
 #pragma mark - scrollView delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (sc.contentOffset.x > 1280) {
+        sc.contentOffset = CGPointMake(0, 0);
+        return;
+    }
     if (timer != nil) {
         [timer invalidate];
     }
