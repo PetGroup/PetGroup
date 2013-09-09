@@ -590,7 +590,7 @@
 
 
 +(NSMutableDictionary *)queryOneFriendInfoWithUserName:(NSString *)userName
-{
+{ 
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
