@@ -20,6 +20,7 @@
 @property (strong,nonatomic) NSString * region;
 @property (strong,nonatomic) NSString * latitude;
 @property (strong,nonatomic) NSString * longitude;
+@property (strong,nonatomic) NSString * headImgStr;
 @property (strong,nonatomic) NSArray * headImgArray;
 @property (strong,nonatomic) NSArray * headBigImgArray;
 @property (strong,nonatomic) NSArray * petsArray;

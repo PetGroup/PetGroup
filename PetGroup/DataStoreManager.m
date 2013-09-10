@@ -486,6 +486,7 @@
     NSString * hobby = [self toString:[myInfo objectForKey:@"hobby"]];
     NSString * age = [self toString:[myInfo objectForKey:@"birthdate"]];
     NSString * userId = [self toString:[myInfo objectForKey:@"userid"]];
+    NSString * theCity = [self toString:[myInfo objectForKey:@"city"]];
  
     if (myUserName) {
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
@@ -501,6 +502,7 @@
             dFriend.headImgID = headImgID?headImgID:@"";
             dFriend.signature = signature?signature:@"";
             dFriend.age = age?age:@"";
+            dFriend.theCity = theCity?theCity:@"未知";
             NSString * nameIndex;
             NSString * nameKey;
             if (nickName.length>1) {
@@ -641,6 +643,7 @@
         [dict setObject:@"0" forKey:@"longitude"];
         [dict setObject:dFriend.age forKey:@"birthdate"];
         [dict setObject:dFriend.headImgID forKey:@"img"];
+        [dict setObject:dFriend.theCity forKey:@"city"];
         NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"friendName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
         NSArray * tempArray = [DSPets MR_findAllWithPredicate:predicate2];
         NSMutableArray * petArray = [NSMutableArray array];
@@ -649,6 +652,7 @@
             [petDict setObject:petThis.petNickname forKey:@"nickname"];
             [petDict setObject:petThis.petType forKey:@"type"];
             [petDict setObject:petThis.petTrait forKey:@"trait"];
+            [petDict setObject:petThis.petID forKey:@"id"];
             [petDict setObject:petThis.petGender forKey:@"gender"];
             [petDict setObject:petThis.petAge forKey:@"birthdate"];
             [petDict setObject:petThis.petHeadImgID forKey:@"img"];

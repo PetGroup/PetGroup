@@ -140,7 +140,8 @@
         return;
     }
 
-    
+    [self.textDelegate changeText:self.inputTextF.text WithIndex:self.thisIndex];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)back
 {

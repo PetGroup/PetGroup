@@ -7,7 +7,7 @@
 //
 
 #import "MyProfileViewController.h"
-
+#import "JSON.h"
 @interface MyProfileViewController ()
 
 @end
@@ -19,6 +19,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.ageArray = [[NSMutableArray alloc]init];
+        for (int i = 1; i <= 100; i++) {
+            [_ageArray addObject:[NSString stringWithFormat:@"%d",i]];
+        }
+        self.genderArray = [NSArray arrayWithObjects:@"男",@"女", nil];
+        NSString *path =[[NSString alloc]initWithString:[[NSBundle mainBundle]pathForResource:@"city"ofType:@"txt"]];
+        NSData* data = [[NSData alloc]initWithContentsOfFile:path];
+        self.ProvinceArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        self.cityArray = [_ProvinceArray[0] objectForKey:@"city"];
         self.waitingUploadImgArray = [NSMutableArray array];
         self.waitingUploadStrArray = [NSMutableArray array];
     }
@@ -29,6 +38,30 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
+
+    
+    
+    self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
+    self.photoWall.descriptionType = DescriptionTypeImage;
+    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
+    self.photoWall.delegate = self;
+    [self.photoWall setEditModel:YES];
+    self.photoWall.tag =1;
+    self.photoWall.useCache = YES;
+    
+    self.hostInfo.age = [NSString stringWithFormat:@"%@",self.hostInfo.age];
+ 
+    
+    self.titleArray = [NSArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"地区",@"个性签名",@"爱好", nil];
+    self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
+    self.placeHolderArray = [NSMutableArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"选择一个地区",@"写一下签名吧",@"填一下爱好吧", nil];
+    [self makeHeight];
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
+    [self.view addSubview:self.profileTableV];
+    self.profileTableV.backgroundView = nil;
+    self.profileTableV.dataSource = self;
+    self.profileTableV.delegate = self;
+    
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
@@ -49,34 +82,64 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    
-    self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
-    self.photoWall.descriptionType = DescriptionTypeImage;
-    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
-    self.photoWall.delegate = self;
-    [self.photoWall setEditModel:YES];
-    self.photoWall.tag =1;
-    self.photoWall.useCache = YES;
-    
-    self.hostInfo.age = [NSString stringWithFormat:@"%@岁",self.hostInfo.age];
- 
-    
-    self.titleArray = [NSArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"地区",@"个性签名",@"爱好", nil];
-    self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
-    self.placeHolderArray = [NSMutableArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"选择一个地区",@"写一下签名吧",@"填一下爱好吧", nil];
-    [self makeHeight];
-    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
-    [self.view addSubview:self.profileTableV];
-    self.profileTableV.backgroundView = nil;
-    self.profileTableV.dataSource = self;
-    self.profileTableV.delegate = self;
+    self.cityPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    _cityPV.dataSource = self;
+    _cityPV.delegate = self;
+    _cityPV.showsSelectionIndicator = YES;
+    self.cityPV.hidden = YES;
 
+    
+    UIToolbar* toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180-44, 320, 44)];
+    toolbar.tintColor = [UIColor blackColor];
+    UIBarButtonItem*rb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didselectCity)];
+    rb.tintColor = [UIColor blackColor];
+    toolbar.items = @[rb];
+    
+    chooseRegionV = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+    chooseRegionV.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:chooseRegionV];
+    [chooseRegionV addSubview:self.cityPV];
+    [chooseRegionV addSubview:toolbar];
+    
+    
+    self.agePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    _agePV.showsSelectionIndicator = YES;
+    _agePV.dataSource = self;
+    _agePV.delegate = self;
+    self.agePV.hidden = YES;
+    
+    [chooseRegionV addSubview:self.agePV];
+    
+    self.genderPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    _genderPV.showsSelectionIndicator = YES;
+    _genderPV.dataSource = self;
+    _genderPV.delegate = self;
+    self.genderPV.hidden = YES;
+    
+    [chooseRegionV addSubview:self.genderPV];
+//    UIToolbar* aToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+//    aToolbar.tintColor = [UIColor blackColor];
+//    UIBarButtonItem*arb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didselectAge)];
+//    arb.tintColor = [UIColor blackColor];
+//    aToolbar.items = @[arb];
+    
+//    chooseAgeV = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 224)];
+//    chooseAgeV.backgroundColor = [UIColor clearColor];
+//    [chooseAgeV addSubview:self.agePV];
+//    [chooseAgeV addSubview:aToolbar];
+//    [self.view addSubview:chooseAgeV];
+
+    [self analysisRegion];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"修改中...";
 	// Do any additional setup after loading the view.
 }
 -(void)reloadViews
 {
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
-    self.hostInfo.age = [NSString stringWithFormat:@"%@岁",self.hostInfo.age];
+    self.hostInfo.age = [NSString stringWithFormat:@"%@",self.hostInfo.age];
     self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
     [self makeHeight];
     [self.profileTableV reloadData];
@@ -174,8 +237,17 @@
             
             cell.describeLabel.textAlignment = NSTextAlignmentRight;
             if (![[self.discribeArray objectAtIndex:indexPath.row] isEqualToString:PlaceHolder]) {
+                cell.describeLabel.textColor = [UIColor blackColor];
                 cell.describeLabel.text = [self.discribeArray objectAtIndex:indexPath.row];
                 cell.describeLabel.frame = CGRectMake(cell.describeLabel.frame.origin.x, cell.describeLabel.frame.origin.y, cell.describeLabel.frame.size.width, [[self.heightArray objectAtIndex:indexPath.row] floatValue]);
+                if (indexPath.row==1) {
+                    if ([[self.discribeArray objectAtIndex:indexPath.row] isEqualToString:@"male"]) {
+                        cell.describeLabel.text = @"男";
+                    }
+                    else
+                        cell.describeLabel.text = @"女";
+                }
+
             }
             else
             {
@@ -195,6 +267,7 @@
                 cell = [[ButtonCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
             }
             [cell.saveBtn setTitle:@"保存修改" forState:UIControlStateNormal];
+            [cell.saveBtn addTarget:self action:@selector(saveMyInfo) forControlEvents:UIControlEventTouchUpInside];
             return cell;
             
         }
@@ -209,6 +282,8 @@
             ReportViewController * reportV = [[ReportViewController alloc] init];
             reportV.theTitle = [self.titleArray objectAtIndex:indexPath.row];
             reportV.defaultContent = [self.discribeArray objectAtIndex:indexPath.row];
+            reportV.textDelegate = self;
+            reportV.thisIndex = indexPath.row;
             if (indexPath.row==0) {
                 reportV.maxCount = 16;
             }
@@ -216,9 +291,40 @@
                 reportV.maxCount = 50;
             [self.navigationController pushViewController:reportV animated:YES];
         }
+        else if(indexPath.row==3){
+            [self selectCity];
+        }
+        else if(indexPath.row==2){
+            [self selectAge];
+        }
+        else if (indexPath.row==1){
+            [self selectGender];
+        }
     }
 }
+-(void)analysisRegion
+{
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    CLLocation* location = [[CLLocation alloc]initWithLatitude:[[TempData sharedInstance] returnLat] longitude:[[TempData sharedInstance] returnLon]];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray* placemarks,NSError *error)
+     {
+         if (placemarks.count >0)
+         {
+             CLPlacemark * plmark = [placemarks objectAtIndex:0];
+             NSString* state = plmark.administrativeArea;
+             for (int i = 0; i<self.ProvinceArray.count; i++) {
+                 if ([state isEqualToString:[self.ProvinceArray[i] objectForKey:@"Province"]]) {
+                     [_cityPV selectRow:i inComponent:0 animated:YES];
+                     self.cityArray = [self.ProvinceArray[i] objectForKey:@"city"];
+                     [_cityPV reloadComponent:1];
+                     break;
+                 }
+             }
+             
+         }
+     }];
 
+}
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     PhotoViewController * photoV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.hostInfo.headBigImgArray indext:index];
@@ -355,6 +461,219 @@
     [picker dismissModalViewControllerAnimated:YES];
     
 }
+-(void)selectCity
+{
+    self.cityPV.hidden = NO;
+    self.genderPV.hidden = YES;
+    self.agePV.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        if (iPhone5) {
+            [self.profileTableV setFrame:CGRectMake(0, -70, 320, self.view.frame.size.height-44)];
+        }
+        else
+            [self.profileTableV setFrame:CGRectMake(0, -150, 320, self.view.frame.size.height-44)];
+        [chooseRegionV setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+-(void)selectAge
+{
+    self.agePV.hidden = NO;
+    self.cityPV.hidden = YES;
+    self.genderPV.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        if (iPhone5) {
+            [self.profileTableV setFrame:CGRectMake(0, -50, 320, self.view.frame.size.height-44)];
+        }
+        else
+            [self.profileTableV setFrame:CGRectMake(0, -100, 320, self.view.frame.size.height-44)];
+        [chooseRegionV setFrame:CGRectMake(0, 0, 300, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+-(void)selectGender
+{
+    self.genderPV.hidden = NO;
+    self.agePV.hidden = YES;
+    self.cityPV.hidden = YES;
+    [UIView animateWithDuration:0.3 animations:^{
+        if (iPhone5) {
+            [self.profileTableV setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-44)];
+        }
+        else
+            [self.profileTableV setFrame:CGRectMake(0, -60, 320, self.view.frame.size.height-44)];
+        [chooseRegionV setFrame:CGRectMake(0, 0, 300, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+-(void)changeText:(NSString *)textinfo WithIndex:(int)theIndex
+{
+    [self.discribeArray replaceObjectAtIndex:theIndex withObject:textinfo];
+    [self makeHeight];
+    [self.profileTableV reloadData];
+}
+-(void)didselectCity
+{
+    if (self.cityPV.hidden==NO) {
+        [self.discribeArray replaceObjectAtIndex:3 withObject:[NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]]];
+        [self.profileTableV reloadData];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+            [chooseRegionV setFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            self.cityPV.hidden = YES;
+        }];
+    }
+    else if (self.agePV.hidden == NO){
+        [self.discribeArray replaceObjectAtIndex:2 withObject:_ageArray[[_agePV selectedRowInComponent:0]]];
+        [self.profileTableV reloadData];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+            [chooseRegionV setFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            self.agePV.hidden = YES;
+        }];
+    }
+    else
+    {
+        [self.discribeArray replaceObjectAtIndex:1 withObject:[_genderArray[[_genderPV selectedRowInComponent:0]] isEqualToString:@"男"]?@"male":@"female"];
+        [self.profileTableV reloadData];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+            [chooseRegionV setFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            self.genderPV.hidden = YES;
+        }];
+    }
+
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+        [chooseRegionV setFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        self.genderPV.hidden = YES;
+        self.agePV.hidden = YES;
+        self.cityPV.hidden = YES;
+    }];
+}
+-(void)didselectAge
+{
+    [self.discribeArray replaceObjectAtIndex:2 withObject:_ageArray[[_agePV selectedRowInComponent:0]]];
+    [self.profileTableV reloadData];
+    [UIView animateWithDuration:0.3 animations:^{
+        [chooseAgeV setFrame:CGRectMake(0, self.view.frame.size.height, 300, 224)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+-(void)saveMyInfo
+{
+    [hud show:YES];
+    if (self.waitingUploadImgArray.count>0) {
+        [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            NSDictionary* CompresID = responseObject;
+            [NetManager uploadImages:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+                for (NSString*a in responseObject) {
+                    self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+                }
+                [self finalUploadInfo];
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+
+    }
+    else
+        [self finalUploadInfo];
+}
+-(void)finalUploadInfo
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    [params setObject:[self.discribeArray objectAtIndex:0] forKey:@"nickname"];
+    [params setObject:[self.discribeArray objectAtIndex:1] forKey:@"gender"];
+    [params setObject:[self.discribeArray objectAtIndex:2] forKey:@"birthdate"];
+    [params setObject:[self.discribeArray objectAtIndex:3] forKey:@"city"];
+    [params setObject:self.hostInfo.headImgStr forKey:@"img"];
+    [params setObject:[self.discribeArray objectAtIndex:4] forKey:@"signature"];
+    [params setObject:[self.discribeArray objectAtIndex:5] forKey:@"hobby"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"saveUserinfo2" forKey:@"method"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        [DataStoreManager saveUserInfo:recDict];
+        [hud hide:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [hud hide:YES];
+    }];
+
+}
+#pragma mark - UIPicker View delegate and data source
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    if (pickerView == _cityPV) {
+        return 2;
+    }
+    return 1;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView == _cityPV) {
+        if (component == 0) {
+            return self.ProvinceArray.count;
+        }
+        return self.cityArray.count;
+    }
+    else if (pickerView == _agePV)
+        return self.ageArray.count;
+    else
+        return self.genderArray.count;
+}
+- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger) row forComponent:(NSInteger) component
+{
+    if (pickerView == _cityPV) {
+        if (component == 0) {
+            return [self.ProvinceArray[row] objectForKey:@"Province"];
+        }
+        return self.cityArray[row];
+    }
+    else if (pickerView == _agePV)
+        return self.ageArray[row];
+    else
+        return self.genderArray[row];
+    
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (pickerView == _cityPV) {
+        if (component == 0) {
+            self.cityArray = [self.ProvinceArray[row] objectForKey:@"city"];
+            [_cityPV reloadComponent:1];
+        }
+    }
+}
+
 -(void)back
 {
     [[TempData sharedInstance] Panned:NO];
