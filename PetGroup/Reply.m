@@ -7,7 +7,7 @@
 //
 
 #import "Reply.h"
-
+#import "ReplyComment.h"
 @implementation Reply
 - (id)initWithDictionary:(NSDictionary*)dic
 {
@@ -17,7 +17,12 @@
         self.msg = [dic objectForKey:@"msg"];
         self.dynamicID = [dic objectForKey:@"userStateid"];
         self.petUser =[[HostInfo alloc]initWithHostInfo:[dic objectForKey:@"petUserView"]];
-        self.replyComment = [NSMutableArray arrayWithArray:[dic objectForKey:@"replyCommentViews"]];
+        self.replyComments = [[NSMutableArray alloc]init];
+       NSArray* array = [NSMutableArray arrayWithArray:[dic objectForKey:@"replyCommentViews"]];
+        for (NSDictionary*dic in array) {
+            ReplyComment* replyCom = [[ReplyComment alloc]initWithDictionary:dic];
+            [self.replyComments addObject:replyCom];
+        }
     }
     return self;
 }

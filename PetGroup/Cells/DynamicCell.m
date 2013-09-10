@@ -16,8 +16,9 @@
 #import "PhotoViewController.h"
 #import "OHAttributedLabel.h"
 #import "HeightCalculate.h"
+#import "ReplyComment.h"
 
-@interface DynamicCell ()<OHAttributedLabelDelegate>
+@interface DynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate>
 
 {
     UIButton* nameB;
@@ -135,8 +136,9 @@
     for (UIView* a in self.contentView.subviews) {
         a.frame = CGRectZero;
     }
-
-    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
+    if (self.dynamic.petUser.headImgArray.count>0) {
+        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
+    }
     headB.frame = CGRectMake(10, 10, 40, 40);
     [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
     CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
@@ -313,24 +315,42 @@
     
     origin+=25;
     
-    if (self.OHALabelArray.count<self.dynamic.replyViews.count) {
-        int a = self.dynamic.replyViews.count - self.OHALabelArray.count;
+    int count = 0;
+    for (Reply* reply in self.dynamic.replyViews) {
+        count++;
+        for (id a in reply.replyComments) {
+            count++;
+        }
+    }
+    if (self.OHALabelArray.count<count) {
+        int a = count - self.OHALabelArray.count;
         for (int i = 0; i < a; i++) {
             OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
+            ohaL.delegate = self;
             [self.OHALabelArray addObject:ohaL];
             [self.contentView addSubview:ohaL];
         }
     }
+    int number = 0;
     for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[i];
+        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
+        number++;
         Reply* rel = (Reply*)self.dynamic.replyViews[i];
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        [ohaL setDisplayText:repS WithCommentArray:@[[NSString stringWithFormat:@"%@;%@",rel.petUser.nickName,rel.petUser.userId]] MaxWidth:200];
-        ohaL.delegate = self;
+        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:200];
         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:200];
         [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
-        
         origin += (size.height+10);
+        for (int j = 0; j < rel.replyComments.count; j++) {
+            OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
+            number++;
+            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:200];
+            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:200];
+            [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
+            origin += (size.height+10);
+        }
     }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -422,16 +442,49 @@
 {
     return YES;
 }
--(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldUserName:(NSString *)userName TheID:(NSString *)theid
+-(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldUserName:(NSString *)userName TheID:(id)theid theIndex:(int)theIndex
 {
-    NSLog(@"点击了%@,%@",userName,theid);
+    PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
+    if (theIndex == 0) {
+        if ([theid isKindOfClass:[Reply class]]) {
+            personVC.hostInfo = ((Reply*)theid).petUser;
+        }
+        if ([theid isKindOfClass:[ReplyComment class]]) {
+            personVC.hostInfo = ((ReplyComment*)theid).commentUserView;
+        }
+    }else{
+        personVC.hostInfo = ((ReplyComment*)theid).replyUserView;
+    }
     
+    [self.viewC.navigationController pushViewController:personVC animated:YES];
+    [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
+
     return YES;
 }
 
--(void)labelTouchedWithNickName:(NSString *)nickName TheID:(NSString *)theID
+-(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
 {
-    NSLog(@"回复：%@,%@",nickName,theID);
+    if ([theID isKindOfClass:[Reply class]]) {
+        if ([self.dynamic.petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]||[((Reply*)theID).petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
+            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"删除该评论" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+            [action showInView:self.superview];
+            return;
+        }
+    }
+    if ([theID isKindOfClass:[ReplyComment class]]) {
+        if ([self.dynamic.petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]||[((ReplyComment*)theID).commentUserView.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
+            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"删除该评论" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+            [action showInView:self.superview];
+            return;
+        }
+    }
+    [self.viewC performSelector:@selector(recalledreply:) withObject:theID];
 }
-
+#pragma mark - OHAttributedLabel Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        
+    }
+}
 @end

@@ -233,7 +233,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
 // MARK: Links Mgmt
 /////////////////////////////////////////////////////////////////////////////
 
--(void)addCustomLink:(NSURL*)linkUrl inRange:(NSRange)range AndStr:(NSString *)str TheID:(NSString *)theid {
+-(void)addCustomLink:(NSURL*)linkUrl inRange:(NSRange)range AndStr:(NSString *)str TheID:(id)theid {
 	NSTextCheckingResult* link = [NSTextCheckingResult linkCheckingResultWithRange:range URL:linkUrl];
 
     [customLinks addObject:link];
@@ -285,9 +285,9 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
     }
     
     if ([cArray count]) {
-        for (NSString * tempS in cArray) {
-             NSArray *nickArray = [tempS componentsSeparatedByString:@";"];
-            [self addCustomLink:[NSURL URLWithString:[nickArray objectAtIndex:0]] inRange:[string rangeOfString:[nickArray objectAtIndex:0]] AndStr:[nickArray objectAtIndex:0] TheID:[nickArray objectAtIndex:1]];
+        for (NSDictionary * tempS in cArray) {
+//             NSArray *nickArray = [tempS componentsSeparatedByString:@";"];
+            [self addCustomLink:[NSURL URLWithString:[tempS objectForKey:@"nickName"]] inRange:[string rangeOfString:[tempS objectForKey:@"nickName"]] AndStr:[tempS objectForKey:@"nickName"] TheID:[tempS objectForKey:@"petUser"]];
         }
     }
 /*******
@@ -575,7 +575,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
                 
         }
         if (![self ifURL:[NSString stringWithFormat:@"%@",activeLink.URL]]&&!activeLink.phoneNumber) {
-            [self.delegate attributedLabel:self shouldUserName:[nickNameArray objectAtIndex:theIndex] TheID:[theIDArray objectAtIndex:theIndex]];
+            [self.delegate attributedLabel:self shouldUserName:[nickNameArray objectAtIndex:theIndex] TheID:[theIDArray objectAtIndex:theIndex] theIndex:theIndex];
         }
 	}
     else

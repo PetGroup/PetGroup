@@ -12,6 +12,7 @@
 		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
+		8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8641ACE017DED0DF0020C34B /* ReplyComment.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
 		86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */; };
@@ -555,6 +556,8 @@
 		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
 		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
 		8629653F17DAFCBC00236F3E /* UserTreaty.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserTreaty.txt; sourceTree = "<group>"; };
+		8641ACDF17DED0DF0020C34B /* ReplyComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyComment.h; sourceTree = "<group>"; };
+		8641ACE017DED0DF0020C34B /* ReplyComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyComment.m; sourceTree = "<group>"; };
 		8642967B17D6CF1300B1B1C9 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		8642967E17D70E7500B1B1C9 /* Reply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reply.h; sourceTree = "<group>"; };
@@ -3095,6 +3098,8 @@
 				86D90B8517D0848700345D59 /* Dynamic.m */,
 				8642967E17D70E7500B1B1C9 /* Reply.h */,
 				8642967F17D70E7500B1B1C9 /* Reply.m */,
+				8641ACDF17DED0DF0020C34B /* ReplyComment.h */,
+				8641ACE017DED0DF0020C34B /* ReplyComment.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -3759,6 +3764,7 @@
 				9727937917D9C8380001E863 /* RegexKitLite.m in Sources */,
 				9727937A17D9C8380001E863 /* SCGIFImageView.m in Sources */,
 				8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */,
+				8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

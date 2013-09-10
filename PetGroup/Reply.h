@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "HostInfo.h"
+
 @interface Reply : NSObject
-@property (nonatomic,strong)NSMutableArray* replyComment;
+@property (nonatomic,strong)NSMutableArray* replyComments;
 @property (nonatomic,strong)NSString*replyID;
 @property (nonatomic,strong)NSString*msg;
 @property (nonatomic,strong)NSString*dynamicID;

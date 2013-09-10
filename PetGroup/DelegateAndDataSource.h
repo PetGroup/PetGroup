@@ -13,6 +13,7 @@
 @property (nonatomic,weak)UIViewController* viewC;
 @property (nonatomic,strong)NSMutableArray* dataSourceArray;
 @property (nonatomic,assign)int pageIndex;
+@property (nonatomic,assign)long long lastStateid;
 
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 

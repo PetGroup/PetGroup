@@ -52,8 +52,8 @@ CTLineBreakMode CTLineBreakModeFromUILineBreakMode(UILineBreakMode lineBreakMode
 @protocol OHAttributedLabelDelegate <NSObject>
 @optional
 -(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo;
--(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldUserName:(NSString*)userName TheID:(NSString *)theid;
--(void)labelTouchedWithNickName:(NSString *)nickName TheID:(NSString *)theID;
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldUserName:(NSString*)userName TheID:(id)theid theIndex:(int)theIndex;
+-(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID;
 -(UIColor*)colorForLink:(NSTextCheckingResult*)linkInfo underlineStyle:(int32_t*)underlineStyle; //!< Combination of CTUnderlineStyle and CTUnderlineStyleModifiers
 @end
 
@@ -73,7 +73,7 @@ CTLineBreakMode CTLineBreakModeFromUILineBreakMode(UILineBreakMode lineBreakMode
     NSMutableArray* images;
     
     NSString * nickName;
-    NSString * theID;
+    id theID;
     NSMutableArray * nickNameArray;
     NSMutableArray * theIDArray;
     int theIndex;

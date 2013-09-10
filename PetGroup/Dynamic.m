@@ -74,7 +74,12 @@
     }else if(self.smallImage.count>6){
         self.rowHigh+=255;
     }
-    self.rowHigh +=28*self.replyViews.count;
+    for (Reply* reply in self.replyViews) {
+        self.rowHigh+=28;
+        for (id a in reply.replyComments) {
+            self.rowHigh+=28;
+        }
+    }
     return self;
 }
 @end

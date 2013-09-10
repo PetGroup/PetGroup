@@ -12,6 +12,7 @@
 #import "Dynamic.h"
 #import "DynamicViewController.h"
 #import "DelegateAndDataSource.h"
+#import "TempData.h"
 @interface EditDynamicViewController ()<MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
@@ -136,8 +137,8 @@
 {
     [hud hide:YES];
     [_dynamicTV resignFirstResponder];
+    [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
-    [self.customTabBarController hidesTabBar:NO animated:YES];
 }
 -(void)next
 {
