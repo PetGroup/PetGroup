@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+@protocol ChangeText <NSObject>
+-(void)changeText:(NSString *)textinfo WithIndex:(int)theIndex;
+@end
 @interface ReportViewController : UIViewController<UITextViewDelegate,MBProgressHUDDelegate>
 {
     UILabel * remainingLabel;
@@ -16,5 +19,7 @@
 @property (strong,nonatomic) UITextView * inputTextF;
 @property (strong,nonatomic) NSString * theTitle;
 @property (strong,nonatomic) NSString * defaultContent;
+@property (assign,nonatomic) id <ChangeText> textDelegate;
 @property (assign,nonatomic) int maxCount;
+@property (assign,nonatomic) int thisIndex;
 @end

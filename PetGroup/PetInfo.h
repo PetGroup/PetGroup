@@ -18,6 +18,7 @@
 @property (strong,nonatomic) NSString * petAge;
 @property (strong,nonatomic) NSString * hostID;
 @property (strong,nonatomic) NSString * firstHead;
-
+@property (strong,nonatomic) NSString * petID;
+@property (strong,nonatomic) NSString * headImgStr;
 - (id)initWithPetInfo:(NSDictionary*)info;
 @end

@@ -26,5 +26,6 @@
 @property (nonatomic, retain) NSString * remarkName;
 @property (nonatomic, retain) NSString * nameIndex;
 @property (nonatomic, retain) NSString * nameKey;
+@property (nonatomic, retain) NSString * theCity;
 
 @end

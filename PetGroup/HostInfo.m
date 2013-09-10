@@ -23,7 +23,9 @@
         self.hobby = ![[info objectForKey:@"hobby"] isKindOfClass:[NSNull class]]?[info objectForKey:@"hobby"]:@"用户暂时还没有设置爱好";
         self.latitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"latitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"latitude"]:@""];
         self.longitude = [NSString stringWithFormat:@"%@",![[info objectForKey:@"longitude"] isKindOfClass:[NSNull class]]?[info objectForKey:@"longitude"]:@""];
+        self.region = ![[info objectForKey:@"city"] isKindOfClass:[NSNull class]]?[info objectForKey:@"city"]:@"未知";
 //        self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
+        self.headImgStr = [NSString stringWithFormat:@"%@",[info objectForKey:@"img"]];
         [self getHead:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
         NSArray * petTempArray = [info objectForKey:@"petInfoViews"];
         NSMutableArray * tempArray = [NSMutableArray array];

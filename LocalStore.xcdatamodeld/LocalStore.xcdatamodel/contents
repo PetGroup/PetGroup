@@ -76,6 +76,7 @@
         <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remarkName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="signature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="theCity" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -181,8 +182,9 @@
         <element name="DSCommonMsgs" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSDynamicFriends" positionX="160" positionY="192" width="128" height="270"/>
         <element name="DSDynamicNearby" positionX="160" positionY="192" width="128" height="270"/>
-        <element name="DSFriends" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="DSFriends" positionX="160" positionY="192" width="128" height="270"/>
         <element name="DSMyDynamic" positionX="160" positionY="192" width="128" height="225"/>
+        <element name="DSNameIndex" positionX="160" positionY="192" width="128" height="60"/>
         <element name="DSPets" positionX="160" positionY="192" width="128" height="195"/>
         <element name="DSPublicMsgs" positionX="160" positionY="192" width="128" height="165"/>
         <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="150"/>
@@ -192,6 +194,5 @@
         <element name="DSThumbPublicMsgs" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSThumbSubscribedMsgs" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSUnreadCount" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="DSNameIndex" positionX="160" positionY="192" width="128" height="60"/>
     </elements>
 </model>

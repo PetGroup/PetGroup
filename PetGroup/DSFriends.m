@@ -25,5 +25,6 @@
 @dynamic remarkName;
 @dynamic nameIndex;
 @dynamic nameKey;
+@dynamic theCity;
 
 @end
