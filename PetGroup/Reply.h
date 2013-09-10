@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "HostInfo.h"
 @interface Reply : NSObject
-@property (nonatomic,strong)NSDictionary*petUser;
 @property (nonatomic,strong)NSMutableArray* replyComment;
 @property (nonatomic,strong)NSString*replyID;
 @property (nonatomic,strong)NSString*msg;
 @property (nonatomic,strong)NSString*dynamicID;
+@property (nonatomic,strong)HostInfo*petUser;
 - (id)initWithDictionary:(NSDictionary*)dic;
 @end

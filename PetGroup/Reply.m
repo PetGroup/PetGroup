@@ -16,7 +16,7 @@
         self.replyID = [dic objectForKey:@"id"];
         self.msg = [dic objectForKey:@"msg"];
         self.dynamicID = [dic objectForKey:@"userStateid"];
-        self.petUser = [dic objectForKey:@"petUser"];
+        self.petUser =[[HostInfo alloc]initWithHostInfo:[dic objectForKey:@"petUserView"]];
         self.replyComment = [NSMutableArray arrayWithArray:[dic objectForKey:@"replyCommentViews"]];
     }
     return self;

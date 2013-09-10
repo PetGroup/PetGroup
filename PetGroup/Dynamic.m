@@ -7,8 +7,8 @@
 //
 
 #import "Dynamic.h"
-#import "Reply.h"
 #import "Common.h"
+
 
 @implementation Dynamic
 - (id)initWithNSDictionary:(NSDictionary*)dic
@@ -16,18 +16,16 @@
     self = [super init];
     if (self) {
         self.ifZhankaied = 0;
-        self.petUser = [dic objectForKey:@"petUser"];//动态的用户字典
-        self.replyViews = [[NSMutableArray alloc]init];
+        self.petUser =[[HostInfo alloc]initWithHostInfo: [dic objectForKey:@"petUserView"]];//动态的用户
+        self.replyViews = [[NSMutableArray alloc]init];//动态的品论数组
         NSArray *replys = [dic objectForKey:@"replyViews"];
         for (NSDictionary* a in replys) {
             Reply* reply = [[Reply alloc]initWithDictionary:a];
             [_replyViews addObject:reply];
         }
-        self.name = [_petUser objectForKey:@"nickname"];//动态的用户昵称
-        self.headID = [_petUser objectForKey:@"img"];//动态用户得头像ID
+        self.countReplys = [dic objectForKey:@"countReplys"];//动态的总品论数
         self.msg = [dic objectForKey:@"msg"];//动态内容
         self.dynamicID = [dic objectForKey:@"id"];//动态ID
-        self.userID = [_petUser objectForKey:@"id"];//动态用户得ID
         self.imageID = [dic objectForKey:@"imgid"];//动态的imageID,转发时使用
         NSArray* i = [[dic objectForKey:@"imgid"] componentsSeparatedByString:@","];
         if (i.count>1) {
@@ -50,20 +48,20 @@
         
         self.rowHigh = 65;
         if (self.ifTransmitMsg!=0) {
-            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 75) lineBreakMode:NSLineBreakByWordWrapping];
+            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
             self.rowHigh+=(size.height+10);
-             CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-            if (msgSize.height>75) {
-                self.rowHigh+=25;
+             CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            if (msgSize.height>90) {
+                self.rowHigh+=28;
             }else{
                 self.rowHigh+=(size.height+10);
             }
         }else{
-            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-            if (size.height>=150) {
-                self.rowHigh+=25;
-            }else if(size.height>=75){
-                self.rowHigh+=105;
+            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            if (size.height>=180) {
+                self.rowHigh+=28;
+            }else if(size.height>=90){
+                self.rowHigh+=126;
             }else{
                 self.rowHigh+=(size.height+10);
             }
@@ -76,7 +74,7 @@
     }else if(self.smallImage.count>6){
         self.rowHigh+=255;
     }
-//    self.rowHigh +=20*self.replyViews.count;
+    self.rowHigh +=28*self.replyViews.count;
     return self;
 }
 @end

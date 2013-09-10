@@ -15,8 +15,9 @@
 #import "FullTextViewController.h"
 #import "PhotoViewController.h"
 #import "OHAttributedLabel.h"
+#import "HeightCalculate.h"
 
-@interface DynamicCell ()
+@interface DynamicCell ()<OHAttributedLabelDelegate>
 
 {
     UIButton* nameB;
@@ -68,12 +69,12 @@
         
         self.transmitMsgL = [[UILabel alloc]init];
         [self.contentView addSubview:_transmitMsgL];
-        _transmitMsgL.font = [UIFont systemFontOfSize:12];
+        _transmitMsgL.font = [UIFont systemFontOfSize:14];
         
         self.msgL = [[UILabel alloc]init];
         _msgL.numberOfLines = 0;
         [self.contentView addSubview:_msgL];
-        _msgL.font = [UIFont systemFontOfSize:12];
+        _msgL.font = [UIFont systemFontOfSize:14];
         
         quanwenB = [UIButton buttonWithType:UIButtonTypeCustom];
         [quanwenB setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -123,6 +124,8 @@
         [_moveB setBackgroundImage:[UIImage imageNamed:@"pinglun"] forState:UIControlStateNormal];
         [self.contentView addSubview:_moveB];
         [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.OHALabelArray = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -133,10 +136,10 @@
         a.frame = CGRectZero;
     }
 
-    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.headID]];
+    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
     headB.frame = CGRectMake(10, 10, 40, 40);
-    [nameB setTitle:self.dynamic.name forState:UIControlStateNormal];
-    CGSize nameSize = [self.dynamic.name sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
+    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
     _distancevL.text = self.dynamic.distance;
     _distancevL.frame = CGRectMake(150, 10, 50, 15);
@@ -144,19 +147,19 @@
     origin = 40;
     
     if (self.dynamic.ifTransmitMsg != 0) {
-        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 50) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 50) lineBreakMode:NSLineBreakByWordWrapping];
         self.transmitMsgL.text = self.dynamic.transmitMsg;
         self.transmitMsgL.frame = CGRectMake(60, origin, size.width, size.height);
         origin += (size.height+10);
         
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
         self.msgL.backgroundColor = [UIColor clearColor];
-        if (msgSize.height<75) {
+        if (msgSize.height<90) {
             self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
             origin+=(msgSize.height+10);
         }else{
-            self.msgL.frame =CGRectMake(60, origin, 240, 15);
-            origin+=25;
+            self.msgL.frame =CGRectMake(60, origin, 240, 18);
+            origin+=28;
             pushB.frame = _msgL.frame;
         }
         self.msgL.text = self.dynamic.msg;
@@ -212,8 +215,8 @@
         self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y, 260, origin-self.msgL.frame.origin.x-10);
     }else{
         _msgL.backgroundColor= [UIColor whiteColor];
-        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 75) lineBreakMode:NSLineBreakByWordWrapping];
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
         _msgL.text = self.dynamic.msg;
         _msgL.backgroundColor = [UIColor whiteColor];
         if (msgMinSize.height==msgSize.height){
@@ -221,7 +224,7 @@
             origin+=(msgMinSize.height+10);
         }
         if (msgMinSize.height<msgSize.height) {
-            if (msgSize.height<150) {
+            if (msgSize.height<180) {
                 if(self.dynamic.ifZhankaied == 0)
                 {
                     [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
@@ -238,9 +241,9 @@
                 
             }else{
                 _msgL.backgroundColor= [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-                _msgL.frame = CGRectMake(60, 40, 240, 15);
+                _msgL.frame = CGRectMake(60, 40, 240, 18);
                 pushB.frame = _msgL.frame;
-                origin+=25;
+                origin+=28;
             }
         }
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
@@ -296,7 +299,7 @@
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.text = self.dynamic.submitTime;
     _timeL.frame = CGRectMake(60, origin, timeSize.width, timeSize.height);
-    if ([[DataStoreManager getMyUserID] intValue] == [[self.dynamic.petUser objectForKey:@"id"]intValue]) {
+    if ([[DataStoreManager getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
         delB.frame = CGRectMake(150, origin, 30, 15);
     }
     _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
@@ -307,6 +310,28 @@
     }
     zanB.frame = CGRectMake(220, origin, 50, 15);
     _moveB.frame = CGRectMake(280, origin, 30, 15);
+    
+    origin+=25;
+    
+    if (self.OHALabelArray.count<self.dynamic.replyViews.count) {
+        int a = self.dynamic.replyViews.count - self.OHALabelArray.count;
+        for (int i = 0; i < a; i++) {
+            OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
+            [self.OHALabelArray addObject:ohaL];
+            [self.contentView addSubview:ohaL];
+        }
+    }
+    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[i];
+        Reply* rel = (Reply*)self.dynamic.replyViews[i];
+        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
+        [ohaL setDisplayText:repS WithCommentArray:@[[NSString stringWithFormat:@"%@;%@",rel.petUser.nickName,rel.petUser.userId]] MaxWidth:200];
+        ohaL.delegate = self;
+        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:200];
+        [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
+        
+        origin += (size.height+10);
+    }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -327,6 +352,7 @@
 -(void)PersonDetail
 {
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
+    personVC.hostInfo = self.dynamic.petUser;
     [self.viewC.navigationController pushViewController:personVC animated:YES];
     [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
 }
@@ -359,7 +385,7 @@
     long long a = (long long)(cT*1000);
     [params setObject:@"0" forKey:@"zanType"];
     [params setObject:@"" forKey:@"petid"];
-    [params setObject:[self.dynamic.petUser objectForKey:@"id"] forKey:@"zanUserid"];
+    [params setObject:self.dynamic.petUser.userId forKey:@"zanUserid"];
     [params setObject:self.dynamic.dynamicID forKey:@"userStateid"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
@@ -391,4 +417,21 @@
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:self.dynamic.smallImage images:self.dynamic.imgIDArray indext:button.tag-1000];
     [self.viewC presentViewController:vc animated:NO completion:nil];
 }
+#pragma mark - OHAttributedLabel Delegate
+-(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldFollowLink:(NSTextCheckingResult *)linkInfo
+{
+    return YES;
+}
+-(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldUserName:(NSString *)userName TheID:(NSString *)theid
+{
+    NSLog(@"点击了%@,%@",userName,theid);
+    
+    return YES;
+}
+
+-(void)labelTouchedWithNickName:(NSString *)nickName TheID:(NSString *)theID
+{
+    NSLog(@"回复：%@,%@",nickName,theID);
+}
+
 @end

@@ -343,7 +343,7 @@
         [hud hide:YES];
     }];
 }
--(void)saveSelfUserInFo:(NSDictionary*)dic /* 未完待续 */
+-(void)saveSelfUserInFo:(NSDictionary*)dic 
 {
     NSLog(@"%@",dic);
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[dic objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];

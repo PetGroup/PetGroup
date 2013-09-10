@@ -16,8 +16,9 @@
 #import "EGOImageButton.h"
 #import "DynamicCell.h"
 #import "EGOCache.h"
+#import "UIExpandingTextView.h"
 
-@interface DynamicViewController ()<MBProgressHUDDelegate>
+@interface DynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
     UIButton* nearByB;
     UIButton* friendB;
@@ -28,6 +29,10 @@
     MBProgressHUD * hud;
     
     int assessOrPraise;
+    
+    UIImageView * inputbg;
+    UIView * inPutView;
+    UIButton* senBtn;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
@@ -36,8 +41,7 @@
 @property (nonatomic,strong)UIActivityIndicatorView * footAct;
 @property (nonatomic,strong)UIImageView*  actionIV;
 @property (nonatomic,weak)DynamicCell* mycell;
-@property (nonatomic,strong)UITextField* inputTF;
-@property (nonatomic,strong)UITextField* cheatTF;
+@property (nonatomic,strong)UIExpandingTextView* inputTF;
 @end
 
 @implementation DynamicViewController
@@ -139,18 +143,28 @@
     
     
 	// Do any additional setup after loading the view.
-    self.inputTF = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
-    _inputTF.borderStyle=UITextBorderStyleRoundedRect;
-    UIToolbar* aToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 44)];
-    aToolbar.tintColor = [UIColor blackColor];
-    UIBarButtonItem*arb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didInput)];
-    UIBarButtonItem*rb = [[UIBarButtonItem alloc]initWithCustomView:_inputTF];
-    arb.tintColor = [UIColor blackColor];
-    aToolbar.items = @[rb,arb];
+    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
+    [inPutView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:inPutView];
+    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
+    [inPutView addSubview:inputbg];
     
-    self.cheatTF = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-    [self.view addSubview:_cheatTF];
-    _cheatTF.inputAccessoryView = aToolbar;
+    self.inputTF = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
+    self.inputTF.delegate = self;
+    self.inputTF.maximumNumberOfLines=5;
+    [inPutView addSubview:self.inputTF];
+    
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 5.0) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    }
+    else{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -225,13 +239,13 @@
 -(void)assess//评论
 {
     [self removeActionImageView];
-    [_cheatTF becomeFirstResponder];
+    [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
 }
 -(void)reprint//转发
 {
     [self removeActionImageView];
-    [_cheatTF becomeFirstResponder];
+    [_inputTF becomeFirstResponder];
     assessOrPraise = 2;
     
 }
@@ -244,7 +258,7 @@
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:[self.mycell.dynamic.petUser objectForKey:@"id"] forKey:@"petuserId"];
+                [params setObject:self.mycell.dynamic.petUser.userId forKey:@"petuserId"];
                 [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
                 [params setObject:self.inputTF.text forKey:@"msg"];
@@ -295,13 +309,85 @@
                 break;
         }
         [self keyBoardResign];
+        self.mycell = nil;
     }
 }
 -(void)keyBoardResign
 {
     [_inputTF resignFirstResponder];
-    [_cheatTF resignFirstResponder];
-    _inputTF.text = @"";
+}
+#pragma mark - Responding to keyboard events
+-(void)expandingTextView:(UIExpandingTextView *)expandingTextView willChangeHeight:(float)height
+{
+    /* Adjust the height of the toolbar when the input component expands */
+    float diff = (expandingTextView.frame.size.height - height);
+    CGRect r = inPutView.frame;
+    CGRect r2 = inputbg.frame;
+    r.origin.y += diff;
+    r.size.height -= diff;
+    r2.size.height-=diff;
+    inPutView.frame = r;
+    inputbg.frame = r2;
+    
+}
+- (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView
+{
+    [self didInput];
+    expandingTextView.text = @"";
+    return YES;
+}
+#pragma mark - Responding to keyboard events
+- (void)keyboardWillShow:(NSNotification *)notification {
+    /*
+     Reduce the size of the text view so that it's not obscured by the keyboard.
+     Animate the resize so that it's in sync with the appearance of the keyboard.
+     */
+    
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // Get the origin of the keyboard when it's displayed.
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    // Get the top of the keyboard as the y coordinate of its origin in self's view's coordinate system. The bottom of the text view's frame should align with the top of the keyboard's final position.
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    // Get the duration of the animation.
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
+    [self autoMovekeyBoard:keyboardRect.size.height];
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    NSDictionary* userInfo = [notification userInfo];
+    
+    /*
+     Restore the size of the text view (fill self's view).
+     Animate the resize so that it's in sync with the disappearance of the keyboard.
+     */
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    
+    [self autoMovekeyBoard:0];
+}
+-(void) autoMovekeyBoard: (float) h{
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.2];
+    if (self.view.frame.size.height == 499.0) {
+        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
+    }else{
+        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+    }
+	
+    [UIView commitAnimations];
+    NSLog(@"%f",self.view.frame.size.height);
 }
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -462,7 +548,7 @@
     [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
     [params setObject:dyn.msg forKey:@"msg"];
     [params setObject:dyn.imageID forKey:@"imgid"];
-    [params setObject:[dyn.petUser objectForKey:@"id"] forKey:@"userid"];
+    [params setObject:dyn.petUser.userId forKey:@"userid"];
     [params setObject:dyn.dynamicID forKey:@"userStateId"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];

@@ -250,23 +250,23 @@
     switch (self.petType) {
         case 1:
         {
-            [params setObject:@"" forKey:@"signature"];
-            [params setObject:@"" forKey:@"hobby"];
+            [params setObject:@"签名" forKey:@"signature"];
+            [params setObject:@"爱好" forKey:@"hobby"];
         }break;
         case 2:
         {
-            [params setObject:@"" forKey:@"signature"];
-            [params setObject:@"" forKey:@"hobby"];
+            [params setObject:@"签名" forKey:@"signature"];
+            [params setObject:@"爱好" forKey:@"hobby"];
         }break;
         case 3:
         {
-            [params setObject:@"" forKey:@"signature"];
-            [params setObject:@"" forKey:@"hobby"];
+            [params setObject:@"签名" forKey:@"signature"];
+            [params setObject:@"爱好" forKey:@"hobby"];
         }break;
         case 4:
         {
-            [params setObject:@"" forKey:@"signature"];
-            [params setObject:@"" forKey:@"hobby"];
+            [params setObject:@"签名" forKey:@"signature"];
+            [params setObject:@"爱好" forKey:@"hobby"];
         }break;
         default:
             break;

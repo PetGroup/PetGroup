@@ -101,6 +101,7 @@
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 131, 175, 20)];
     _passWordTF.placeholder = @"请输入登录密码";
+    _passWordTF.secureTextEntry = YES;
     _passWordTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_passWordTF];
     
@@ -139,11 +140,11 @@
 }
 -(void)next
 {
-//    if (![IdentifyingString validateMobile:_PhoneNoTF.text]) {
-//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-//        [alert show];
-//        return;
-//    }
+    if (![IdentifyingString validateMobile:_PhoneNoTF.text]) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
     if (![IdentifyingString isValidatePassWord:_passWordTF.text]) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的密码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
@@ -167,9 +168,14 @@
         if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"\"用户不存在\""]) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户不存在" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
+        }else if([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"\"密码错误\""]){
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
         }else{
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.PhoneNoTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [self dismissModalViewControllerAnimated:YES];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
