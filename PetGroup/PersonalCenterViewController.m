@@ -58,6 +58,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
+    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
     [self.profileTableV reloadData];
 }
 -(void)viewWillAppear:(BOOL)animated

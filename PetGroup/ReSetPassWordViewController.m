@@ -52,7 +52,7 @@
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-    [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+    [nextB addTarget:self action:@selector(numberIsUser) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -100,25 +100,29 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)next
+-(void)numberIsUser
 {
     if ([IdentifyingString validateMobile:_phoneNoTF.text]) {
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
-        [params setObject:_phoneNoTF.text forKey:@"phoneNum"];
+        [params setObject:_phoneNoTF.text forKey:@"username"];
         NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
         [body setObject:@"1" forKey:@"channel"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
         [body setObject:@"iphone" forKey:@"imei"];
         [body setObject:params forKey:@"params"];
-        [body setObject:@"getVerificationCode" forKey:@"method"];
+        [body setObject:@"isUsernameInuse" forKey:@"method"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [hud show:YES];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [hud hide:YES];
-            ResetPassOneViewController* resetPassVC = [[ResetPassOneViewController alloc]init];
-            resetPassVC.phoneNo = _phoneNoTF.text;
-            [self.navigationController pushViewController:resetPassVC animated:YES];
+            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"true"]) {
+                [self next];
+            }else{
+                UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"该手机号还未注册" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+                [alert show];
+                [hud hide:YES];
+            }
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
@@ -128,6 +132,30 @@
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的手机号" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
     }
+}
+-(void)next
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:_phoneNoTF.text forKey:@"phoneNum"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getVerificationCode" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        ResetPassOneViewController* resetPassVC = [[ResetPassOneViewController alloc]init];
+        resetPassVC.phoneNo = _phoneNoTF.text;
+        [self.navigationController pushViewController:resetPassVC animated:YES];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
     
 }
 #pragma mark - touch

@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HostInfo.h"
+#import "Reply.h"
 
 @interface Dynamic : NSObject
-@property (nonatomic,strong)NSString* name;
-@property (nonatomic,strong)NSString* headID;
 @property (nonatomic,strong)NSString* msg;
 @property (nonatomic,strong)NSString*dynamicID;
-@property (nonatomic,strong)NSString*userID;
 @property (nonatomic,strong)NSMutableArray* smallImage;
 @property (nonatomic,strong)NSMutableArray* imgIDArray;
 @property (nonatomic,strong)NSString*distance;
@@ -23,9 +22,10 @@
 @property (nonatomic,assign)int countZan;
 @property (nonatomic,assign)BOOL ifIZaned;
 @property (nonatomic,assign)int ifZhankaied;
-@property (nonatomic,strong)NSDictionary*petUser;
+@property (nonatomic,strong)HostInfo*petUser;
 @property (nonatomic,strong)NSMutableArray* replyViews;
 @property (nonatomic,assign)float rowHigh;
 @property (nonatomic,strong)NSString *imageID;
+@property (nonatomic,strong)NSString *countReplys;
 -(id)initWithNSDictionary:(NSDictionary*)dic;
 @end
