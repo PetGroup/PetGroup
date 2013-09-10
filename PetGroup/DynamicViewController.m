@@ -17,6 +17,8 @@
 #import "DynamicCell.h"
 #import "EGOCache.h"
 #import "UIExpandingTextView.h"
+#import "TempData.h"
+#import "ReplyComment.h"
 
 @interface DynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
@@ -41,6 +43,7 @@
 @property (nonatomic,strong)UIActivityIndicatorView * footAct;
 @property (nonatomic,strong)UIImageView*  actionIV;
 @property (nonatomic,weak)DynamicCell* mycell;
+@property (nonatomic,weak)id theID;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
 @end
 
@@ -181,6 +184,14 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    if ([[TempData sharedInstance] ifPanned]) {
+        [self.customTabBarController hidesTabBar:NO animated:NO];
+    }
+    else
+    {
+        [self.customTabBarController hidesTabBar:NO animated:YES];
+        [[TempData sharedInstance] Panned:YES];
+    }
     if (self.tableV.contentOffset.y<100) {
         self.tableV.contentOffset = CGPointMake(0, 100);
     }
@@ -241,13 +252,14 @@
     [self removeActionImageView];
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
+    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.mycell.dynamic.petUser.nickName];
 }
 -(void)reprint//转发
 {
     [self removeActionImageView];
     [_inputTF becomeFirstResponder];
     assessOrPraise = 2;
-    
+    _inputTF.placeholder = @"转发至我的动态";
 }
 -(void)didInput
 {
@@ -273,7 +285,9 @@
                 [hud show:YES];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [hud hide:YES];
-                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] );
+                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                    self.mycell = nil;
                 }];
             }break;
             case 2:
@@ -303,13 +317,49 @@
                     Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
                     [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
                     [self.tableV reloadData];
+                    self.mycell = nil;
                 }];
             }break;
+            case 3:
+            {
+                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+                long long a = (long long)(cT*1000);
+                [params setObject:[DataStoreManager getMyUserID] forKey:@"commentUserid"];
+                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
+                if ([self.theID isKindOfClass:[Reply class]]) {
+                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
+                    [params setObject:((Reply*)self.theID).replyID forKey:@"replyId"];
+                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
+                }
+                if ([self.theID isKindOfClass:[ReplyComment class]]) {
+                    [params setObject:((ReplyComment*)self.theID).commentUserView.userId forKey:@"replyUserid"];
+                    [params setObject:((ReplyComment*)self.theID).replyID forKey:@"replyId"];
+                    [params setObject:((ReplyComment*)self.theID).userStateid forKey:@"userStateid"];
+                }
+                
+                [params setObject:_inputTF.text forKey:@"msg"];
+                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+                [body setObject:@"1" forKey:@"channel"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+                [body setObject:@"iphone" forKey:@"imei"];
+                [body setObject:params forKey:@"params"];
+                [body setObject:@"addCommentReply" forKey:@"method"];
+                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+                [hud show:YES];
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [hud hide:YES];
+                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                    self.mycell = nil;
+                }];
+            }break;
+
             default:
                 break;
         }
         [self keyBoardResign];
-        self.mycell = nil;
     }
 }
 -(void)keyBoardResign
@@ -379,7 +429,7 @@
 -(void) autoMovekeyBoard: (float) h{
     
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.2];
+    [UIView setAnimationDuration:0.3];
     if (self.view.frame.size.height == 499.0) {
         inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
     }else{
@@ -562,6 +612,19 @@
         [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray removeObject:dyn];
         [self.tableV reloadData];
     }];
+}
+-(void)recalledreply:(id)theID//回复评论
+{
+    if ([theID isKindOfClass:[Reply class]]) {
+        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
+    }
+    if ([theID isKindOfClass:[ReplyComment class]]) {
+        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];
+    }
+    self.theID = theID;
+    [_inputTF becomeFirstResponder];
+    assessOrPraise = 3;
+    
 }
 #pragma mark - reload and loadmore
 -(void)reloadData

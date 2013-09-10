@@ -8,7 +8,7 @@
 
 #import "FullTextViewController.h"
 #import "CustomTabBar.h"
-
+#import "TempData.h"
 @interface FullTextViewController ()
 
 @end
@@ -63,7 +63,7 @@
 #pragma mark - button action
 -(void)backButton:(UIButton*)button
 {
+    [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
-    [self.customTabBarController hidesTabBar:NO animated:YES];
 }
 @end

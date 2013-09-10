@@ -15,6 +15,7 @@
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
     self.pageIndex = 0;
+    self.lastStateid = -1;
     [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
@@ -24,6 +25,7 @@
             [self.dataSourceArray addObject:b];
         }
         self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+        self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
         success();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
@@ -40,6 +42,7 @@
                 [self.dataSourceArray addObject:b];
             }
             self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+            self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
             success();
         }else{
             UIAlertView *aler = [[UIAlertView alloc]initWithTitle:nil message:@"没有更多动态啦" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
@@ -57,6 +60,7 @@
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
+    [params setObject:[NSString stringWithFormat:@"%lld",self.lastStateid] forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"findMyStates" forKey:@"method"];
