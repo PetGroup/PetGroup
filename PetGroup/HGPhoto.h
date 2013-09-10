@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, PhotoType) {
 @property (assign,nonatomic) BOOL wiggle;
 @property (assign,nonatomic) BOOL moved;
 @property (assign,nonatomic) BOOL useCache;
-
+@property (strong,nonatomic) UIButton * delBtn;
 - (id)initWithOrigin:(CGPoint)origin;
 
 - (void)setPhotoType:(PhotoType)type;

@@ -43,11 +43,12 @@
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypeImage;
+    self.photoWall.useCache = YES;
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
     self.photoWall.delegate = self;
     [self.photoWall setEditModel:YES];
     self.photoWall.tag =1;
-    self.photoWall.useCache = YES;
+    
     
     self.hostInfo.age = [NSString stringWithFormat:@"%@",self.hostInfo.age];
  
@@ -333,7 +334,37 @@
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex
 {
-    
+    if (index!=newIndex) {
+        NSMutableArray * array1 = [NSMutableArray arrayWithArray:self.hostInfo.headImgArray];
+        NSMutableArray * array2 = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
+        NSString * tempStr = [array1 objectAtIndex:index];
+        NSString * tempStr2 = [array2 objectAtIndex:index];
+        
+
+        
+        if (newIndex<index) {
+            [array1 insertObject:tempStr atIndex:newIndex];
+            [array2 insertObject:tempStr2 atIndex:newIndex];
+            [array1 removeObjectAtIndex:index+1];
+            [array2 removeObjectAtIndex:index+1];
+        }
+        else{
+            [array1 removeObjectAtIndex:index];
+            [array2 removeObjectAtIndex:index];
+            [array1 insertObject:tempStr atIndex:newIndex];
+            [array2 insertObject:tempStr2 atIndex:newIndex];
+        }
+        
+        self.hostInfo.headImgArray = array1;
+        self.hostInfo.headBigImgArray = array2;
+        self.hostInfo.headImgStr = @"";
+        for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
+            NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
+            NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
+            self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
+
 }
 
 - (void)photoWallAddAction
@@ -358,13 +389,24 @@
     NSMutableArray * tempHBig = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
     NSString * tempStr = [tempH objectAtIndex:index];
     if ([self.waitingUploadStrArray containsObject:tempStr]) {
+        int tempIndex = [self.waitingUploadStrArray indexOfObject:tempStr];
         [self.waitingUploadStrArray removeObject:tempStr];
-        [self.waitingUploadImgArray removeObjectAtIndex:index];
+        [self.waitingUploadImgArray removeObjectAtIndex:tempIndex];
     }
     [tempH removeObjectAtIndex:index];
     [tempHBig removeObjectAtIndex:index];
     self.hostInfo.headImgArray = tempH;
     self.hostInfo.headBigImgArray = tempHBig;
+    self.hostInfo.headImgStr = @"";
+    for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
+        
+        NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
+        NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
+        NSRange range=[temp1 rangeOfString:@"<local>"];
+        if (range.location==NSNotFound) {
+            self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
 //    [self.photoWall reloadPhotos:YES];
     [self.profileTableV reloadData];
     
@@ -457,6 +499,16 @@
     self.hostInfo.headImgArray = tempArray;
     self.hostInfo.headBigImgArray = tempBigArray;
     NSLog(@"%f",self.photoWall.frame.size.height);
+    self.hostInfo.headImgStr = @"";
+    for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
+        
+        NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
+        NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
+        NSRange range=[temp1 rangeOfString:@"<local>"];
+        if (range.location==NSNotFound) {
+            self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
     [self.profileTableV reloadData];
     [picker dismissModalViewControllerAnimated:YES];
     
@@ -581,9 +633,30 @@
         [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSDictionary* CompresID = responseObject;
             [NetManager uploadImages:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+                NSMutableArray * a1 = [NSMutableArray arrayWithArray:self.hostInfo.headImgArray];
+                NSMutableArray * a2 = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
                 for (NSString*a in responseObject) {
-                    self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+                    //                    self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+                    
+                    for (int i = 0;i<a1.count;i++) {
+                        if ([[a1 objectAtIndex:i] isEqualToString:a]) {
+                            [a1 replaceObjectAtIndex:i withObject:[CompresID objectForKey:a]];
+                        }
+                        if ([[a2 objectAtIndex:i] isEqualToString:a]) {
+                            [a2 replaceObjectAtIndex:i withObject:[responseObject objectForKey:a]];
+                        }
+                    }
                 }
+                self.hostInfo.headImgArray = a1;
+                self.hostInfo.headBigImgArray = a2;
+                self.hostInfo.headImgStr = @"";
+                for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
+                    NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
+                    NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
+                    self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+                }
+                
+
                 [self finalUploadInfo];
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

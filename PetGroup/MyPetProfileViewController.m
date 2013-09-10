@@ -41,24 +41,25 @@
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypeImage;
+    self.photoWall.useCache = YES;
     [self.photoWall setPhotos:[self imageToURL:self.petInfo.headImgArray]];
     self.photoWall.delegate = self;
     [self.photoWall setEditModel:YES];
     self.photoWall.tag =1;
-    self.photoWall.useCache = YES;
+    
 
 
     
     self.petInfo.petType = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
     self.petInfo.petTrait = self.petInfo.petTrait.length>1?self.petInfo.petTrait:@"主人还没有给她填写特点呢";
-    if ([self.petInfo.petGender isEqualToString:@"male"]) {
-        self.petInfo.petGender = @"公";
-    }
-    else if ([self.petInfo.petGender isEqualToString:@"female"]){
-        self.petInfo.petGender = @"母";
-    }
-    else
-        self.petInfo.petGender = @"还不知道呢";
+//    if ([self.petInfo.petGender isEqualToString:@"male"]) {
+//        self.petInfo.petGender = @"公";
+//    }
+//    else if ([self.petInfo.petGender isEqualToString:@"female"]){
+//        self.petInfo.petGender = @"母";
+//    }
+//    else
+//        self.petInfo.petGender = @"还不知道呢";
     self.petInfo.petAge = [NSString stringWithFormat:@"%@",self.petInfo.petAge];
 
 
@@ -74,9 +75,11 @@
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
     
+    self.petTypeStr = @"Dog";
     if (self.pageType==PageStyleAdd) {
         self.petInfo = [[PetInfo alloc] init];
         self.petInfo.headImgStr = @"";
+        self.petInfo.petType = @"";
     }
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
@@ -143,7 +146,7 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"修改中...";
+    hud.labelText = @"提交中...";
 	// Do any additional setup after loading the view.
 }
 -(void)makeHeight
@@ -244,7 +247,7 @@
                     else if ([[self.discribeArray objectAtIndex:indexPath.row] isEqualToString:@"female"])
                         cell.describeLabel.text = @"母";
                     else
-                        cell.describeLabel.text = @"未知";
+                        cell.describeLabel.text = @"还不知道呢";
                 }
             }
             else
@@ -316,7 +319,37 @@
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex
 {
-    
+    if (index!=newIndex) {
+        NSMutableArray * array1 = [NSMutableArray arrayWithArray:self.petInfo.headImgArray];
+        NSMutableArray * array2 = [NSMutableArray arrayWithArray:self.petInfo.headBigImgArray];
+        NSString * tempStr = [array1 objectAtIndex:index];
+        NSString * tempStr2 = [array2 objectAtIndex:index];
+        
+        
+        
+        if (newIndex<index) {
+            [array1 insertObject:tempStr atIndex:newIndex];
+            [array2 insertObject:tempStr2 atIndex:newIndex];
+            [array1 removeObjectAtIndex:index+1];
+            [array2 removeObjectAtIndex:index+1];
+        }
+        else{
+            [array1 removeObjectAtIndex:index];
+            [array2 removeObjectAtIndex:index];
+            [array1 insertObject:tempStr atIndex:newIndex];
+            [array2 insertObject:tempStr2 atIndex:newIndex];
+        }
+        
+        self.petInfo.headImgArray = array1;
+        self.petInfo.headBigImgArray = array2;
+        self.petInfo.headImgStr = @"";
+        for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
+            NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
+            NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
+            self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
+
 }
 
 - (void)photoWallAddAction
@@ -341,13 +374,25 @@
     NSMutableArray * tempHBig = [NSMutableArray arrayWithArray:self.petInfo.headBigImgArray];
     NSString * tempStr = [tempH objectAtIndex:index];
     if ([self.waitingUploadStrArray containsObject:tempStr]) {
+        int tempIndex = [self.waitingUploadStrArray indexOfObject:tempStr];
         [self.waitingUploadStrArray removeObject:tempStr];
-        [self.waitingUploadImgArray removeObjectAtIndex:index];
+        [self.waitingUploadImgArray removeObjectAtIndex:tempIndex];
     }
     [tempH removeObjectAtIndex:index];
     [tempHBig removeObjectAtIndex:index];
     self.petInfo.headImgArray = tempH;
     self.petInfo.headBigImgArray = tempHBig;
+    self.petInfo.headImgStr = @"";
+    for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
+        
+        NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
+        NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
+        NSRange range=[temp1 rangeOfString:@"<local>"];
+        if (range.location==NSNotFound) {
+            self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
+    
     //    [self.photoWall reloadPhotos:YES];
     [self.profileTableV reloadData];
     
@@ -403,6 +448,7 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSLog(@"%@",info);
+    NSTimeInterval nowT = [[NSDate date] timeIntervalSince1970];
     UIImage * upImage = (UIImage *)[info objectForKey:@"UIImagePickerControllerEditedImage"];
     //    UIImage* a = [NetManager compressImageDownToPhoneScreenSize:image targetSizeX:100 targetSizeY:100];
     //    UIImage* upImage = [NetManager image:a centerInSize:CGSizeMake(100, 100)];
@@ -412,7 +458,7 @@
     {
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    NSString  *openImgPath = [NSString stringWithFormat:@"%@/%d_pet.jpg",path,self.petInfo.headImgArray.count];
+    NSString  *openImgPath = [NSString stringWithFormat:@"%@/%.0f_pet.jpg",path,nowT];
     
     if ([UIImageJPEGRepresentation(upImage, 1.0) writeToFile:openImgPath atomically:YES]) {
         NSLog(@"success///");
@@ -432,14 +478,23 @@
         tempArray = [NSMutableArray array];
         tempBigArray = [NSMutableArray array];
     }
-    [tempArray addObject:[NSString stringWithFormat:@"<local>%d_pet.jpg",self.petInfo.headImgArray.count]];
-    [tempBigArray addObject:[NSString stringWithFormat:@"<local>%d_pet.jpg",self.petInfo.headImgArray.count]];
+    [tempArray addObject:[NSString stringWithFormat:@"<local>%.0f_pet.jpg",nowT]];
+    [tempBigArray addObject:[NSString stringWithFormat:@"<local>%.0f_pet.jpg",nowT]];
     [self.waitingUploadImgArray addObject:upImage];
-    [self.waitingUploadStrArray addObject:[NSString stringWithFormat:@"<local>%d_pet.jpg",self.petInfo.headImgArray.count]];
-    [self.photoWall addPhoto:[NSString stringWithFormat:@"<local>%d_pet.jpg",self.petInfo.headImgArray.count]];
+    [self.waitingUploadStrArray addObject:[NSString stringWithFormat:@"<local>%.0f_pet.jpg",nowT]];
+    [self.photoWall addPhoto:[NSString stringWithFormat:@"<local>%.0f_pet.jpg",nowT]];
     self.petInfo.headImgArray = tempArray;
     self.petInfo.headBigImgArray = tempBigArray;
     NSLog(@"%f",self.photoWall.frame.size.height);
+    self.petInfo.headImgStr = @"";
+    for (int i = 0;i<self.petInfo.headImgArray.count;i++) { 
+        NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
+        NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
+        NSRange range=[temp1 rangeOfString:@"<local>"];
+        if (range.location==NSNotFound) {
+            self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+        }
+    }
     [self.profileTableV reloadData];
     [picker dismissModalViewControllerAnimated:YES];
     
@@ -567,9 +622,29 @@
         [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSDictionary* CompresID = responseObject;
             [NetManager uploadImages:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+                NSMutableArray * a1 = [NSMutableArray arrayWithArray:self.petInfo.headImgArray];
+                NSMutableArray * a2 = [NSMutableArray arrayWithArray:self.petInfo.headBigImgArray];
                 for (NSString*a in responseObject) {
-                    self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+//                    self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
+ 
+                    for (int i = 0;i<a1.count;i++) {
+                        if ([[a1 objectAtIndex:i] isEqualToString:a]) {
+                            [a1 replaceObjectAtIndex:i withObject:[CompresID objectForKey:a]];
+                        }
+                        if ([[a2 objectAtIndex:i] isEqualToString:a]) {
+                            [a2 replaceObjectAtIndex:i withObject:[responseObject objectForKey:a]];
+                        }
+                    }
                 }
+                self.petInfo.headImgArray = a1;
+                self.petInfo.headBigImgArray = a2;
+                self.petInfo.headImgStr = @"";
+                for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
+                    NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
+                    NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
+                    self.petInfo.headImgStr = [self.petInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
+                }
+
                 [self finalUploadInfo];
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -609,6 +684,7 @@
             [hud hide:YES];
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             NSLog(@"%@",dic);
+            [DataStoreManager storeOnePetInfo:dic];
             [self.navigationController popViewControllerAnimated:YES];
             
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -644,6 +720,7 @@
             [hud hide:YES];
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             NSLog(@"%@",dic);
+            [DataStoreManager storeOnePetInfo:dic];
             [self.navigationController popViewControllerAnimated:YES];
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [hud hide:YES];

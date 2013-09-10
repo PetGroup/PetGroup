@@ -12,7 +12,7 @@
 
 @interface HGPhotoWall() <HGPhotoDelegate>
 {
-    
+    HGPhoto * waitingDelPhoto;
 }
 
 
@@ -182,15 +182,50 @@
     }
 }
 
--(void)delPhoto:(HGPhoto *)photo
+-(void)delSuccess
 {
-    NSUInteger index = [self.arrayPhotos indexOfObject:photo];
+    NSUInteger index = [self.arrayPhotos indexOfObject:waitingDelPhoto];
     HGPhoto *photoTemp = [self.arrayPhotos objectAtIndex:index];
     [self.arrayPhotos removeObject:photoTemp];
     [photoTemp removeFromSuperview];
     [self reloadPhotos:YES];
-    if ([self.delegate respondsToSelector:@selector(photoWallDelPhotoAtIndex:)]) {
-        [self.delegate photoWallDelPhotoAtIndex:index];
+}
+
+-(void)delPhoto:(HGPhoto *)photo
+{
+    if (self.descriptionType == DescriptionTypeImage) {
+        NSUInteger index = [self.arrayPhotos indexOfObject:photo];
+        HGPhoto *photoTemp = [self.arrayPhotos objectAtIndex:index];
+        [self.arrayPhotos removeObject:photoTemp];
+        [photoTemp removeFromSuperview];
+        [self reloadPhotos:YES];
+        if ([self.delegate respondsToSelector:@selector(photoWallDelPhotoAtIndex:)]) {
+            [self.delegate photoWallDelPhotoAtIndex:index];
+        }
+    }
+    else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您要删除这个宠物吗，想清楚了哦，删除了可就不可恢复了~" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"我意已决", nil];
+        [alert show];
+        waitingDelPhoto = photo;
+    }
+    
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        NSUInteger index = [self.arrayPhotos indexOfObject:waitingDelPhoto];
+//        HGPhoto *photoTemp = [self.arrayPhotos objectAtIndex:index];
+//        [self.arrayPhotos removeObject:photoTemp];
+//        [photoTemp removeFromSuperview];
+//        [self reloadPhotos:YES];
+        if ([self.delegate respondsToSelector:@selector(photoWallDelPhotoAtIndex:)]) {
+            [self.delegate photoWallDelPhotoAtIndex:index];
+        }
+    }
+    else
+    {
+        [self setAnimationNO];
     }
 }
 
@@ -280,10 +315,16 @@
             [[it layer] removeAllAnimations];
             it.moved = NO;
             it.wiggle = NO;
+            it.delBtn.hidden = YES;
         }
 
     }
-    self.labelDescription.text = self.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+    if (self.descriptionType == DescriptionTypeImage) {
+        self.labelDescription.text = self.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+    }
+    else
+        self.labelDescription.text = self.labelDescription.text = @"点击图片查看宠物，点击“+”添加宠物";
+    
 }
 
 @end

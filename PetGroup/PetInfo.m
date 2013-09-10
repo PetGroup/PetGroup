@@ -15,7 +15,7 @@
     if (self) {
         self.petNickname = ![[info objectForKey:@"nickname"]isKindOfClass:[NSNull class]]?[info objectForKey:@"nickname"]:@"宠物";
         self.petType = [NSString stringWithFormat:@"%@",![[info objectForKey:@"type"]isKindOfClass:[NSNull class]]?[info objectForKey:@"type"]:@""];
-        self.petID = [NSString stringWithFormat:@"%@",![[info objectForKey:@"type"]isKindOfClass:[NSNull class]]?[info objectForKey:@"type"]:@""];
+        self.petID = [NSString stringWithFormat:@"%@",![[info objectForKey:@"id"]isKindOfClass:[NSNull class]]?[info objectForKey:@"id"]:@""];
         self.petTrait = ![[info objectForKey:@"trait"] isKindOfClass:[NSNull class]]?[info objectForKey:@"trait"]:@"平凡";
       //  self.headImgArray = [self getHeadImgArray:[NSString stringWithFormat:@"%@",[info objectForKey:@"img"]]];
         self.headImgStr = [NSString stringWithFormat:@"%@",[info objectForKey:@"img"]?[info objectForKey:@"img"]:@""];

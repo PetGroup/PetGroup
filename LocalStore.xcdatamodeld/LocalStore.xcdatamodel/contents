@@ -108,6 +108,7 @@
         <attribute name="petNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petTrait" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSPublicMsgs" representedClassName="DSPublicMsgs" syncable="YES">
         <attribute name="articlesID" optional="YES" attributeType="String" syncable="YES"/>
@@ -185,7 +186,7 @@
         <element name="DSFriends" positionX="160" positionY="192" width="128" height="270"/>
         <element name="DSMyDynamic" positionX="160" positionY="192" width="128" height="225"/>
         <element name="DSNameIndex" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="DSPets" positionX="160" positionY="192" width="128" height="195"/>
+        <element name="DSPets" positionX="160" positionY="192" width="128" height="210"/>
         <element name="DSPublicMsgs" positionX="160" positionY="192" width="128" height="165"/>
         <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="150"/>
         <element name="DSSayHellos" positionX="160" positionY="192" width="128" height="90"/>
