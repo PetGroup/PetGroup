@@ -287,6 +287,10 @@
                     [hud hide:YES];
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+                    Reply* rep = [[Reply alloc]initWithDictionary:dic];
+                    [self.mycell.dynamic.replyViews addObject:rep];
+                    self.mycell.dynamic.rowHigh+=28;
+                    [self.tableV reloadData];
                     self.mycell = nil;
                 }];
             }break;
@@ -351,6 +355,28 @@
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [hud hide:YES];
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
+                    if ([self.theID isKindOfClass:[Reply class]]) {
+                        [((Reply*)self.theID).replyComments addObject:repcom];
+                        self.mycell.dynamic.rowHigh+=28;
+                        [self.tableV reloadData];
+                    }
+                    if ([self.theID isKindOfClass:[ReplyComment class]]) {
+                        Reply* theRep = nil;
+                        for (Reply* re  in self.mycell.dynamic.replyViews) {
+                            for (ReplyComment* rec in re.replyComments) {
+                                if ([rec isEqual:self.theID]) {
+                                    theRep = re;
+                                    break;
+                                }
+                            }
+                        }
+                        if (theRep) {
+                            [theRep.replyComments addObject:repcom];
+                        }
+                        self.mycell.dynamic.rowHigh+=28;
+                        [self.tableV reloadData];
+                    }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     self.mycell = nil;
                 }];
@@ -613,7 +639,7 @@
         [self.tableV reloadData];
     }];
 }
--(void)recalledreply:(id)theID//回复评论
+-(void)recalledreply:(id)theID cell:(DynamicCell*)cell//回复评论
 {
     if ([theID isKindOfClass:[Reply class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
@@ -621,6 +647,7 @@
     if ([theID isKindOfClass:[ReplyComment class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];
     }
+    self.mycell = cell;
     self.theID = theID;
     [_inputTF becomeFirstResponder];
     assessOrPraise = 3;
