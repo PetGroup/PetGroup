@@ -14,6 +14,7 @@
 #import "ProfileCell.h"
 #import "MyProfileACell.h"
 #import "NormalPetDetailViewController.h"
+#import "PhotoViewController.h"
 @class XMPPHelper,AppDelegate;
 @interface PersonDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate,UIAlertViewDelegate>
 {

@@ -409,7 +409,8 @@
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     if (photoWall.tag==1) {
-        NSLog(@"1");
+        PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.hostInfo.headBigImgArray indext:index];
+        [self presentModalViewController:pV animated:NO];
     }
     else
     {
