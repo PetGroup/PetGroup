@@ -8,6 +8,8 @@
 
 #import "PersonalCenterViewController.h"
 #import "CustomTabBar.h"
+#import "PersonalDynamicViewController.h"
+#import "MyDynamicDelegateAndDataSource.h"
 @interface PersonalCenterViewController ()
 
 @end
@@ -229,6 +231,13 @@
         MyProfileViewController * myV = [[MyProfileViewController alloc] init];
         myV.hostInfo = self.hostInfo;
         [self.navigationController pushViewController:myV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }else if (indexPath.section==2) {
+        PersonalDynamicViewController * PDVC = [[PersonalDynamicViewController alloc] init];
+        MyDynamicDelegateAndDataSource* MDDDS = [[MyDynamicDelegateAndDataSource alloc]init];
+        MDDDS.viewC = PDVC;
+        PDVC.dataSource = MDDDS;
+        [self.navigationController pushViewController:PDVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
     else if (indexPath.section==3){

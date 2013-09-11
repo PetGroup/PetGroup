@@ -212,7 +212,9 @@
     [params setObject:@"0" forKey:@"ifTransmitMsg"];
     [params setObject:self.dynamicTV.text forKey:@"msg"];
     [params setObject:imageDI forKey:@"imgid"];
-    [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
+    [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];//"longitude":"XXX","latitude":"XXX"
+    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
+    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

@@ -1,17 +1,17 @@
 //
-//  Dynamic.m
+//  PersonalDynamic.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-8-30.
+//  Created by 阿铛 on 13-9-11.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "Dynamic.h"
+#import "PersonalDynamic.h"
 #import "Common.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
 
-@implementation Dynamic
+@implementation PersonalDynamic
 - (id)initWithNSDictionary:(NSDictionary*)dic
 {
     self = [super init];
@@ -47,43 +47,43 @@
         self.countZan = [[dic objectForKey:@"countZan"] intValue];//赞的数目
         self.ifIZaned = [[dic objectForKey:@"ifIZaned"]boolValue];//我是否赞过，0 没攒，1 赞。
         
-        self.rowHigh = 65;
+        self.rowHigh = 35;
         if (self.ifTransmitMsg!=0) {
-            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+            CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
             self.rowHigh+=(size.height+10);
-             CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-            if (msgSize.height>90) {
+            CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            if (msgSize.height>108) {
                 self.rowHigh+=28;
             }else{
                 self.rowHigh+=(size.height+10);
             }
         }else{
-            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-            if (size.height>=180) {
+            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            if (size.height>=216) {
                 self.rowHigh+=28;
-            }else if(size.height>=90){
-                self.rowHigh+=108;
+            }else if(size.height>=108){
+                self.rowHigh+=118;
             }else{
                 self.rowHigh+=(size.height+10);
             }
         }
     }
     if (self.smallImage.count>=1&&self.smallImage.count<=3) {
-        self.rowHigh+=85;
+        self.rowHigh+=80;
     }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-        self.rowHigh+=170;
+        self.rowHigh+=160;
     }else if(self.smallImage.count>6){
-        self.rowHigh+=255;
+        self.rowHigh+=240;
     }
     for (int i = 0; i < self.replyViews.count; i++) {
         Reply* rel = self.replyViews[i];
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
         self.rowHigh += (size.height+10);
         for (int j = 0; j < rel.replyComments.count; j++) {
             ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
             NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
             self.rowHigh += (size.height+10);
         }
     }

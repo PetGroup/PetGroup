@@ -7,9 +7,12 @@
 //
 
 #import "ResetPassTwoViewController.h"
+#import "MBProgressHUD.h"
 
 @interface ResetPassTwoViewController ()
-
+{
+    MBProgressHUD *hud;
+}
 @property (nonatomic,strong) UITextField* PhoneNoTF;
 @property (nonatomic,strong) UITextField* passWordTF;
 
@@ -84,13 +87,19 @@
     
     self.PhoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 91, 175, 20)];
     _PhoneNoTF.placeholder = @"不少于6位且不要过于简单";
+    _PhoneNoTF.secureTextEntry = YES;
     _PhoneNoTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_PhoneNoTF];
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 131, 175, 20)];
-    _passWordTF.placeholder = @"在此输入密码";
+    _passWordTF.placeholder = @"再次输入密码";
+    _passWordTF.secureTextEntry = YES;
     _passWordTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_passWordTF];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"正在发送，请稍后";
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,9 +112,35 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
--(void)next
+-(void)next//{"method":"resetPassword","token":"","channel":"","mac":"","imei":"","connectTime":"dd-mm-yy","params":{"password":"XXX","phonenumber":"XXX"}}
 {
-    [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:self.phoneNo forKey:@"phonenumber"];
+    [params setObject:_passWordTF.text forKey:@"password"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"resetPassword" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
+           [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES]; 
+        }else{
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"密码修改失败，请重试" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+        }
+        [hud hide:YES];
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }];
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
