@@ -533,6 +533,8 @@
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
 		97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */; };
+		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
+		97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB035017E00432002086D9 /* AboutAppViewController.m */; };
 		97FB47D817BC79F00071FA12 /* DSPets.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47D717BC79F00071FA12 /* DSPets.m */; };
 		97FB47DB17BC79F00071FA12 /* DSSubscribedMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47DA17BC79F00071FA12 /* DSSubscribedMsgs.m */; };
 		97FB47DE17BC79F00071FA12 /* DSThumbSubscribedMsgs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47DD17BC79F00071FA12 /* DSThumbSubscribedMsgs.m */; };
@@ -1367,6 +1369,10 @@
 		97E9D17F17D5C024003A4A4C /* PetProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PetProfileCell.m; sourceTree = "<group>"; };
 		97E9D18117D5D4F8003A4A4C /* MyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoCell.h; sourceTree = "<group>"; };
 		97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoCell.m; sourceTree = "<group>"; };
+		97FB034D17E00432002086D9 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		97FB034E17E00432002086D9 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		97FB034F17E00432002086D9 /* AboutAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutAppViewController.h; sourceTree = "<group>"; };
+		97FB035017E00432002086D9 /* AboutAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutAppViewController.m; sourceTree = "<group>"; };
 		97FB47D617BC79F00071FA12 /* DSPets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSPets.h; path = ../DSPets.h; sourceTree = "<group>"; };
 		97FB47D717BC79F00071FA12 /* DSPets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSPets.m; path = ../DSPets.m; sourceTree = "<group>"; };
 		97FB47D917BC79F00071FA12 /* DSSubscribedMsgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSSubscribedMsgs.h; path = ../DSSubscribedMsgs.h; sourceTree = "<group>"; };
@@ -3028,6 +3034,7 @@
 		97E25BE717C33E8E007E187D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				97FB034C17E002B5002086D9 /* Setting */,
 				97DB098D17C5AC70000EC195 /* LogAndReg */,
 				97DB08F117C5A0DC000EC195 /* DetailView */,
 				9736BCD317C48E42007DFE36 /* Navigators */,
@@ -3102,6 +3109,17 @@
 				8641ACE017DED0DF0020C34B /* ReplyComment.m */,
 			);
 			name = DataModel;
+			sourceTree = "<group>";
+		};
+		97FB034C17E002B5002086D9 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				97FB034D17E00432002086D9 /* SettingViewController.h */,
+				97FB034E17E00432002086D9 /* SettingViewController.m */,
+				97FB034F17E00432002086D9 /* AboutAppViewController.h */,
+				97FB035017E00432002086D9 /* AboutAppViewController.m */,
+			);
+			name = Setting;
 			sourceTree = "<group>";
 		};
 		97FB480317BC7A0E0071FA12 /* localData */ = {
@@ -3765,6 +3783,8 @@
 				9727937A17D9C8380001E863 /* SCGIFImageView.m in Sources */,
 				8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */,
 				8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */,
+				97FB035117E00432002086D9 /* SettingViewController.m in Sources */,
+				97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

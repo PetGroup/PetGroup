@@ -14,6 +14,7 @@
 #import "MoreCell.h"
 #import "MyPetProfileViewController.h"
 #import "MyProfileViewController.h"
+#import "SettingViewController.h"
 @class CustomTabBar;
 @interface PersonalCenterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
 @property (strong,nonatomic) UITableView * profileTableV;

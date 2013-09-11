@@ -181,11 +181,11 @@
 }
 -(void)uploadPetImage
 {
-    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadImageWithCompres:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* a = [operation responseString];
-        [NetManager uploadImage:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        [NetManager uploadImage:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             
         } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString* b = [operation responseString];

@@ -74,6 +74,9 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
+    if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
+        [self.customTabBarController setSelectedPage:0]; 
+    }
 
 }
 -(NSArray *)imageToURL:(NSArray *)imageArray;
@@ -226,6 +229,11 @@
         MyProfileViewController * myV = [[MyProfileViewController alloc] init];
         myV.hostInfo = self.hostInfo;
         [self.navigationController pushViewController:myV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
+    else if (indexPath.section==3){
+        SettingViewController * setV = [[SettingViewController alloc] init];
+        [self.navigationController pushViewController:setV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
 
