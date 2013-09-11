@@ -20,6 +20,7 @@
 @dynamic petGender;
 @dynamic petAge;
 @dynamic petID;
+@dynamic userID;
 @dynamic creatTime;
 
 @end

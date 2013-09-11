@@ -55,6 +55,7 @@
 +(NSString *)getMyUserID;
 +(void)saveUserInfo:(NSDictionary *)myInfo;
 +(void)storeOnePetInfo:(NSDictionary *)petInfo;
++(void)deleteOnePetForPetID:(NSString *)petID;
 +(NSDictionary *)queryMyInfo;
 +(NSMutableDictionary *)queryOneFriendInfoWithUserName:(NSString *)userName;
 +(NSString *)qureyUnreadForReceivedHellos;

@@ -23,7 +23,7 @@ typedef  enum
     DescriptionTypePet,
     DescriptionTypeImage
 }DescriptionType;
-@interface HGPhotoWall : UIView
+@interface HGPhotoWall : UIView<UIAlertViewDelegate>
 @property (strong, nonatomic) UILabel *labelDescription;
 @property (assign) id<HGPhotoWallDelegate> delegate;
 @property (strong,nonatomic)UIView *bg;
@@ -36,5 +36,6 @@ typedef  enum
 - (void)deletePhotoByIndex:(NSUInteger)index;
 -(void)setAnimationNO;
 - (void)reloadPhotos:(BOOL)add;
+-(void)delSuccess;
 
 @end

@@ -43,10 +43,12 @@
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypePet;
+    self.photoWall.useCache = YES;
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
     self.photoWall.delegate = self;
     [self.photoWall setEditModel:YES];
     self.photoWall.tag =1;
+    
     
     self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-58.5-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
@@ -59,6 +61,7 @@
 {
     self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
+    [self.photoWall setEditModel:YES];
     [self.profileTableV reloadData];
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -70,6 +73,9 @@
     {
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
+    }
+    if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
+        [self.customTabBarController setSelectedPage:0]; 
     }
 
 }
@@ -225,17 +231,21 @@
         [self.navigationController pushViewController:myV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
+    else if (indexPath.section==3){
+        SettingViewController * setV = [[SettingViewController alloc] init];
+        [self.navigationController pushViewController:setV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
 
 }
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
-    if (photoWall.tag==1) {
-        NSLog(@"1");
-    }
-    else
-    {
-        NSLog(@"2");
-    }
+    MyPetProfileViewController * petV = [[MyPetProfileViewController alloc] init];
+    petV.pageType = PageStyleChange;
+    petV.petInfo = [self.hostInfo.petsArray objectAtIndex:index];
+    [self.navigationController pushViewController:petV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+    
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex
@@ -255,12 +265,62 @@
 {
     
 }
+-(void)photoWallDelPhotoAtIndex:(NSInteger)index
+{
+    NSLog(@"%d",index);
+    [self delPet:index];
+
+    //    [self.photoWall reloadPhotos:YES];
+    
+    
+    
+    
+}
 
 - (void)photoWallDeleteFinish
 {
     
 }
+-(void)delPet:(NSInteger)index
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    NSMutableDictionary * petinfo = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [petinfo setObject:[[self.hostInfo.petsArray objectAtIndex:index] petID] forKey:@"id"];
+    [petinfo setObject:@"0" forKey:@"version"];
+    [postDict setObject:petinfo forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"delPetInfo" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
+        [DataStoreManager deleteOnePetForPetID:[[self.hostInfo.petsArray objectAtIndex:index] petID]];
+        NSMutableArray * temp = [NSMutableArray arrayWithArray:self.hostInfo.petsArray];
+        [temp removeObjectAtIndex:index];
+        self.hostInfo.petsArray = temp;
+        [self.photoWall delSuccess];
+        self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
+        [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
+        [self.photoWall setEditModel:YES];
+        [self.profileTableV reloadData];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.photoWall setAnimationNO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络好像有点问题" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+    }];
 
+}
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.photoWall setAnimationNO];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

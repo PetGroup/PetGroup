@@ -50,12 +50,12 @@
         [self addSubview:self.viewPhoto];
         [self addSubview:self.viewMask];
         
-        delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [delBtn setBackgroundColor:[UIColor redColor]];
-        [delBtn setFrame:CGRectMake(-5, -5, 15, 15)];
-        [self addSubview:delBtn];
-        [delBtn addTarget:self action:@selector(delSelf) forControlEvents:UIControlEventTouchUpInside];
-        delBtn.hidden = YES;
+        self.delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.delBtn setBackgroundColor:[UIColor redColor]];
+        [self.delBtn setFrame:CGRectMake(-5, -5, 15, 15)];
+        [self addSubview:self.delBtn];
+        [self.delBtn addTarget:self action:@selector(delSelf) forControlEvents:UIControlEventTouchUpInside];
+        self.delBtn.hidden = YES;
         
         [self addGestureRecognizer:tapRecognizer];
         
@@ -140,11 +140,16 @@
 - (void)tapPress:(id)sender
 {
     if (self.wiggle) {
-        delBtn.hidden = YES;
+        self.delBtn.hidden = YES;
         self.moved = NO;
         [viewLayer removeAllAnimations];
         HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
-        yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+        if (yyy.descriptionType == DescriptionTypeImage) {
+            yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+        }
+        else
+            yyy.labelDescription.text = @"点击图片查看宠物，点击“+”添加宠物";
+        
         return;
     }
     if ([self.delegate respondsToSelector:@selector(photoTaped:)]) {
@@ -155,12 +160,17 @@
 - (void)handleLongPress:(id)sender
 {
     HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
-    yyy.labelDescription.text = @"按住并拖动可移动照片位置，松开可执行删除";
+    if (yyy.descriptionType == DescriptionTypeImage) {
+        yyy.labelDescription.text = @"按住并拖动可移动照片位置，松开可执行删除";
+    }
+    else
+        yyy.labelDescription.text = @"点击X可删除宠物";
+    
     for (UIView * it in self.superview.subviews) {
         [[it layer] removeAllAnimations];
     }
     self.wiggle = YES;
-    [delBtn setHidden:NO];
+    [self.delBtn setHidden:NO];
     viewLayer=[self layer];
     CABasicAnimation*animation=[CABasicAnimation
                                 
@@ -193,12 +203,17 @@
             [self.delegate photoMoveFinished:self];
         }
         if (self.moved) {
-            [delBtn setHidden:YES];
+            [self.delBtn setHidden:YES];
             [viewLayer removeAllAnimations];
             self.moved = NO;
         }
         HGPhotoWall * yyy = (HGPhotoWall *)[self superview];
-        yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+        if (yyy.descriptionType == DescriptionTypeImage) {
+            yyy.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
+        }
+        else
+            yyy.labelDescription.text = @"点击图片查看宠物，点击“+”添加宠物";
+        
         
     } else {
         self.moved = YES;

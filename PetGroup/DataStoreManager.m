@@ -537,6 +537,7 @@
 +(void)storePetInfo:(NSDictionary *)myInfo
 {
     NSArray * petArray = [myInfo objectForKey:@"petInfoViews"];
+
     for (int i = 0; i<petArray.count; i++) {
         NSString * hostName = [myInfo objectForKey:@"username"];
         NSString * hostNickName = [myInfo objectForKey:@"nickname"];
@@ -547,6 +548,7 @@
         NSString * type = [self toString:[[petArray objectAtIndex:i] objectForKey:@"type"]];
         NSString * age = [self toString:[[petArray objectAtIndex:i] objectForKey:@"birthdate"]];
         NSString * petID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"id"]];
+        NSString * userID = [self toString:[[petArray objectAtIndex:i] objectForKey:@"userid"]];
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
             DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
@@ -561,6 +563,7 @@
             dPet.petType = type?type:@"";
             dPet.petAge = age?age:@"";
             dPet.petID = petID?petID:@"";
+            dPet.userID = userID?userID:@"";
         }];
     }
 }
@@ -575,6 +578,7 @@
     NSString * type = [self toString:[petInfo objectForKey:@"type"]];
     NSString * age = [self toString:[petInfo objectForKey:@"birthdate"]];
     NSString * petID = [self toString:[petInfo objectForKey:@"id"]];
+    NSString * userID = [self toString:[petInfo objectForKey:@"userid"]];
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
         DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
@@ -587,6 +591,18 @@
         dPet.petType = type?type:@"";
         dPet.petAge = age?age:@"";
         dPet.petID = petID?petID:@"";
+        dPet.userID = userID?userID:@"";
+    }];
+}
+
++(void)deleteOnePetForPetID:(NSString *)petID
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"petID==[c]%@",petID];
+        DSPets * dPet = [DSPets MR_findFirstWithPredicate:predicate];
+        if (dPet) {
+            [dPet MR_deleteInContext:localContext];
+        }
     }];
 }
 
@@ -644,7 +660,7 @@
         [dict setObject:dFriend.age forKey:@"birthdate"];
         [dict setObject:dFriend.headImgID forKey:@"img"];
         [dict setObject:dFriend.theCity forKey:@"city"];
-        NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"friendName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"userID==[c]%@",dFriend.userId];
         NSArray * tempArray = [DSPets MR_findAllWithPredicate:predicate2];
         NSMutableArray * petArray = [NSMutableArray array];
         for (DSPets * petThis in tempArray) {
