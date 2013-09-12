@@ -36,12 +36,14 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        for (NSDictionary*a in array) {
-            Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
-            [self.dataSourceArray addObject:b];
+        if (array.count>0) {
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+            self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+            self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
         }
-        self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
-        self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
         success();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

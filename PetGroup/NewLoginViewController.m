@@ -93,14 +93,16 @@
     nickNameL.backgroundColor = [UIColor clearColor];
     [nickNameIV addSubview:nickNameL];
     
-    self.PhoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 91, 175, 20)];
+    self.PhoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 86, 175, 30)];
     _PhoneNoTF.placeholder = @"手机号";
+    _PhoneNoTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _PhoneNoTF.keyboardType = UIKeyboardTypeNumberPad;
     _PhoneNoTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_PhoneNoTF];
     
-    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 131, 175, 20)];
+    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 126, 175, 30)];
     _passWordTF.placeholder = @"请输入登录密码";
+    _passWordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _passWordTF.secureTextEntry = YES;
     _passWordTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_passWordTF];

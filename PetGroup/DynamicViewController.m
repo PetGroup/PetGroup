@@ -36,6 +36,9 @@
     
     UIImageView * inputbg;
     UIView * inPutView;
+    
+    UILabel* nameL;
+    EGOImageButton* headIV;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
@@ -113,24 +116,19 @@
     self.tableV.tableHeaderView = headV;
     headV.userInteractionEnabled = YES;
     
-    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
+    nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
-    nameL.text = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
-    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
     nameL.backgroundColor = [UIColor clearColor];
     nameL.textColor = [UIColor whiteColor];
     [headV addSubview:nameL];
     
-    NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
     photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
     [headV addSubview:photoIV];
     photoIV.userInteractionEnabled = YES;
     
-    EGOImageButton* headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
     headIV.frame = CGRectMake(5, 5, 70, 70);
-    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     [photoIV addSubview:headIV];
     [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
     
@@ -196,6 +194,12 @@
     if (self.tableV.contentOffset.y<100) {
         self.tableV.contentOffset = CGPointMake(0, 100);
     }
+    
+    nameL.text = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
+    NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
 }
 - (void)didReceiveMemoryWarning
 {

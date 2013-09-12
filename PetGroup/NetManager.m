@@ -7,7 +7,7 @@
 //
 
 #import "NetManager.h"
-#define CompressionQuality 0.5  //图片上传时压缩质量
+#define CompressionQuality 1  //图片上传时压缩质量
 @implementation NetManager
 
 //post请求，需自己设置失败提示
@@ -69,7 +69,8 @@
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSData *imageData = UIImageJPEGRepresentation(uploadImage, 1);
+    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:960];
+    NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
@@ -158,13 +159,36 @@
 	
     return newimg;
 }
-+(UIImage*)compressImage:(UIImage*)image
++(UIImage*)compressImage:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY
 {
-    NSData *imageData = UIImageJPEGRepresentation(image, 1);
-    if (imageData.length>800*1024) {
-        image = [UIImage imageWithData:imageData];
-        imageData = UIImageJPEGRepresentation(image, CompressionQuality);
-    }
-    return [UIImage imageWithData:imageData];
+	
+	UIImage * bigImage = theImage;
+	
+	float actualHeight = bigImage.size.height;
+	float actualWidth = bigImage.size.width;
+	
+	float imgRatio = actualWidth / actualHeight;
+	if(actualWidth > sizeX || actualHeight > sizeY)
+	{
+		float maxRatio = sizeX / sizeY;
+		
+		if(imgRatio < maxRatio){
+            imgRatio = sizeY / actualHeight;
+			actualWidth = imgRatio * actualWidth;
+			actualHeight = sizeY;
+		} else {
+            imgRatio = sizeX / actualWidth;
+			actualHeight = imgRatio * actualHeight;
+			actualWidth = sizeX;
+            
+		}
+        
+	}
+	CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+	UIGraphicsBeginImageContext(rect.size);
+	[bigImage drawInRect:rect];  // scales image to rect
+	theImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	return theImage;
 }
 @end

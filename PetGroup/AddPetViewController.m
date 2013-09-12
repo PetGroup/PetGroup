@@ -369,6 +369,34 @@
 {
     [_ageTF resignFirstResponder];
     [_typeTF resignFirstResponder];
-    self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    }];
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField;
+{
+    if (iPhone5) {
+        if (textField == _typeTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -140, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _ageTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -140, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+    }else{
+        if (textField == _typeTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -200, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+        if (textField == _ageTF) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.frame = CGRectMake(0, -200, self.view.frame.size.width, self.view.frame.size.height);
+            }];
+        }
+    }
 }
 @end
