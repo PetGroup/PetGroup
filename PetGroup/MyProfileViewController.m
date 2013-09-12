@@ -321,8 +321,18 @@
                      [_cityPV reloadComponent:1];
                      break;
                  }
+                 [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+                 self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+                 [_cityPV reloadComponent:1];
              }
+
              
+         }
+         else
+         {
+             [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+             self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+             [_cityPV reloadComponent:1];
          }
      }];
 
