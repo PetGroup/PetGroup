@@ -14,6 +14,8 @@
 #import "UIExpandingTextView.h"
 #import "TempData.h"
 #import "StoreMsgDelegate.h"
+#import "PersonDetailViewController.h"
+#import "MyProfileViewController.h"
 @class AppDelegate, XMPPHelper;
 @interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate>
 {
@@ -46,6 +48,7 @@
 @property (strong, nonatomic)  UITextField *messageTextField;
 //@property (strong, nonatomic)  UIButton * sendBtn;
 @property(nonatomic, retain) NSString *chatWithUser;
+@property(nonatomic, assign) BOOL ifFriend;
 @property(nonatomic, retain) NSString *nickName;
 @property(nonatomic, retain) NSString *chatUserImg;
 @property (strong,nonatomic) AppDelegate * appDel;

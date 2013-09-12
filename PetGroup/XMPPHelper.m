@@ -248,7 +248,7 @@
                 NSRange range = [jid rangeOfString:@"@"];
                 NSString * sender = [jid substringToIndex:range.location];
                // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
-                if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]) {
+                if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]||[[item attributeStringValueForName:@"subscription"] isEqualToString:@"to"]) {
                     [self.rosters addObject:sender];
                     NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
                     [DataStoreManager addFriendToLocal:sender];
@@ -266,6 +266,7 @@
     
     NSString *msg = [[message elementForName:@"body"] stringValue];
     NSString *from = [[message attributeForName:@"from"] stringValue];
+    NSString *type = [[message attributeForName:@"type"] stringValue];
    // NSString * fromNickName = [[message attributeForName:@"nickname"] stringValue];
     if(msg!=nil){
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -277,7 +278,13 @@
         
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
-        [self.chatDelegate newMessageReceived:dict];
+        if ([type isEqualToString:@"chat"]) {
+            [self.chatDelegate newMessageReceived:dict];
+        }
+        else if ([type isEqualToString:@"sayHello"]){
+            [self.addReqDelegate newAddReq:dict];
+        }
+    
     }
 }
 
@@ -305,7 +312,7 @@
     NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:presenceFromUser,@"fromUser",fromnickName,@"fromNickname",additionMsg,@"addtionMsg",headID,@"headID", nil];
     NSLog(@"presence2:%@  sender2:%@",presence,sender);
     if ([presenceType isEqualToString:@"subscribe"]) {
-        [self.addReqDelegate newAddReq:uDict];
+//        [self.addReqDelegate newAddReq:uDict];
     }
     
    // [self.addReq newAddReq:@""];

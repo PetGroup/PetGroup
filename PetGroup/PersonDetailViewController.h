@@ -14,10 +14,12 @@
 #import "ProfileCell.h"
 #import "MyProfileACell.h"
 #import "NormalPetDetailViewController.h"
+#import "PhotoViewController.h"
 @class XMPPHelper,AppDelegate;
 @interface PersonDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate,UIAlertViewDelegate>
 {
     UITextField * locationTextF;
+    UIView * typeMsgView;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong, nonatomic) HGPhotoWall *photoWall;
@@ -26,6 +28,7 @@
 @property (strong, nonatomic) UIView *photoWallBG2;
 @property (strong,nonatomic) UITableView * profileTableV;
 @property (strong,nonatomic) UIButton * helloBtn;
+@property (strong,nonatomic) UIButton * rejectBtn;
 @property (strong,nonatomic) UIView * genderBgV;
 @property (strong,nonatomic) UIImageView * genderIV;
 @property (strong,nonatomic) UILabel * ageLabel;
@@ -34,4 +37,5 @@
 @property (strong,nonatomic) NSArray * heightArray;
 @property (assign,nonatomic) BOOL needRequest;
 @property (assign,nonatomic) BOOL myFriend;
+@property (strong,nonatomic) NSString * friendStatus;
 @end

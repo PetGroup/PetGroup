@@ -19,5 +19,7 @@
 @property (nonatomic, retain) NSString * addtionMsg;
 @property (nonatomic, retain) NSString * acceptStatus;
 @property (nonatomic, retain) NSDate * receiveTime;
+@property (nonatomic, retain) NSString * unreadCount;
+
 
 @end

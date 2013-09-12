@@ -62,6 +62,10 @@
     [DataStoreManager blankReceivedHellosUnreadCount];
 	// Do any additional setup after loading the view.
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self loadTableviewData];
+}
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -81,23 +85,45 @@
     if (!cell) {
         cell = [[addFriendCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:stringCell3];
     }
-    [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
-    [cell.headImageV setImageWithURL:[NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]] placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]]];
+    if ([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"unread"] intValue]>0) {
+        cell.unreadCountLabel.hidden = NO;
+        cell.notiBgV.hidden = NO;
+        [cell.unreadCountLabel setText:[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"unread"]];
+        if ([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"unread"] intValue]>99) {
+            [cell.unreadCountLabel setText:@"99"];
+        }
+    }
+    else
+    {
+        cell.unreadCountLabel.hidden = YES;
+        cell.notiBgV.hidden = YES;
+    }
+
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]];
+    cell.headImageV.tag = indexPath.row+1;
+    [cell.headImageV addTarget:self action:@selector(toDetailPage:) forControlEvents:UIControlEventTouchUpInside];
+//    [cell.headImageV setImageWithURL:[NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]] placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]]];
     cell.nameLabel.text = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"nickName"];
+    cell.msgLabel.text = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"addtionMsg"];
     cell.agreeBtn.tag = indexPath.row+1;
     cell.rejectBtn.tag = indexPath.row+1;
     [cell.agreeBtn addTarget:self action:@selector(acceptAddReq:) forControlEvents:UIControlEventTouchUpInside];
     [cell.rejectBtn addTarget:self action:@selector(rejectAddreq:) forControlEvents:UIControlEventTouchUpInside];
     if ([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"accept"]) {
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.agreeBtn.hidden = YES;
         [cell.rejectBtn setTitle:@"已同意" forState:UIControlStateNormal];
+        [cell.rejectBtn setEnabled:NO];
     }
     else if([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"rejected"]){
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.agreeBtn.hidden = YES;
         [cell.rejectBtn setTitle:@"已拒绝" forState:UIControlStateNormal];
         [cell.rejectBtn setEnabled:NO];
     }
     else if([[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"waiting"]){
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.agreeBtn.hidden = NO;
         cell.rejectBtn.hidden = NO;
         [cell.rejectBtn setTitle:@"拒绝" forState:UIControlStateNormal];
@@ -105,15 +131,42 @@
     
     return cell;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (![[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"] isEqualToString:@"rejected"]) {
+        [DataStoreManager blankUnreadCountReceivedHellosForUser:[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"userName"]];
+        KKChatController * kkchat = [[KKChatController alloc] init];
+        kkchat.chatWithUser = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"userName"];
+        kkchat.nickName = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"nickName"];
+        kkchat.chatUserImg = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"];
+        [self.navigationController pushViewController:kkchat animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    }
+    
+}
+-(void)toDetailPage:(EGOImageButton *)sender
+{
+    [DataStoreManager blankUnreadCountReceivedHellosForUser:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
+    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[NSDictionary dictionaryWithObjectsAndKeys:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"nickName"],@"nickname", nil]];
+    detailV.hostInfo = hostInfo;
+    detailV.friendStatus = [[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"acceptStatus"];
+    detailV.hostInfo.userName = [[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"];
+    detailV.needRequest = YES;
+    [self.navigationController pushViewController:detailV animated:YES];
+}
 -(void)acceptAddReq:(UIButton *)sender
 {
+    [DataStoreManager blankUnreadCountReceivedHellosForUser:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self.appDel.xmppHelper addOrDenyFriend:YES user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
+    [DataStoreManager addFriendToLocal:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self loadTableviewData];
     
 }
 -(void)rejectAddreq:(UIButton *)sender
 {
+    [DataStoreManager blankUnreadCountReceivedHellosForUser:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self.appDel.xmppHelper addOrDenyFriend:NO user:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [DataStoreManager updateReceivedHellosStatus:@"rejected" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self loadTableviewData];

@@ -507,6 +507,8 @@
 		97DB09FE17C5B167000EC195 /* UpLoadPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09EF17C5B167000EC195 /* UpLoadPhotoViewController.m */; };
 		97DB09FF17C5B167000EC195 /* UserTreatyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F117C5B167000EC195 /* UserTreatyViewController.m */; };
 		97DB0A0017C5B167000EC195 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F317C5B167000EC195 /* WelcomeViewController.m */; };
+		97DB4FB117E024EB00B74E73 /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE517D58EC400082E98 /* zaned.png */; };
+		97DB4FB217E024EB00B74E73 /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE317D4844300082E98 /* zan.png */; };
 		97E25BEA17C33F8D007E187D /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BE917C33F8D007E187D /* LoadingViewController.m */; };
 		97E25BFF17C34418007E187D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BED17C34418007E187D /* AFHTTPClient.m */; };
 		97E25C0017C34418007E187D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BEF17C34418007E187D /* AFHTTPRequestOperation.m */; };
@@ -3275,6 +3277,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97DB4FB117E024EB00B74E73 /* zaned.png in Resources */,
+				97DB4FB217E024EB00B74E73 /* zan.png in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
 				979546CA17BA368F00D05874 /* Default.png in Resources */,
 				979546CC17BA368F00D05874 /* Default@2x.png in Resources */,

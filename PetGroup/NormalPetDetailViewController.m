@@ -174,13 +174,8 @@
 }
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
-    if (photoWall.tag==1) {
-        NSLog(@"1");
-    }
-    else
-    {
-        NSLog(@"2");
-    }
+    PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.petInfo.headBigImgArray indext:index];
+    [self presentModalViewController:pV animated:NO];
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex

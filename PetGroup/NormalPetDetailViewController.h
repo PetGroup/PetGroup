@@ -13,6 +13,7 @@
 #import "PhotoWallCell.h"
 #import "TempData.h"
 #import "ProfileCell.h"
+#import "PhotoViewController.h"
 @interface NormalPetDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong,nonatomic) UITableView * profileTableV;

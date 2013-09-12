@@ -59,6 +59,10 @@
 //    {
 //        userDefaults = [NSMutableDictionary dictionary];
 //    }
+    self.ifFriend = YES;
+    if (![DataStoreManager ifHaveThisFriend:self.chatWithUser]) {
+        self.ifFriend = NO;
+    }
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIImageView * bgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
@@ -158,7 +162,12 @@
 }
 -(void)toContactProfile
 {
-
+    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.nickName,@"nickname",self.chatWithUser,@"username", nil]];
+    detailV.hostInfo = hostInfo;
+    detailV.needRequest = YES;
+    [self.navigationController pushViewController:detailV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -439,8 +448,9 @@
 }
 -(void)myBtnClicked
 {
-//    MyProfileViewController * myP = [[MyProfileViewController alloc] init];
-//    [self.navigationController pushViewController:myP animated:YES];
+    MyProfileViewController * myP = [[MyProfileViewController alloc] init];
+    myP.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
+    [self.navigationController pushViewController:myP animated:YES];
 }
 -(void)offsetButtonTouchBegin:(UIButton *)sender
 {
@@ -619,6 +629,12 @@
     NSString *message = self.textView.text;
     
     if (message.length > 0) {
+        if (!self.ifFriend) {
+            [self.appDel.xmppHelper addOrDenyFriend:YES user:self.chatWithUser];
+            [DataStoreManager addFriendToLocal:self.chatWithUser];
+            [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:self.chatWithUser];
+            self.ifFriend = YES;
+        }
         
         //XMPPFramework主要是通过KissXML来生成XML文件
         //生成<body>文档

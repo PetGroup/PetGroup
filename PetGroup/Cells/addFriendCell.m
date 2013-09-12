@@ -15,17 +15,42 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
+        self.headImageV = [[EGOImageButton alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         self.headImageV.backgroundColor = [UIColor whiteColor];
         self.headImageV.layer.cornerRadius = 5;
         self.headImageV.layer.masksToBounds=YES;
         [self.contentView addSubview:self.headImageV];
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 20, 100, 20)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 100, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
         [self.contentView addSubview:self.nameLabel];
         [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+        
+        self.notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(38, 0, 28, 22)];
+        [self.notiBgV setImage:[UIImage imageNamed:@"redCB.png"]];
+        self.notiBgV.tag=999;
+        [self.contentView addSubview:self.notiBgV];
+        //        UILabel * numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];
+        //        [numberLabel setBackgroundColor:[UIColor clearColor]];
+        //        [numberLabel setTextColor:[UIColor whiteColor]];
+        //        [numberLabel setFont:[UIFont systemFontOfSize:14]];
+        //        [numberLabel setTextAlignment:NSTextAlignmentCenter];
+        //        [notiBgV addSubview:numberLabel];
+        self.unreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, -1, 30, 22)];
+        [self.unreadCountLabel setBackgroundColor:[UIColor clearColor]];
+        [self.unreadCountLabel setTextAlignment:NSTextAlignmentCenter];
+        [self.unreadCountLabel setTextColor:[UIColor whiteColor]];
+        [self.notiBgV addSubview:self.unreadCountLabel];
+        [self.notiBgV setHidden:YES];
+        self.unreadCountLabel.hidden = YES;
+
+        
+        self.msgLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 30, 100, 20)];
+        [self.msgLabel setTextAlignment:NSTextAlignmentLeft];
+        [self.msgLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.contentView addSubview:self.msgLabel];
+        [self.msgLabel setBackgroundColor:[UIColor clearColor]];
         
         self.agreeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.agreeBtn setFrame:CGRectMake(170, 15, 65, 30)];
