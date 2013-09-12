@@ -134,8 +134,6 @@
         a.frame = CGRectZero;
     }
     origin = 10;
-    
-//    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(80, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.text = self.dynamic.submitTime;
     _timeL.frame = CGRectMake(10, origin, 90 , 20);
     

@@ -321,6 +321,9 @@
     [params setObject:self.sexS forKey:@"gender"];
     [params setObject:self.ageL.text forKey:@"birthdate"];
     [params setObject:self.cityL.text forKey:@"city"];
+    [params setObject:@"" forKey:@"img"];
+    [params setObject:@"" forKey:@"hobby"];
+    [params setObject:@"" forKey:@"signature"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

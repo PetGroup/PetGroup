@@ -276,7 +276,7 @@
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:self.mycell.dynamic.petUser.userId forKey:@"petuserId"];
+                [params setObject:[DataStoreManager getMyUserID] forKey:@"petuserId"];
                 [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
                 [params setObject:self.inputTF.text forKey:@"msg"];

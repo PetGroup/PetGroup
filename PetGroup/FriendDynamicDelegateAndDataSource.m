@@ -63,7 +63,7 @@
     [params setObject:[NSString stringWithFormat:@"%lld",self.lastStateid] forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"findMyStates" forKey:@"method"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];

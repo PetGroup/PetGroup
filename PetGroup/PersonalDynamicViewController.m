@@ -71,7 +71,7 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     _tableV.delegate = self;
     _tableV.dataSource = self.dataSource;
     [self.view addSubview:_tableV];
@@ -194,7 +194,7 @@
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:self.mycell.dynamic.petUser.userId forKey:@"petuserId"];
+                [params setObject:[DataStoreManager getMyUserID] forKey:@"petuserId"];
                 [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
                 [params setObject:self.inputTF.text forKey:@"msg"];
