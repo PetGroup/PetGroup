@@ -7,6 +7,7 @@
 //
 
 #import "NearbyDynamicDelegateAndDataSource.h"
+#import "TempData.h"
 #import "DynamicCell.h"
 #import "Dynamic.h"
 
@@ -58,11 +59,14 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:@"" forKey:@"type"];
+    [params setObject:@"" forKey:@"gender"];
+    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
+    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
-    [params setObject:[NSString stringWithFormat:@"%lld",self.lastStateid] forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"findMyStates" forKey:@"method"];
+    [body setObject:@"getUserStateView" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];

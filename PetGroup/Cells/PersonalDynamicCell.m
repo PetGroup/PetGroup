@@ -55,7 +55,7 @@
         
         self.timeL = [[UILabel alloc]init];
         _timeL.textColor = [UIColor grayColor];
-        _timeL.font = [UIFont systemFontOfSize:12];
+        _timeL.adjustsFontSizeToFitWidth = YES;
         [self.contentView addSubview:_timeL];
         
         self.distancevL = [[UILabel alloc]init];
@@ -137,8 +137,7 @@
     
 //    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(80, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.text = self.dynamic.submitTime;
-    _timeL.adjustsFontSizeToFitWidth = YES;
-    _timeL.frame = CGRectMake(10, origin, 80 , 20);
+    _timeL.frame = CGRectMake(10, origin, 90 , 20);
     
     if (self.dynamic.ifTransmitMsg != 0) {
         CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];

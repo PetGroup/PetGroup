@@ -16,7 +16,47 @@
     return [NSString stringWithFormat:@"%f",nowTime];
     
 }
-
+//动态时间格式
++(NSString *)DynamicCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime
+{
+    NSString * finalTime;
+    int theCurrentT = [currentTime intValue];
+    int theMessageT = [messageTime intValue];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *messageDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
+    NSString *currentStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT]];
+    NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+    [dateFormatter2 setDateFormat:@"HH:mm"];
+    NSString * msgT = [dateFormatter2 stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
+    NSString * nowT = [dateFormatter2 stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT]];
+    if ([messageDateStr isEqualToString:currentStr]) {
+        int hours = [[nowT substringToIndex:2] intValue];
+        int msgHour = [[msgT substringToIndex:2] intValue];
+        if (msgHour == hours) {
+            int minutes = [[nowT substringFromIndex:3] intValue];
+            int msgMin = [[msgT substringToIndex:3] intValue];
+            if (msgMin == minutes) {
+                finalTime = @"1分钟内";
+            }else{
+                finalTime = [NSString stringWithFormat:@"%d分钟前",minutes - msgMin];
+            }
+        }else{
+            finalTime = [NSString stringWithFormat:@"%d小时前",hours - msgHour];
+        }
+    }else if([[messageDateStr substringToIndex:7] isEqualToString:[currentStr substringToIndex:7]]){
+        int msgDay = [[messageDateStr substringFromIndex:8] integerValue];
+        int day = [[currentStr substringFromIndex:8] integerValue];
+        finalTime = [NSString stringWithFormat:@"%d天前",day - msgDay];
+    }else if([[messageDateStr substringToIndex:4] isEqualToString:[currentStr substringToIndex:4]]){
+        int msgMonth = [[[messageDateStr substringToIndex:7] substringFromIndex:5]integerValue];
+        int month = [[[currentStr substringToIndex:7] substringFromIndex:5]integerValue];
+        finalTime = [NSString stringWithFormat:@"%d月前",month - msgMonth];
+    }else{
+        finalTime = messageDateStr;
+    }
+    return finalTime;
+}
 //首页显示时间格式
 +(NSString *)CurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime
 {

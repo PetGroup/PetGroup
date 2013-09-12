@@ -146,7 +146,7 @@
     CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
     _distancevL.text = self.dynamic.distance;
-    _distancevL.frame = CGRectMake(150, 10, 50, 15);
+    _distancevL.frame = CGRectMake(150, 10, 100, 15);
     
     origin = 40;
     

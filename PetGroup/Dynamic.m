@@ -41,7 +41,7 @@
             }
         }//动态大图ID数组和小图ID数组
         self.distance = [[dic objectForKey:@"distance"] isKindOfClass:[NSNull class]]?@"":[dic objectForKey:@"distance"];//动态的位置
-        self.submitTime =[Common CurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",[[dic objectForKey:@"submitTime"]doubleValue]/1000 ]];//发布时间
+        self.submitTime =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",[[dic objectForKey:@"submitTime"]doubleValue]/1000 ]];//发布时间
         self.ifTransmitMsg = [[dic objectForKey:@"ifTransmitMsg"]intValue];//是否是转发
         self.transmitMsg = [dic objectForKey:@"transmitMsg"];//转发内容
         self.countZan = [[dic objectForKey:@"countZan"] intValue];//赞的数目
