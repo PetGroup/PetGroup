@@ -24,6 +24,7 @@
         // Custom initialization
         self.needRequest = NO;
         self.myFriend = NO;
+        self.friendStatus = @"";
     }
     return self;
 }
@@ -75,11 +76,14 @@
     [self.genderBgV addSubview:self.regionLabel];
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
+    self.photoWall.descriptionType = DescriptionTypeImage;
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.headImgArray]];
+    
     self.photoWall.delegate = self;
     self.photoWall.tag =1;
     
     self.photoWall2 = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
+    self.photoWall2.descriptionType = DescriptionTypePet;
     [self.photoWall2 setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
     self.photoWall2.delegate = self;
     self.photoWall2.tag = 2;
@@ -106,8 +110,16 @@
     self.helloBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 300, 40)];
     [self.helloBtn setBackgroundImage:[UIImage imageNamed:@"daanniu_click.png"] forState:UIControlStateNormal];
-    [self.helloBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.helloBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.helloBtn addTarget:self action:@selector(helloBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.rejectBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.rejectBtn setFrame:CGRectMake(165, self.view.frame.size.height-10-40, 145, 40)];
+    [self.rejectBtn setBackgroundImage:[UIImage imageNamed:@"regbg-normal.png"] forState:UIControlStateNormal];
+    [self.rejectBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.rejectBtn addTarget:self action:@selector(helloBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    self.rejectBtn.hidden = YES;
+    
     if ([DataStoreManager ifHaveThisFriend:self.hostInfo.userName]) {
         [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
         self.myFriend = YES;
@@ -116,13 +128,101 @@
     {
         [self.helloBtn setTitle:@"打招呼" forState:UIControlStateNormal];
         self.myFriend = NO;
+        if ([DataStoreManager ifSayHellosHaveThisPerson:self.hostInfo.userName]&&[self.friendStatus isEqualToString:@"waiting"]) {
+            [self.helloBtn setTitle:@"同意" forState:UIControlStateNormal];
+            [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 145, 40)];
+            [self.rejectBtn setTitle:@"拒绝" forState:UIControlStateNormal];
+            self.rejectBtn.hidden = NO;
+        }
+        if ([DataStoreManager ifSayHellosHaveThisPerson:self.hostInfo.userName]&&[self.friendStatus isEqualToString:@"rejected"]) {
+            self.helloBtn.hidden = YES;
+            [self.rejectBtn setTitle:@"已拒绝" forState:UIControlStateNormal];
+            self.rejectBtn.frame = CGRectMake(10, self.view.frame.size.height-10-40, 300, 40);
+            self.rejectBtn.enabled = NO;
+
+            self.rejectBtn.hidden = NO;
+        }
     }
     
     [self.view addSubview:self.helloBtn];
+    [self.view addSubview:self.rejectBtn];
     if (self.needRequest) {
         [self getUserInfoWithUserName:self.hostInfo.userName];
     }
+    
+    typeMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
+    typeMsgView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:typeMsgView];
+    UIView * blackV = [[UIView alloc] initWithFrame:CGRectMake(40, 90, 240, 150)];
+    blackV.backgroundColor = [UIColor blackColor];
+    blackV.layer.cornerRadius = 5;
+    blackV.alpha = 0.8;
+    [typeMsgView addSubview:blackV];
+    UILabel * yL = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 220, 20)];
+    yL.backgroundColor = [UIColor clearColor];
+    yL.text = @"打招呼的时候说点什么吧";
+    yL.textColor = [UIColor whiteColor];
+    yL.textAlignment = NSTextAlignmentCenter;
+    [blackV addSubview:yL];
+    locationTextF = [[UITextField alloc] initWithFrame:CGRectMake(10, 50, 220, 30)];
+    locationTextF.backgroundColor = [UIColor whiteColor];
+    locationTextF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [blackV addSubview:locationTextF];
+    UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setBackgroundColor:[UIColor grayColor]];
+    [cancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [cancelBtn setFrame:CGRectMake(10, 95, 105, 40)];
+    [blackV addSubview:cancelBtn];
+    [cancelBtn addTarget:self action:@selector(cancelBtnDo) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * sureBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sureBtn setTitle:@"确定" forState:UIControlStateNormal];
+    [sureBtn setBackgroundColor:[UIColor grayColor]];
+    [sureBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [sureBtn setFrame:CGRectMake(125, 95, 105, 40)];
+    [blackV addSubview:sureBtn];
+    [sureBtn addTarget:self action:@selector(sureBtnDo) forControlEvents:UIControlEventTouchUpInside];
 	// Do any additional setup after loading the view.
+}
+-(void)cancelBtnDo
+{
+    [locationTextF resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+-(void)sureBtnDo
+{
+    [self.appDel.xmppHelper addFriend:self.hostInfo.userName];
+    NSString *message = locationTextF.text;
+    if (message.length<1) {
+        message = [NSString stringWithFormat:@"Hi~我是%@，加我为好友吧",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+    }
+    if (message.length > 0) {
+        NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+        [body setStringValue:message];
+        NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+        [mes addAttributeWithName:@"type" stringValue:@"sayHello"];
+        [mes addAttributeWithName:@"to" stringValue:[self.hostInfo.userName stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+        [mes addChild:body];
+        
+        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+        
+        locationTextF.text = @"";
+    }
+    [locationTextF resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [locationTextF resignFirstResponder];
 }
 -(void)reloadTheViews
 {
@@ -152,11 +252,11 @@
     for (id headID in imageArray) {
         [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,headID]];
     }
-    if (imageArray) {
-        if (imageArray.count<1) {
-            [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,@""]];
-        }
-    }
+//    if (imageArray) {
+//        if (imageArray.count<1) {
+//            [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,@""]];
+//        }
+//    }
     
     return temp;
 }
@@ -362,7 +462,10 @@
         NSDictionary * recDict = [receiveStr JSONValue];
         self.hostInfo = [[HostInfo alloc] initWithHostInfo:recDict];
         [self reloadTheViews];
-        [DataStoreManager saveUserInfo:recDict];
+        if (self.myFriend) {
+            [DataStoreManager saveUserInfo:recDict];
+        }
+     
 
     }];
 
@@ -379,15 +482,40 @@
 //        [sayHelloArray addObject:[self.userInFo objectForKey:@"username"]];
 //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"发送验证请求" message:[NSString stringWithFormat:@"您已经和%@打招呼了，如果对方同意，您和%@就可以成为好友啦~",[self.userInFo objectForKey:@"username"],[self.userInFo objectForKey:@"username"]] delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
 //        [alert show];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"打招呼的时候说点什么吧" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        alert.tag = 11;
-        locationTextF = [[UITextField alloc] initWithFrame:CGRectMake(20, 50, 240, 35)];
-        locationTextF.borderStyle = UITextBorderStyleLine;
-        [locationTextF setBackgroundColor:[UIColor whiteColor]];
-        [alert addSubview:locationTextF];
-        [alert show];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"打招呼的时候说点什么吧" message:@"\n\n" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//        alert.tag = 11;
+//        locationTextF = [[UITextField alloc] initWithFrame:CGRectMake(20, 50, 240, 35)];
+//        locationTextF.borderStyle = UITextBorderStyleLine;
+//        [locationTextF setBackgroundColor:[UIColor redColor]];
+//        [alert addSubview:locationTextF];
+//        [alert show];
+        if ([self.helloBtn.currentTitle isEqualToString:@"同意"]) {
+            [self.appDel.xmppHelper addOrDenyFriend:YES user:self.hostInfo.userName];
+            [DataStoreManager addFriendToLocal:self.hostInfo.userName];
+            [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:self.hostInfo.userName];
+            [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 300, 40)];
+            [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+            self.rejectBtn.hidden = YES;
+            self.myFriend = YES;
+            return;
+        }
+        [UIView animateWithDuration:0.3 animations:^{
+            [typeMsgView setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            [locationTextF becomeFirstResponder];
+        }];
+        
 
     }
+}
+-(void)rejectBtnClicked:(UIButton *)sender
+{
+    [self.appDel.xmppHelper addOrDenyFriend:NO user:self.hostInfo.userName];
+    [DataStoreManager updateReceivedHellosStatus:@"rejected" ForPerson:self.hostInfo.userName];
+    self.helloBtn.hidden = YES;
+    [self.rejectBtn setTitle:@"已拒绝" forState:UIControlStateNormal];
+    self.rejectBtn.frame = CGRectMake(10, self.view.frame.size.height-10-40, 300, 40);
+    self.rejectBtn.enabled = NO;
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

@@ -19,6 +19,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.needGetInfo = NO;
         self.ageArray = [[NSMutableArray alloc]init];
         for (int i = 1; i <= 100; i++) {
             [_ageArray addObject:[NSString stringWithFormat:@"%d",i]];

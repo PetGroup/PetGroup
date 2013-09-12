@@ -18,5 +18,5 @@
 @dynamic addtionMsg;
 @dynamic acceptStatus;
 @dynamic receiveTime;
-
+@dynamic unreadCount;
 @end

@@ -54,6 +54,10 @@
             int unread = [thumbMsgs.unRead intValue];
             thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
             
+            if (![self ifHaveThisFriend:sender]) {
+                [self addFriendToLocal:sender];
+            }
+            
         }];
     }
     //公共账号消息存储到DSThumbPuclicMsgs和DSPublicMsgs里面
@@ -236,6 +240,18 @@
     return lastMsgDict;
 }
 
++(void)blankUnreadCountReceivedHellosForUser:(NSString *)username
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
+        DSReceivedHellos * dr = [DSReceivedHellos MR_findFirstWithPredicate:predicate];
+        if (dr) {
+            dr.unreadCount = @"0";
+        }
+        
+    }];
+}
+
 +(NSArray *)queryAllReceivedHellos
 {
     NSArray * rechellos = [DSReceivedHellos MR_findAllSortedBy:@"receiveTime" ascending:NO];
@@ -254,6 +270,7 @@
         [dict setObject:[[rechellos objectAtIndex:i] addtionMsg] forKey:@"addtionMsg"];
         [dict setObject:[[rechellos objectAtIndex:i] acceptStatus] forKey:@"acceptStatus"];
         [dict setObject:[[rechellos objectAtIndex:i] receiveTime] forKey:@"receiveTime"];
+        [dict setObject:[[rechellos objectAtIndex:i] unreadCount] forKey:@"unread"];
         [hellosArray addObject:dict];
     }
     return hellosArray;
@@ -269,7 +286,7 @@
         NSDate * tt = [lastRecHello receiveTime];
         NSTimeInterval uu = [tt timeIntervalSince1970];
         [lastHelloDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
-        [lastHelloDict setObject:[NSString stringWithFormat:@"%@向您打了一个招呼",[lastRecHello nickName]] forKey:@"msg"];
+        [lastHelloDict setObject:[NSString stringWithFormat:@"%@:%@",[lastRecHello nickName],[lastRecHello addtionMsg]] forKey:@"msg"];
     }
     else
     {
@@ -705,8 +722,13 @@
 
 +(NSString *)qureyUnreadForReceivedHellos
 {
-    DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
-    int theUnread = [unread.receivedHellosUnread intValue];
+//    DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
+//    int theUnread = [unread.receivedHellosUnread intValue];
+    NSArray * allReceived = [DSReceivedHellos MR_findAll];
+    int theUnread = 0;
+    for (int i = 0; i<allReceived.count; i++) {
+        theUnread = theUnread + [[[allReceived objectAtIndex:i] unreadCount] intValue];
+    }
     return [NSString stringWithFormat:@"%d",theUnread];
 }
 
@@ -724,7 +746,7 @@
     NSString * userName = [userInfoDict objectForKey:@"fromUser"];
     NSString * userNickname = [userInfoDict objectForKey:@"fromNickname"];
     NSString * addtionMsg = [userInfoDict objectForKey:@"addtionMsg"];
-    NSString * headID = [self toString:[userInfoDict objectForKey:@"img"]];
+    NSString * headID = [self toString:[userInfoDict objectForKey:@"headID"]];
     NSDate * receiveTime = [NSDate date];
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
@@ -732,24 +754,36 @@
         if (!dReceivedHellos)
         {
             dReceivedHellos = [DSReceivedHellos MR_createInContext:localContext];
-            dReceivedHellos.userName = userName;
-            dReceivedHellos.nickName = userNickname?userNickname:@"";
-            dReceivedHellos.addtionMsg = addtionMsg?addtionMsg:@"";
-            dReceivedHellos.headImgID = headID?headID:@"";
-            dReceivedHellos.receiveTime = receiveTime;
-            dReceivedHellos.acceptStatus = @"waiting";
-            
-            DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
-            if (!unread) {
-                unread = [DSUnreadCount MR_createInContext:localContext];
-                unread.receivedHellosUnread = @"1";
-            }
-            else
-            {
-                int theUnread = [unread.receivedHellosUnread intValue];
-                unread.receivedHellosUnread = [NSString stringWithFormat:@"%d",theUnread+1];
-            }
         }
+        dReceivedHellos.userName = userName;
+        dReceivedHellos.nickName = userNickname?userNickname:@"";
+        dReceivedHellos.addtionMsg = addtionMsg?addtionMsg:@"";
+        dReceivedHellos.headImgID = headID?headID:@"";
+        dReceivedHellos.receiveTime = receiveTime;
+        dReceivedHellos.acceptStatus = @"waiting";
+        if (dReceivedHellos.unreadCount.length>0) {
+            dReceivedHellos.unreadCount = [NSString stringWithFormat:@"%d",[dReceivedHellos.unreadCount intValue]+1];
+        }
+        else
+            dReceivedHellos.unreadCount = @"1";
+        
+        DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+        commonMsg.sender = userName;
+        commonMsg.senderNickname = userNickname?userNickname:@"";
+        commonMsg.msgContent = addtionMsg?addtionMsg:@"";
+        commonMsg.senTime = receiveTime;
+        
+        DSUnreadCount * unread = [DSUnreadCount MR_findFirst];
+        if (!unread) {
+            unread = [DSUnreadCount MR_createInContext:localContext];
+            unread.receivedHellosUnread = @"1";
+        }
+        else
+        {
+            int theUnread = [unread.receivedHellosUnread intValue];
+            unread.receivedHellosUnread = [NSString stringWithFormat:@"%d",theUnread+1];
+        }
+        
         
     }];
 }

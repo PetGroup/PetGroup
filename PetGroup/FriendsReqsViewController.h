@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "addFriendCell.h"
+#import "KKChatController.h"
+#import "PersonDetailViewController.h"
 @class AppDelegate, XMPPHelper;
 @interface FriendsReqsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {

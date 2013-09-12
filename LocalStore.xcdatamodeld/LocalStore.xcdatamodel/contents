@@ -127,6 +127,7 @@
         <attribute name="ifFriend" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nickName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="receiveTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unreadCount" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="DSSayHellos" representedClassName="DSSayHellos" syncable="YES">
@@ -188,7 +189,7 @@
         <element name="DSNameIndex" positionX="160" positionY="192" width="128" height="60"/>
         <element name="DSPets" positionX="160" positionY="192" width="128" height="210"/>
         <element name="DSPublicMsgs" positionX="160" positionY="192" width="128" height="165"/>
-        <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="DSReceivedHellos" positionX="160" positionY="192" width="128" height="165"/>
         <element name="DSSayHellos" positionX="160" positionY="192" width="128" height="90"/>
         <element name="DSSubscribedMsgs" positionX="160" positionY="192" width="128" height="165"/>
         <element name="DSThumbMsgs" positionX="160" positionY="192" width="128" height="165"/>

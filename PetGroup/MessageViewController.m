@@ -175,20 +175,28 @@
 -(void)newAddReq:(NSDictionary *)userInfo
 {
     //检查本地是否已有这个打招呼的人，有了就不存，没有就存
-    if (![DataStoreManager ifSayHellosHaveThisPerson:[userInfo objectForKey:@"fromUser"]]) {
+    NSString * fromUser = [userInfo objectForKey:@"sender"];
+    NSRange range = [fromUser rangeOfString:@"@"];
+    fromUser = [fromUser substringToIndex:range.location];
+//    if (![DataStoreManager ifSayHellosHaveThisPerson:fromUser]) {
 //        AudioServicesPlayAlertSound(1007);
 //        [DataStoreManager addPersonToReceivedHellos:userInfo];
 //        //检查打招呼这个人有没有详细信息，没有去请求详细信息
 //        if(![DataStoreManager checkSayHelloPersonIfHaveNickNameForUsername:[userInfo objectForKey:@"fromUser"]]){
 //            [self requestPeopleInfoWithName:[userInfo objectForKey:@"fromUser"] ForType:0];
 //        }
-        [self requestPeopleInfoWithName:[userInfo objectForKey:@"fromUser"] ForType:0];
-    }
+        [self requestPeopleInfoWithName:fromUser ForType:0 Msg:[userInfo objectForKey:@"msg"]];
+//    }
+//    else
+//    {
+//        NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:fromUser,@"fromUser",[userInfo objectForKey:@"msg"],@"addtionMsg", nil];
+//        [DataStoreManager addPersonToReceivedHellos:uDict];
+//    }
 //    [self displayMsgsForDefaultView];
 }
 -(void)processFriend:(XMPPPresence *)processFriend{
     NSString *username=[[processFriend from] user];
-    [self requestPeopleInfoWithName:username ForType:1];
+    [self requestPeopleInfoWithName:username ForType:1 Msg:nil];
 }
 
 -(void)newMessageReceived:(NSDictionary *)messageContent
@@ -308,14 +316,16 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [searchDisplay setActive:NO animated:NO];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
         NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
         if ([[allNickNameArray objectAtIndex:theIndex] isEqualToString:ZhaoHuLan]) {
             FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
             [self.navigationController pushViewController:friq animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+            [searchDisplay setActive:NO animated:NO];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
             return;
         }
@@ -325,11 +335,17 @@
         kkchat.chatUserImg = [allHeadImgArray objectAtIndex:theIndex];
         [self.navigationController pushViewController:kkchat animated:YES];
         kkchat.msgDelegate = self;
+        [searchDisplay setActive:NO animated:NO];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
         return;
     }
     if ([[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:ZhaoHuLan]) {
         FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
         [self.navigationController pushViewController:friq animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        [searchDisplay setActive:NO animated:NO];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
         return;
     }
@@ -339,6 +355,8 @@
     kkchat.chatUserImg = [allHeadImgArray objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:kkchat animated:YES];
     kkchat.msgDelegate = self;
+    [searchDisplay setActive:NO animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -455,7 +473,7 @@
     [DataStoreManager saveUserInfo:dict];
 }
 
--(void)requestPeopleInfoWithName:(NSString *)userName ForType:(int)type
+-(void)requestPeopleInfoWithName:(NSString *)userName ForType:(int)type Msg:(NSString *)msg
 {
     NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
@@ -474,7 +492,7 @@
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         if (type==0) {
-            NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",[NSString stringWithFormat:@"Hi~我是%@，加我好友吧",[recDict objectForKey:@"nickname"]],@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
+            NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",msg,@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
             [DataStoreManager addPersonToReceivedHellos:uDict];
             [self displayMsgsForDefaultView];
         }

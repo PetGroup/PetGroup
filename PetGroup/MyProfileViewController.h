@@ -45,5 +45,7 @@ typedef  enum
 @property (nonatomic ,strong) NSArray* ProvinceArray;
 @property (nonatomic ,strong) NSArray* cityArray;
 @property (nonatomic ,strong) NSArray* genderArray;
+@property (nonatomic ,assign) BOOL needGetInfo;
+
 
 @end

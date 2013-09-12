@@ -64,6 +64,7 @@
 +(void)addPersonToSayHellos:(NSDictionary *)userInfoDict;
 +(void)deleteReceivedHelloWithUserName:(NSString *)userName;
 +(void)addPersonToReceivedHellos:(NSDictionary *)userInfoDict;
++(void)blankUnreadCountReceivedHellosForUser:(NSString *)username;
 +(BOOL)ifSayHellosHaveThisPerson:(NSString *)username;
 +(BOOL)checkSayHelloPersonIfHaveNickNameForUsername:(NSString *)username;
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName;
