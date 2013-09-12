@@ -7,7 +7,7 @@
 //
 
 #import "NetManager.h"
-#define CompressionQuality 1  //图片上传时压缩质量
+#define CompressionQuality 0.5  //图片上传时压缩质量
 @implementation NetManager
 
 //post请求，需自己设置失败提示
@@ -53,7 +53,7 @@
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     UIImage* a = [NetManager compressImageDownToPhoneScreenSize:uploadImage targetSizeX:100 targetSizeY:100];
     UIImage* upImage = [NetManager image:a centerInSize:CGSizeMake(100, 100)];
-    NSData *imageData = UIImageJPEGRepresentation(upImage, CompressionQuality);
+    NSData *imageData = UIImageJPEGRepresentation(upImage, 1);
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
@@ -157,5 +157,14 @@
     UIGraphicsEndImageContext();
 	
     return newimg;
+}
++(UIImage*)compressImage:(UIImage*)image
+{
+    NSData *imageData = UIImageJPEGRepresentation(image, 1);
+    if (imageData.length>800*1024) {
+        image = [UIImage imageWithData:imageData];
+        imageData = UIImageJPEGRepresentation(image, CompressionQuality);
+    }
+    return [UIImage imageWithData:imageData];
 }
 @end

@@ -36,19 +36,13 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:[self parameter] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        if (array.count>0) {
-            for (NSDictionary*a in array) {
-                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
-                [self.dataSourceArray addObject:b];
-            }
-            self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
-            self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
-            success();
-        }else{
-            UIAlertView *aler = [[UIAlertView alloc]initWithTitle:nil message:@"没有更多动态啦" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [aler show];
-            success();
+        for (NSDictionary*a in array) {
+            Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+            [self.dataSourceArray addObject:b];
         }
+        self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
+        self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
+        success();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
