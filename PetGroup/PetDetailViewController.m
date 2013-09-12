@@ -249,7 +249,7 @@
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 cell.nameLabel.text = self.hostInfo.nickName;
-                [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,[self.hostInfo.headImgArray objectAtIndex:0]]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
+                [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,self.hostInfo.headImgArray.count>0?[self.hostInfo.headImgArray objectAtIndex:0]:@""]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
                 UIImage * genderImg = [self.hostInfo.gender isEqualToString:@"male"]?[UIImage imageNamed:@"manicon.png"]:[UIImage imageNamed:@"womenicon.png"];
                 [cell.genderIV setImage:genderImg];
                 [cell.genderIV setFrame:CGRectMake(70, 44, genderImg.size.width/2, genderImg.size.height/2)];

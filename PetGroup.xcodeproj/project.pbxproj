@@ -507,8 +507,9 @@
 		97DB09FE17C5B167000EC195 /* UpLoadPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09EF17C5B167000EC195 /* UpLoadPhotoViewController.m */; };
 		97DB09FF17C5B167000EC195 /* UserTreatyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F117C5B167000EC195 /* UserTreatyViewController.m */; };
 		97DB0A0017C5B167000EC195 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F317C5B167000EC195 /* WelcomeViewController.m */; };
-		97DB4FB117E024EB00B74E73 /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE517D58EC400082E98 /* zaned.png */; };
-		97DB4FB217E024EB00B74E73 /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC7AE317D4844300082E98 /* zan.png */; };
+		97DB4FB117E024EB00B74E73 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		97DB4FB217E024EB00B74E73 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD8CA517E19D09002E36BE /* selectContactPage.m */; };
 		97E25BEA17C33F8D007E187D /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BE917C33F8D007E187D /* LoadingViewController.m */; };
 		97E25BFF17C34418007E187D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BED17C34418007E187D /* AFHTTPClient.m */; };
 		97E25C0017C34418007E187D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BEF17C34418007E187D /* AFHTTPRequestOperation.m */; };
@@ -1325,6 +1326,8 @@
 		97DB09F117C5B167000EC195 /* UserTreatyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserTreatyViewController.m; sourceTree = "<group>"; };
 		97DB09F217C5B167000EC195 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		97DB09F317C5B167000EC195 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		97DD8CA417E19D09002E36BE /* selectContactPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = selectContactPage.h; sourceTree = "<group>"; };
+		97DD8CA517E19D09002E36BE /* selectContactPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = selectContactPage.m; sourceTree = "<group>"; };
 		97E25BE817C33F8D007E187D /* LoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
 		97E25BE917C33F8D007E187D /* LoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
 		97E25BEC17C34418007E187D /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
@@ -1622,6 +1625,8 @@
 		9736BAD017C474F3007DFE36 /* MessageView */ = {
 			isa = PBXGroup;
 			children = (
+				97DD8CA417E19D09002E36BE /* selectContactPage.h */,
+				97DD8CA517E19D09002E36BE /* selectContactPage.m */,
 				97D501CE17C4998300799BD4 /* KKChatController.h */,
 				97D501CF17C4998300799BD4 /* KKChatController.m */,
 				86FF42B117CC66D7007F8DE2 /* MessageViewController.h */,
@@ -3277,8 +3282,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97DB4FB117E024EB00B74E73 /* zaned.png in Resources */,
-				97DB4FB217E024EB00B74E73 /* zan.png in Resources */,
+				97DB4FB117E024EB00B74E73 /* (null) in Resources */,
+				97DB4FB217E024EB00B74E73 /* (null) in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
 				979546CA17BA368F00D05874 /* Default.png in Resources */,
 				979546CC17BA368F00D05874 /* Default@2x.png in Resources */,
@@ -3823,6 +3828,7 @@
 				86F690D917E048DB002C5DBB /* PersonalDynamicViewController.m in Sources */,
 				86F690DC17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m in Sources */,
 				86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */,
+				97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

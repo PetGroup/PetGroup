@@ -93,6 +93,18 @@
         [self addSubview:photoTemp];
         [self.arrayPhotos addObject:photoTemp];
     }
+    if (!self.useCache&&count==0) {
+        NSDictionary *dictionaryTemp = [self.arrayPositions objectAtIndex:0];
+        CGFloat originx = [[dictionaryTemp objectForKey:kImagePositionx] floatValue];
+        CGFloat originy = [[dictionaryTemp objectForKey:kImagePositiony] floatValue];
+        HGPhoto *photoTemp = [[HGPhoto alloc] initWithOrigin:CGPointMake(originx, originy)];
+//        photoTemp.delegate = self;
+
+        [photoTemp setPhotoUrl:@"nourl"];
+
+        [self addSubview:photoTemp];
+        [self.arrayPhotos addObject:photoTemp];
+    }
     
     NSDictionary *dictionaryTemp = [self.arrayPositions objectAtIndex:count];
     CGFloat originx = [[dictionaryTemp objectForKey:kImagePositionx] floatValue];

@@ -526,6 +526,7 @@
     [btn2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn2.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [btn2 setTitle:@"转发" forState:UIControlStateNormal];
+    [btn2 addTarget:self action:@selector(transferMsg) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton * btn3 = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn3 setFrame:CGRectMake(126, 10, 50, 25)];
@@ -578,6 +579,39 @@
     if ([clearView superview]) {
         [clearView removeFromSuperview];
     }
+    selectContactPage * selectV = [[selectContactPage alloc] init];
+    selectV.contactDelegate = self;
+    [self presentModalViewController:selectV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:NO];
+    
+}
+-(void)getContact:(NSDictionary *)userDict
+{
+    tempDict = userDict;
+    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"确定要转发给%@吗",[userDict objectForKey:@"displayName"]] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        [self sureToTransform:tempDict];
+    }
+}
+-(void)sureToTransform:(NSDictionary *)userDict
+{
+    self.chatWithUser = [userDict objectForKey:@"username"];
+    self.nickName = [userDict objectForKey:@"displayName"];
+    self.chatUserImg = [userDict objectForKey:@"img"];
+    titleLabel.text=self.nickName;
+    
+    self.ifFriend = YES;
+    if (![DataStoreManager ifHaveThisFriend:self.chatWithUser]) {
+        self.ifFriend = NO;
+    }
+    messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+    [DataStoreManager blankMsgUnreadCountForUser:self.chatWithUser];
+    [self sendMsg:tempStr];
+    [self.tView reloadData];
 }
 -(void)deleteMsg
 {
@@ -627,7 +661,11 @@
     
     //本地输入框中的信息
     NSString *message = self.textView.text;
-    
+    [self sendMsg:message];
+  
+}
+-(void)sendMsg:(NSString *)message
+{
     if (message.length > 0) {
         if (!self.ifFriend) {
             [self.appDel.xmppHelper addOrDenyFriend:YES user:self.chatWithUser];
@@ -643,27 +681,27 @@
         
         //生成XML消息文档
         NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
-     //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
+        //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
         //消息类型
         [mes addAttributeWithName:@"type" stringValue:@"chat"];
         //发送给谁
         [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:Domain]];
-     //   NSLog(@"chatWithUser:%@",chatWithUser);
+        //   NSLog(@"chatWithUser:%@",chatWithUser);
         //由谁发送
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:Domain]];
-    //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
+        //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
         //组合
         
-//        NSXMLElement * kind = [NSXMLElement elementWithName:@"kind"];
-//        [kind setStringValue:@"chat"];
+        //        NSXMLElement * kind = [NSXMLElement elementWithName:@"kind"];
+        //        [kind setStringValue:@"chat"];
         [mes addChild:body];
-//        [mes addChild:kind];
+        //        [mes addChild:kind];
         
         //发送消息
         
         [self.appDel.xmppHelper.xmppStream sendElement:mes];
         
-
+        
         
         NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
         
@@ -681,8 +719,6 @@
         }
         self.textView.text = @"";
     }
-    
-    
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView

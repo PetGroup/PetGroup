@@ -97,7 +97,7 @@
     }];
 }
 
--(void)upLoadUserLocationWithLat:(double)userLongitude Lon:(double)userLatitude
+-(void)upLoadUserLocationWithLat:(double)userLatitude Lon:(double)userLongitude
 {
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];

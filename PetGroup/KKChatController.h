@@ -16,8 +16,9 @@
 #import "StoreMsgDelegate.h"
 #import "PersonDetailViewController.h"
 #import "MyProfileViewController.h"
+#import "selectContactPage.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -43,6 +44,7 @@
     NSMutableDictionary * userInfoDict;
     NSMutableDictionary * postDict;
     NSString * myHeadImg;
+    NSDictionary * tempDict;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  UITextField *messageTextField;

@@ -265,13 +265,11 @@
     if (section==1){
         return 30;
     }
-    else
-        return 0;
+    return 0;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 {
     return nil;
-    
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 4;
@@ -300,7 +298,11 @@
     }
     else if (indexPath.section==2){
         if (indexPath.row==1) {
-            return self.photoWall2.frame.size.height;
+            if (self.hostInfo.petsArray.count<=0) {
+                return 0;
+            }
+            else
+                return self.photoWall2.frame.size.height;
         }
         else
             return 40;
@@ -360,7 +362,10 @@
             for (UIView * view in cell.contentView.subviews) {
                 [view removeFromSuperview];
             }
+
             [cell.contentView addSubview:self.photoWall];
+
+            
             return cell;
         }
             break;
@@ -389,7 +394,15 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
                 }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.textLabel.text = @"爱宠";
+                
+                if (self.hostInfo.petsArray.count<=0) {
+                    cell.textLabel.text = @"主人还没有宠物呢";
+                    cell.textLabel.textColor = [UIColor grayColor];
+                }
+                else{
+                    cell.textLabel.text = @"爱宠";
+                    cell.textLabel.textColor = [UIColor blackColor];
+                }
                 return cell;
             }
             else
@@ -404,7 +417,10 @@
                 for (UIView * view in cell.contentView.subviews) {
                     [view removeFromSuperview];
                 }
-                [cell.contentView addSubview:self.photoWall2];
+                if (self.hostInfo.petsArray.count>0) {
+                    [cell.contentView addSubview:self.photoWall2];
+                }
+                
                 return cell;
             }
         }
