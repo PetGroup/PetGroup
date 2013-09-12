@@ -16,7 +16,6 @@
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
 		86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */; };
-		86D69CF117C5FFB300FFFBDD /* morenbeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CF017C5FFB200FFFBDD /* morenbeijing.png */; };
 		86D69CF317C6045000FFFBDD /* touxiangbeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CF217C6044F00FFFBDD /* touxiangbeijing.png */; };
 		86D69CF617C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D69CF517C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.m */; };
 		86D69CF917C6068C00FFFBDD /* FriendDynamicDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D69CF817C6068B00FFFBDD /* FriendDynamicDelegateAndDataSource.m */; };
@@ -41,6 +40,14 @@
 		86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB13F17CF0F36000162E8 /* EGOImageLoadConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14117CF0F36000162E8 /* EGOImageLoader.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86EEB14917CF0F36000162E8 /* EGOImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EEB14417CF0F36000162E8 /* EGOImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		86F690CF17E01F33002C5DBB /* PersonalDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */; };
+		86F690D217E024A1002C5DBB /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F690D017E024A1002C5DBB /* zan.png */; };
+		86F690D317E024A1002C5DBB /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F690D117E024A1002C5DBB /* zaned.png */; };
+		86F690D617E03EA5002C5DBB /* PersonalDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690D517E03EA5002C5DBB /* PersonalDynamic.m */; };
+		86F690D917E048DB002C5DBB /* PersonalDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690D817E048DB002C5DBB /* PersonalDynamicViewController.m */; };
+		86F690DC17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690DB17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m */; };
+		86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F690DD17E05362002C5DBB /* morenbeijing.png */; };
+		86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937617D9C8380001E863 /* MarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936C17D9C8380001E863 /* MarkupParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -569,7 +576,6 @@
 		86D69CEA17C5EFC200FFFBDD /* fabu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fabu.png; sourceTree = "<group>"; };
 		86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibeijing.png; sourceTree = "<group>"; };
 		86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibtn.png; sourceTree = "<group>"; };
-		86D69CF017C5FFB200FFFBDD /* morenbeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = morenbeijing.png; path = detailPage/morenbeijing.png; sourceTree = "<group>"; };
 		86D69CF217C6044F00FFFBDD /* touxiangbeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = touxiangbeijing.png; path = detailPage/touxiangbeijing.png; sourceTree = "<group>"; };
 		86D69CF417C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyDynamicDelegateAndDataSource.h; sourceTree = "<group>"; };
 		86D69CF517C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyDynamicDelegateAndDataSource.m; sourceTree = "<group>"; };
@@ -605,8 +611,19 @@
 		86EEB14117CF0F36000162E8 /* EGOImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOImageLoader.m; sourceTree = "<group>"; };
 		86EEB14317CF0F36000162E8 /* EGOImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOImageView.h; sourceTree = "<group>"; };
 		86EEB14417CF0F36000162E8 /* EGOImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOImageView.m; sourceTree = "<group>"; };
-		86FC7AE317D4844300082E98 /* zan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zan.png; sourceTree = "<group>"; };
-		86FC7AE517D58EC400082E98 /* zaned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zaned.png; sourceTree = "<group>"; };
+		86F690CD17E01F33002C5DBB /* PersonalDynamicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDynamicCell.h; sourceTree = "<group>"; };
+		86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDynamicCell.m; sourceTree = "<group>"; };
+		86F690D017E024A1002C5DBB /* zan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zan.png; sourceTree = "<group>"; };
+		86F690D117E024A1002C5DBB /* zaned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zaned.png; sourceTree = "<group>"; };
+		86F690D417E03EA5002C5DBB /* PersonalDynamic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDynamic.h; sourceTree = "<group>"; };
+		86F690D517E03EA5002C5DBB /* PersonalDynamic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDynamic.m; sourceTree = "<group>"; };
+		86F690D717E048DB002C5DBB /* PersonalDynamicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDynamicViewController.h; sourceTree = "<group>"; };
+		86F690D817E048DB002C5DBB /* PersonalDynamicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDynamicViewController.m; sourceTree = "<group>"; };
+		86F690DA17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDynamicDelegateAndDataSource.h; sourceTree = "<group>"; };
+		86F690DB17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDynamicDelegateAndDataSource.m; sourceTree = "<group>"; };
+		86F690DD17E05362002C5DBB /* morenbeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = morenbeijing.png; sourceTree = "<group>"; };
+		86F690DF17E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDynamicDelegateAndDataSouce.h; sourceTree = "<group>"; };
+		86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDynamicDelegateAndDataSouce.m; sourceTree = "<group>"; };
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9727936917D9C8380001E863 /* HeightCalculate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightCalculate.h; sourceTree = "<group>"; };
@@ -1448,6 +1465,10 @@
 				86D69CF517C6065C00FFFBDD /* NearbyDynamicDelegateAndDataSource.m */,
 				86D69CF717C6068B00FFFBDD /* FriendDynamicDelegateAndDataSource.h */,
 				86D69CF817C6068B00FFFBDD /* FriendDynamicDelegateAndDataSource.m */,
+				86F690DA17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.h */,
+				86F690DB17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m */,
+				86F690DF17E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.h */,
+				86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */,
 			);
 			name = DelegateAndDataSource;
 			sourceTree = "<group>";
@@ -1455,8 +1476,8 @@
 		86D69D0117C703A300FFFBDD /* dynamic */ = {
 			isa = PBXGroup;
 			children = (
-				86FC7AE517D58EC400082E98 /* zaned.png */,
-				86FC7AE317D4844300082E98 /* zan.png */,
+				86F690D017E024A1002C5DBB /* zan.png */,
+				86F690D117E024A1002C5DBB /* zaned.png */,
 				86D69D0D17C72CD000FFFBDD /* biaoqing.png */,
 				86D69D0E17C72CD100FFFBDD /* dabeijing.png */,
 				86D69D0F17C72CD200FFFBDD /* edit_bg.png */,
@@ -1468,7 +1489,7 @@
 				86D69D0417C703C700FFFBDD /* tanchuanniu-click.png */,
 				86D69D0517C703C700FFFBDD /* tanchuanniu-normal.png */,
 				86D69CF217C6044F00FFFBDD /* touxiangbeijing.png */,
-				86D69CF017C5FFB200FFFBDD /* morenbeijing.png */,
+				86F690DD17E05362002C5DBB /* morenbeijing.png */,
 			);
 			name = dynamic;
 			sourceTree = "<group>";
@@ -1651,6 +1672,8 @@
 			children = (
 				97D5020217C49ADF00799BD4 /* PersonalCenterViewController.h */,
 				97D5020317C49ADF00799BD4 /* PersonalCenterViewController.m */,
+				86F690D717E048DB002C5DBB /* PersonalDynamicViewController.h */,
+				86F690D817E048DB002C5DBB /* PersonalDynamicViewController.m */,
 				97DB08F817C5A1EE000EC195 /* MyProfileViewController.h */,
 				97DB08F917C5A1EE000EC195 /* MyProfileViewController.m */,
 				97DB08FB17C5A1FF000EC195 /* MyPetProfileViewController.h */,
@@ -2928,6 +2951,8 @@
 				97DB097F17C5A95C000EC195 /* ProfileImageCell.m */,
 				86D69CFE17C6120D00FFFBDD /* DynamicCell.h */,
 				86D69CFF17C6120D00FFFBDD /* DynamicCell.m */,
+				86F690CD17E01F33002C5DBB /* PersonalDynamicCell.h */,
+				86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3105,6 +3130,8 @@
 				9736BACD17C472B2007DFE36 /* PetInfo.m */,
 				86D90B8417D0848700345D59 /* Dynamic.h */,
 				86D90B8517D0848700345D59 /* Dynamic.m */,
+				86F690D417E03EA5002C5DBB /* PersonalDynamic.h */,
+				86F690D517E03EA5002C5DBB /* PersonalDynamic.m */,
 				8642967E17D70E7500B1B1C9 /* Reply.h */,
 				8642967F17D70E7500B1B1C9 /* Reply.m */,
 				8641ACDF17DED0DF0020C34B /* ReplyComment.h */,
@@ -3437,7 +3464,6 @@
 				86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */,
 				86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */,
 				86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */,
-				86D69CF117C5FFB300FFFBDD /* morenbeijing.png in Resources */,
 				86D69CF317C6045000FFFBDD /* touxiangbeijing.png in Resources */,
 				86D69D0617C703C700FFFBDD /* pinglun.png in Resources */,
 				86D69D0717C703C700FFFBDD /* tanchuanniu_bg.png in Resources */,
@@ -3503,6 +3529,9 @@
 				972793E617D9CADA0001E863 /* emotionImageThird.plist in Resources */,
 				972793E717D9CADA0001E863 /* emotionThird.plist in Resources */,
 				8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */,
+				86F690D217E024A1002C5DBB /* zan.png in Resources */,
+				86F690D317E024A1002C5DBB /* zaned.png in Resources */,
+				86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3789,6 +3818,11 @@
 				8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */,
 				97FB035117E00432002086D9 /* SettingViewController.m in Sources */,
 				97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */,
+				86F690CF17E01F33002C5DBB /* PersonalDynamicCell.m in Sources */,
+				86F690D617E03EA5002C5DBB /* PersonalDynamic.m in Sources */,
+				86F690D917E048DB002C5DBB /* PersonalDynamicViewController.m in Sources */,
+				86F690DC17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m in Sources */,
+				86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

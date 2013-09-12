@@ -93,8 +93,6 @@ static  LocationManager *sharedInstance=nil;
                 }
             }
         });
-
-    
 }
 
 

@@ -1,32 +1,23 @@
 //
-//  DynamicViewController.m
-//  NewXMPPTest
+//  PersonalDynamicViewController.m
+//  PetGroup
 //
-//  Created by Tolecen on 13-7-3.
+//  Created by 阿铛 on 13-9-11.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DynamicViewController.h"
+#import "PersonalDynamicViewController.h"
 #import "CustomTabBar.h"
-#import "NearbyDynamicDelegateAndDataSource.h"
-#import "FriendDynamicDelegateAndDataSource.h"
-#import "EditDynamicViewController.h"
 #import "DynamicCell.h"
 #import "MBProgressHUD.h"
 #import "EGOImageButton.h"
-#import "DynamicCell.h"
-#import "EGOCache.h"
+#import "PersonalDynamicCell.h"
+#import "EGOImageView.h"
 #import "UIExpandingTextView.h"
 #import "TempData.h"
 #import "ReplyComment.h"
-#import "PersonalDynamicViewController.h"
-#import "MyDynamicDelegateAndDataSource.h"
-
-@interface DynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
+@interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
-    UIButton* nearByB;
-    UIButton* friendB;
-    
     UIButton * assessB;
     UIButton * reprintB;
     
@@ -38,27 +29,21 @@
     UIView * inPutView;
 }
 @property (nonatomic,strong)UIView* footV;
-@property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
-@property (nonatomic,strong)FriendDynamicDelegateAndDataSource* friendDDS;
 @property (nonatomic,strong)UIActivityIndicatorView * act;
 @property (nonatomic,strong)UIActivityIndicatorView * footAct;
 @property (nonatomic,strong)UIImageView*  actionIV;
-@property (nonatomic,weak)DynamicCell* mycell;
+@property (nonatomic,weak)PersonalDynamicCell* mycell;
 @property (nonatomic,weak)id theID;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
 @end
 
-@implementation DynamicViewController
+@implementation PersonalDynamicViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nearbyDDS = [[NearbyDynamicDelegateAndDataSource alloc]init];
-        _nearbyDDS.viewC = self;
-        self.friendDDS = [[FriendDynamicDelegateAndDataSource alloc]init];
-        _friendDDS.viewC = self;
     }
     return self;
 }
@@ -71,38 +56,24 @@
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
+
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    titleLabel.backgroundColor=[UIColor clearColor];
+    titleLabel.text=@"个人动态";
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textColor=[UIColor whiteColor];
+    [self.view addSubview:titleLabel];
     
-    UIImageView * top = [[UIImageView alloc]initWithFrame:CGRectMake(90, 7, 140, 28)];
-    top.image = [UIImage imageNamed:@"toubuhuakuaibeijing"];
-    [self.view addSubview:top];
-    top.userInteractionEnabled = YES;
-    
-    nearByB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nearByB.frame = CGRectMake(1, 1, 68, 26);
-    [nearByB setTitle:@"附近动态" forState:UIControlStateNormal];
-    nearByB.titleLabel.font = [UIFont boldSystemFontOfSize:11];
-    [nearByB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [nearByB addTarget:self action:@selector(showNearby) forControlEvents:UIControlEventTouchUpInside];
-    [top addSubview:nearByB];
-    
-    friendB = [UIButton buttonWithType:UIButtonTypeCustom];
-    friendB.frame = CGRectMake(71, 1, 68, 26);
-    [friendB setTitle:@"好友动态" forState:UIControlStateNormal];
-    friendB.titleLabel.font = [UIFont boldSystemFontOfSize:11];
-    [friendB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [friendB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
-    [friendB addTarget:self action:@selector(showfriend) forControlEvents:UIControlEventTouchUpInside];
-    [top addSubview:friendB];
-    
-    UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 3, 35, 33);
-    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
-    [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:publishButton];
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(0, 0, 80, 44);
+    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [self.view addSubview:backButton];
+    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
     _tableV.delegate = self;
-    _tableV.dataSource = self.nearbyDDS;
+    _tableV.dataSource = self.dataSource;
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
     _tableV.contentOffset = CGPointMake(0, 100);
@@ -128,12 +99,10 @@
     [headV addSubview:photoIV];
     photoIV.userInteractionEnabled = YES;
     
-    EGOImageButton* headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    EGOImageView* headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
     headIV.frame = CGRectMake(5, 5, 70, 70);
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     [photoIV addSubview:headIV];
-    [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
-    
     
     self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
     _footAct.backgroundColor = [UIColor redColor];
@@ -185,14 +154,6 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
     if (self.tableV.contentOffset.y<100) {
         self.tableV.contentOffset = CGPointMake(0, 100);
     }
@@ -203,55 +164,12 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
--(void)headAct
+-(void)backButton:(UIButton*)button
 {
-    PersonalDynamicViewController * PDVC = [[PersonalDynamicViewController alloc] init];
-    MyDynamicDelegateAndDataSource* MDDDS = [[MyDynamicDelegateAndDataSource alloc]init];
-    MDDDS.viewC = PDVC;
-    PDVC.dataSource = MDDDS;
-    [self.navigationController pushViewController:PDVC animated:YES];
-    [self.customTabBarController hidesTabBar:YES animated:YES];
-}
--(void)showNearby
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    if (_tableV.dataSource != self.nearbyDDS) {
-        [nearByB setBackgroundImage:nil forState:UIControlStateNormal];
-        [nearByB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [friendB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
-        [friendB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _tableV.dataSource = self.nearbyDDS;
-        [_tableV reloadData];
-        if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
-            [self reloadData];
-        }
-        self.tableV.contentOffset = CGPointMake(0, 100);
-    }
-}
--(void)showfriend
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    if (_tableV.dataSource != self.friendDDS) {
-        [friendB setBackgroundImage:nil forState:UIControlStateNormal];
-        [friendB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [nearByB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
-        [nearByB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        _tableV.dataSource = self.friendDDS;
-        [_tableV reloadData];
-        if (((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray.count == 0) {
-            [self reloadData];
-        }
-        self.tableV.contentOffset = CGPointMake(0, 100);
-    }
-}
--(void)updateSelfMassage
-{
-    EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
-    editVC.viewC = self;
-    [self.navigationController pushViewController:editVC animated:YES];
-    [self.customTabBarController hidesTabBar:YES animated:YES];
+    [hud hide:YES];
+    [self keyBoardResign];
+    [[TempData sharedInstance] Panned:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)assess//评论
 {
@@ -395,7 +313,7 @@
                     self.mycell = nil;
                 }];
             }break;
-
+                
             default:
                 break;
         }
@@ -484,7 +402,7 @@
 {
     [self removeActionImageView];
     self.mycell = nil;
-    [self keyBoardResign];    
+    [self keyBoardResign];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -560,7 +478,7 @@
     //停止减速
     if (_tableV.contentOffset.y<100&&_tableV.contentOffset.y>0) {
         [UIView animateWithDuration:0.3 animations:^{
-             _tableV.contentOffset = CGPointMake(0, 100);
+            _tableV.contentOffset = CGPointMake(0, 100);
         }];
     }
     if (_tableV.contentOffset.y<=0) {
@@ -577,7 +495,7 @@
     //开始减速
 }
 #pragma mark - cell button action
--(void)showButton:(DynamicCell*)cell
+-(void)showButton:(PersonalDynamicCell*)cell
 {
     CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
     if (_actionIV == nil) {
@@ -622,9 +540,9 @@
 }
 -(void)removeActionImageView
 {
-        assessB.frame = CGRectMake(0, 6, 0,31);
-        reprintB.frame = CGRectMake(0, 6, 0, 31);
-        [_actionIV removeFromSuperview];
+    assessB.frame = CGRectMake(0, 6, 0,31);
+    reprintB.frame = CGRectMake(0, 6, 0, 31);
+    [_actionIV removeFromSuperview];
     
 }
 -(void)deleteDynamic:(Dynamic*)dyn
@@ -653,7 +571,7 @@
         [self.tableV reloadData];
     }];
 }
--(void)recalledreply:(id)theID cell:(DynamicCell*)cell//回复评论
+-(void)recalledreply:(id)theID cell:(PersonalDynamicCell*)cell//回复评论
 {
     if ([theID isKindOfClass:[Reply class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];

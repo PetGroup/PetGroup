@@ -1,12 +1,12 @@
 //
-//  DynamicCell.m
+//  PersonalDynamicCell.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-8-22.
+//  Created by 阿铛 on 13-9-11.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DynamicCell.h"
+#import "PersonalDynamicCell.h"
 #import "Common.h"
 #import "EGOImageButton.h"
 #import "EGOImageView.h"
@@ -17,14 +17,11 @@
 #import "OHAttributedLabel.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
-
-@interface DynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate>
+@interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate>
 
 {
-    UIButton* nameB;
     UIButton* zanB;
     UIButton* delB;
-    EGOImageButton* headB;
     UIButton * quanwenB;
     UIButton * pushB;
     CGSize msgSize;
@@ -42,7 +39,8 @@
 @property (nonatomic,retain)NSMutableArray* OHALabelArray;
 @property (nonatomic,assign)id deleteObject;
 @end
-@implementation DynamicCell
+
+@implementation PersonalDynamicCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -55,15 +53,10 @@
         _beijingL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];;
         [self.contentView addSubview:_beijingL];
         
-        nameB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [nameB setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [nameB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:nameB];
-        nameB.titleLabel.font = [UIFont systemFontOfSize:16];
-        headB = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
-        [headB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
-        headB.tintColor = [UIColor grayColor];
-        [self.contentView addSubview:headB];
+        self.timeL = [[UILabel alloc]init];
+        _timeL.textColor = [UIColor grayColor];
+        _timeL.adjustsFontSizeToFitWidth = YES;
+        [self.contentView addSubview:_timeL];
         
         self.distancevL = [[UILabel alloc]init];
         _distancevL.font = [UIFont systemFontOfSize:12];
@@ -99,11 +92,6 @@
         }
         self.imageViews = arr;
         
-        self.timeL = [[UILabel alloc]init];
-        _timeL.textColor = [UIColor grayColor];
-        _timeL.font = [UIFont systemFontOfSize:12];
-        [self.contentView addSubview:_timeL];
-        
         zanB = [UIButton buttonWithType:UIButtonTypeCustom];
         [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:zanB];
@@ -132,66 +120,67 @@
     }
     return self;
 }
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
 -(void)layoutSubviews
 {
     [super layoutSubviews];
     for (UIView* a in self.contentView.subviews) {
         a.frame = CGRectZero;
     }
-    if (self.dynamic.petUser.headImgArray.count>0) {
-        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
-    }
-    headB.frame = CGRectMake(10, 10, 40, 40);
-    [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
-    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
-    _distancevL.text = self.dynamic.distance;
-    _distancevL.frame = CGRectMake(150, 10, 100, 15);
+    origin = 10;
     
-    origin = 40;
+//    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(80, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    _timeL.text = self.dynamic.submitTime;
+    _timeL.frame = CGRectMake(10, origin, 90 , 20);
     
     if (self.dynamic.ifTransmitMsg != 0) {
-        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
         self.transmitMsgL.text = self.dynamic.transmitMsg;
-        self.transmitMsgL.frame = CGRectMake(60, origin, size.width, size.height);
+        self.transmitMsgL.frame = CGRectMake(100, origin, 210, size.height);
         origin += (size.height+10);
         
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
         self.msgL.backgroundColor = [UIColor clearColor];
-        if (msgSize.height<90) {
-            self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
+        if (msgSize.height<108) {
+            self.msgL.frame =CGRectMake(100, origin, 210, msgSize.height);
             origin+=(msgSize.height+10);
         }else{
-            self.msgL.frame =CGRectMake(60, origin, 240, 18);
+            self.msgL.frame =CGRectMake(100, origin, 210, 18);
             origin+=28;
             pushB.frame = _msgL.frame;
         }
         self.msgL.text = self.dynamic.msg;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            origin+=85;
+            origin+=80;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+80, 65, 65);
+                originX+=70;
             }
-            origin+=170;
+            origin+=160;
         }else if(self.dynamic.smallImage.count>6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
@@ -214,67 +203,67 @@
                 a.frame = CGRectMake(originX, origin+160, 75, 75);
                 originX+=80;
             }
-            origin+=255;
+            origin+=240;
         }
         self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y, 260, origin-self.msgL.frame.origin.x-10);
     }else{
         _msgL.backgroundColor= [UIColor whiteColor];
-        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
+        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
         _msgL.text = self.dynamic.msg;
         _msgL.backgroundColor = [UIColor whiteColor];
         if (msgMinSize.height==msgSize.height){
-            _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
+            _msgL.frame = CGRectMake(100, origin, 210, msgMinSize.height);
             origin+=(msgMinSize.height+10);
         }
         if (msgMinSize.height<msgSize.height) {
-            if (msgSize.height<180) {
+            if (msgSize.height<216) {
                 if(self.dynamic.ifZhankaied == 0)
                 {
                     [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
-                    _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
+                    _msgL.frame = CGRectMake(100, origin, msgMinSize.width, msgMinSize.height);
                     origin+=(msgMinSize.height+10);
-                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
+                    quanwenB.frame = CGRectMake(100, origin, 30, 15);
                     origin+=25;
                 }else{
-                     _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
+                    _msgL.frame = CGRectMake(100, origin, msgSize.width, msgSize.height);
                     origin+=(msgSize.height+10);
-                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
+                    quanwenB.frame = CGRectMake(100, origin, 30, 15);
                     origin+=25;
                 }
                 
             }else{
                 _msgL.backgroundColor= [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-                _msgL.frame = CGRectMake(60, 40, 240, 18);
+                _msgL.frame = CGRectMake(100, 40, 210, 18);
                 pushB.frame = _msgL.frame;
                 origin+=28;
             }
         }
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            origin+=85;
+            origin+=80;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+80, 65, 65);
+                originX+=70;
             }
-            origin+=170;
+            origin+=160;
         }else if(self.dynamic.smallImage.count>6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
@@ -297,14 +286,15 @@
                 a.frame = CGRectMake(originX, origin+160, 75, 75);
                 originX+=80;
             }
-            origin+=255;
+            origin+=240;
         }
     }
-    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    _timeL.text = self.dynamic.submitTime;
-    _timeL.frame = CGRectMake(60, origin, timeSize.width, timeSize.height);
+    
     if ([[DataStoreManager getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
-        delB.frame = CGRectMake(150, origin, 30, 15);
+        delB.frame = CGRectMake(100, origin, 30, 15);
+    }else{
+        _distancevL.text = self.dynamic.distance;
+        _distancevL.frame = CGRectMake(100, origin, 50, 15);
     }
     _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
     if (self.dynamic.ifIZaned) {
@@ -312,7 +302,7 @@
     }else{
         _zanimage.image = [UIImage imageNamed:@"zan"];
     }
-    zanB.frame = CGRectMake(220, origin, 50, 15);
+    zanB.frame = CGRectMake(200, origin, 50, 15);
     _moveB.frame = CGRectMake(280, origin, 30, 15);
     
     origin+=25;
@@ -339,27 +329,21 @@
         number++;
         Reply* rel = (Reply*)self.dynamic.replyViews[i];
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:240];
-        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-        [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
+        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:210];
+        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+        [ohaL setFrame:CGRectMake(100 , origin, 210, size.height)];
         origin += (size.height+10);
         for (int j = 0; j < rel.replyComments.count; j++) {
             OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
             number++;
             ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
             NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:240];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-            [ohaL setFrame:CGRectMake(60 , origin, 260, size.height)];
+            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:210];
+            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+            [ohaL setFrame:CGRectMake(100 , origin, 210, size.height)];
             origin += (size.height+10);
         }
     }
-}
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 #pragma mark - button action
 -(void)showButton
@@ -369,18 +353,6 @@
 -(void)deleteDynamic
 {
     [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
-}
-
--(void)PersonDetail
-{
-    if ([self.dynamic.petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
-        [self.viewC  performSelector:@selector(headAct) withObject:nil];
-        return;
-    }
-    PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
-    personVC.hostInfo = self.dynamic.petUser;
-    [self.viewC.navigationController pushViewController:personVC animated:YES];
-    [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
 }
 -(void)quanwen
 {
@@ -450,6 +422,7 @@
 }
 -(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldUserName:(NSString *)userName TheID:(id)theid theIndex:(int)theIndex
 {
+    
     HostInfo* hostInfo = nil;
     if (theIndex == 0) {
         if ([theid isKindOfClass:[Reply class]]) {
@@ -462,14 +435,13 @@
         hostInfo = ((ReplyComment*)theid).replyUserView;
     }
     if ([hostInfo.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
-        [self.viewC  performSelector:@selector(headAct) withObject:nil];
-        return YES;
+        return NO;
     }
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
     personVC.hostInfo = hostInfo;
     [self.viewC.navigationController pushViewController:personVC animated:YES];
     [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
-
+    
     return YES;
 }
 
