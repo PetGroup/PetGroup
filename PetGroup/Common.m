@@ -35,7 +35,7 @@
         int msgHour = [[msgT substringToIndex:2] intValue];
         if (msgHour == hours) {
             int minutes = [[nowT substringFromIndex:3] intValue];
-            int msgMin = [[msgT substringToIndex:3] intValue];
+            int msgMin = [[msgT substringFromIndex:3] intValue];
             if (msgMin == minutes) {
                 finalTime = @"1分钟内";
             }else{

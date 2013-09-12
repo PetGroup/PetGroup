@@ -162,22 +162,25 @@
     ageL.backgroundColor = [UIColor clearColor];
     [ageIV addSubview:ageL];
     
-    self.nameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 90, 175, 20)];
+    self.nameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 85, 175, 30)];
     _nameTF.placeholder = @"不少于6位且不要过于简单";
+    _nameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nameTF.font = [UIFont systemFontOfSize:13];
     _nameTF.delegate = self;
     _nameTF.secureTextEntry = YES;
     [self.view addSubview:_nameTF];
     
-    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 130, 175, 20)];
+    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 125, 175, 30)];
     _passWordTF.placeholder = @"再次输入密码";
+    _passWordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _passWordTF.font = [UIFont systemFontOfSize:13];
     _passWordTF.delegate = self;
     _passWordTF.secureTextEntry = YES;
     [self.view addSubview:_passWordTF];
     
-    self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 200, 175, 20)];
+    self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 195, 175, 30)];
     _nickNameTF.placeholder = @"使用真实姓名方便别人找到你";
+    _nickNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _nickNameTF.font = [UIFont systemFontOfSize:13];
     _nickNameTF.delegate = self;
     [self.view addSubview:_nickNameTF];
