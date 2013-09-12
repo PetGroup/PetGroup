@@ -573,7 +573,7 @@
 -(void)didselectCity
 {
     if (self.cityPV.hidden==NO) {
-        [self.discribeArray replaceObjectAtIndex:3 withObject:[NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]]];
+        [self.discribeArray replaceObjectAtIndex:3 withObject:[NSString stringWithFormat:@"%@ %@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]]];
         [self.profileTableV reloadData];
         [UIView animateWithDuration:0.3 animations:^{
             [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];

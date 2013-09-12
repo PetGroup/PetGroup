@@ -418,7 +418,7 @@
 }
 -(void)didselectCity
 {
-    self.cityL.text = [NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]];
+    self.cityL.text = [NSString stringWithFormat:@"%@ %@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]];
     [_cityTF resignFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
