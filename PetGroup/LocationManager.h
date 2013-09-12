@@ -10,12 +10,17 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreLocation/CLLocationManagerDelegate.h>
 #import <MapKit/MapKit.h>
+#import "TempData.h"
 @interface LocationManager : UIViewController<CLLocationManagerDelegate,MKMapViewDelegate>
 {
+    CLLocationManager *locationManager;
     CLLocation *startPoint;
     //  CLLocationManager *_locationManager;
     MKMapView * _mapView;
     NSTimer * checkTimer;
+    float lat;
+    float lon;
+    BOOL goUpdate;
 }
 @property(nonatomic,strong)CLLocation *userPoint;
 + (id)sharedInstance;

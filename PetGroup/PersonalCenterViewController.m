@@ -52,7 +52,7 @@
     self.photoWall.tag =1;
     
     
-    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-58.5-44) style:UITableViewStyleGrouped];
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-49-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;

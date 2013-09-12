@@ -46,6 +46,15 @@ static  LocationManager *sharedInstance=nil;
 //    CLLocationCoordinate2D theCoordinate;
 //    theCoordinate.latitude=0;
 //    theCoordinate.longitude=0;
+    lat = 0.0;
+    lon = 0.0;
+    goUpdate = NO;
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.distanceFilter=0.5;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    [locationManager startUpdatingLocation]; // 开始定位
+    
     _mapView = [[MKMapView alloc] initWithFrame:CGRectZero];
 //    MKCoordinateSpan theSpan;
 //    //地图的范围 越小越精确
@@ -65,6 +74,8 @@ static  LocationManager *sharedInstance=nil;
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     self.userPoint = userLocation.location;
+    lat = self.userPoint.coordinate.latitude;
+    lon = self.userPoint.coordinate.longitude;
     NSLog(@"hhkkkk:%f,%f",[self getLatitude],[self getLongitude]);
     _mapView.showsUserLocation = NO;
     
@@ -82,12 +93,20 @@ static  LocationManager *sharedInstance=nil;
             while (true) {
                 usleep(100000);
                 NSTimeInterval jj = [[NSDate date] timeIntervalSince1970];
-                if (!_mapView.showsUserLocation) {
-                    success(self.userPoint.coordinate.latitude,self.userPoint.coordinate.longitude);
+                if (lat!=0.0&&lon!=0.0) {
+                    [[TempData sharedInstance] setLat:lat Lon:lon];
+                    success(lat,lon);
+                    lat = 0.0;
+                    lon = 0.0;
                     break;
+                }
+                if (jj-hh>10) {
+                    _mapView.showsUserLocation = NO;
+                    [locationManager startUpdatingLocation];
                 }
                 if (jj-hh>20) {
                     _mapView.showsUserLocation = NO;
+                    [locationManager stopUpdatingLocation];
                     failure();
                     break;
                 }
@@ -95,7 +114,15 @@ static  LocationManager *sharedInstance=nil;
         });
 }
 
-
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
+{
+    CLLocationCoordinate2D mylocation = newLocation.coordinate;
+    lat = mylocation.latitude;
+    lon = mylocation.longitude;
+    [locationManager stopUpdatingLocation];
+}
 -(double)getLatitude
 {
     return self.userPoint.coordinate.latitude;

@@ -321,8 +321,18 @@
                      [_cityPV reloadComponent:1];
                      break;
                  }
+                 [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+                 self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+                 [_cityPV reloadComponent:1];
              }
+
              
+         }
+         else
+         {
+             [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+             self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+             [_cityPV reloadComponent:1];
          }
      }];
 
@@ -573,7 +583,7 @@
 -(void)didselectCity
 {
     if (self.cityPV.hidden==NO) {
-        [self.discribeArray replaceObjectAtIndex:3 withObject:[NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]]];
+        [self.discribeArray replaceObjectAtIndex:3 withObject:[NSString stringWithFormat:@"%@ %@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]]];
         [self.profileTableV reloadData];
         [UIView animateWithDuration:0.3 animations:^{
             [self.profileTableV setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];

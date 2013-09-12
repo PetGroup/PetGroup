@@ -264,6 +264,8 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"正在发送，请稍后";
+    
+    [self analysisRegion];
 }
 
 - (void)didReceiveMemoryWarning
@@ -354,24 +356,58 @@
 -(void)selectCity
 {
     [_cityTF becomeFirstResponder];
+//    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+//    CLLocation* location = [[CLLocation alloc]initWithLatitude:[[TempData sharedInstance] returnLat] longitude:[[TempData sharedInstance] returnLon]];
+//    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray* placemarks,NSError *error)
+//     {
+//         if (placemarks.count >0   )
+//         {
+//             CLPlacemark * plmark = [placemarks objectAtIndex:0];
+//             NSString* state = plmark.subAdministrativeArea;
+//             for (int i = 0; i<self.ProvinceArray.count; i++) {
+//                 if ([state isEqualToString:[self.ProvinceArray[i] objectForKey:@"Province"]]) {
+//                     [_cityPV selectRow:i inComponent:0 animated:YES];
+//                     break;
+//                 }
+//             }
+//             
+//         }
+//     }];
+}
+-(void)analysisRegion
+{
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocation* location = [[CLLocation alloc]initWithLatitude:[[TempData sharedInstance] returnLat] longitude:[[TempData sharedInstance] returnLon]];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray* placemarks,NSError *error)
      {
-         if (placemarks.count >0   )
+         if (placemarks.count >0)
          {
              CLPlacemark * plmark = [placemarks objectAtIndex:0];
-             NSString* state = plmark.subAdministrativeArea;
+             NSString* state = plmark.administrativeArea;
              for (int i = 0; i<self.ProvinceArray.count; i++) {
                  if ([state isEqualToString:[self.ProvinceArray[i] objectForKey:@"Province"]]) {
                      [_cityPV selectRow:i inComponent:0 animated:YES];
+                     self.cityArray = [self.ProvinceArray[i] objectForKey:@"city"];
+                     [_cityPV reloadComponent:1];
                      break;
                  }
+                 [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+                 self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+                 [_cityPV reloadComponent:1];
              }
+
              
          }
+         else
+         {
+             [_cityPV selectRow:self.ProvinceArray.count-1 inComponent:0 animated:YES];
+             self.cityArray = [self.ProvinceArray[self.ProvinceArray.count-1] objectForKey:@"city"];
+             [_cityPV reloadComponent:1];
+         }
      }];
+    
 }
+
 -(void)selectAge
 {
     [_ageTF becomeFirstResponder];
@@ -392,7 +428,7 @@
 }
 -(void)didselectCity
 {
-    self.cityL.text = [NSString stringWithFormat:@"%@\t\t%@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]];
+    self.cityL.text = [NSString stringWithFormat:@"%@ %@",[_ProvinceArray[[_cityPV selectedRowInComponent:0]] objectForKey:@"Province"],_cityArray[[_cityPV selectedRowInComponent:1]]];
     [_cityTF resignFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{
         self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
