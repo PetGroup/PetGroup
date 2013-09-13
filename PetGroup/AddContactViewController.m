@@ -75,15 +75,6 @@
     asearchBar.delegate = self;
     
     // Do any additional setup after loading the view.
-  //  [self performSelector:@selector(dddd) withObject:nil afterDelay:4];
-}
--(void)dddd
-{
-    [NetManager requestWithURLStr:@"" Parameters:nil TheController:self success:^(float a, float b) {
-        NSLog(@"ssd");
-        asearchBar.hidden = YES;
-        [self.resultTable reloadData];
-    }];
 }
 
 -(void)searchUser
