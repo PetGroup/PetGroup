@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
+#import "EGOCache.h"
 #define AppID  @"564710616" //temp ID
 @interface SettingViewController ()
 
@@ -47,7 +48,7 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    titlesArray=[[NSMutableArray alloc]initWithObjects:@"评价一下",@"意见反馈",@"关于宠物圈", nil];
+    titlesArray=[[NSMutableArray alloc]initWithObjects:@"评价一下",@"意见反馈",@"关于宠物圈",@"清除缓存", nil];
     
     self.settingTV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.settingTV];
@@ -99,6 +100,13 @@
         if (indexPath.row==2) {
             AboutAppViewController * aboutV = [[AboutAppViewController alloc] init];
             [self.navigationController pushViewController:aboutV animated:YES];
+        }
+        if (indexPath.row == 3) {
+            [[EGOCache globalCache] clearCache];
+            NSFileManager *file_manager = [NSFileManager defaultManager];
+            NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+            [file_manager removeItemAtPath:path error:nil];
+            
         }
     }
     if (indexPath.section==1) {
