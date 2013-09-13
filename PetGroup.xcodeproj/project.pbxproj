@@ -13,6 +13,7 @@
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
 		8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8641ACE017DED0DF0020C34B /* ReplyComment.m */; };
+		86D173C217E2B2490032A479 /* NarrowDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D173C117E2B2490032A479 /* NarrowDynamicCell.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
 		86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */; };
@@ -575,6 +576,8 @@
 		8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		8642967E17D70E7500B1B1C9 /* Reply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reply.h; sourceTree = "<group>"; };
 		8642967F17D70E7500B1B1C9 /* Reply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reply.m; sourceTree = "<group>"; };
+		86D173C017E2B2490032A479 /* NarrowDynamicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NarrowDynamicCell.h; sourceTree = "<group>"; };
+		86D173C117E2B2490032A479 /* NarrowDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NarrowDynamicCell.m; sourceTree = "<group>"; };
 		86D69CEA17C5EFC200FFFBDD /* fabu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fabu.png; sourceTree = "<group>"; };
 		86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibeijing.png; sourceTree = "<group>"; };
 		86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toubuhuakuaibtn.png; sourceTree = "<group>"; };
@@ -2961,6 +2964,8 @@
 				86D69CFF17C6120D00FFFBDD /* DynamicCell.m */,
 				86F690CD17E01F33002C5DBB /* PersonalDynamicCell.h */,
 				86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */,
+				86D173C017E2B2490032A479 /* NarrowDynamicCell.h */,
+				86D173C117E2B2490032A479 /* NarrowDynamicCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3833,6 +3838,7 @@
 				86F690DC17E04EC6002C5DBB /* MyDynamicDelegateAndDataSource.m in Sources */,
 				86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */,
 				97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */,
+				86D173C217E2B2490032A479 /* NarrowDynamicCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

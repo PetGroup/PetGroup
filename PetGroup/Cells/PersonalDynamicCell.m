@@ -54,7 +54,7 @@
         [self.contentView addSubview:_beijingL];
         
         self.timeL = [[UILabel alloc]init];
-        _timeL.textColor = [UIColor grayColor];
+        _timeL.font = [UIFont systemFontOfSize:30];
         _timeL.adjustsFontSizeToFitWidth = YES;
         [self.contentView addSubview:_timeL];
         
@@ -124,7 +124,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 -(void)layoutSubviews
@@ -135,7 +135,7 @@
     }
     origin = 10;
     _timeL.text = self.dynamic.submitTime;
-    _timeL.frame = CGRectMake(10, origin, 90 , 20);
+    _timeL.frame = CGRectMake(10, origin, 80 , 40);
     
     if (self.dynamic.ifTransmitMsg != 0) {
         CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
@@ -162,7 +162,7 @@
                 a.frame = CGRectMake(originX, origin, 65, 65);
                 originX+=70;
             }
-            origin+=80;
+            origin+=75;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
             int originX = 100;
             for (int i = 0; i<3; i++) {
@@ -175,39 +175,39 @@
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 65, 65);
+                a.frame = CGRectMake(originX, origin+70, 65, 65);
                 originX+=70;
             }
-            origin+=160;
+            origin+=145;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+70, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+140, 65, 65);
+                originX+=70;
             }
-            origin+=240;
+            origin+=215;
         }
-        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y, 260, origin-self.msgL.frame.origin.x-10);
+        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-5, self.msgL.frame.origin.y-5, 215, origin-self.msgL.frame.origin.y);
     }else{
         _msgL.backgroundColor= [UIColor whiteColor];
         msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 230) lineBreakMode:NSLineBreakByWordWrapping];
         _msgL.text = self.dynamic.msg;
         _msgL.backgroundColor = [UIColor whiteColor];
         if (msgMinSize.height==msgSize.height){
@@ -232,7 +232,7 @@
                 
             }else{
                 _msgL.backgroundColor= [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-                _msgL.frame = CGRectMake(100, 40, 210, 18);
+                _msgL.frame = CGRectMake(100, origin, 210, 18);
                 pushB.frame = _msgL.frame;
                 origin+=28;
             }
@@ -245,7 +245,7 @@
                 a.frame = CGRectMake(originX, origin, 65, 65);
                 originX+=70;
             }
-            origin+=80;
+            origin+=75;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
             int originX = 100;
             for (int i = 0; i<3; i++) {
@@ -258,33 +258,33 @@
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 65, 65);
+                a.frame = CGRectMake(originX, origin+70, 65, 65);
                 originX+=70;
             }
-            origin+=160;
+            origin+=145;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 60;
+            int originX = 100;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+70, 65, 65);
+                originX+=70;
             }
-            originX = 60;
+            originX = 100;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageViews[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
+                a.frame = CGRectMake(originX, origin+140, 65, 65);
+                originX+=70;
             }
-            origin+=240;
+            origin+=215;
         }
     }
     

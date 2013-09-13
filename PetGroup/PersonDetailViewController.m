@@ -11,7 +11,11 @@
 #import "XMPPHelper.h"
 #import "CustomTabBar.h"
 #import "JSON.h"
+#import "NarrowDynamicCell.h"
+
 @interface PersonDetailViewController ()
+
+@property (nonatomic,strong)NSMutableArray* dynamicArray;
 
 @end
 
@@ -25,6 +29,7 @@
         self.needRequest = NO;
         self.myFriend = NO;
         self.friendStatus = @"";
+        self.dynamicArray = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -183,6 +188,7 @@
     [blackV addSubview:sureBtn];
     [sureBtn addTarget:self action:@selector(sureBtnDo) forControlEvents:UIControlEventTouchUpInside];
 	// Do any additional setup after loading the view.
+    [self reloadDynamicData];
 }
 -(void)cancelBtnDo
 {
@@ -308,11 +314,11 @@
             return 40;
     }
     else if (indexPath.section==3){
-        if (indexPath.row==1) {
-            return 80;
+        if (indexPath.row==0) {
+            return 40;
         }
         else
-            return 40;
+            return ((PersonalDynamic*)self.dynamicArray[indexPath.row-1]).rowHigh;
     }
     else
         return 40;
@@ -337,7 +343,13 @@
             break;
         case 3:
         {
-            return 2;
+            if (self.myFriend) {
+                return 2;
+            }
+            if (self.dynamicArray.count>5) {
+                return 6;
+            }
+            return self.dynamicArray.count+1;
         }
             break;
         default:
@@ -442,10 +454,11 @@
             {
                 static NSString *Cell = @"Celldds";
                 
-                UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+                NarrowDynamicCell *cell = (NarrowDynamicCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
                 if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+                    cell = [[NarrowDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
                 }
+                cell.dynamic = self.dynamicArray[indexPath.row-1];
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 return cell;
             }
@@ -595,5 +608,33 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)reloadDynamicData{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.hostInfo.userId forKey:@"userid"];
+    [params setObject:[NSString stringWithFormat:@"%d",0] forKey:@"pageIndex"];
+    [params setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"lastStateid"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"findFriendStates" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        [self.dynamicArray removeAllObjects];
+        for (NSDictionary*a in array) {
+            PersonalDynamic* b = [[PersonalDynamic alloc]initWithNSDictionary:a];
+            [self.dynamicArray addObject:b];
+            [self.profileTableV reloadData];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
 @end

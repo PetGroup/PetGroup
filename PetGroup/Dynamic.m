@@ -55,14 +55,14 @@
             if (msgSize.height>90) {
                 self.rowHigh+=28;
             }else{
-                self.rowHigh+=(size.height+10);
+                self.rowHigh+=(msgSize.height+10);
             }
         }else{
             CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
             if (size.height>=180) {
                 self.rowHigh+=28;
             }else if(size.height>=90){
-                self.rowHigh+=108;
+                self.rowHigh+=108+25;
             }else{
                 self.rowHigh+=(size.height+10);
             }
@@ -71,9 +71,9 @@
     if (self.smallImage.count>=1&&self.smallImage.count<=3) {
         self.rowHigh+=85;
     }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-        self.rowHigh+=170;
+        self.rowHigh+=165;
     }else if(self.smallImage.count>6){
-        self.rowHigh+=255;
+        self.rowHigh+=245;
     }
     for (int i = 0; i < self.replyViews.count; i++) {
         Reply* rel = self.replyViews[i];

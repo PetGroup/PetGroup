@@ -41,8 +41,8 @@
             }
             self.pageIndex = [[[array lastObject] objectForKey:@"pageIndex"] intValue] + 1;
             self.lastStateid = [[[array lastObject] objectForKey:@"id"] intValue];
-            success();
         }
+        success();
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
