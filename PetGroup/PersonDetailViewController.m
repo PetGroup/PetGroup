@@ -344,7 +344,12 @@
         case 3:
         {
             if (self.myFriend) {
-                return 2;
+                if (self.dynamicArray.count>0) {
+                    return 2;
+                }
+                else
+                    return 1;
+            
             }
             if (self.dynamicArray.count>5) {
                 return 6;
