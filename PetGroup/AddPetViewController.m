@@ -222,7 +222,7 @@
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"提交中...";
 }
 
 - (void)didReceiveMemoryWarning

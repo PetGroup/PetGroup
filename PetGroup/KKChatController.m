@@ -684,6 +684,7 @@
         //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
         //消息类型
         [mes addAttributeWithName:@"type" stringValue:@"chat"];
+
         //发送给谁
         [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:Domain]];
         //   NSLog(@"chatWithUser:%@",chatWithUser);

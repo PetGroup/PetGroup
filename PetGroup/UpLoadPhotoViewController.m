@@ -151,7 +151,7 @@
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"正在完善您的信息...";
 }
 
 - (void)didReceiveMemoryWarning
@@ -286,7 +286,7 @@
 -(void)saveUserInfo:(NSDictionary*)dic
 {
     NSLog(@"%@",dic);
-//    [DataStoreManager saveUserInfo:dic];
+    [DataStoreManager saveUserInfo:dic];
 }
 -(void)savePetInfo:(NSDictionary*)dic
 {
