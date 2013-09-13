@@ -250,7 +250,7 @@
                // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
                 if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]||[[item attributeStringValueForName:@"subscription"] isEqualToString:@"to"]) {
                     [self.rosters addObject:sender];
-                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
+//                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
                     [DataStoreManager addFriendToLocal:sender];
                     //[DataStoreManager saveUserInfo:dict];
                 }
@@ -304,12 +304,12 @@
     //取得好友状态
     NSString *presenceType = [NSString stringWithFormat:@"%@", [presence type]]; //online/offline
     //请求的用户
-    NSString *presenceFromUser =[NSString stringWithFormat:@"%@", [[presence from] user]];
-    NSString *fromnickName = [presence fromName];
-    NSString *additionMsg = [presence additionMsg];
-    NSString *headID = [presence headID];
-    NSLog(@"presenceType:%@,fromNickName:%@,additionMsg:%@",presenceType,fromnickName,additionMsg);
-    NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:presenceFromUser,@"fromUser",fromnickName,@"fromNickname",additionMsg,@"addtionMsg",headID,@"headID", nil];
+//    NSString *presenceFromUser =[NSString stringWithFormat:@"%@", [[presence from] user]];
+//    NSString *fromnickName = [presence fromName];
+//    NSString *additionMsg = [presence additionMsg];
+//    NSString *headID = [presence headID];
+//    NSLog(@"presenceType:%@,fromNickName:%@,additionMsg:%@",presenceType,fromnickName,additionMsg);
+//    NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:presenceFromUser,@"fromUser",fromnickName,@"fromNickname",additionMsg,@"addtionMsg",headID,@"headID", nil];
     NSLog(@"presence2:%@  sender2:%@",presence,sender);
     if ([presenceType isEqualToString:@"subscribe"]) {
 //        [self.addReqDelegate newAddReq:uDict];

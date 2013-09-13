@@ -539,6 +539,7 @@
 		97E25C3217C35367007E187D /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3117C35367007E187D /* NetManager.m */; };
 		97E25C3517C360E7007E187D /* MakeDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3417C360E7007E187D /* MakeDict.m */; };
 		97E25C3D17C3729A007E187D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E25C3F17C3729A007E187D /* Localizable.strings */; };
+		97E4B4A217E29CF500D2F23B /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E4B4A117E29CF500D2F23B /* icon.png */; };
 		97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17917D596C2003A4A4C /* NormalPetDetailViewController.m */; };
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
@@ -1381,6 +1382,7 @@
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		97E49AFF17DD7CA6001ECD09 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		97E49B0017DD7CA7001ECD09 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		97E4B4A117E29CF500D2F23B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSUnreadCount.h; sourceTree = "<group>"; };
 		97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSUnreadCount.m; sourceTree = "<group>"; };
 		97E9D17817D596C1003A4A4C /* NormalPetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalPetDetailViewController.h; sourceTree = "<group>"; };
@@ -2805,6 +2807,7 @@
 				979546C317BA368F00D05874 /* main.m */,
 				97E25C3F17C3729A007E187D /* Localizable.strings */,
 				979546C517BA368F00D05874 /* PetGroup-Prefix.pch */,
+				97E4B4A117E29CF500D2F23B /* icon.png */,
 				97D5021117C4BBA300799BD4 /* 568screen.png */,
 				97D5021217C4BBA300799BD4 /* normalScreen.png */,
 				979546C917BA368F00D05874 /* Default.png */,
@@ -3537,6 +3540,7 @@
 				86F690D217E024A1002C5DBB /* zan.png in Resources */,
 				86F690D317E024A1002C5DBB /* zaned.png in Resources */,
 				86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */,
+				97E4B4A217E29CF500D2F23B /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, PhotoType) {
 @interface HGPhoto : UIView
 {
     CALayer*viewLayer;
-    UIButton * delBtn;
+//    UIButton * delBtn;
     
 }
 @property (assign) id<HGPhotoDelegate> delegate;

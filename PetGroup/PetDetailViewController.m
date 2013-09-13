@@ -309,6 +309,10 @@
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)photoWallDelPhotoAtIndex:(NSInteger)index
+{
+    
+}
 
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {

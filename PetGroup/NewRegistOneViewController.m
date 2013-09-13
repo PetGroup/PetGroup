@@ -120,6 +120,7 @@
 -(void)next
 {
     if ([IdentifyingString validateMobile:_phoneTF.text]) {
+        [_phoneTF resignFirstResponder];
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);

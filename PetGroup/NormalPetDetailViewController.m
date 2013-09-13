@@ -172,6 +172,10 @@
             break;
     }
 }
+-(void)photoWallDelPhotoAtIndex:(NSInteger)index
+{
+    
+}
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.petInfo.headBigImgArray indext:index];
