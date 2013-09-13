@@ -55,25 +55,25 @@
             if (msgSize.height>108) {
                 self.rowHigh+=28;
             }else{
-                self.rowHigh+=(size.height+10);
+                self.rowHigh+=(msgSize.height+10);
             }
         }else{
-            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 200) lineBreakMode:NSLineBreakByWordWrapping];
+            CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 230) lineBreakMode:NSLineBreakByWordWrapping];
             if (size.height>=216) {
                 self.rowHigh+=28;
             }else if(size.height>=108){
-                self.rowHigh+=118;
+                self.rowHigh+=118+25;
             }else{
                 self.rowHigh+=(size.height+10);
             }
         }
     }
     if (self.smallImage.count>=1&&self.smallImage.count<=3) {
-        self.rowHigh+=80;
+        self.rowHigh+=75;
     }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-        self.rowHigh+=160;
+        self.rowHigh+=145;
     }else if(self.smallImage.count>6){
-        self.rowHigh+=240;
+        self.rowHigh+=215;
     }
     for (int i = 0; i < self.replyViews.count; i++) {
         Reply* rel = self.replyViews[i];
