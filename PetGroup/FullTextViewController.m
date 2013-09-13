@@ -42,6 +42,7 @@
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     UITextView * textView = [[UITextView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [self.view addSubview:textView];
+    textView.font = [UIFont systemFontOfSize:17];
     textView.text = self.text;
     textView.editable = NO;
     
