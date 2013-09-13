@@ -22,7 +22,6 @@
 
 {
     UIButton* zanB;
-    UIButton* delB;
     UIButton * quanwenB;
     UIButton * pushB;
     CGSize msgSize;
@@ -112,14 +111,6 @@
         _zanL.font = [UIFont systemFontOfSize:12];
         _zanL.textColor = [UIColor grayColor];
         [zanB addSubview:_zanL];
-        
-        delB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [delB addTarget:self action:@selector(deleteDynamic) forControlEvents:UIControlEventTouchUpInside];
-        [delB setTitle:@"删除" forState:UIControlStateNormal];
-        delB.titleLabel.font = [UIFont systemFontOfSize:12];
-        [delB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        delB.backgroundColor = [UIColor clearColor];
-        [self.contentView addSubview:delB];
         
         _moveB = [UIButton buttonWithType:UIButtonTypeCustom];
         [_moveB setBackgroundImage:[UIImage imageNamed:@"pinglun"] forState:UIControlStateNormal];
@@ -298,12 +289,10 @@
         }
     }
     
-    if ([[DataStoreManager getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
-        delB.frame = CGRectMake(80, origin, 30, 15);
-    }else{
-        _distancevL.text = self.dynamic.distance;
-        _distancevL.frame = CGRectMake(80, origin, 50, 15);
-    }
+   
+    _distancevL.text = self.dynamic.distance;
+    _distancevL.frame = CGRectMake(80, origin, 50, 15);
+    
     _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
     if (self.dynamic.ifIZaned) {
         _zanimage.image = [UIImage imageNamed:@"zaned"];
@@ -357,10 +346,6 @@
 -(void)showButton
 {
     [self.viewC performSelector:@selector(showButton:) withObject:self];
-}
--(void)deleteDynamic
-{
-    [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
 }
 -(void)quanwen
 {

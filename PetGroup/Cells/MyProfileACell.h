@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface MyProfileACell : UITableViewCell
+@property (strong,nonatomic) UIImageView * arrow;
 @property (strong,nonatomic) UILabel * titleLabel;
 @property (strong,nonatomic) UIButton * modifyBtn;
 @end
