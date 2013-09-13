@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface DedLoginViewController : UIViewController
-
+#import "MBProgressHUD.h"
+@interface DedLoginViewController : UIViewController<MBProgressHUDDelegate>
+{
+    MBProgressHUD * hud;
+}
 @property (nonatomic,strong) NSDictionary* dic;
 
 @end

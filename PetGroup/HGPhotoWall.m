@@ -78,6 +78,11 @@
     else
         self.labelDescription.text = @"点击“+”添加头像，最多可添加8张";
     [self.arrayPhotos removeAllObjects];
+    for (HGPhoto * tempPhoto in self.subviews) {
+        if ([tempPhoto isKindOfClass:[HGPhoto class]]) {
+            [tempPhoto removeFromSuperview];
+        }
+    }
     NSUInteger count = [photos count];
     for (int i=0; i<count; i++) {
         NSDictionary *dictionaryTemp = [self.arrayPositions objectAtIndex:i];

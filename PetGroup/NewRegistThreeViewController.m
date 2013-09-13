@@ -266,7 +266,7 @@
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"提交中...";
     
     [self analysisRegion];
 }
@@ -342,6 +342,9 @@
         [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.phoneNo forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
         [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        
+        [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
+        
         DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
         newReg.dic = params;
         [self.navigationController pushViewController:newReg animated:YES];
