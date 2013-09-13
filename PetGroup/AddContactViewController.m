@@ -75,7 +75,17 @@
     asearchBar.delegate = self;
     
     // Do any additional setup after loading the view.
+  //  [self performSelector:@selector(dddd) withObject:nil afterDelay:4];
 }
+-(void)dddd
+{
+    [NetManager requestWithURLStr:@"" Parameters:nil TheController:self success:^(float a, float b) {
+        NSLog(@"ssd");
+        asearchBar.hidden = YES;
+        [self.resultTable reloadData];
+    }];
+}
+
 -(void)searchUser
 {
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
@@ -99,6 +109,10 @@
 
         
     }];
+    
+//    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"shifangle");
+//    }];
     
 }
 

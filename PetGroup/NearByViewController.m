@@ -91,7 +91,9 @@
             [weakSelf getNextPage];
         }
         else
-            [weakSelf endrefresh];
+        {
+            [weakSelf.messageTable.infiniteScrollingView stopAnimating];
+        }
         
 //        if (1) {
 //
