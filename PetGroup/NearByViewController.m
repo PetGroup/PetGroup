@@ -116,6 +116,10 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    if ([[TempData sharedInstance] needChat]) {
+        [self.customTabBarController setSelectedPage:0];
+        return;
+    }
     if ([[TempData sharedInstance] ifPanned]) {
         [self.customTabBarController hidesTabBar:NO animated:NO];
     }

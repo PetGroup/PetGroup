@@ -449,6 +449,7 @@
 		97D5022617C4BD7C00799BD4 /* select_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021C17C4BD7C00799BD4 /* select_04.png */; };
 		97D5022717C4BD7C00799BD4 /* select_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021D17C4BD7C00799BD4 /* select_05.png */; };
 		97D5022817C4BD7C00799BD4 /* select_06.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021E17C4BD7C00799BD4 /* select_06.png */; };
+		97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5CB1417E4171F008C47D3 /* KGStatusBar.m */; };
 		97D6B6CC17D83124009C0524 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */; };
 		97D6B6CD17D8313F009C0524 /* Reply.m in Sources */ = {isa = PBXBuildFile; fileRef = 8642967F17D70E7500B1B1C9 /* Reply.m */; };
 		97DA1C0717D42A5A00F7B507 /* HGPhotoWall.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DA1C0317D42A5A00F7B507 /* HGPhotoWall.m */; };
@@ -1232,6 +1233,8 @@
 		97D5021C17C4BD7C00799BD4 /* select_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_04.png; sourceTree = "<group>"; };
 		97D5021D17C4BD7C00799BD4 /* select_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_05.png; sourceTree = "<group>"; };
 		97D5021E17C4BD7C00799BD4 /* select_06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = select_06.png; sourceTree = "<group>"; };
+		97D5CB1317E4171F008C47D3 /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
+		97D5CB1417E4171F008C47D3 /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
 		97DA1C0217D42A5A00F7B507 /* HGPhotoWall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPhotoWall.h; sourceTree = "<group>"; };
 		97DA1C0317D42A5A00F7B507 /* HGPhotoWall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGPhotoWall.m; sourceTree = "<group>"; };
 		97DA1C0417D42A5A00F7B507 /* HGPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPhoto.h; sourceTree = "<group>"; };
@@ -2970,6 +2973,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		97D5CB1217E4171F008C47D3 /* KGStatusBar */ = {
+			isa = PBXGroup;
+			children = (
+				97D5CB1317E4171F008C47D3 /* KGStatusBar.h */,
+				97D5CB1417E4171F008C47D3 /* KGStatusBar.m */,
+			);
+			path = KGStatusBar;
+			sourceTree = "<group>";
+		};
 		97DA1C0A17D42A6C00F7B507 /* PhotoWall */ = {
 			isa = PBXGroup;
 			children = (
@@ -3209,6 +3221,7 @@
 		97FB480A17BCBAC40071FA12 /* OtherRefs */ = {
 			isa = PBXGroup;
 			children = (
+				97D5CB1217E4171F008C47D3 /* KGStatusBar */,
 				9727936817D9C8180001E863 /* AttributeLabel */,
 				97DA1C0A17D42A6C00F7B507 /* PhotoWall */,
 				86EEB13717CF0F35000162E8 /* EGOCache */,
@@ -3839,6 +3852,7 @@
 				86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */,
 				97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */,
 				86D173C217E2B2490032A479 /* NarrowDynamicCell.m in Sources */,
+				97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

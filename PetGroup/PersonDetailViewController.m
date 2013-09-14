@@ -252,21 +252,27 @@
         [mes addAttributeWithName:@"to" stringValue:[self.hostInfo.userName stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         [mes addChild:body];
-        
+        locationTextF.text = @"";
         [self.appDel.xmppHelper.xmppStream sendElement:mes];
         
-        locationTextF.text = @"";
+        
     }
+    [locationTextF resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        //locationTextF.text = @"";
+        [KGStatusBar showSuccessWithStatus:@"好友请求发送成功"];
+    }];
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     [locationTextF resignFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{
         [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
     } completion:^(BOOL finished) {
         
     }];
-}
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [locationTextF resignFirstResponder];
 }
 -(void)reloadTheViews
 {
@@ -986,12 +992,28 @@
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
-    if (self.view.frame.size.height == 499.0) {
-        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
-    }else{
-        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+    if (typeMsgView.frame.origin.y<0) {
+        if (iPhone5) {
+            if (self.view.frame.size.height == 499.0) {
+                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
+            }else{
+                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+            }
+        }
+        else
+        {
+            if (self.view.frame.size.height == 411.0) {
+                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
+            }else{
+                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+            }
+        }
+        if (h==0) {
+            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height), 320.0f, inPutView.frame.size.height);
+        }
+
     }
-	
+    
     [UIView commitAnimations];
     NSLog(@"%f",self.view.frame.size.height);
 }

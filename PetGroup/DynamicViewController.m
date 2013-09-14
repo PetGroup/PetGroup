@@ -474,11 +474,25 @@
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
-    if (self.view.frame.size.height == 499.0) {
-        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
-    }else{
-        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+    if (iPhone5) {
+        if (self.view.frame.size.height == 499.0) {
+            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
+        }else{
+            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+        }
     }
+    else
+    {
+        if (self.view.frame.size.height == 411.0) {
+            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
+        }else{
+            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+        }
+    }
+    if (h==0) {
+        inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height), 320.0f, inPutView.frame.size.height);
+    }
+
 	
     [UIView commitAnimations];
     NSLog(@"%f",self.view.frame.size.height);

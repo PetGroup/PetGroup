@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 Harry. All rights reserved.
 //
 
+//Modified by Tolecen on 9/6/2013
+
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 @protocol HGPhotoWallDelegate <NSObject>

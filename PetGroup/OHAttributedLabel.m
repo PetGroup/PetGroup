@@ -178,6 +178,11 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
 	self.underlineLinks = YES;
     theIndex = 0;
     canShowMenu = YES;
+    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制"action:@selector(copyIt:)];
+    
+    menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:copyItem, nil]];
+    
 	self.automaticallyAddLinksForType = NSTextCheckingTypeLink;
 	if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:0"]]) {
 		self.automaticallyAddLinksForType |= NSTextCheckingTypePhoneNumber;
@@ -540,10 +545,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
 {
     if (canShowMenu) {
         [self canBecomeFirstResponder];
-        UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制"action:@selector(copyIt:)];
         [self becomeFirstResponder];
-        UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setMenuItems:[NSArray arrayWithObjects:copyItem, nil]];
         [menu setTargetRect:CGRectMake(self.frame.size.width/2-30, 0, 60, 30) inView:self];
         [menu setMenuVisible:YES animated:YES];
     }
@@ -579,7 +581,12 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
         }
 	}
     else
-        [self.delegate labelTouchedWithNickName:[nickNameArray lastObject] TheID:[theIDArray lastObject]];
+    {
+        if (!menu.menuVisible) {
+            [self.delegate labelTouchedWithNickName:[nickNameArray lastObject] TheID:[theIDArray lastObject]];
+        }
+    
+    }
 	[self setBackgroundColor:[UIColor clearColor]];
 	[activeLink release];
 	activeLink = nil;

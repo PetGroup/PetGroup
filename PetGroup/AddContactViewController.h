@@ -18,6 +18,7 @@
     UISearchBar * asearchBar;
     UISearchDisplayController * searchDisplay;
     MBProgressHUD * hud;
+    UILabel * noResultLabel;
 }
 @property (strong,nonatomic) UITableView * resultTable;
 @property (strong,nonatomic) NSArray * resultArray;

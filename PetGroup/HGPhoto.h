@@ -6,6 +6,8 @@
 //  Copyright (c) 2012年 Harry. All rights reserved.
 //
 
+//Modified by Tolecen on 9/7/2013
+
 #import <UIKit/UIKit.h>
 #import "QuartzCore/QuartzCore.h"
 #import "EGOImageView.h"

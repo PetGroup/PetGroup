@@ -74,6 +74,14 @@
     [asearchBar insertSubview:dd atIndex:1];
     asearchBar.delegate = self;
     
+    noResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
+    [noResultLabel setTextAlignment:NSTextAlignmentCenter];
+    noResultLabel.text = @"不好意思呀，没找到^_^";
+//    noResultLabel.adjustsFontSizeToFitWidth = YES;
+    noResultLabel.backgroundColor = [UIColor clearColor];
+    noResultLabel.textColor = [UIColor grayColor];
+    [self.view addSubview:noResultLabel];
+    noResultLabel.hidden = YES;
     // Do any additional setup after loading the view.
 }
 
@@ -93,6 +101,11 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         self.resultArray = [receiveStr JSONValue];
+        if (self.resultArray.count>0) {
+            noResultLabel.hidden = YES;
+        }
+        else
+            noResultLabel.hidden = NO;
         [self.resultTable reloadData];
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

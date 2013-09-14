@@ -83,8 +83,9 @@
     editIV.image = [UIImage imageNamed:@"edit_bg"];
     [self.view addSubview:editIV];
     
-    self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 57.75, 220, 128)];
+    self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 56.75, 220, 128)];
     _dynamicTV.backgroundColor = [UIColor clearColor];
+    _dynamicTV.font = [UIFont systemFontOfSize:17];
     _dynamicTV.delegate = self;
     [self.view addSubview:_dynamicTV];
     
@@ -94,7 +95,7 @@
     [addPhotoB addTarget:self action:@selector(addPhoto) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:addPhotoB];
     
-    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 57.75, 200, 20)];
+    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75, 200, 20)];
     _placeholderL.backgroundColor = [UIColor clearColor];
     _placeholderL.textColor = [UIColor grayColor];
     _placeholderL.text = @"今天想跟别人说点什么……";
@@ -147,6 +148,7 @@
         [aler show];
         return;
     }
+    [self.dynamicTV resignFirstResponder];
     [hud show:YES];
     if (self.pictureArray!=nil&&self.pictureArray.count>0) {
         NSMutableArray* imageArray = [[NSMutableArray alloc]init];

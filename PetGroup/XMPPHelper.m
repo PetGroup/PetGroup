@@ -267,6 +267,7 @@
     NSString *msg = [[message elementForName:@"body"] stringValue];
     NSString *from = [[message attributeForName:@"from"] stringValue];
     NSString *type = [[message attributeForName:@"type"] stringValue];
+    NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
    // NSString * fromNickName = [[message attributeForName:@"nickname"] stringValue];
     if(msg!=nil){
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -279,7 +280,11 @@
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
         if ([type isEqualToString:@"chat"]) {
-            [self.chatDelegate newMessageReceived:dict];
+            if (msgtype) {
+                //评论，回复，赞，在这里解析，或者通用newMessageReceived，在那个方法里解析dict
+            }
+            else
+                [self.chatDelegate newMessageReceived:dict];
         }
         else if ([type isEqualToString:@"sayHello"]){
             [self.addReqDelegate newAddReq:dict];

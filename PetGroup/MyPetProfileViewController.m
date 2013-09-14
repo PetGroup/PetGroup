@@ -617,7 +617,27 @@
 
 -(void)savePetInfo
 {
-    
+    if (self.petInfo.petType.length<1) {
+        [self showAlert:@"给您的宝贝写个品种呗，找不到咱就写个其它嘛"];
+        return;
+    }
+    if ([[self.discribeArray objectAtIndex:1] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:1] length]<1) {
+        [self showAlert:@"给您的宝贝写个昵称呗"];
+        return;
+    }
+    if ([[self.discribeArray objectAtIndex:4] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:4] length]<1) {
+        [self showAlert:@"宝贝有什么特点，写点吧"];
+        return;
+    }
+    if ([[self.discribeArray objectAtIndex:2] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:2] length]<1) {
+        [self showAlert:@"宝贝的性别呢"];
+        return;
+    }
+    if ([[self.discribeArray objectAtIndex:3] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:3] length]<1) {
+        [self showAlert:@"说说宝贝几岁了吧"];
+        return;
+    }
+
     if (self.waitingUploadImgArray.count>0) {
         [hud show:YES];
         [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
@@ -667,26 +687,6 @@
 }
 -(void)finalUploadInfo
 {
-    if ([[self.discribeArray objectAtIndex:1] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:1] length]<1) {
-        [self showAlert:@"给您的宝贝写个昵称呗"];
-        return;
-    }
-    if (self.petInfo.petType.length<1) {
-        [self showAlert:@"给您的宝贝写个品种呗，找不到咱就写个其它嘛"];
-        return;
-    }
-    if ([[self.discribeArray objectAtIndex:4] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:4] length]<1) {
-        [self showAlert:@"宝贝有什么特点，写点吧"];
-        return;
-    }
-    if ([[self.discribeArray objectAtIndex:2] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:2] length]<1) {
-        [self showAlert:@"宝贝的性别呢"];
-        return;
-    }
-    if ([[self.discribeArray objectAtIndex:3] isEqualToString:PlaceHolder]||[[self.discribeArray objectAtIndex:3] length]<1) {
-        [self showAlert:@"说说宝贝几岁了吧"];
-        return;
-    }
     [hud show:YES];
     if (self.pageType==PageStyleAdd) {
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];

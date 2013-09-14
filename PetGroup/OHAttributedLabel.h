@@ -29,6 +29,7 @@
  *
  ***********************************************************************************/
 
+//Modified by Tolecen on 9/01/2013
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
@@ -80,6 +81,7 @@ CTLineBreakMode CTLineBreakModeFromUILineBreakMode(UILineBreakMode lineBreakMode
     NSTimer * theTimer;
     BOOL canShowMenu;
     NSString * tempPhone;
+    UIMenuController *menu;
 }
 /* 处理图像信息 */
 @property (nonatomic, retain) NSMutableArray *imageInfoArr;
