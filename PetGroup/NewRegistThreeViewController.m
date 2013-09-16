@@ -327,8 +327,8 @@
     [params setObject:self.ageL.text forKey:@"birthdate"];
     [params setObject:self.cityL.text forKey:@"city"];
     [params setObject:@"" forKey:@"img"];
-    [params setObject:@"" forKey:@"hobby"];
-    [params setObject:@"" forKey:@"signature"];
+    [params setObject:@"该用户还未设置爱好" forKey:@"hobby"];
+    [params setObject:@"该用户还未填写签名" forKey:@"signature"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

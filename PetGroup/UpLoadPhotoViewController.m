@@ -250,23 +250,23 @@
     switch (self.petType) {
         case 1:
         {
-            [params setObject:@"签名" forKey:@"signature"];
-            [params setObject:@"爱好" forKey:@"hobby"];
+            [params setObject:@"任狗虐我千百遍，我待狗狗如初恋" forKey:@"signature"];
+            [params setObject:@"带着大狗狗遛弯" forKey:@"hobby"];
         }break;
         case 2:
         {
-            [params setObject:@"签名" forKey:@"signature"];
-            [params setObject:@"爱好" forKey:@"hobby"];
+            [params setObject:@"家有喵星人，生活事事顺" forKey:@"signature"];
+            [params setObject:@"和小猫一起睡懒觉" forKey:@"hobby"];
         }break;
         case 3:
         {
-            [params setObject:@"签名" forKey:@"signature"];
-            [params setObject:@"爱好" forKey:@"hobby"];
+            [params setObject:@"爱宠之心，人皆有知" forKey:@"signature"];
+            [params setObject:@"养宠物" forKey:@"hobby"];
         }break;
         case 4:
         {
-            [params setObject:@"签名" forKey:@"signature"];
-            [params setObject:@"爱好" forKey:@"hobby"];
+            [params setObject:@"做快乐的自己" forKey:@"signature"];
+            [params setObject:@"睡懒觉" forKey:@"hobby"];
         }break;
         default:
             break;
