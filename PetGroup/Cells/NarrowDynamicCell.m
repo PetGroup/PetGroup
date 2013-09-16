@@ -371,6 +371,7 @@
 }
 -(void)praise//赞
 {
+    zanB.userInteractionEnabled = NO;
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -388,18 +389,22 @@
     if (self.dynamic.ifIZaned) {
         [body setObject:@"delZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
             _zanimage.image = [UIImage imageNamed:@"zan"];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            zanB.userInteractionEnabled = YES;
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            zanB.userInteractionEnabled = YES;
         }];
     }
 }
@@ -462,6 +467,17 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+        [alert show];
+    }
+    if (buttonIndex == 1) {
+        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
+    }
+}
+#pragma mark - alert view delegate
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
         if ([self.deleteObject isKindOfClass:[Reply class]]) {
             NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
@@ -512,10 +528,7 @@
             }
             
         }
-    }
-    if (buttonIndex == 1) {
-        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
+
     }
 }
-
 @end
