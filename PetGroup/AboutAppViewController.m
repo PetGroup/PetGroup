@@ -155,7 +155,12 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==1) {
-        
+        NSString * appLink = AppStoreAddress;
+        NSURL *url = [NSURL URLWithString:appLink];
+        if([[UIApplication sharedApplication] canOpenURL:url])
+        {
+            [[UIApplication sharedApplication] openURL:url];
+        }
     }
 }
 -(void)back

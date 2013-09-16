@@ -36,9 +36,18 @@
 }
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)pToken {
     
-    NSLog(@"regisger success:%@", pToken);
     
+    NSString *deviceTokenStr = [NSString stringWithFormat:@"%@",pToken];
+    NSLog(@"regisger success:%@", deviceTokenStr);
     //注册成功，将deviceToken保存到应用服务器数据库中
+    deviceTokenStr = [[deviceTokenStr substringWithRange:NSMakeRange(0, 72)] substringWithRange:NSMakeRange(1, 71)];
+    deviceTokenStr = [deviceTokenStr stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"deviceTokenStr = %@",deviceTokenStr);
+    
+    [[NSUserDefaults standardUserDefaults] setObject:deviceTokenStr forKey:PushDeviceToken];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    //将deviceToken保存在NSUserDefaults
+    
     
 }
 
