@@ -63,7 +63,7 @@
     [showVersion setBackgroundColor:[UIColor clearColor]];
     showVersion.frame= CGRectMake(20, 180, 280, 40);
     
-   NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+    version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
 
     NSString * addString = [NSString stringWithFormat:@"版本号:%@",version];
 
@@ -125,8 +125,38 @@
 }
 -(void)checkNewVersion
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您现在已经是最新版本啦" delegate:self cancelButtonTitle:@"好的" otherButtonTitles: nil];
-    [alert show];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"updateVersion" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSString * newV = [dic objectForKey:@"petVersion"];
+        if ([newV doubleValue]>[version doubleValue]) {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"检测到新版本%@",newV] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"现在更新", nil];
+            [alert show];
+        }
+        NSLog(@"dddd:%@",dic);
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }];
+
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        
+    }
 }
 -(void)back
 {

@@ -148,6 +148,9 @@
 -(void)addFriend:(NSString *)user{
     NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
     [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName];
+    if ([self ifXMPPConnected]) {
+        
+    }
 }
 -(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID{
     NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
