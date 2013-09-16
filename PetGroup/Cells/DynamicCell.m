@@ -143,13 +143,18 @@
     }
     if (self.dynamic.petUser.headImgArray.count>0) {
         headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
+    }else
+    {
+       headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl]]; 
     }
     headB.frame = CGRectMake(10, 10, 40, 40);
     [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
-    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(240, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(170, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
+    nameB.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
     _distancevL.text = self.dynamic.distance;
-    _distancevL.frame = CGRectMake(150, 10, 100, 15);
+    _distancevL.textAlignment = NSTextAlignmentRight;
+    _distancevL.frame = CGRectMake(230, 10, 80, 15);
     
     origin = 40;
     

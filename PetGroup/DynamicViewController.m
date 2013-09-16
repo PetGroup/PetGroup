@@ -171,7 +171,7 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"正在加载，请稍后";
     
     [self reloadData];
     [hud show:YES];
@@ -518,7 +518,7 @@
     self.mycell = nil;
     [self keyBoardResign];
     if (!request&&!_tableV.decelerating) {
-        if (_tableV.contentOffset.y<=-5) {
+        if (_tableV.contentOffset.y<-5) {
             if (self.act == nil) {
                 self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
                 _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
@@ -528,7 +528,7 @@
                 [_act startAnimating];
             }
         }
-        if (_tableV.contentSize.height>_tableV.frame.size.height-5) {
+        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
             if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-5) {
                 if (_tableV.tableFooterView == nil) {
                     _tableV.tableFooterView = _footV;
@@ -543,12 +543,19 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     //停止滑动
+    if (_tableV.contentSize.height>_tableV.frame.size.height+5 ) {
+        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-35) {
+            [_footAct stopAnimating];
+            [UIView animateWithDuration:0.3 animations:^{
+                _tableV.tableFooterView = nil;
+            }];
+        }
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //停止减速
-    
 }
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
@@ -557,8 +564,8 @@
         if (_tableV.contentOffset.y<-5) {
             [self reloadData];
         }
-        if (_tableV.contentSize.height>_tableV.frame.size.height) {
-            if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-5) {
+        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
+                if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-30) {
                 [self loadMoreData];
             }
         }
