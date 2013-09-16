@@ -39,6 +39,8 @@
     
     UILabel* nameL;
     EGOImageButton* headIV;
+    
+    BOOL request;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
@@ -108,8 +110,6 @@
     _tableV.dataSource = self.nearbyDDS;
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
-    _tableV.contentOffset = CGPointMake(0, 100);
-    
     
     UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
     headV.image = [UIImage imageNamed:@"morenbeijing"];
@@ -190,11 +190,7 @@
     {
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
-    }
-    if (self.tableV.contentOffset.y<100) {
-        self.tableV.contentOffset = CGPointMake(0, 100);
-    }
-    
+    }    
     nameL.text = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
@@ -213,6 +209,8 @@
     MyDynamicDelegateAndDataSource* MDDDS = [[MyDynamicDelegateAndDataSource alloc]init];
     MDDDS.viewC = PDVC;
     PDVC.dataSource = MDDDS;
+    PDVC.userName = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    PDVC.HeadImageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     [self.navigationController pushViewController:PDVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
@@ -273,7 +271,7 @@
 }
 -(void)didInput
 {
-    if (_inputTF.text.length>0) {
+    if (_inputTF.text.length>0&&_inputTF.text.length<81) {
         switch (assessOrPraise) {
             case 1:
             {
@@ -306,40 +304,35 @@
             }break;
             case 2:
             {
-                if (_inputTF.text.length<=80) {
-                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                    long long a = (long long)(cT*1000);
-                    [params setObject:@"" forKey:@"transmitUrl"];
-                    [params setObject:self.inputTF.text forKey:@"transmitMsg"];
-                    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
-                    [params setObject:@"1" forKey:@"ifTransmitMsg"];
-                    [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
-                    [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
-                    [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
-                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                    [body setObject:@"1" forKey:@"channel"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                    [body setObject:@"iphone" forKey:@"imei"];
-                    [body setObject:params forKey:@"params"];
-                    [body setObject:@"addUserState" forKey:@"method"];
-                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                    [hud show:YES];
-                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        [hud hide:YES];
-                        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                        Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
-                        [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
-                        [self.tableV reloadData];
-                        self.mycell = nil;
-                    }];
-                }else{
-                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"转发内容不得超过80个字" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-                    [alert show];
-                }
+                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+                long long a = (long long)(cT*1000);
+                [params setObject:@"" forKey:@"transmitUrl"];
+                [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+                [params setObject:@"1" forKey:@"ifTransmitMsg"];
+                [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
+                [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
+                [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
+                [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
+                [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
+                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+                [body setObject:@"1" forKey:@"channel"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+                [body setObject:@"iphone" forKey:@"imei"];
+                [body setObject:params forKey:@"params"];
+                [body setObject:@"addUserState" forKey:@"method"];
+                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+                [hud show:YES];
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [hud hide:YES];
+                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                    Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
+                    [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+                    [self.tableV reloadData];
+                    self.mycell = nil;
+                }];
                 
             }break;
             case 3:
@@ -404,7 +397,11 @@
                 break;
         }
         [self keyBoardResign];
+    }else{
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"评论或回复需在1到80个字之间" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
     }
+
 }
 -(void)keyBoardResign
 {
@@ -512,87 +509,60 @@
 }
 #pragma mark - scrollView delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{//开始拖拽
-    
+{
+    //开始拖拽
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self removeActionImageView];
     self.mycell = nil;
     [self keyBoardResign];
-    if (scrollView.contentSize.height<_tableV.frame.size.height+100) {
-        scrollView.contentSize = CGSizeMake(320, _tableV.frame.size.height+100);
-        scrollView.contentOffset = CGPointMake(0, 100);
-    }
-    if (_tableV.contentOffset.y<0) {
-        if (self.act == nil) {
-            self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
-            _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-            [_act startAnimating];
-            [_tableV.tableHeaderView addSubview:_act];
-        }
-    }
-    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
-        if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-100) {
-            if (_tableV.tableFooterView == nil) {
-                _tableV.tableFooterView = _footV;
-                
+    if (!request&&!_tableV.decelerating) {
+        if (_tableV.contentOffset.y<=-5) {
+            if (self.act == nil) {
+                self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+                _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+                [_act startAnimating];
+                [_tableV.tableHeaderView addSubview:_act];
             }else{
-                [_footAct startAnimating];
+                [_act startAnimating];
+            }
+        }
+        if (_tableV.contentSize.height>_tableV.frame.size.height-5) {
+            if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-5) {
+                if (_tableV.tableFooterView == nil) {
+                    _tableV.tableFooterView = _footV;
+                    [_footAct startAnimating];
+                }else{
+                    [_footAct startAnimating];
+                }
             }
         }
     }
 }
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    [self keyBoardResign];
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        _tableV.contentOffset = CGPointMake(0, 100);
-    }];
-    
-    return NO;
-}
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     //停止滑动
-    if (_tableV.contentOffset.y<=100) {
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.contentOffset = CGPointMake(0, 100);
-        }];
-    }
-    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
-        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-130) {
-            [_footAct stopAnimating];
-            [UIView animateWithDuration:0.3 animations:^{
-                _tableV.tableFooterView = nil;
-            }];
-        }
-    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //停止减速
-    if (_tableV.contentOffset.y<100&&_tableV.contentOffset.y>0) {
-        [UIView animateWithDuration:0.3 animations:^{
-             _tableV.contentOffset = CGPointMake(0, 100);
-        }];
-    }
-    if (_tableV.contentOffset.y<=0) {
-        [self reloadData];
-    }
-    if (_tableV.contentSize.height>_tableV.frame.size.height+100) {
-        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height) {
-            [self loadMoreData];
-        }
-    }
+    
 }
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     //开始减速
+    if (!request) {
+        if (_tableV.contentOffset.y<-5) {
+            [self reloadData];
+        }
+        if (_tableV.contentSize.height>_tableV.frame.size.height) {
+            if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-5) {
+                [self loadMoreData];
+            }
+        }
+    }
 }
 #pragma mark - cell button action
 -(void)showButton:(DynamicCell*)cell
@@ -688,38 +658,31 @@
 #pragma mark - reload and loadmore
 -(void)reloadData
 {
+    request = YES;
     [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
         [self.tableV reloadData];
         [_act stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.contentOffset = CGPointMake(0, 100);
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.act = nil;
-            }
-        }];
+        [self.act stopAnimating];
+        request = NO;
         [hud hide:YES];
     } failure:^{
         [self showAlertView];
         [_act stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.contentOffset = CGPointMake(0, 100);
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.act = nil;
-            }
-        }];
+        [self.act stopAnimating];
+        request = NO;
         [hud hide:YES];
     }];
 }
 -(void)loadMoreData
 {
+    request = YES;
     [(DelegateAndDataSource*)self.tableV.dataSource loadMoreDataSuccess:^{
         [self.tableV reloadData];
         [_footAct stopAnimating];
         [UIView animateWithDuration:0.3 animations:^{
             _tableV.tableFooterView = nil;
         }];
+        request = NO;
         [hud hide:YES];
     } failure:^{
         [self showAlertView];
@@ -727,6 +690,7 @@
         [UIView animateWithDuration:0.3 animations:^{
             _tableV.tableFooterView = nil;
         }];
+        request = NO;
         [hud hide:YES];
     }];
 }

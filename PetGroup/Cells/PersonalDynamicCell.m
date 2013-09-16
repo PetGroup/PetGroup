@@ -17,7 +17,7 @@
 #import "OHAttributedLabel.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
-@interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate>
+@interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {
     UIButton* zanB;
@@ -27,6 +27,9 @@
     CGSize msgSize;
     CGSize msgMinSize;
     float origin;
+    
+    UIAlertView * delDynamicAlert;
+    UIAlertView * delReplyAlert;
 }
 @property (nonatomic,retain)UIImageView* zanimage;
 @property (nonatomic,retain)NSArray* imageViews;
@@ -350,7 +353,8 @@
 }
 -(void)deleteDynamic
 {
-    [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
+    delDynamicAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条动态?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+    [delDynamicAlert show];
 }
 -(void)quanwen
 {
@@ -376,6 +380,7 @@
 }
 -(void)praise//赞
 {
+    zanB.userInteractionEnabled = NO;
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -393,18 +398,22 @@
     if (self.dynamic.ifIZaned) {
         [body setObject:@"delZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
             _zanimage.image = [UIImage imageNamed:@"zan"];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            zanB.userInteractionEnabled = YES;
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            zanB.userInteractionEnabled = YES;
         }];
     }
 }
@@ -467,59 +476,74 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        if ([self.deleteObject isKindOfClass:[Reply class]]) {
-            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-            long long a = (long long)(cT*1000);
-            [params setObject:((Reply*)self.deleteObject).replyID forKey:@"replyId"];
-            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-            [body setObject:@"1" forKey:@"channel"];
-            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-            [body setObject:@"iphone" forKey:@"imei"];
-            [body setObject:params forKey:@"params"];
-            [body setObject:@"delReply" forKey:@"method"];
-            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-            [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [self.dynamic.replyViews removeObject:self.deleteObject];
-                self.dynamic.rowHigh-=((((Reply*)self.deleteObject).replyComments.count+1)*28);
-                [(UITableView*)self.superview reloadData];
-            }];
-            [self.dynamic.replyViews removeObject:self.deleteObject];
+        delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+        [delReplyAlert show];
+    }
+    if (buttonIndex == 1) {
+        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
+    }
+}
+#pragma mark - alert view delegate
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView == delDynamicAlert) {
+        if (buttonIndex == 1) {
+            [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
         }
-        if ([self.deleteObject isKindOfClass:[ReplyComment class]]) {
-            Reply* theReply = nil;
-            for (Reply* rep in self.dynamic.replyViews) {
-                for (ReplyComment * repcom in rep.replyComments) {
-                    if ([self.deleteObject isEqual:repcom]) {
-                        theReply = rep;
-                    }
-                }
-            }
-            if (theReply) {
+    }
+    if (alertView == delReplyAlert) {
+        if (buttonIndex == 1) {
+            if ([self.deleteObject isKindOfClass:[Reply class]]) {
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:((ReplyComment*)self.deleteObject).replyCommentID forKey:@"replyCommonid"];
+                [params setObject:((Reply*)self.deleteObject).replyID forKey:@"replyId"];
                 NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
                 [body setObject:@"1" forKey:@"channel"];
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
                 [body setObject:@"iphone" forKey:@"imei"];
                 [body setObject:params forKey:@"params"];
-                [body setObject:@"delCommentReply" forKey:@"method"];
+                [body setObject:@"delReply" forKey:@"method"];
                 [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [theReply.replyComments removeObject:self.deleteObject];
-                    self.dynamic.rowHigh-=28;
+                    [self.dynamic.replyViews removeObject:self.deleteObject];
+                    self.dynamic.rowHigh-=((((Reply*)self.deleteObject).replyComments.count+1)*28);
                     [(UITableView*)self.superview reloadData];
                 }];
+                [self.dynamic.replyViews removeObject:self.deleteObject];
             }
-            
+            if ([self.deleteObject isKindOfClass:[ReplyComment class]]) {
+                Reply* theReply = nil;
+                for (Reply* rep in self.dynamic.replyViews) {
+                    for (ReplyComment * repcom in rep.replyComments) {
+                        if ([self.deleteObject isEqual:repcom]) {
+                            theReply = rep;
+                        }
+                    }
+                }
+                if (theReply) {
+                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+                    long long a = (long long)(cT*1000);
+                    [params setObject:((ReplyComment*)self.deleteObject).replyCommentID forKey:@"replyCommonid"];
+                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+                    [body setObject:@"1" forKey:@"channel"];
+                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+                    [body setObject:@"iphone" forKey:@"imei"];
+                    [body setObject:params forKey:@"params"];
+                    [body setObject:@"delCommentReply" forKey:@"method"];
+                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        [theReply.replyComments removeObject:self.deleteObject];
+                        self.dynamic.rowHigh-=28;
+                        [(UITableView*)self.superview reloadData];
+                    }];
+                }
+                
+            }
         }
-    }
-    if (buttonIndex == 1) {
-        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
     }
 }
 @end

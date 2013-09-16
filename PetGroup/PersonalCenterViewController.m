@@ -237,6 +237,8 @@
         MyDynamicDelegateAndDataSource* MDDDS = [[MyDynamicDelegateAndDataSource alloc]init];
         MDDDS.viewC = PDVC;
         PDVC.dataSource = MDDDS;
+        PDVC.userName = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        PDVC.HeadImageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
         [self.navigationController pushViewController:PDVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
