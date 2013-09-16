@@ -139,6 +139,7 @@
                 [alert show];
                 [hud hide:YES];
             }else{
+                [hud hide:YES];
                 [self puchNextView];
             }
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {

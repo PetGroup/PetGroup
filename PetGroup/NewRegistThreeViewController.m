@@ -329,6 +329,8 @@
     [params setObject:@"" forKey:@"img"];
     [params setObject:@"" forKey:@"hobby"];
     [params setObject:@"" forKey:@"signature"];
+    NSString * deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:PushDeviceToken];
+    [params setObject:deviceToken?deviceToken:@"" forKey:@"deviceToken"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

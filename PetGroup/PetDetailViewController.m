@@ -48,7 +48,7 @@
     
     NSString * gender = self.petInfo.petGender;
     NSString * age = self.petInfo.petAge;
-    NSString * region = @"北京市朝阳区";
+    NSString * region = self.hostInfo.region;
     UIImage * genderImg = [gender isEqualToString:@"male"]?[UIImage imageNamed:@"manicon.png"]:[UIImage imageNamed:@"womenicon.png"];
     
     self.genderBgV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
@@ -120,7 +120,7 @@
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 4;
+    return 3;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -151,13 +151,13 @@
         else
             return 40;
     }
-    else if (indexPath.section==3){
-        if (indexPath.row==1) {
-            return 80;
-        }
-        else
-            return 40;
-    }
+//    else if (indexPath.section==3){
+//        if (indexPath.row==1) {
+//            return 80;
+//        }
+//        else
+//            return 40;
+//    }
     else
         return 40;
 }
@@ -179,11 +179,11 @@
             return 2;
         }
             break;
-        case 3:
-        {
-            return 2;
-        }
-            break;
+//        case 3:
+//        {
+//            return 2;
+//        }
+//            break;
         default:
         {
             return 1;
@@ -254,38 +254,38 @@
                 [cell.genderIV setImage:genderImg];
                 [cell.genderIV setFrame:CGRectMake(70, 44, genderImg.size.width/2, genderImg.size.height/2)];
                 cell.ageLabel.text = self.hostInfo.age;
-                cell.regionLabel.text = @"北京朝阳区";
+                cell.regionLabel.text = self.hostInfo.region;
                 return cell;
             }
         }
             break;
-        case 3:
-        {
-            if (indexPath.row==0) {
-                static NSString *Cell = @"Cellddfff";
-                
-                MyProfileACell *cell = (MyProfileACell *)[tableView dequeueReusableCellWithIdentifier:Cell];
-                if (cell == nil) {
-                    cell = [[MyProfileACell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                cell.titleLabel.text = @"最新动态";
-                return cell;
-            }
-            else
-            {
-                static NSString *Cell = @"Celldds";
-                
-                UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
-                if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
-                }
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                return cell;
-            }
-            
-        }
-            break;
+//        case 3:
+//        {
+//            if (indexPath.row==0) {
+//                static NSString *Cell = @"Cellddfff";
+//                
+//                MyProfileACell *cell = (MyProfileACell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+//                if (cell == nil) {
+//                    cell = [[MyProfileACell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+//                }
+//                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//                cell.titleLabel.text = @"最新动态";
+//                return cell;
+//            }
+//            else
+//            {
+//                static NSString *Cell = @"Celldds";
+//                
+//                UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+//                if (cell == nil) {
+//                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+//                }
+//                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//                return cell;
+//            }
+//            
+//        }
+//            break;
             
         default:
             return nil;

@@ -546,6 +546,8 @@
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
 		97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */; };
+		97F8D20717E7176C00A6CCA3 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F8D20617E7176C00A6CCA3 /* dyn.png */; };
+		97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F8D20817E7177C00A6CCA3 /* shezhi22.png */; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
 		97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB035017E00432002086D9 /* AboutAppViewController.m */; };
 		97FB47D817BC79F00071FA12 /* DSPets.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47D717BC79F00071FA12 /* DSPets.m */; };
@@ -1399,6 +1401,8 @@
 		97E9D17F17D5C024003A4A4C /* PetProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PetProfileCell.m; sourceTree = "<group>"; };
 		97E9D18117D5D4F8003A4A4C /* MyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoCell.h; sourceTree = "<group>"; };
 		97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoCell.m; sourceTree = "<group>"; };
+		97F8D20617E7176C00A6CCA3 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
+		97F8D20817E7177C00A6CCA3 /* shezhi22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shezhi22.png; sourceTree = "<group>"; };
 		97FB034D17E00432002086D9 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		97FB034E17E00432002086D9 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		97FB034F17E00432002086D9 /* AboutAppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutAppViewController.h; sourceTree = "<group>"; };
@@ -2615,6 +2619,8 @@
 		9736BD1317C49146007DFE36 /* more */ = {
 			isa = PBXGroup;
 			children = (
+				97F8D20817E7177C00A6CCA3 /* shezhi22.png */,
+				97F8D20617E7176C00A6CCA3 /* dyn.png */,
 				9736BD1417C49146007DFE36 /* myprofile-ico.png */,
 				9736BD1517C49146007DFE36 /* outkuang.png */,
 				9736BD1617C49146007DFE36 /* petex-ico.png */,
@@ -3559,6 +3565,8 @@
 				86F690D317E024A1002C5DBB /* zaned.png in Resources */,
 				86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */,
 				97E4B4A217E29CF500D2F23B /* icon.png in Resources */,
+				97F8D20717E7176C00A6CCA3 /* dyn.png in Resources */,
+				97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -157,12 +157,14 @@
     long long a = (long long)(cT*1000);
     [params setObject:_PhoneNoTF.text forKey:@"username"];
     [params setObject:_passWordTF.text forKey:@"password"];
+    NSString * deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:PushDeviceToken];
+    [params setObject:deviceToken?deviceToken:@"" forKey:@"deviceToken"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"login" forKey:@"method"];
+    [body setObject:@"login2" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {

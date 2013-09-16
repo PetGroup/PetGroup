@@ -210,12 +210,12 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             if (indexPath.section==2) {
-                [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+                [cell.headImageV setImage:[UIImage imageNamed:@"dyn.png"]];
                 cell.titleLabel.text = @"动态";
             }
             else
             {
-                [cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+                [cell.headImageV setImage:[UIImage imageNamed:@"shezhi22.png"]];
                 cell.titleLabel.text = @"设置";
             }
             

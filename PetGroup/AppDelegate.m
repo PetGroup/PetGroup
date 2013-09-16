@@ -20,6 +20,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
+//    [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

@@ -75,7 +75,7 @@
     
     NSString * gender = self.hostInfo.gender;
     NSString * age = self.hostInfo.age;
-    NSString * region = @"北京市朝阳区";
+    NSString * region = self.hostInfo.region;
     UIImage * genderImg = [gender isEqualToString:@"male"]?[UIImage imageNamed:@"manicon.png"]:[UIImage imageNamed:@"womenicon.png"];
 
     self.genderBgV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
