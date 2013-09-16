@@ -94,6 +94,9 @@
         }
         if (indexPath.row==1) {
             ReportViewController * report = [[ReportViewController alloc] init];
+            report.theTitle = @"意见反馈";
+            report.maxCount = 100;
+            report.realReport = YES;
             [self.navigationController pushViewController:report animated:YES];
             
         }

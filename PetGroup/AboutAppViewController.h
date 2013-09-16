@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-@interface AboutAppViewController : UIViewController
-
+@interface AboutAppViewController : UIViewController<UIAlertViewDelegate>
+{
+    NSString * version;
+}
 @end

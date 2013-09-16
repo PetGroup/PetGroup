@@ -19,6 +19,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.realReport = NO;
     }
     return self;
 }
@@ -27,9 +28,12 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    bigBG = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    bigBG.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:bigBG];
     UIImageView * bgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
-    [self.view addSubview:bgV];
+    [bigBG addSubview:bgV];
     // messages = [NSMutableArray array];
     
     
@@ -57,11 +61,11 @@
     
     UIImageView * bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 54, 300, 160)];
     [bg setImage:[UIImage imageNamed:@"outkuang.png"]];
-    [self.view addSubview:bg];
+    [bigBG addSubview:bg];
     
     UIImageView * inputBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 64, 280, 110)];
     [inputBg setImage:[UIImage imageNamed:@"reportinput.png"]];
-    [self.view addSubview:inputBg];
+    [bigBG addSubview:inputBg];
     
     self.inputTextF = [[UITextView alloc] initWithFrame:CGRectMake(25, 69, 260, 90)];
     [self.inputTextF setBackgroundColor:[UIColor clearColor]];
@@ -70,7 +74,9 @@
     self.inputTextF.font = [UIFont systemFontOfSize:16];
 
 
-    [self.view addSubview:self.inputTextF];
+    [bigBG addSubview:self.inputTextF];
+    
+
 
     UIButton * bottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [bottomBtn setFrame:CGRectMake(10, 224, 300, 38)];
@@ -78,8 +84,19 @@
     [bottomBtn setTitle:@"确定" forState:UIControlStateNormal];
     [bottomBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [bottomBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.view addSubview:bottomBtn];
+    [bigBG addSubview:bottomBtn];
     [bottomBtn addTarget:self action:@selector(submitBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (self.realReport) {
+        self.emailField = [[UITextField alloc] initWithFrame:CGRectMake(10, 224, 300, 30)];
+        self.emailField.borderStyle = UITextBorderStyleRoundedRect;
+        self.emailField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        self.emailField.delegate = self;
+        self.emailField.backgroundColor = [UIColor whiteColor];
+        self.emailField.placeholder = @"留一下邮箱吧，以便给您反馈";
+        [bigBG addSubview:self.emailField];
+        [bottomBtn setFrame:CGRectMake(10, 264, 300, 38)];
+    }
     
     remainingLabel=[[UILabel alloc]init];
     [remainingLabel setFrame:CGRectMake(180, 184, 120, 20)];
@@ -88,7 +105,7 @@
     remainingLabel.textColor=[UIColor grayColor];
     [remainingLabel setFont:[UIFont systemFontOfSize:14]];
     [remainingLabel setText:[NSString stringWithFormat:@"还可以输入%d字",self.maxCount]];
-    [self.view addSubview:remainingLabel];
+    [bigBG addSubview:remainingLabel];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -104,6 +121,11 @@
 #pragma mark 显示字数的区域
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
+    [UIView animateWithDuration:0.3 animations:^{
+        [bigBG setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
 //    NSInteger contentLen = self.inputTextF.text.length;
 //    self.adviceTextView=textView;
 //    self.adviceTextView.text=[NSString stringWithFormat:@"%@",self.adviceTextView.text];
@@ -127,9 +149,25 @@
     }
 
 }
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        [bigBG setFrame:CGRectMake(0, -60, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.inputTextF resignFirstResponder];
+    if (self.realReport) {
+        [self.emailField resignFirstResponder];
+        [UIView animateWithDuration:0.3 animations:^{
+            [bigBG setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
 }
 
 -(void)submitBtnClicked
@@ -139,9 +177,42 @@
         [alert show];
         return;
     }
+    if (self.realReport) {
+        [self submitReport];
+    }
+    else{
 
-    [self.textDelegate changeText:self.inputTextF.text WithIndex:self.thisIndex];
-    [self.navigationController popViewControllerAnimated:YES];
+        [self.textDelegate changeText:self.inputTextF.text WithIndex:self.thisIndex];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+-(void)submitReport
+{
+    [hud show:YES];
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:self.inputTextF.text forKey:@"feedback"];
+    [params setObject:self.emailField.text?self.emailField.text:@"" forKey:@"email"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"feedback" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
+
 }
 -(void)back
 {
