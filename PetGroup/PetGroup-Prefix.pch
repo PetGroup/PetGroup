@@ -48,6 +48,8 @@
 #define LOCALTOKEN @"lovePetLocalToken"
 #define MACADDRESS @"lovepetmacaddress"
 
+#define PushDeviceToken @"pushDeviceToken"
+
 #define PlaceHolder @"petGroup_thisisplaceholder..."
 
 #define ExceptCommonMsgCount 1   //首页除了显示普通用户消息还要显示的其他消息栏，目前只有打招呼一个
@@ -59,7 +61,7 @@
 
 #define RootDocPath ([NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)objectAtIndex:0])
 
-
+#define AppStoreAddress @"https://itunes.apple.com/us/app/chong-wu-quan/id686838840?ls=1&mt=8"
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
 #ifndef __OPTIMIZE__
 #define NSLog(...) NSLog(__VA_ARGS__)
