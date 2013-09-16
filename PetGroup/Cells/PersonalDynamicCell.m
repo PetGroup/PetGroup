@@ -17,7 +17,7 @@
 #import "OHAttributedLabel.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
-@interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate>
+@interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {
     UIButton* zanB;
@@ -350,7 +350,8 @@
 }
 -(void)deleteDynamic
 {
-    [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条动态?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+    [alert show];
 }
 -(void)quanwen
 {
@@ -520,6 +521,13 @@
     }
     if (buttonIndex == 1) {
         [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
+    }
+}
+#pragma mark - alert view delegate
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
     }
 }
 @end

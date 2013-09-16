@@ -540,7 +540,12 @@
         PersonalDynamicViewController * pdvc = [[PersonalDynamicViewController alloc]init];
         PersonDynamicDelegateAndDataSouce * pddds = [[PersonDynamicDelegateAndDataSouce alloc]init];
         pddds.userID = self.hostInfo.userId;
+        pddds.viewC = pdvc;
         pdvc.dataSource = pddds;
+        pdvc.userName = self.hostInfo.nickName;
+        if (self.hostInfo.headImgArray.count>0) {
+            pdvc.HeadImageID = self.hostInfo.headImgArray[0];
+        }
         [self.navigationController pushViewController:pdvc animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }

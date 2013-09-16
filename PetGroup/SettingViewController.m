@@ -11,7 +11,7 @@
 #import "XMPPHelper.h"
 #import "EGOCache.h"
 #define AppID  @"564710616" //temp ID
-@interface SettingViewController ()
+@interface SettingViewController ()<UIAlertViewDelegate>
 
 @end
 
@@ -102,11 +102,8 @@
             [self.navigationController pushViewController:aboutV animated:YES];
         }
         if (indexPath.row == 3) {
-            [[EGOCache globalCache] clearCache];
-            NSFileManager *file_manager = [NSFileManager defaultManager];
-            NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
-            [file_manager removeItemAtPath:path error:nil];
-            
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"确认要清除所有得缓存吗?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+            [alert show];
         }
     }
     if (indexPath.section==1) {
@@ -144,6 +141,15 @@
         AppDelegate* app = [[UIApplication sharedApplication] delegate];
         [app.xmppHelper disconnect];
         [self.navigationController popViewControllerAnimated:NO];
+    }
+}
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [[EGOCache globalCache] clearCache];
+        NSFileManager *file_manager = [NSFileManager defaultManager];
+        NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+        [file_manager removeItemAtPath:path error:nil];
     }
 }
 @end
