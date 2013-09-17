@@ -109,6 +109,9 @@
     _agePV.dataSource = self;
     _agePV.delegate = self;
     self.agePV.hidden = YES;
+    if (self.hostInfo.age) {
+        [self.agePV selectRow:[self.hostInfo.age integerValue]-1 inComponent:0 animated:NO];
+    }
     
     [chooseRegionV addSubview:self.agePV];
     

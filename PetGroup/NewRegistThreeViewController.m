@@ -234,6 +234,7 @@
     _agePV.dataSource = self;
     _agePV.delegate = self;
     _ageTF.inputView = _agePV;
+    [_agePV selectRow:19 inComponent:0 animated:NO];
     
     UIToolbar* aToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
     aToolbar.tintColor = [UIColor blackColor];
