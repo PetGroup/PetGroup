@@ -162,11 +162,11 @@
 #pragma mark - upload image 
 -(void)uploadUserImage
 {
-    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadImageWithCompres:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* a = [operation responseString];
-        [NetManager uploadImage:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        [NetManager uploadImage:_hostPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             
         } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString* b = [operation responseString];
@@ -181,11 +181,11 @@
 }
 -(void)uploadPetImage
 {
-    [NetManager uploadImageWithCompres:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadImageWithCompres:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* a = [operation responseString];
-        [NetManager uploadImage:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        [NetManager uploadImage:_petPhoto.image WithURLStr:BaseUploadImageUrl ImageName:@"" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
             
         } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSString* b = [operation responseString];
@@ -222,7 +222,7 @@
         [params setObject:[self.petDic objectForKey:@"id"] forKey:@"id"];
         [body setObject:params forKey:@"params"];
         [body setObject:@"updatePetinfo" forKey:@"method"];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [self savePetInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
             [self updataUserInfo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -273,7 +273,7 @@
     }
     [body setObject:params forKey:@"params"];
     [body setObject:@"saveUserinfo2" forKey:@"method"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self saveUserInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         [hud hide:YES];
         [self dismissModalViewControllerAnimated:YES];

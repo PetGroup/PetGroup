@@ -111,7 +111,7 @@
     [params setObject:@"默认爱好" forKey:@"hobby"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"saveUserinfo2" forKey:@"method"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [DataStoreManager saveUserInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         [hud hide:YES];
         [self dismissModalViewControllerAnimated:YES];

@@ -226,7 +226,7 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==0) {
-        NSString * appLink = AppStoreAddress;
+        NSString * appLink = appStoreURL;
         NSURL *url = [NSURL URLWithString:appLink];
         if([[UIApplication sharedApplication] canOpenURL:url])
         {
@@ -427,7 +427,7 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         [self logInServerSuccessWithInfo:recDict];
@@ -439,11 +439,13 @@
 -(void)logInServerSuccessWithInfo:(NSDictionary *)dict
 {
     if ([[dict objectForKey:@"forceUpdate"] intValue]>0) {
+        appStoreURL = [[[dict objectForKey:@"updatefiles"] objectAtIndex:0] objectForKey:@"iosurl"];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
         alert.tag = 20;
         [alert show];
     }
     else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
+        appStoreURL = [[[dict objectForKey:@"updatefiles"] objectAtIndex:0] objectForKey:@"iosurl"];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
         alert.tag = 21;
         [alert show];
@@ -536,7 +538,7 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         if (type==0) {
