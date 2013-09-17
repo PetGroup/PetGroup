@@ -231,6 +231,8 @@
 {
     [_dynamicTV resignFirstResponder];
     self.pictureV.hidden = NO;
+    
+    [self getAnActionSheet];
 }
 -(void)getAnActionSheet
 {

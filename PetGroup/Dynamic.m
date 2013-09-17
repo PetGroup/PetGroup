@@ -47,7 +47,7 @@
         self.countZan = [[dic objectForKey:@"countZan"] intValue];//赞的数目
         self.ifIZaned = [[dic objectForKey:@"ifIZaned"]boolValue];//我是否赞过，0 没攒，1 赞。
         
-        self.rowHigh = 65;
+        self.rowHigh = 75;
         if (self.ifTransmitMsg!=0) {
             CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
             self.rowHigh+=(size.height+10);

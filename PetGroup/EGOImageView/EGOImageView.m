@@ -64,7 +64,7 @@
 		self.image = anImage;
 
 		// trigger the delegate callback if the image was found in the cache
-		if([self.delegate respondsToSelector:@selector(imageViewLoadedImage:)]) {
+		if(self.delegate&&[self.delegate respondsToSelector:@selector(imageViewLoadedImage:)]) {
 			[self.delegate imageViewLoadedImage:self];
 		}
 	} else {
@@ -87,7 +87,7 @@
 	self.image = anImage;
 	[self setNeedsDisplay];
 	
-	if([self.delegate respondsToSelector:@selector(imageViewLoadedImage:)]) {
+	if(self.delegate&&[self.delegate respondsToSelector:@selector(imageViewLoadedImage:)]) {
 		[self.delegate imageViewLoadedImage:self];
 	}	
 }
@@ -95,7 +95,7 @@
 - (void)imageLoaderDidFailToLoad:(NSNotification*)notification {
 	if(![[[notification userInfo] objectForKey:@"imageURL"] isEqual:self.imageURL]) return;
 	
-	if([self.delegate respondsToSelector:@selector(imageViewFailedToLoadImage:error:)]) {
+	if(self.delegate&&[self.delegate respondsToSelector:@selector(imageViewFailedToLoadImage:error:)]) {
 		[self.delegate imageViewFailedToLoadImage:self error:[[notification userInfo] objectForKey:@"error"]];
 	}
 }
