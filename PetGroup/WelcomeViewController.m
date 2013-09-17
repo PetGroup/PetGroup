@@ -39,18 +39,19 @@
 	//设置委托
 	sc.delegate=self;
     //设置背景颜色
-	sc.backgroundColor=[UIColor whiteColor];
+	sc.backgroundColor=[UIColor blackColor];
+    sc.alpha = 0.96;
     for (int i=1; i<=5; i++) {
 		//图片命名加拓展名
 		NSString *str=[NSString stringWithFormat:@"tupian%d",i];
-        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*(i-1), 0, 320, self.view.frame.size.height)];
+        UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*(i-1), 0, 320, 460)];
         [imgView setImage:[UIImage imageNamed:str]];
         imgView.tag=i;
 		//将imgView添加到sc(scrollerView)上
 	    [sc addSubview:imgView];
 	}
     NSString *str=[NSString stringWithFormat:@"tupian%d",1];
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*5, 0, 320, self.view.frame.size.height)];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*5, 0, 320, 460)];
     [imgView setImage:[UIImage imageNamed:str]];
     imgView.tag=6;
     //将imgView添加到sc(scrollerView)上
