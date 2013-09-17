@@ -92,13 +92,7 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    profileButton.frame=CGRectMake(282, 7, 30, 30);
-    [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
-    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
-    [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
-    [self.view addSubview:profileButton];
-    [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
+
     
     
     
@@ -109,7 +103,16 @@
         
     }
     else
+    {
         titleLabel.text=self.petInfo.petNickname;
+        UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        profileButton.frame=CGRectMake(282, 7, 30, 30);
+        [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
+        //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
+        [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
+        [self.view addSubview:profileButton];
+        [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
+    }
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
