@@ -30,6 +30,7 @@
 +(void)storeMyMessage:(NSDictionary *)message;
 +(void)blankMsgUnreadCountForUser:(NSString *)username;
 +(NSArray *)queryUnreadCountForCommonMsg;
++(void)deleteThumbMsgWithSender:(NSString *)sender;
 +(void)deleteMsgsWithSender:(NSString *)sender Type:(NSString *)senderType;
 
 +(NSMutableArray *)qureyAllCommonMessages:(NSString *)username;

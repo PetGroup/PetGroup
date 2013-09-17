@@ -20,11 +20,15 @@
     
     BOOL loggedIn;
     BOOL ifNeedChat;
+    
+    BOOL opened;
     NSString * needChatUserName;
 }
 @property (assign,nonatomic)BOOL newFriendsReq;
 
 + (id)sharedInstance;
+-(void)setOpened:(BOOL)haveOpened;
+-(BOOL)ifOpened;
 -(void)Panned:(BOOL)pan;
 -(BOOL)ifPanned;
 -(void)needConnectChatServer:(BOOL)flag;

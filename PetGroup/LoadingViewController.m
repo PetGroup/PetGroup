@@ -85,6 +85,12 @@
     }
     
 }
+-(void)setMakeLogin
+{
+    if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+        [messageV logInToServer];
+    }
+}
 -(void)getUserLocation
 {
     [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {

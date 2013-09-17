@@ -69,9 +69,10 @@ typedef enum {
 -(XMPPvCardTemp *)getvcard:(NSString *)account;
 -(void)getCompleteRoster:(XMPPRosterMemoryStorageCallBack)callback;
 -(void)addOrDenyFriend:(Boolean)issubscribe user:(NSString *)user;
--(void)addFriend:(NSString *)user;
+-(BOOL)addFriend:(NSString *)user;
 -(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID;
 -(void)delFriend:(NSString *)user;
 -(void)getIt;
 -(void)disconnect;
+-(BOOL)sendMessage:(NSXMLElement *)message;
 @end

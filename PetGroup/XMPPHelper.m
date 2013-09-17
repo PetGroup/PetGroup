@@ -145,12 +145,17 @@
 }
 
 //添加好友
--(void)addFriend:(NSString *)user{
-    NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
-    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName];
-    if ([self ifXMPPConnected]) {
-        
+-(BOOL)addFriend:(NSString *)user{
+    if (![self ifXMPPConnected]) {
+        return NO;
     }
+    else
+    {
+        NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
+        [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName];
+        return YES;
+    }
+    
 }
 -(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID{
     NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
@@ -229,6 +234,18 @@
     NSLog(@"authenticated");
     [self goOnline];
     self.success();
+}
+
+-(BOOL)sendMessage:(NSXMLElement *)message
+{
+    if (![self ifXMPPConnected]) {
+        return NO;
+    }
+    else
+    {
+        [self.xmppStream sendElement:message];
+        return YES;
+    }
 }
 
 - (void)xmppRosterDidChange:(XMPPRosterMemoryStorage *)sender

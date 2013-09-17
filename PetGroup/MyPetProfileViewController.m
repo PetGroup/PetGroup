@@ -92,6 +92,14 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    profileButton.frame=CGRectMake(282, 7, 30, 30);
+    [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
+    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
+    [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
+    [self.view addSubview:profileButton];
+    [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
+    
     
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
@@ -149,6 +157,13 @@
     hud.labelText = @"提交中...";
 	// Do any additional setup after loading the view.
 }
+-(void)moreOperation
+{
+    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除这个宠物" otherButtonTitles: nil];
+    action.tag = 88;
+    [action showInView:self.view];
+}
+
 -(void)makeHeight
 {
     self.heightArray = [NSMutableArray array];
@@ -444,6 +459,48 @@
             }
         }
     }
+    else if (actionSheet.tag==88)
+    {
+        UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除这个宠物么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+        delAlert.tag = 112;
+        [delAlert show];
+    }
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==112) {
+        if (buttonIndex==1) {
+            [self delPet];
+        }
+    }
+}
+-(void)delPet
+{
+    NSMutableDictionary * petinfo = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [petinfo setObject:self.petInfo.petID forKey:@"id"];
+    [petinfo setObject:@"0" forKey:@"version"];
+    [postDict setObject:petinfo forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"delPetInfo" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",dic);
+        [DataStoreManager deleteOnePetForPetID:self.petInfo.petID];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.photoWall setAnimationNO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络好像有点问题" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+    }];
+
 }
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {

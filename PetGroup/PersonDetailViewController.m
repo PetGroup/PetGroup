@@ -241,7 +241,10 @@
 }
 -(void)sureBtnDo
 {
-    [self.appDel.xmppHelper addFriend:self.hostInfo.userName];
+    if (![self.appDel.xmppHelper addFriend:self.hostInfo.userName]) {
+        [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+        return;
+    }
     NSString *message = locationTextF.text;
     if (message.length<1) {
         message = [NSString stringWithFormat:@"Hi~我是%@，加我为好友吧",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
@@ -255,7 +258,12 @@
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         [mes addChild:body];
         locationTextF.text = @"";
-        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+//        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+        if (![self.appDel.xmppHelper sendMessage:mes]) {
+            [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+            //Do something when send failed...
+            return;
+        }
         
         
     }

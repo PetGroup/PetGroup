@@ -120,6 +120,14 @@
     }
     return unreadArray;
 }
++(void)deleteThumbMsgWithSender:(NSString *)sender
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+        [thumbMsgs MR_deleteInContext:localContext];
+    }];
+}
 +(void)deleteMsgsWithSender:(NSString *)sender Type:(NSString *)senderType
 {
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {

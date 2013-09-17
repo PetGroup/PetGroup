@@ -34,6 +34,15 @@ static TempData *sharedInstance=nil;
     loggedIn = NO;
     ifNeedChat = NO;
     needChatUserName = @"";
+    opened = NO;
+}
+-(void)setOpened:(BOOL)haveOpened
+{
+    opened = haveOpened;
+}
+-(BOOL)ifOpened
+{
+    return opened;
 }
 -(void)makeLogged:(BOOL)logged
 {
