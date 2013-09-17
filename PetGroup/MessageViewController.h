@@ -72,6 +72,7 @@
     
     NSMutableArray * allNickNameArray;
     NSMutableArray * allHeadImgArray;
+    NSString * appStoreURL;
 }
 
 

@@ -157,14 +157,14 @@
             [imageArray addObject:((UIImageView*)self.pictureArray[i]).image];
             [nameArray addObject:[NSString stringWithFormat:@"%d",i]];
         }
-        [NetManager uploadImagesWithCompres:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        [NetManager uploadImagesWithCompres:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSDictionary* CompresID = responseObject;
-            [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
                 self.imageId = [[NSMutableString alloc]init];
                 for (NSString*a in responseObject) {
                     [_imageId appendFormat:@"%@_%@,",[CompresID objectForKey:a],[responseObject objectForKey:a]];
                 }
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:_imageId] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:_imageId] TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
                     [((DelegateAndDataSource*)_viewC.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
@@ -184,7 +184,7 @@
             [hud hide:YES];
         }];
     }else{
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:@""] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:[self putDynamic:@""] TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
             [((DelegateAndDataSource*)_viewC.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];

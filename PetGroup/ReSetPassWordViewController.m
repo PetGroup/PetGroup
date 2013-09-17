@@ -115,7 +115,7 @@
         [body setObject:@"isUsernameInuse" forKey:@"method"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [hud show:YES];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"true"]) {
                 [self next];
             }else{
@@ -146,7 +146,7 @@
     [body setObject:params forKey:@"params"];
     [body setObject:@"getVerificationCode" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
         ResetPassOneViewController* resetPassVC = [[ResetPassOneViewController alloc]init];
         resetPassVC.phoneNo = _phoneNoTF.text;

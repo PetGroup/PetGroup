@@ -397,7 +397,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     if (self.dynamic.ifIZaned) {
         [body setObject:@"delZan" forKey:@"method"];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
             zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
@@ -407,7 +407,7 @@
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
             zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
@@ -506,7 +506,7 @@
                 [body setObject:@"delReply" forKey:@"method"];
                 [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [self.dynamic.replyViews removeObject:self.deleteObject];
                     self.dynamic.rowHigh-=((((Reply*)self.deleteObject).replyComments.count+1)*28);
                     [(UITableView*)self.superview reloadData];
@@ -535,7 +535,7 @@
                     [body setObject:@"delCommentReply" forKey:@"method"];
                     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
                     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         [theReply.replyComments removeObject:self.deleteObject];
                         self.dynamic.rowHigh-=28;
                         [(UITableView*)self.superview reloadData];

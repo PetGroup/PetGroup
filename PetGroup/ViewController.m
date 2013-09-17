@@ -67,7 +67,7 @@
 //    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
 
    NSDictionary * postDict = [MakeDict dictWithUsualElements:@[@"1",@"open",@"776ffca1-6eeb-493a-8c44-8cf1afa6bfe6",@"wwww",@"iphone",@""] ForKeys:@[@"channel",@"method",@"token",@"mac",@"imei",@"connectTime"] AndParams:@[@"asw",@"111111",@"31",@"2"] ForParamsKey:@[@"username",@"password",@"imgId",@"type"]];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString * hhh = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"ssss:%@",hhh);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -85,7 +85,7 @@
 }
 -(void)testUpload
 {
-    [NetManager uploadImage:[UIImage imageNamed:@"222222.jpg"] WithURLStr:BaseUploadImageUrl ImageName:@"2222.jpg" Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadImage:[UIImage imageNamed:@"222222.jpg"] WithURLStr:BaseUploadImageUrl ImageName:@"2222.jpg" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *response = [operation responseString];

@@ -644,9 +644,9 @@
 {
     [hud show:YES];
     if (self.waitingUploadImgArray.count>0) {
-        [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        [NetManager uploadImagesWithCompres:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
             NSDictionary* CompresID = responseObject;
-            [NetManager uploadImages:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+            [NetManager uploadImages:self.waitingUploadImgArray WithURLStr:BaseUploadImageUrl ImageName:self.waitingUploadStrArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
                 NSMutableArray * a1 = [NSMutableArray arrayWithArray:self.hostInfo.headImgArray];
                 NSMutableArray * a2 = [NSMutableArray arrayWithArray:self.hostInfo.headBigImgArray];
                 for (NSString*a in responseObject) {
@@ -704,7 +704,7 @@
     [params setObject:[self.discribeArray objectAtIndex:5] forKey:@"hobby"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"saveUserinfo2" forKey:@"method"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         [DataStoreManager saveUserInfo:recDict];

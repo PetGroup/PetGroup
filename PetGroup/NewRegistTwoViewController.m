@@ -141,7 +141,7 @@
     [body setObject:@"getVerificationCode" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"验证码已重新发送到您的手机" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
