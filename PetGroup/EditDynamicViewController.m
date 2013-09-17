@@ -230,7 +230,6 @@
 -(void)addPhoto
 {
     [_dynamicTV resignFirstResponder];
-    self.pictureV.hidden = NO;
     
     [self getAnActionSheet];
 }
@@ -324,6 +323,7 @@
 #pragma mark - imagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    self.pictureV.hidden = NO;
     if (self.pictureArray == nil) {
         self.pictureArray = [[NSMutableArray alloc]init];
     }
