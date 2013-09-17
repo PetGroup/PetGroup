@@ -50,6 +50,7 @@
 		86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F690DD17E05362002C5DBB /* morenbeijing.png */; };
 		86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
+		9718F46117E8668300BEC495 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9718F46017E8668300BEC495 /* dyn.png */; };
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937617D9C8380001E863 /* MarkupParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936C17D9C8380001E863 /* MarkupParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9727937717D9C8380001E863 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936E17D9C8380001E863 /* NSAttributedString+Attributes.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -549,7 +550,6 @@
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
 		97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */; };
-		97F8D20717E7176C00A6CCA3 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F8D20617E7176C00A6CCA3 /* dyn.png */; };
 		97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F8D20817E7177C00A6CCA3 /* shezhi22.png */; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
 		97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB035017E00432002086D9 /* AboutAppViewController.m */; };
@@ -637,6 +637,7 @@
 		86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDynamicDelegateAndDataSouce.m; sourceTree = "<group>"; };
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		9718F46017E8668300BEC495 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
 		9727936917D9C8380001E863 /* HeightCalculate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightCalculate.h; sourceTree = "<group>"; };
 		9727936A17D9C8380001E863 /* HeightCalculate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightCalculate.m; sourceTree = "<group>"; };
 		9727936B17D9C8380001E863 /* MarkupParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkupParser.h; sourceTree = "<group>"; };
@@ -1407,7 +1408,6 @@
 		97E9D17F17D5C024003A4A4C /* PetProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PetProfileCell.m; sourceTree = "<group>"; };
 		97E9D18117D5D4F8003A4A4C /* MyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoCell.h; sourceTree = "<group>"; };
 		97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoCell.m; sourceTree = "<group>"; };
-		97F8D20617E7176C00A6CCA3 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
 		97F8D20817E7177C00A6CCA3 /* shezhi22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shezhi22.png; sourceTree = "<group>"; };
 		97FB034D17E00432002086D9 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		97FB034E17E00432002086D9 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
@@ -2625,11 +2625,11 @@
 		9736BD1317C49146007DFE36 /* more */ = {
 			isa = PBXGroup;
 			children = (
+				9718F46017E8668300BEC495 /* dyn.png */,
 				97E3AB2F17E81FA000674321 /* placeholder.png */,
 				97E3AB2D17E7F8E400674321 /* shanchu.png */,
 				97E3AB2B17E7E67000674321 /* gengduoxinxi.png */,
 				97F8D20817E7177C00A6CCA3 /* shezhi22.png */,
-				97F8D20617E7176C00A6CCA3 /* dyn.png */,
 				9736BD1417C49146007DFE36 /* myprofile-ico.png */,
 				9736BD1517C49146007DFE36 /* outkuang.png */,
 				9736BD1617C49146007DFE36 /* petex-ico.png */,
@@ -3571,7 +3571,6 @@
 				8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */,
 				86F690DE17E05362002C5DBB /* morenbeijing.png in Resources */,
 				97E4B4A217E29CF500D2F23B /* icon.png in Resources */,
-				97F8D20717E7176C00A6CCA3 /* dyn.png in Resources */,
 				97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */,
 				97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */,
 				97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */,
@@ -3579,6 +3578,7 @@
 				86A96A2D17E85391001105AD /* liuyan.png in Resources */,
 				86A96A2E17E85391001105AD /* zan.png in Resources */,
 				86A96A3217E85C7A001105AD /* zaned.png in Resources */,
+				9718F46117E8668300BEC495 /* dyn.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

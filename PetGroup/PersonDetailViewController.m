@@ -173,7 +173,7 @@
     typeMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
     typeMsgView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:typeMsgView];
-    UIView * blackV = [[UIView alloc] initWithFrame:CGRectMake(40, 90, 240, 150)];
+    blackV = [[UIView alloc] initWithFrame:CGRectMake(40, 90, 240, 150)];
     blackV.backgroundColor = [UIColor blackColor];
     blackV.layer.cornerRadius = 5;
     blackV.alpha = 0.8;
@@ -277,12 +277,16 @@
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [locationTextF resignFirstResponder];
-    [UIView animateWithDuration:0.3 animations:^{
-        [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
-    } completion:^(BOOL finished) {
-        
-    }];
+    UITouch * theTouch = [touches anyObject];
+    if (![[theTouch view] isEqual:blackV]) {
+        [locationTextF resignFirstResponder];
+        [UIView animateWithDuration:0.3 animations:^{
+            [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
 }
 -(void)reloadTheViews
 {
