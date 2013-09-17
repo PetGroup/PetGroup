@@ -49,7 +49,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.beijingL = [[UILabel alloc]init];
-        _beijingL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];;
+        _beijingL.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1];;
         [self.contentView addSubview:_beijingL];
         
         self.timeL = [[UILabel alloc]init];
@@ -102,10 +102,10 @@
         [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:zanB];
         self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
-        _zanimage.frame = CGRectMake(0, 0, 15, 15);
+        _zanimage.frame = CGRectMake(0, 0, 25, 25);
         _zanimage.backgroundColor = [UIColor clearColor];
         [zanB addSubview:_zanimage];
-        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 35, 15)];
+        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 35, 25)];
         _zanL.backgroundColor = [UIColor clearColor];
         _zanL.textAlignment = NSTextAlignmentCenter;
         _zanL.font = [UIFont systemFontOfSize:12];
@@ -113,7 +113,7 @@
         [zanB addSubview:_zanL];
         
         _moveB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_moveB setBackgroundImage:[UIImage imageNamed:@"pinglun"] forState:UIControlStateNormal];
+        [_moveB setBackgroundImage:[UIImage imageNamed:@"liuyan"] forState:UIControlStateNormal];
         [self.contentView addSubview:_moveB];
         [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
         
@@ -232,7 +232,7 @@
                 }
                 
             }else{
-                _msgL.backgroundColor= [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+                _msgL.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1];
                 _msgL.frame = CGRectMake(80, origin, 210, 18);
                 pushB.frame = _msgL.frame;
                 origin+=28;
@@ -299,10 +299,10 @@
     }else{
         _zanimage.image = [UIImage imageNamed:@"zan"];
     }
-    zanB.frame = CGRectMake(180, origin, 50, 15);
-    _moveB.frame = CGRectMake(260, origin, 30, 15);
+    zanB.frame = CGRectMake(180, origin, 50, 25);
+    _moveB.frame = CGRectMake(260, origin, 30, 25);
     
-    origin+=25;
+    origin+=35;
     
     int count = 0;
     for (Reply* reply in self.dynamic.replyViews) {
