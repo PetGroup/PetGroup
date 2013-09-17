@@ -300,6 +300,10 @@
                     self.mycell.dynamic.rowHigh+=28;
                     [self.tableV reloadData];
                     self.mycell = nil;
+                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                   [hud hide:YES];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
                 }];
             }break;
             case 2:
@@ -332,6 +336,10 @@
                     [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
                     [self.tableV reloadData];
                     self.mycell = nil;
+                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [hud hide:YES];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
                 }];
                 
             }break;
@@ -390,6 +398,10 @@
                     }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     self.mycell = nil;
+                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [hud hide:YES];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
                 }];
             }break;
 
