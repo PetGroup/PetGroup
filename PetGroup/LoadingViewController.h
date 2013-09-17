@@ -19,4 +19,5 @@
 @property (strong,nonatomic) CustomTabBar * tabBarC;
 @property (strong,nonatomic) MLNavigationController * NaviMessage, *NaviDynamic,* NaviNearBy, * NaviContacts, * NaviMore ,* NaviRandom;
 -(void)setLabelTitle:(NSString *)title;
+-(void)setMakeLogin;
 @end

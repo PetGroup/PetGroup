@@ -51,8 +51,8 @@
         [self addSubview:self.viewMask];
         
         self.delBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.delBtn setBackgroundColor:[UIColor redColor]];
-        [self.delBtn setFrame:CGRectMake(-5, -5, 15, 15)];
+        [self.delBtn setImage:[UIImage imageNamed:@"shanchu.png"] forState:UIControlStateNormal];
+        [self.delBtn setFrame:CGRectMake(-8, -8, 25, 25)];
         [self addSubview:self.delBtn];
         [self.delBtn addTarget:self action:@selector(delSelf) forControlEvents:UIControlEventTouchUpInside];
         self.delBtn.hidden = YES;

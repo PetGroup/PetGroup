@@ -22,7 +22,7 @@ typedef  enum
     PageStyleChange
 }PageType;
 
-@interface MyPetProfileViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,ChangeText,MBProgressHUDDelegate>
+@interface MyPetProfileViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDataSource,UIPickerViewDelegate,ChangeText,MBProgressHUDDelegate,UIAlertViewDelegate>
 {
     UIView * chooseRegionV;
     MBProgressHUD * hud;

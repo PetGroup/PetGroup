@@ -376,7 +376,8 @@
 {
     if (editingStyle==UITableViewCellEditingStyleDelete)
     {
-        [DataStoreManager deleteMsgsWithSender:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] Type:COMMONUSER];
+       // [DataStoreManager deleteMsgsWithSender:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] Type:COMMONUSER];
+        [DataStoreManager deleteThumbMsgWithSender:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"]];
         [allMsgArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         [self displayMsgsForDefaultView];
@@ -449,9 +450,48 @@
     }
     [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     [self saveMyInfo:[dict objectForKey:@"petUserView"]];
+    NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
+    
+    NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+    NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,openImgId];
+    NSFileManager *file_manager = [NSFileManager defaultManager];
+    if (![file_manager fileExistsAtPath:openImgPath]) {
+        [self downloadImageWithID:openImgId Type:@"open" PicName:nil];
+    }
+
     [self logInToChatServer];
 }
+-(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
+{
+    [NetManager downloadImageWithBaseURLStr:BaseImageUrl ImageId:imageId success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        if ([theType isEqualToString:@"open"]) {
+            NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:path] == NO)
+            {
+                [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+            NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,imageId];
 
+            
+            if ([UIImageJPEGRepresentation(image, 1.0) writeToFile:openImgPath atomically:YES]) {
+                NSLog(@"success///");
+            }
+            else
+            {
+                NSLog(@"fail");
+            }
+//            NSFileManager *file_manager = [NSFileManager defaultManager];
+//            if ([file_manager fileExistsAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"]]) {
+//                [file_manager removeItemAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"] error:nil];
+//            }
+            [[NSUserDefaults standardUserDefaults] setObject:openImgPath forKey:@"OpenImg"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+}
 -(void)logInToChatServer
 {
     self.appDel.xmppHelper.notConnect = self;
@@ -462,7 +502,8 @@
         self.appDel.xmppHelper.chatDelegate = self;
         self.appDel.xmppHelper.processFriendDelegate = self;
         self.appDel.xmppHelper.addReqDelegate = self;
-        titleLabel.text = @"消息";    
+        titleLabel.text = @"消息";
+        [[TempData sharedInstance] setOpened:YES];
     }fail:^(NSError *result){
         titleLabel.text = @"消息(未连接)"; 
     }];

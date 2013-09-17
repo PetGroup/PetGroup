@@ -103,17 +103,29 @@
     Reachability * reach = [Reachability reachabilityForInternetConnection];
     if (reach) {
         // messageV->titleLabel.text=@"消息";
-        [_loadingV setLabelTitle:@"消息"];
+        if ([[TempData sharedInstance] ifOpened]) {
+            if (![self.xmppHelper ifXMPPConnected]) {
+                [_loadingV setLabelTitle:@"消息(连接中...)"];
+                [_loadingV setMakeLogin];
+            }
+        }
+        
     }
     else{
         // messageV->titleLabel.text=@"消息(未连接)";
         [_loadingV setLabelTitle:@"消息(未连接)"];
+        [self.xmppHelper disconnect];
     }
     reach.reachableBlock = ^(Reachability * reachability)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             //    messageV->titleLabel.text=@"消息";
-            [_loadingV setLabelTitle:@"消息"];
+            if ([[TempData sharedInstance] ifOpened]) {
+                if (![self.xmppHelper ifXMPPConnected]) {
+                    [_loadingV setLabelTitle:@"消息(连接中...)"];
+                    [_loadingV setMakeLogin];
+                }
+            }
             //[self logIn];
         });
     };
@@ -123,6 +135,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             //   messageV->titleLabel.text=@"消息（未连接）";
             [_loadingV setLabelTitle:@"消息(未连接)"];
+            [self.xmppHelper disconnect];
         });
     };
     

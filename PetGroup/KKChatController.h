@@ -18,7 +18,7 @@
 #import "MyProfileViewController.h"
 #import "selectContactPage.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;

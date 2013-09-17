@@ -78,4 +78,6 @@
 @property (strong,nonatomic) UITableView * messageTable;
 @property (strong,nonatomic) AppDelegate * appDel;
 
+-(void)logInToServer;
+
 @end

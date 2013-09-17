@@ -92,12 +92,12 @@
     [backButton addTarget:self action:@selector(closeButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    profileButton.frame=CGRectMake(282, 7, 28, 28);
-    [profileButton setBackgroundImage:[UIImage imageNamed:@"chat-profile.png"] forState:UIControlStateNormal];
+    profileButton.frame=CGRectMake(282, 7, 30, 30);
+    [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:profileButton];
-    [profileButton addTarget:self action:@selector(toContactProfile) forControlEvents:UIControlEventTouchUpInside];
+    [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
     
     titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -159,6 +159,20 @@
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
+}
+-(void)moreOperation
+{
+    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除聊天记录" otherButtonTitles: nil];
+    [action showInView:self.view];
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==0) {
+        UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除聊天记录么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+        delAlert.tag = 112;
+        [delAlert show];
+
+    }
 }
 -(void)toContactProfile
 {
@@ -594,7 +608,13 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==1) {
-        [self sureToTransform:tempDict];
+        if (alertView.tag==112) {
+            [DataStoreManager deleteMsgsWithSender:self.chatWithUser Type:COMMONUSER];
+            messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+            [self.tView reloadData];
+        }
+        else
+            [self sureToTransform:tempDict];
     }
 }
 -(void)sureToTransform:(NSDictionary *)userDict
@@ -700,7 +720,12 @@
         
         //发送消息
         
-        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+       // [self.appDel.xmppHelper.xmppStream sendElement:mes];
+        if (![self.appDel.xmppHelper sendMessage:mes]) {
+            [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+            //Do something when send failed...
+            return;
+        }
         
         
         
