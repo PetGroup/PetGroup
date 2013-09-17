@@ -273,6 +273,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
     [attString setFont:[UIFont systemFontOfSize:14]];
     
     self.backgroundColor = [UIColor clearColor];
+//    self.backgroundColor = [UIColor colorWithRed:0.97 green:0.95 blue:0.95 alpha:1];
     [self setAttString:attString withImages:p.images];
     
     NSString *string =attString.string;
@@ -587,7 +588,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
         }
     
     }
-	[self setBackgroundColor:[UIColor clearColor]];
+	self.backgroundColor = [UIColor clearColor];
 	[activeLink release];
 	activeLink = nil;
 	[self setNeedsDisplay];

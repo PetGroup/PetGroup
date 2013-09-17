@@ -329,7 +329,7 @@
         [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:210];
         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
         [ohaL setFrame:CGRectMake(80 , origin, 210, size.height)];
-        origin += (size.height+10);
+        origin += (size.height+5);
         for (int j = 0; j < rel.replyComments.count; j++) {
             OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
             number++;
@@ -338,7 +338,7 @@
             [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:210];
             CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
             [ohaL setFrame:CGRectMake(80 , origin, 210, size.height)];
-            origin += (size.height+10);
+            origin += (size.height+5);
         }
     }
 }

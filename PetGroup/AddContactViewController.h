@@ -21,6 +21,6 @@
     UILabel * noResultLabel;
 }
 @property (strong,nonatomic) UITableView * resultTable;
-@property (strong,nonatomic) NSArray * resultArray;
+@property (strong,nonatomic) NSMutableArray * resultArray;
 @property (assign,nonatomic) int pageIndex;
 @end

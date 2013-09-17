@@ -55,7 +55,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.beijingL = [[UILabel alloc]init];
-        _beijingL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];;
+        _beijingL.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];;
         [self.contentView addSubview:_beijingL];
         
         nameB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -166,7 +166,7 @@
         
         msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
         self.msgL.backgroundColor = [UIColor clearColor];
-        if (msgSize.height<90) {
+        if (msgSize.height<=90) {
             self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
             origin+=(msgSize.height+10);
         }else{
@@ -245,6 +245,7 @@
                     quanwenB.frame = CGRectMake(60, origin, 30, 15);
                     origin+=25;
                 }else{
+                    [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
                      _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
                     origin+=(msgSize.height+10);
                     quanwenB.frame = CGRectMake(60, origin, 30, 15);
@@ -252,7 +253,7 @@
                 }
                 
             }else{
-                _msgL.backgroundColor= [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+                _msgL.backgroundColor= [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
                 _msgL.frame = CGRectMake(60, 40, 240, 18);
                 pushB.frame = _msgL.frame;
                 origin+=28;
@@ -282,7 +283,7 @@
                 a.frame = CGRectMake(originX, origin+80, 75, 75);
                 originX+=80;
             }
-            origin+=170;
+            origin+=165;
         }else if(self.dynamic.smallImage.count>6){
             int originX = 60;
             for (int i = 0; i<3; i++) {
@@ -305,7 +306,7 @@
                 a.frame = CGRectMake(originX, origin+160, 75, 75);
                 originX+=80;
             }
-            origin+=255;
+            origin+=245;
         }
     }
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
@@ -336,6 +337,7 @@
         int a = count - self.OHALabelArray.count;
         for (int i = 0; i < a; i++) {
             OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
+            ohaL.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
             ohaL.delegate = self;
             [self.OHALabelArray addObject:ohaL];
             [self.contentView addSubview:ohaL];
@@ -350,7 +352,7 @@
         [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:240];
         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
         [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
-        origin += (size.height+10);
+        origin += (size.height+5);
         for (int j = 0; j < rel.replyComments.count; j++) {
             OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
             number++;
@@ -359,7 +361,7 @@
             [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:240];
             CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
             [ohaL setFrame:CGRectMake(60 , origin, 260, size.height)];
-            origin += (size.height+10);
+            origin += (size.height+5);
         }
     }
 }

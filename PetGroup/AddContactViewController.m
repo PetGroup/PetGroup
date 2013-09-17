@@ -8,6 +8,7 @@
 
 #import "AddContactViewController.h"
 #import "JSON.h"
+#import "DataStoreManager.h"
 
 @interface AddContactViewController ()
 
@@ -100,7 +101,12 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        self.resultArray = [receiveStr JSONValue];
+        self.resultArray =[NSMutableArray arrayWithArray:[receiveStr JSONValue]];
+        for (NSDictionary* dic in self.resultArray) {
+            if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[DataStoreManager getMyUserID]]) {
+                [_resultArray removeObject:dic];
+            }
+        }
         if (self.resultArray.count>0) {
             noResultLabel.hidden = YES;
         }

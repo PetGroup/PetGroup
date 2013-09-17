@@ -61,7 +61,7 @@
             CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
             if (size.height>=180) {
                 self.rowHigh+=28;
-            }else if(size.height>=90){
+            }else if(size.height>90){
                 self.rowHigh+=108+25;
             }else{
                 self.rowHigh+=(size.height+10);
@@ -79,12 +79,12 @@
         Reply* rel = self.replyViews[i];
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-        self.rowHigh += (size.height+10);
+        self.rowHigh += (size.height+5);
         for (int j = 0; j < rel.replyComments.count; j++) {
             ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
             NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
             CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-            self.rowHigh += (size.height+10);
+            self.rowHigh += (size.height+5);
         }
     }
     return self;

@@ -34,7 +34,7 @@
         self.canReq = YES;
         theType = @"";
         theGender = @"";
-        theCity = @"北京市";
+        theCity = @"";
         self.currentPage = 0;
         latitude = 0.0f;
         longitude = 0.0f;
