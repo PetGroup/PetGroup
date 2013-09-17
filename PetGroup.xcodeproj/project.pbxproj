@@ -543,6 +543,7 @@
 		97E25C3D17C3729A007E187D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E25C3F17C3729A007E187D /* Localizable.strings */; };
 		97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2B17E7E67000674321 /* gengduoxinxi.png */; };
 		97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2D17E7F8E400674321 /* shanchu.png */; };
+		97E3AB3017E81FA000674321 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2F17E81FA000674321 /* placeholder.png */; };
 		97E4B4A217E29CF500D2F23B /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E4B4A117E29CF500D2F23B /* icon.png */; };
 		97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17917D596C2003A4A4C /* NormalPetDetailViewController.m */; };
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
@@ -1392,6 +1393,7 @@
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		97E3AB2B17E7E67000674321 /* gengduoxinxi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gengduoxinxi.png; sourceTree = "<group>"; };
 		97E3AB2D17E7F8E400674321 /* shanchu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shanchu.png; sourceTree = "<group>"; };
+		97E3AB2F17E81FA000674321 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		97E49AFF17DD7CA6001ECD09 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		97E49B0017DD7CA7001ECD09 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		97E4B4A117E29CF500D2F23B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -2623,6 +2625,7 @@
 		9736BD1317C49146007DFE36 /* more */ = {
 			isa = PBXGroup;
 			children = (
+				97E3AB2F17E81FA000674321 /* placeholder.png */,
 				97E3AB2D17E7F8E400674321 /* shanchu.png */,
 				97E3AB2B17E7E67000674321 /* gengduoxinxi.png */,
 				97F8D20817E7177C00A6CCA3 /* shezhi22.png */,
@@ -3575,6 +3578,7 @@
 				97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */,
 				97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */,
 				97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */,
+				97E3AB3017E81FA000674321 /* placeholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
