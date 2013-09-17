@@ -453,7 +453,9 @@
     [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     [self saveMyInfo:[dict objectForKey:@"petUserView"]];
     NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
-    
+//    if (iPhone5) {
+//        openImgId = [openImgId stringByAppendingString:@"+ios+320#480"];
+//    }
     NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
     NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,openImgId];
     NSFileManager *file_manager = [NSFileManager defaultManager];

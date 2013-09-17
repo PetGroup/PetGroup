@@ -549,6 +549,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
         [self becomeFirstResponder];
         [menu setTargetRect:CGRectMake(self.frame.size.width/2-30, 0, 60, 30) inView:self];
         [menu setMenuVisible:YES animated:YES];
+        self.backgroundColor = [UIColor clearColor];
     }
     
 }
