@@ -81,7 +81,9 @@
 
 - (void)setPhotoUrl:(NSString*)photoUrl
 {
-    [self.viewPhoto setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
+
+    [self.viewPhoto setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+
 }
 
 -(void)SetPhotoUrlWithCache:(NSString *)url

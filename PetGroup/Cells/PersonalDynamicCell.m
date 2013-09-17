@@ -87,7 +87,7 @@
         
         NSMutableArray* arr = [[NSMutableArray alloc]init];
         for (int i = 0; i < 9; i++) {
-            EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+            EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
             [self.contentView addSubview:a];
             a.tag = 1000+i;
             [a addTarget:self action:@selector(loadBagImage:)  forControlEvents:UIControlEventTouchUpInside];
