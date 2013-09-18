@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "EGOCache.h"
-#define AppID  @"564710616" //temp ID
+#define AppID  @"686838840" //temp ID
 @interface SettingViewController ()<UIAlertViewDelegate>
 
 @end
@@ -105,7 +105,7 @@
             [self.navigationController pushViewController:aboutV animated:YES];
         }
         if (indexPath.row == 3) {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"确认要清除所有得缓存吗?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"确认要清除所有的缓存吗?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
             [alert show];
         }
     }

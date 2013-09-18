@@ -53,7 +53,7 @@
     [self.view addSubview:tishiL1];
     
     UILabel* tishiL2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 190, 280, 60)];
-    tishiL2.text = @"快去选择你的宠物，并且给你和你的宠物设置一个高端大气上档次得头像吧，可以更好地与宠友们交流。";
+    tishiL2.text = @"快去选择你的宠物，并且给你和你的宠物设置一个高端大气上档次的头像吧，可以更好地与宠友们交流。";
     tishiL2.backgroundColor = [UIColor clearColor];
     tishiL2.numberOfLines = 0;
     [self.view addSubview:tishiL2];

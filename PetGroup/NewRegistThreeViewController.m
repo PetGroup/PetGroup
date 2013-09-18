@@ -305,7 +305,7 @@
         return;
     }
     if (_cityL.text.length<=0) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您所在得城市" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择您所在的城市" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         return;
     }

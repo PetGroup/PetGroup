@@ -109,7 +109,7 @@
         [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     }else{
         UILabel * petLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 230, 295, 30)];
-        [petLabel setText:@"爱宠得真实头像，方便小伙伴找到它"];
+        [petLabel setText:@"爱宠的真实头像，方便小伙伴找到它"];
         [petLabel setBackgroundColor:[UIColor clearColor]];
         [petLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.view addSubview:petLabel];

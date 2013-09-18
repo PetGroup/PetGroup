@@ -209,7 +209,7 @@
 }
 -(void)showAlertView
 {
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确得验证码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的验证码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
     [alert show];
 }
 #pragma mark - touch
