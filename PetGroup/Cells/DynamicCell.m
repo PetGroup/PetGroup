@@ -579,7 +579,15 @@
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [self.dynamic.replyViews removeObject:self.deleteObject];
-                    self.dynamic.rowHigh-=((((Reply*)self.deleteObject).replyComments.count+1)*28);
+                    NSString* repS = [NSString stringWithFormat:@"%@:%@",((Reply*)self.deleteObject).petUser.nickName,((Reply*)self.deleteObject).msg];
+                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                    self.dynamic.rowHigh-= (size.height+5);
+                    for (int j = 0; j < ((Reply*)self.deleteObject).replyComments.count; j++) {
+                        ReplyComment* recom = (ReplyComment*)((Reply*)self.deleteObject).replyComments[j];
+                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                        self.dynamic.rowHigh-= (size.height+5);
+                    }
                     [(UITableView*)self.superview reloadData];
                 }];
                 [self.dynamic.replyViews removeObject:self.deleteObject];
@@ -608,7 +616,9 @@
                     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         [theReply.replyComments removeObject:self.deleteObject];
-                        self.dynamic.rowHigh-=28;
+                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",((ReplyComment*)self.deleteObject).commentUserView.nickName,((ReplyComment*)self.deleteObject).replyUserView.nickName,((ReplyComment*)self.deleteObject).commentsMsg];
+                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                        self.dynamic.rowHigh-=(size.height+5);
                         [(UITableView*)self.superview reloadData];
                     }];
                 }

@@ -21,6 +21,7 @@
 #import "ReplyComment.h"
 #import "PersonalDynamicViewController.h"
 #import "MyDynamicDelegateAndDataSource.h"
+#import "HeightCalculate.h"
 
 @interface DynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
@@ -297,7 +298,9 @@
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     Reply* rep = [[Reply alloc]initWithDictionary:dic];
                     [self.mycell.dynamic.replyViews addObject:rep];
-                    self.mycell.dynamic.rowHigh+=28;
+                    NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
+                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                    self.mycell.dynamic.rowHigh += (size.height+5);
                     [self.tableV reloadData];
                     self.mycell = nil;
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -377,7 +380,9 @@
                     ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
                     if ([self.theID isKindOfClass:[Reply class]]) {
                         [((Reply*)self.theID).replyComments addObject:repcom];
-                        self.mycell.dynamic.rowHigh+=28;
+                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
+                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     if ([self.theID isKindOfClass:[ReplyComment class]]) {
@@ -393,7 +398,9 @@
                         if (theRep) {
                             [theRep.replyComments addObject:repcom];
                         }
-                        self.mycell.dynamic.rowHigh+=28;
+                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
+                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
