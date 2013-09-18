@@ -16,6 +16,7 @@
 #import "UIExpandingTextView.h"
 #import "TempData.h"
 #import "ReplyComment.h"
+#import "MyDynamicDelegateAndDataSource.h"
 @interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
     UIButton * assessB;
@@ -246,8 +247,10 @@
                     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         [hud hide:YES];
                         NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                        Dynamic* b = [[Dynamic alloc]initWithNSDictionary:dic];
-                        [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+                        PersonalDynamic* b = [[PersonalDynamic alloc]initWithNSDictionary:dic];
+                        if ([self.dataSource isKindOfClass:[MyDynamicDelegateAndDataSource class]]) {
+                            [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
+                        }
                         [self.tableV reloadData];
                         self.mycell = nil;
                     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
