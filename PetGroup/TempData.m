@@ -28,6 +28,7 @@ static TempData *sharedInstance=nil;
     panned = YES;
     needConnectChatServer = NO;
     serverAddress = Host;
+    serverDomain = Domain;
     latitude = 0;
     longitude = 0;
     self.newFriendsReq = NO;

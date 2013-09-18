@@ -20,6 +20,7 @@
 #import "XMPPvCardCoreDataStorage.h"
 #import "XMPPRosterMemoryStorage.h"
 #import "XMPPJID.h"
+#import "TempData.h"
 
 @implementation XMPPHelper
 //@synthesize xmppStream,xmppvCardStorage,xmppvCardTempModule,xmppvCardAvatarModule,xmppvCardTemp,account,password,buddyListDelegate,chatDelegate,xmpprosterDelegate,processFriendDelegate,xmpptype,success,fail,regsuccess,regfail,xmppRosterscallback,myVcardTemp,xmppRosterMemoryStorage,xmppRoster;
@@ -74,7 +75,7 @@
 
 -(void) reg:(NSString *)theaccount password:(NSString *)thepassword host:(NSString *)host success:(CallBackBlock)thesuccess fail:(CallBackBlockErr)thefail{
     self.xmpptype=reg;
-    self.account=[theaccount stringByAppendingString:Domain];
+    self.account=[theaccount stringByAppendingString:[[TempData sharedInstance] getDomain]];
     self.password=thepassword;
     self.regsuccess=thesuccess;
     self.regfail=thefail;
@@ -122,8 +123,8 @@
 }
 
 -(XMPPvCardTemp *)getvcard:(NSString *)Account{
-    [self.xmppvCardTempModule fetchvCardTempForJID:[XMPPJID jidWithString:[Account stringByAppendingString:Domain]]];
-    return [self.xmppvCardTempModule vCardTempForJID:[XMPPJID jidWithString:[Account stringByAppendingString:Domain]] shouldFetch:YES];
+    [self.xmppvCardTempModule fetchvCardTempForJID:[XMPPJID jidWithString:[Account stringByAppendingString:[[TempData sharedInstance] getDomain]]]];
+    return [self.xmppvCardTempModule vCardTempForJID:[XMPPJID jidWithString:[Account stringByAppendingString:[[TempData sharedInstance] getDomain]]] shouldFetch:YES];
 }
 
 - (void)xmppvCardTempModule:(XMPPvCardTempModule *)vCardTempModule
@@ -140,7 +141,7 @@
 
 - (void)xmppvCardTempModule:(XMPPvCardTempModule *)vCardTempModule failedToUpdateMyvCard:(NSXMLElement *)error{
     NSLog(@"%@",error);
-    NSError *err=[[NSError alloc] initWithDomain:Domain code:-1000 userInfo:nil];
+    NSError *err=[[NSError alloc] initWithDomain:[[TempData sharedInstance] getDomain] code:-1000 userInfo:nil];
     self.fail(err);
 }
 
@@ -152,23 +153,23 @@
     else
     {
         NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
-        [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName];
+        [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:[[TempData sharedInstance] getDomain]]] withNickname:nickName];
         return YES;
     }
     
 }
 -(void)addFriend:(NSString *)user WithMsg:(NSString *)msg HeadID:(NSString *)headID{
     NSString * nickName = [SFHFKeychainUtils getPasswordForUsername:USERNICKNAME andServiceName:LOCALACCOUNT error:nil];
-    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]] withNickname:nickName Msg:msg HeadID:headID];
+    [self.xmppRoster addUser:[XMPPJID jidWithString:[user stringByAppendingString:[[TempData sharedInstance] getDomain]]] withNickname:nickName Msg:msg HeadID:headID];
 }
 //删除好友
 -(void)delFriend:(NSString *)user{
-    [self.xmppRoster removeUser:[XMPPJID jidWithString:[user stringByAppendingString:Domain]]];
+    [self.xmppRoster removeUser:[XMPPJID jidWithString:[user stringByAppendingString:[[TempData sharedInstance] getDomain]]]];
 }
 
 //处理加好友
 -(void)addOrDenyFriend:(Boolean)issubscribe user:(NSString *)user{
-    XMPPJID *jid=[XMPPJID jidWithString:[NSString stringWithFormat:@"%@%@",user,Domain]];
+    XMPPJID *jid=[XMPPJID jidWithString:[NSString stringWithFormat:@"%@%@",user,[[TempData sharedInstance] getDomain]]];
     if(issubscribe){
         [self.xmppRoster acceptPresenceSubscriptionRequestFrom:jid andAddToRoster:YES];
     }else{

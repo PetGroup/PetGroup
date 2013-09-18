@@ -54,7 +54,7 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * iconImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"sss.png"]];
+    UIImageView * iconImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-256.png"]];
     iconImageView.frame=CGRectMake(120, 80, 80, 80);
     iconImageView.layer.cornerRadius=10;
     [self.view addSubview:iconImageView];
@@ -101,7 +101,7 @@
     protocal1.frame=CGRectMake(10, 390+self.view.frame.size.height-480, 300, 20);
 
     
-    protocal1.text=@"Aichongwu Technology Ltd.";
+    protocal1.text=@"客服电话:010-562921815";
     protocal1.textColor=[UIColor grayColor];
     protocal1.textAlignment=UITextAlignmentCenter;
     protocal1.backgroundColor=[UIColor clearColor];

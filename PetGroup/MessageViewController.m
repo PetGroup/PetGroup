@@ -439,13 +439,13 @@
 -(void)logInServerSuccessWithInfo:(NSDictionary *)dict
 {
     if ([[dict objectForKey:@"forceUpdate"] intValue]>0) {
-        appStoreURL = [[[dict objectForKey:@"updatefiles"] objectAtIndex:0] objectForKey:@"iosurl"];
+        appStoreURL = [dict objectForKey:@"iosurl"];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
         alert.tag = 20;
         [alert show];
     }
     else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
-        appStoreURL = [[[dict objectForKey:@"updatefiles"] objectAtIndex:0] objectForKey:@"iosurl"];
+        appStoreURL = [dict objectForKey:@"iosurl"];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
         alert.tag = 21;
         [alert show];
@@ -552,7 +552,7 @@
             [DataStoreManager saveUserInfo:recDict];
             NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[recDict objectForKey:@"nickname"]];
             NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-            NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",[recDict objectForKey:@"username"],Domain],@"sender",ctime,@"time", nil];
+            NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",[recDict objectForKey:@"username"],[[TempData sharedInstance] getDomain]],@"sender",ctime,@"time", nil];
             [self storeNewMessage:newM];
             [self displayMsgsForDefaultView];
         }

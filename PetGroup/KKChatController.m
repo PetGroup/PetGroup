@@ -706,10 +706,10 @@
         [mes addAttributeWithName:@"type" stringValue:@"chat"];
 
         //发送给谁
-        [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:Domain]];
+        [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         //   NSLog(@"chatWithUser:%@",chatWithUser);
         //由谁发送
-        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:Domain]];
+        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
         //组合
         
