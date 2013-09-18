@@ -227,10 +227,12 @@
 {
     if (buttonIndex==0) {
         NSString * appLink = appStoreURL;
-        NSURL *url = [NSURL URLWithString:appLink];
-        if([[UIApplication sharedApplication] canOpenURL:url])
-        {
-            [[UIApplication sharedApplication] openURL:url];
+        if (appStoreURL&&![appStoreURL isKindOfClass:[NSNull class]]) {
+            NSURL *url = [NSURL URLWithString:appLink];
+            if([[UIApplication sharedApplication] canOpenURL:url])
+            {
+                [[UIApplication sharedApplication] openURL:url];
+            }
         }
     }
 }

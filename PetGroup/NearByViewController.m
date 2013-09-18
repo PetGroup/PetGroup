@@ -15,6 +15,7 @@
 @interface NearByViewController ()
 
 @property (nonatomic,strong)NSMutableArray* appearPetArray;
+@property (nonatomic,strong)NSMutableArray* petDistanceArray;
 @property (nonatomic,strong)NSArray * petArray;
 @property (nonatomic,strong)UILabel *titleLabel;
 
@@ -40,6 +41,7 @@
         longitude = 0.0f;
         self.nearbyArray = [NSMutableArray array];
         self.appearPetArray = [NSMutableArray array];
+        self.petDistanceArray = [NSMutableArray array];
     }
     return self;
 }
@@ -273,6 +275,7 @@
         for (int i = 0;i<self.nearbyArray.count;i++) {
             [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfoViews"]];
         }
+        [self makeDistanceArray];
     }
     NSLog(@"rrrrrrr:%@",self.appearPetArray);
     [self.messageTable reloadData];
@@ -396,7 +399,7 @@
 //        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
         [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,[pet objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
-        [cell.distLabel setText:@"100米"];
+        [cell.distLabel setText:[self.petDistanceArray objectAtIndex:indexPath.row]];
         NSString* sigStr = [pet objectForKey:@"trait"];
         if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
             [cell.signatureLabel setText:[pet objectForKey:@"trait"]];
@@ -485,6 +488,14 @@
         [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+-(void)makeDistanceArray
+{
+    [self.petDistanceArray removeAllObjects];
+    for (int i = 0; i<self.appearPetArray.count; i++) {
+        NSDictionary * uDict = [self getUserInfoByUserId:[[self.appearPetArray objectAtIndex:i] objectForKey:@"userid"]];
+        [self.petDistanceArray addObject:[uDict objectForKey:@"distance"]];
+    }
 }
 -(NSDictionary *)getUserInfoByUserId:(id)uid
 {

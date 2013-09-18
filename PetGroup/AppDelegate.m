@@ -32,7 +32,7 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
-    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     
     return YES;
 }

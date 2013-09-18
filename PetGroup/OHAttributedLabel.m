@@ -262,7 +262,7 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
     [self setNeedsDisplay];
     self.textString = o_text;
     NSMutableArray *httpArr = [self addHttpArr:o_text];
-    NSMutableArray *phoneNumArr = [self addPhoneNumArr:o_text];
+//    NSMutableArray *phoneNumArr = [self addPhoneNumArr:o_text];
     
     NSString *text = [self transformString:o_text];
     text = [NSString stringWithFormat:@"<font color='black'>%@",text];
@@ -278,11 +278,11 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
     
     NSString *string =attString.string;
     
-    if ([phoneNumArr count]) {
-        for (NSString *phoneNum in phoneNumArr) {
-            [self addCustomLink:[NSURL URLWithString:phoneNum] inRange:[string rangeOfString:phoneNum] AndStr:phoneNum TheID:phoneNum];
-        }
-    }
+//    if ([phoneNumArr count]) {
+//        for (NSString *phoneNum in phoneNumArr) {
+//            [self addCustomLink:[NSURL URLWithString:phoneNum] inRange:[string rangeOfString:phoneNum] AndStr:phoneNum TheID:phoneNum];
+//        }
+//    }
     
     if ([httpArr count]) {
         for (NSString *httpStr in httpArr) {
