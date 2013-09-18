@@ -67,9 +67,8 @@
 
     NSString * addString = [NSString stringWithFormat:@"版本号:%@",version];
 
-    
-    version = addString;
-    showVersion.text=version;
+
+    showVersion.text=addString;
     showVersion.textAlignment=UITextAlignmentCenter;
     showVersion.textColor=[UIColor grayColor];
     //showButton.userInteractionEnabled=NO;
@@ -88,9 +87,9 @@
     
    UILabel * protocal=[[UILabel alloc]init];
 
-    protocal.frame=CGRectMake(60, 370+self.view.frame.size.height-480, 200, 20);
+    protocal.frame=CGRectMake(10, 370+self.view.frame.size.height-480, 300, 20);
 
-    protocal.text=@"版权所有----宠物圈";
+    protocal.text=@"版权所有--爱宠联盟科技有限公司";
     protocal.textColor=[UIColor grayColor];
     protocal.textAlignment=UITextAlignmentCenter;
     protocal.backgroundColor=[UIColor clearColor];
@@ -145,7 +144,13 @@
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"检测到新版本%@",newV] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"现在更新", nil];
             [alert show];
         }
-        NSLog(@"dddd:%@",dic);
+        else
+        {
+            appStroreURL = [dic objectForKey:@"iosurl"];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"已经是最新版本啦，继续享受宠物圈给你带来的快乐吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+            [alert show];
+        }
+        NSLog(@"dddd:%@,%f",dic,[version doubleValue]);
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
