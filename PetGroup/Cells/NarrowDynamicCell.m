@@ -101,16 +101,16 @@
         zanB.backgroundColor = [UIColor clearColor];
         [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:zanB];
-        self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
-        _zanimage.frame = CGRectMake(0, 0, 25, 25);
-        _zanimage.backgroundColor = [UIColor clearColor];
-        [zanB addSubview:_zanimage];
-        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 35, 25)];
+        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 35, 30)];
         _zanL.backgroundColor = [UIColor clearColor];
         _zanL.textAlignment = NSTextAlignmentCenter;
         _zanL.font = [UIFont systemFontOfSize:12];
         _zanL.textColor = [UIColor grayColor];
         [zanB addSubview:_zanL];
+        self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
+        _zanimage.frame = CGRectMake(0, 0, 30, 30);
+        _zanimage.backgroundColor = [UIColor clearColor];
+        [zanB addSubview:_zanimage];
         
         _moveB = [UIButton buttonWithType:UIButtonTypeCustom];
         [_moveB setBackgroundImage:[UIImage imageNamed:@"liuyan"] forState:UIControlStateNormal];
@@ -299,8 +299,8 @@
     }else{
         _zanimage.image = [UIImage imageNamed:@"zan"];
     }
-    zanB.frame = CGRectMake(180, origin, 50, 25);
-    _moveB.frame = CGRectMake(260, origin, 30, 25);
+    zanB.frame = CGRectMake(180, origin, 50, 30);
+    _moveB.frame = CGRectMake(260, origin, 30, 30);
     
     origin+=35;
     
@@ -389,20 +389,22 @@
     if (self.dynamic.ifIZaned) {
         [body setObject:@"delZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
-            _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+            if ([_zanL.text intValue]>0) {
+                _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+            }
             _zanimage.image = [UIImage imageNamed:@"zan"];
+            zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             zanB.userInteractionEnabled = YES;
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
+            zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             zanB.userInteractionEnabled = YES;
         }];

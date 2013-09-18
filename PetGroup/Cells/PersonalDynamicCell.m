@@ -17,6 +17,7 @@
 #import "OHAttributedLabel.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
+
 @interface PersonalDynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {
@@ -41,6 +42,9 @@
 @property (nonatomic,retain)UILabel* distancevL;
 @property (nonatomic,retain)NSMutableArray* OHALabelArray;
 @property (nonatomic,assign)id deleteObject;
+
+@property (nonatomic,retain)UIView * waitView;
+@property (nonatomic,retain)NSTimer * time;
 @end
 
 @implementation PersonalDynamicCell
@@ -98,14 +102,14 @@
         zanB = [UIButton buttonWithType:UIButtonTypeCustom];
         [zanB addTarget:self action:@selector(praise) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:zanB];
-        self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
-        _zanimage.frame = CGRectMake(0, 0, 25, 25);
-        [zanB addSubview:_zanimage];
-        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 35, 25)];
+        self.zanL = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 35, 25)];
         _zanL.textAlignment = NSTextAlignmentCenter;
         _zanL.font = [UIFont systemFontOfSize:12];
         _zanL.textColor = [UIColor grayColor];
         [zanB addSubview:_zanL];
+        self.zanimage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zan"]];
+        _zanimage.frame = CGRectMake(0, 0, 25, 25);
+        [zanB addSubview:_zanimage];
         
         delB = [UIButton buttonWithType:UIButtonTypeCustom];
         [delB addTarget:self action:@selector(deleteDynamic) forControlEvents:UIControlEventTouchUpInside];
@@ -120,6 +124,17 @@
         [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
         
         self.OHALabelArray = [[NSMutableArray alloc]init];
+        
+        self.waitView = [[UIView alloc]initWithFrame:CGRectZero];
+        _waitView.backgroundColor = [UIColor clearColor];
+        _waitView.hidden = YES;
+        [self.contentView addSubview:_waitView];
+        for (int i = 0; i<4; i++) {
+            UIView* a= [[UIView alloc]initWithFrame:CGRectMake(i*10+7.5, 12.5, 5, 5)];
+            a.backgroundColor = [UIColor colorWithRed:0.5+i*0.1 green:0.5+i*0.1 blue:0.5+i*0.1 alpha:1];
+            a.tag = 1000+i;
+            [_waitView addSubview:a];
+        }
     }
     return self;
 }
@@ -303,8 +318,9 @@
     }else{
         _zanimage.image = [UIImage imageNamed:@"zan"];
     }
-    zanB.frame = CGRectMake(200, origin, 50, 25);
-    _moveB.frame = CGRectMake(280, origin, 30, 25);
+    zanB.frame = CGRectMake(200, origin, 50, 30);
+    _moveB.frame = CGRectMake(280, origin, 30, 30);
+    _waitView.frame = zanB.frame;
     
     origin+=35;
     
@@ -378,9 +394,19 @@
     [self.viewC.navigationController pushViewController:fullTextVC animated:YES];
     [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
 }
+-(void)timerDown
+{
+    CGRect rect = ((UIView*)_waitView.subviews[0]).frame;
+    ((UIView*)_waitView.subviews[0]).frame = ((UIView*)_waitView.subviews[1]).frame;
+    ((UIView*)_waitView.subviews[1]).frame = ((UIView*)_waitView.subviews[2]).frame;
+    ((UIView*)_waitView.subviews[2]).frame = ((UIView*)_waitView.subviews[3]).frame;
+    ((UIView*)_waitView.subviews[3]).frame = rect;
+}
 -(void)praise//赞
 {
     zanB.userInteractionEnabled = NO;
+    _waitView.hidden = NO;
+    self.time = [NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(timerDown) userInfo:nil repeats:YES];
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -398,21 +424,31 @@
     if (self.dynamic.ifIZaned) {
         [body setObject:@"delZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
-            _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+            if ([_zanL.text intValue]>0) {
+                _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
+            }
             _zanimage.image = [UIImage imageNamed:@"zan"];
+            [_time invalidate];
+            _waitView.hidden = YES;
+            zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [_time invalidate];
+            _waitView.hidden = YES;
             zanB.userInteractionEnabled = YES;
         }];
     }else{
         [body setObject:@"addZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            zanB.userInteractionEnabled = YES;
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
+            [_time invalidate];
+            _waitView.hidden = YES;
+             zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [_time invalidate];
+            _waitView.hidden = YES;
             zanB.userInteractionEnabled = YES;
         }];
     }
