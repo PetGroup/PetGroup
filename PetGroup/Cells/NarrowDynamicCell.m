@@ -463,7 +463,7 @@
             return;
         }
     }
-    [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
+    [self.viewC performSelector:@selector(recalledreply: cell:) withObject:theID withObject:self];
 }
 #pragma mark - OHAttributedLabel Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
