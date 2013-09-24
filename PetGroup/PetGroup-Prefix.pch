@@ -54,6 +54,9 @@
 #define LOCALTOKEN @"lovePetLocalToken"
 #define MACADDRESS @"lovepetmacaddress"
 
+#define NewComment @"newCommentOfMyDynamic"
+#define MyDynamic  @"localMyDynamic"
+
 #define PushDeviceToken @"pushDeviceToken"
 
 #define PlaceHolder @"petGroup_thisisplaceholder..."

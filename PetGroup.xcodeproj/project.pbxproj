@@ -58,6 +58,7 @@
 		9727937A17D9C8380001E863 /* SCGIFImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727937417D9C8380001E863 /* SCGIFImageView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9727937C17D9C8630001E863 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937B17D9C8630001E863 /* CoreText.framework */; };
 		9727937E17D9C86F0001E863 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937D17D9C86F0001E863 /* libicucore.dylib */; };
+		972AEF2817F017E00010070B /* biaoqianNearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 972AEF2717F017E00010070B /* biaoqianNearby.png */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
 		9736BAFD17C4892A007DFE36 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BAD917C4892A007DFE36 /* GCDAsyncSocket.m */; };
@@ -548,6 +549,7 @@
 		9727937417D9C8380001E863 /* SCGIFImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGIFImageView.m; sourceTree = "<group>"; };
 		9727937B17D9C8630001E863 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		9727937D17D9C86F0001E863 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		972AEF2717F017E00010070B /* biaoqianNearby.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaoqianNearby.png; sourceTree = "<group>"; };
 		9736BAC917C472A1007DFE36 /* HostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfo.h; sourceTree = "<group>"; };
 		9736BACA17C472A1007DFE36 /* HostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostInfo.m; sourceTree = "<group>"; };
 		9736BACC17C472B2007DFE36 /* PetInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PetInfo.h; sourceTree = "<group>"; };
@@ -2362,6 +2364,7 @@
 		9736BD2017C49146007DFE36 /* nearBy */ = {
 			isa = PBXGroup;
 			children = (
+				972AEF2717F017E00010070B /* biaoqianNearby.png */,
 				9736BD2117C49146007DFE36 /* asigbg.png */,
 				9736BD2417C49146007DFE36 /* filterbg.png */,
 				9736BD2517C49146007DFE36 /* rightarrow.png */,
@@ -3159,6 +3162,7 @@
 				97D4BAD817E944EB00929BF4 /* icon-256.png in Resources */,
 				97D4BAD917E944EB00929BF4 /* icon.png in Resources */,
 				97D4BADA17E944EB00929BF4 /* icon@2x.png in Resources */,
+				972AEF2817F017E00010070B /* biaoqianNearby.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3555,8 +3559,8 @@
 		979546D817BA368F00D05874 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -3565,8 +3569,8 @@
 					"\"$(SRCROOT)/PetGroup/Vendor/libidn\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "960BD0EF-2EAE-4F70-B7B2-5422D736282A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "960BD0EF-2EAE-4F70-B7B2-5422D736282A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3574,8 +3578,8 @@
 		979546D917BA368F00D05874 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -3584,8 +3588,8 @@
 					"\"$(SRCROOT)/PetGroup/Vendor/libidn\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "960BD0EF-2EAE-4F70-B7B2-5422D736282A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "960BD0EF-2EAE-4F70-B7B2-5422D736282A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

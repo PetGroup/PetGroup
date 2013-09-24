@@ -16,4 +16,7 @@
 @property (strong,nonatomic) UILabel * signatureLabel;
 @property (strong,nonatomic) UILabel * unreadCountLabel;
 @property (strong,nonatomic) UIImageView * sigBgImgV;
+@property (strong,nonatomic) UIImageView * petOneImgV;
+@property (strong,nonatomic) UIImageView * petTwoImgV;
+@property (strong,nonatomic) UILabel * petLabel;
 @end

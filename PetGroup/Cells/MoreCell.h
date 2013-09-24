@@ -11,4 +11,6 @@
 @interface MoreCell : UITableViewCell
 @property (strong,nonatomic) UIImageView * headImageV;
 @property (strong,nonatomic) UILabel * titleLabel;
+@property (strong,nonatomic) UILabel * unreadCountLabel;
+@property (strong,nonatomic) UIImageView * notiBgV;
 @end

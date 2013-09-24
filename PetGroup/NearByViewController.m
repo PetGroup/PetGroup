@@ -344,7 +344,7 @@
     if (tableView==self.petTypeTable) {
         return 30;
     }
-    return 70;
+    return 80;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -383,6 +383,25 @@
             [cell.signatureLabel setText:@"该用户没有设置签名"];
         }
         
+        NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petInfoViews"];
+        if (tempPetArray.count>0) {
+            PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
+            NSArray * head = [self imageToURL:petInfo.headImgArray];
+            [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"cat.png"]];
+            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+            if (tempPetArray.count==1) {
+                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
+            }
+            else
+                [cell.petLabel setText:[NSString stringWithFormat:@"%@等%d个宠物",petInfo.petNickname,tempPetArray.count]];
+        }
+        else
+        {
+            [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
+            [cell.petLabel setText:@"用户暂时还没有宠物呢"];
+        }
+        
+        
         [cell.distLabel setText:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"distance"]];
 
         return cell;
@@ -410,7 +429,20 @@
         return cell;
     }
 }
-
+-(NSArray *)imageToURL:(NSArray *)imageArray;
+{
+    NSMutableArray * temp = [NSMutableArray array];
+    for (id headID in imageArray) {
+        [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,headID]];
+    }
+    //    if (imageArray) {
+    //        if (imageArray.count<1) {
+    //            [temp addObject:[NSString stringWithFormat:@"%@%@",BaseImageUrl,@""]];
+    //        }
+    //    }
+    
+    return temp;
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView==self.petTypeTable) {

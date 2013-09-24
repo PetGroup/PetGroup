@@ -151,7 +151,8 @@
     NSMutableArray * allMsgArray = [NSMutableArray array];
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@ OR receiver==[c]%@",username,username];
     NSArray * commonMsgsArray = [DSCommonMsgs MR_findAllSortedBy:@"senTime" ascending:YES withPredicate:predicate];
-    for (int i = 0; i<commonMsgsArray.count; i++) {
+    //取前20条...
+    for (int i = (commonMsgsArray.count>20?(commonMsgsArray.count-20):0); i<commonMsgsArray.count; i++) {
         NSMutableDictionary * thumbMsgsDict = [NSMutableDictionary dictionary];
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] sender] forKey:@"sender"];
         //        [thumbMsgsDict setObject:[[thumbCommonMsgsArray objectAtIndex:i] senderNickname] forKey:@"nickname"];

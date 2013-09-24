@@ -75,7 +75,7 @@
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];
     [self performSelector:@selector(toMainView) withObject:nil afterDelay:2];
-
+   // [self testGetOneState];
 	// Do any additional setup after loading the view.
 }
 -(void)setLabelTitle:(NSString *)title
@@ -88,7 +88,7 @@
 -(void)setMakeLogin
 {
     if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
-        [messageV logInToServer];
+        [messageV logInToChatServer];
     }
 }
 -(void)getUserLocation
@@ -101,6 +101,27 @@
     } Failure:^{
         
     }];
+}
+-(void)testGetOneState
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:@"124" forKey:@"stateid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"findOneState" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"rrrrrrrr:%@",recDict);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
 }
 
 -(void)upLoadUserLocationWithLat:(double)userLatitude Lon:(double)userLongitude

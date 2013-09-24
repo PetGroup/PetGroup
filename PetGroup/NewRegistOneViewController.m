@@ -155,27 +155,27 @@
 }
 -(void)puchNextView
 {
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    [params setObject:_phoneTF.text forKey:@"phoneNum"];
-    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getVerificationCode" forKey:@"method"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//    long long a = (long long)(cT*1000);
+//    [params setObject:_phoneTF.text forKey:@"phoneNum"];
+//    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//    [body setObject:@"1" forKey:@"channel"];
+//    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//    [body setObject:@"iphone" forKey:@"imei"];
+//    [body setObject:params forKey:@"params"];
+//    [body setObject:@"getVerificationCode" forKey:@"method"];
+//    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
         NewRegistTwoViewController* newReg = [[NewRegistTwoViewController alloc]init];
         newReg.phoneNo = self.phoneTF.text;
         [self.navigationController pushViewController:newReg animated:YES];
-    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-        [alert show];
-        [hud hide:YES];
-    }];
+//    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//        [alert show];
+//        [hud hide:YES];
+//    }];
 }
 
 -(void)userTreaty:(UIGestureRecognizer*)gr

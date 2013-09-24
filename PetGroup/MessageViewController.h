@@ -80,5 +80,6 @@
 @property (strong,nonatomic) AppDelegate * appDel;
 
 -(void)logInToServer;
+-(void)logInToChatServer;
 
 @end

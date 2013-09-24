@@ -17,6 +17,9 @@
 #import "SettingViewController.h"
 @class CustomTabBar;
 @interface PersonalCenterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
+{
+    int unreadComment;
+}
 @property (strong,nonatomic) UITableView * profileTableV;
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong,nonatomic) HostInfo * hostInfo;

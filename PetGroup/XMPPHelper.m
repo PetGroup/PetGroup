@@ -302,7 +302,12 @@
         NSLog(@"theDict%@",dict);
         if ([type isEqualToString:@"chat"]) {
             if (msgtype) {
+                //此处时间应该message里携带，暂时没有，使用当前时间
+                [dict setObject:msgtype forKey:@"msgType"];
+                [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
+                
                 //评论，回复，赞，在这里解析，或者通用newMessageReceived，在那个方法里解析dict
+                [self.addReqDelegate newCommentReceived:dict];
             }
             else
                 [self.chatDelegate newMessageReceived:dict];
