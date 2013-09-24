@@ -306,7 +306,7 @@
         }
     }
     
-    if ([[DataStoreManager getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
+    if ([[[TempData sharedInstance] getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
         delB.frame = CGRectMake(100, origin, 30, 25);
     }else{
         _distancevL.text = self.dynamic.distance;
@@ -477,7 +477,7 @@
     }else{
         hostInfo = ((ReplyComment*)theid).replyUserView;
     }
-    if ([hostInfo.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
+    if ([hostInfo.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
         return NO;
     }
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
@@ -491,7 +491,7 @@
 -(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
 {
     if ([theID isKindOfClass:[Reply class]]) {
-        if ([self.dynamic.petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]||[((Reply*)theID).petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
+        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]||[((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
             UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
             [action showInView:self.superview];
             self.deleteObject = theID;
@@ -499,7 +499,7 @@
         }
     }
     if ([theID isKindOfClass:[ReplyComment class]]) {
-        if ([self.dynamic.petUser.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]||[((ReplyComment*)theID).commentUserView.userId integerValue] == [[DataStoreManager getMyUserID] integerValue]) {
+        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]||[((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
             UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
             [action showInView:self.superview];
             self.deleteObject = theID;

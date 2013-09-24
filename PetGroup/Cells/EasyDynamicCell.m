@@ -1,25 +1,17 @@
 //
-//  DynamicCell.m
+//  EasyDynamicCell.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-8-22.
+//  Created by 阿铛 on 13-9-23.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DynamicCell.h"
-#import "Common.h"
+#import "EasyDynamicCell.h"
 #import "EGOImageButton.h"
-#import "EGOImageView.h"
 #import "PersonDetailViewController.h"
 #import "CustomTabBar.h"
 #import "FullTextViewController.h"
-#import "PhotoViewController.h"
-#import "OHAttributedLabel.h"
-#import "HeightCalculate.h"
-#import "ReplyComment.h"
-
-@interface DynamicCell ()<OHAttributedLabelDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
-
+@interface EasyDynamicCell()
 {
     UIButton* nameB;
     UIButton* zanB;
@@ -30,9 +22,6 @@
     CGSize msgSize;
     CGSize msgMinSize;
     float origin;
-    
-    UIAlertView * delDynamicAlert;
-    UIAlertView * delReplyAlert;
 }
 @property (nonatomic,retain)UIImageView* zanimage;
 @property (nonatomic,retain)NSArray* imageViews;
@@ -41,13 +30,10 @@
 @property (nonatomic,retain)UILabel* transmitMsgL;
 @property (nonatomic,retain)UILabel* beijingL;
 @property (nonatomic,retain)UILabel* zanL;
-@property (nonatomic,retain)UILabel* distancevL;
-@property (nonatomic,retain)NSMutableArray* OHALabelArray;
-@property (nonatomic,assign)id deleteObject;
 @property (nonatomic,retain)UIView * waitView;
 @property (nonatomic,retain)NSTimer * time;
 @end
-@implementation DynamicCell
+@implementation EasyDynamicCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -69,10 +55,6 @@
         [headB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
         headB.tintColor = [UIColor grayColor];
         [self.contentView addSubview:headB];
-        
-        self.distancevL = [[UILabel alloc]init];
-        _distancevL.font = [UIFont systemFontOfSize:12];
-        [self.contentView addSubview:_distancevL];
         
         self.transmitMsgL = [[UILabel alloc]init];
         [self.contentView addSubview:_transmitMsgL];
@@ -133,8 +115,6 @@
         [self.contentView addSubview:_moveB];
         [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
         
-        self.OHALabelArray = [[NSMutableArray alloc]init];
-        
         self.waitView = [[UIView alloc]initWithFrame:CGRectZero];
         _waitView.backgroundColor = [UIColor clearColor];
         _waitView.hidden = YES;
@@ -145,12 +125,19 @@
             a.tag = 1000+i;
             [_waitView addSubview:a];
         }
+
     }
     return self;
 }
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
 -(void)layoutSubviews
 {
-    [super layoutSubviews];
     for (UIView* a in self.contentView.subviews) {
         a.frame = CGRectZero;
     }
@@ -158,16 +145,13 @@
         headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
     }else
     {
-       headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl]]; 
+        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl]];
     }
     headB.frame = CGRectMake(10, 10, 40, 40);
     [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
     CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(170, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
     nameB.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    _distancevL.text = self.dynamic.distance;
-    _distancevL.textAlignment = NSTextAlignmentRight;
-    _distancevL.frame = CGRectMake(230, 10, 80, 15);
     
     origin = 40;
     
@@ -259,7 +243,7 @@
                     origin+=25;
                 }else{
                     [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
-                     _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
+                    _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
                     origin+=(msgSize.height+10);
                     quanwenB.frame = CGRectMake(60, origin, 30, 15);
                     origin+=25;
@@ -339,51 +323,6 @@
     _waitView.frame = zanB.frame;
     
     origin+=35;
-    
-    int count = 0;
-    for (Reply* reply in self.dynamic.replyViews) {
-        count++;
-        for (id a in reply.replyComments) {
-            count++;
-        }
-    }
-    if (self.OHALabelArray.count<count) {
-        int a = count - self.OHALabelArray.count;
-        for (int i = 0; i < a; i++) {
-            OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
-            ohaL.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
-            ohaL.delegate = self;
-            [self.OHALabelArray addObject:ohaL];
-            [self.contentView addSubview:ohaL];
-        }
-    }
-    int number = 0;
-    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
-        number++;
-        Reply* rel = (Reply*)self.dynamic.replyViews[i];
-        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:240];
-        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-        [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
-        origin += (size.height+5);
-        for (int j = 0; j < rel.replyComments.count; j++) {
-            OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
-            number++;
-            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:240];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-            [ohaL setFrame:CGRectMake(60 , origin, 260, size.height)];
-            origin += (size.height+5);
-        }
-    }
-}
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 #pragma mark - button action
 -(void)showButton
@@ -392,7 +331,7 @@
 }
 -(void)deleteDynamic
 {
-    delDynamicAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条动态?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+    UIAlertView*delDynamicAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条动态?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
     [delDynamicAlert show];
 }
 
@@ -465,11 +404,11 @@
             }
             _zanimage.image = [UIImage imageNamed:@"zan"];
             [_time invalidate];
-             _waitView.hidden = YES;
+            _waitView.hidden = YES;
             zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [_time invalidate];
-             _waitView.hidden = YES;
+            _waitView.hidden = YES;
             zanB.userInteractionEnabled = YES;
         }];
     }else{
@@ -493,139 +432,11 @@
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:self.dynamic.smallImage images:self.dynamic.imgIDArray indext:button.tag-1000];
     [self.viewC presentViewController:vc animated:NO completion:nil];
 }
-#pragma mark - OHAttributedLabel Delegate
--(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldFollowLink:(NSTextCheckingResult *)linkInfo
-{
-    return YES;
-}
--(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldUserName:(NSString *)userName TheID:(id)theid theIndex:(int)theIndex
-{
-    HostInfo* hostInfo = nil;
-    if (theIndex == 0) {
-        if ([theid isKindOfClass:[Reply class]]) {
-            hostInfo = ((Reply*)theid).petUser;
-        }
-        if ([theid isKindOfClass:[ReplyComment class]]) {
-            hostInfo = ((ReplyComment*)theid).commentUserView;
-        }
-    }else{
-        hostInfo = ((ReplyComment*)theid).replyUserView;
-    }
-    if ([hostInfo.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-        [self.viewC  performSelector:@selector(headAct) withObject:nil];
-        return YES;
-    }
-    PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
-    personVC.hostInfo = hostInfo;
-    [self.viewC.navigationController pushViewController:personVC animated:YES];
-    [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
-
-    return YES;
-}
-
--(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
-{
-    if ([theID isKindOfClass:[Reply class]]) {
-        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]||[((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [action showInView:self.superview];
-            self.deleteObject = theID;
-            return;
-        }
-    }
-    if ([theID isKindOfClass:[ReplyComment class]]) {
-        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]||[((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [action showInView:self.superview];
-            self.deleteObject = theID;
-            return;
-        }
-    }
-    [self.viewC performSelector:@selector(recalledreply: cell:) withObject:theID withObject:self];
-}
-#pragma mark - OHAttributedLabel Delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
-        [delReplyAlert show];
-    }
-    if (buttonIndex == 1) {
-        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:self.deleteObject withObject:self];
-    }
-}
 #pragma mark - alert view delegate
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (alertView == delDynamicAlert) {
-        if (buttonIndex == 1) {
-            [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
-        }
+    if (buttonIndex == 1) {
+        [self.viewC performSelector:@selector(deleteDynamic:) withObject:nil];
     }
-    if (alertView == delReplyAlert) {
-        if (buttonIndex == 1) {
-            if ([self.deleteObject isKindOfClass:[Reply class]]) {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:((Reply*)self.deleteObject).replyID forKey:@"replyId"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"delReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [self.dynamic.replyViews removeObject:self.deleteObject];
-                    NSString* repS = [NSString stringWithFormat:@"%@:%@",((Reply*)self.deleteObject).petUser.nickName,((Reply*)self.deleteObject).msg];
-                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                    self.dynamic.rowHigh-= (size.height+5);
-                    for (int j = 0; j < ((Reply*)self.deleteObject).replyComments.count; j++) {
-                        ReplyComment* recom = (ReplyComment*)((Reply*)self.deleteObject).replyComments[j];
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                        self.dynamic.rowHigh-= (size.height+5);
-                    }
-                    [(UITableView*)self.superview reloadData];
-                }];
-                [self.dynamic.replyViews removeObject:self.deleteObject];
-            }
-            if ([self.deleteObject isKindOfClass:[ReplyComment class]]) {
-                Reply* theReply = nil;
-                for (Reply* rep in self.dynamic.replyViews) {
-                    for (ReplyComment * repcom in rep.replyComments) {
-                        if ([self.deleteObject isEqual:repcom]) {
-                            theReply = rep;
-                        }
-                    }
-                }
-                if (theReply) {
-                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                    long long a = (long long)(cT*1000);
-                    [params setObject:((ReplyComment*)self.deleteObject).replyCommentID forKey:@"replyCommonid"];
-                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                    [body setObject:@"1" forKey:@"channel"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                    [body setObject:@"iphone" forKey:@"imei"];
-                    [body setObject:params forKey:@"params"];
-                    [body setObject:@"delCommentReply" forKey:@"method"];
-                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        [theReply.replyComments removeObject:self.deleteObject];
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",((ReplyComment*)self.deleteObject).commentUserView.nickName,((ReplyComment*)self.deleteObject).replyUserView.nickName,((ReplyComment*)self.deleteObject).commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                        self.dynamic.rowHigh-=(size.height+5);
-                        [(UITableView*)self.superview reloadData];
-                    }];
-                }
-                
-            }
-        }
-    }
-    
 }
 @end

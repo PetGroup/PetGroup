@@ -13,6 +13,11 @@
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
 		8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8641ACE017DED0DF0020C34B /* ReplyComment.m */; };
+		8645D73817EFD463002DBD5A /* ParticularDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D73717EFD463002DBD5A /* ParticularDynamicViewController.m */; };
+		8645D73E17F008F2002DBD5A /* EasyDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D73D17F008F2002DBD5A /* EasyDynamicCell.m */; };
+		8645D74117F00922002DBD5A /* ReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D74017F00922002DBD5A /* ReplyCell.m */; };
+		8645D74417F15B83002DBD5A /* ReplyListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D74317F15B82002DBD5A /* ReplyListCell.m */; };
+		8645D74717F15C05002DBD5A /* ReplyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D74617F15C05002DBD5A /* ReplyListViewController.m */; };
 		86A96A2D17E85391001105AD /* liuyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A2B17E8538D001105AD /* liuyan.png */; };
 		86A96A2E17E85391001105AD /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A2C17E8538E001105AD /* zan.png */; };
 		86A96A3217E85C7A001105AD /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A3117E85C79001105AD /* zaned.png */; };
@@ -480,6 +485,16 @@
 		8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		8642967E17D70E7500B1B1C9 /* Reply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reply.h; sourceTree = "<group>"; };
 		8642967F17D70E7500B1B1C9 /* Reply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reply.m; sourceTree = "<group>"; };
+		8645D73617EFD463002DBD5A /* ParticularDynamicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticularDynamicViewController.h; sourceTree = "<group>"; };
+		8645D73717EFD463002DBD5A /* ParticularDynamicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParticularDynamicViewController.m; sourceTree = "<group>"; };
+		8645D73C17F008F2002DBD5A /* EasyDynamicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyDynamicCell.h; sourceTree = "<group>"; };
+		8645D73D17F008F2002DBD5A /* EasyDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyDynamicCell.m; sourceTree = "<group>"; };
+		8645D73F17F00922002DBD5A /* ReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyCell.h; sourceTree = "<group>"; };
+		8645D74017F00922002DBD5A /* ReplyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyCell.m; sourceTree = "<group>"; };
+		8645D74217F15B82002DBD5A /* ReplyListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyListCell.h; sourceTree = "<group>"; };
+		8645D74317F15B82002DBD5A /* ReplyListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyListCell.m; sourceTree = "<group>"; };
+		8645D74517F15C05002DBD5A /* ReplyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyListViewController.h; sourceTree = "<group>"; };
+		8645D74617F15C05002DBD5A /* ReplyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyListViewController.m; sourceTree = "<group>"; };
 		86A96A2B17E8538D001105AD /* liuyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liuyan.png; sourceTree = "<group>"; };
 		86A96A2C17E8538E001105AD /* zan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zan.png; sourceTree = "<group>"; };
 		86A96A3117E85C79001105AD /* zaned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zaned.png; sourceTree = "<group>"; };
@@ -1402,6 +1417,10 @@
 				86D90B8217D04FA600345D59 /* FullTextViewController.m */,
 				8642967B17D6CF1300B1B1C9 /* PhotoViewController.h */,
 				8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */,
+				8645D73617EFD463002DBD5A /* ParticularDynamicViewController.h */,
+				8645D73717EFD463002DBD5A /* ParticularDynamicViewController.m */,
+				8645D74517F15C05002DBD5A /* ReplyListViewController.h */,
+				8645D74617F15C05002DBD5A /* ReplyListViewController.m */,
 			);
 			name = DynamicView;
 			sourceTree = "<group>";
@@ -2670,6 +2689,12 @@
 				86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */,
 				86D173C017E2B2490032A479 /* NarrowDynamicCell.h */,
 				86D173C117E2B2490032A479 /* NarrowDynamicCell.m */,
+				8645D73C17F008F2002DBD5A /* EasyDynamicCell.h */,
+				8645D73D17F008F2002DBD5A /* EasyDynamicCell.m */,
+				8645D73F17F00922002DBD5A /* ReplyCell.h */,
+				8645D74017F00922002DBD5A /* ReplyCell.m */,
+				8645D74217F15B82002DBD5A /* ReplyListCell.h */,
+				8645D74317F15B82002DBD5A /* ReplyListCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3457,6 +3482,11 @@
 				97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */,
 				86D173C217E2B2490032A479 /* NarrowDynamicCell.m in Sources */,
 				97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */,
+				8645D73817EFD463002DBD5A /* ParticularDynamicViewController.m in Sources */,
+				8645D73E17F008F2002DBD5A /* EasyDynamicCell.m in Sources */,
+				8645D74117F00922002DBD5A /* ReplyCell.m in Sources */,
+				8645D74417F15B83002DBD5A /* ReplyListCell.m in Sources */,
+				8645D74717F15C05002DBD5A /* ReplyListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,24 +1,20 @@
 //
-//  PersonalDynamicViewController.m
+//  ParticularDynamicViewController.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-9-11.
+//  Created by 阿铛 on 13-9-23.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "PersonalDynamicViewController.h"
-#import "CustomTabBar.h"
-#import "DynamicCell.h"
-#import "MBProgressHUD.h"
-#import "EGOImageButton.h"
-#import "PersonalDynamicCell.h"
-#import "EGOImageView.h"
-#import "UIExpandingTextView.h"
+#import "ParticularDynamicViewController.h"
 #import "TempData.h"
-#import "ReplyComment.h"
-#import "MyDynamicDelegateAndDataSource.h"
+#import "MBProgressHUD.h"
+#import "EasyDynamicCell.h"
+#import "ReplyCell.h"
+#import "UIExpandingTextView.h"
 #import "HeightCalculate.h"
-@interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
+#import "ReplyComment.h"
+@interface ParticularDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,UIExpandingTextViewDelegate>
 {
     UIButton * assessB;
     UIButton * reprintB;
@@ -31,16 +27,14 @@
     UIView * inPutView;
     BOOL request;
 }
-@property (nonatomic,strong)UIView* footV;
-@property (nonatomic,strong)UIActivityIndicatorView * act;
-@property (nonatomic,strong)UIActivityIndicatorView * footAct;
+@property (nonatomic,retain)UITableView * tableV;
 @property (nonatomic,strong)UIImageView*  actionIV;
-@property (nonatomic,weak)PersonalDynamicCell* mycell;
-@property (nonatomic,weak)id theID;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
+@property (nonatomic,weak)id theID;
+@property (nonatomic,retain)NSMutableArray* highArray;
 @end
 
-@implementation PersonalDynamicViewController
+@implementation ParticularDynamicViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,128 +48,135 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.hidesBottomBarWhenPushed = YES;
-    
+	// Do any additional setup after loading the view.
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
+    [self.view addSubview:bgimgV];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
-
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
-    titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text=@"个人动态";
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
-    titleLabel.textColor=[UIColor whiteColor];
-    [self.view addSubview:titleLabel];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    titleLabel.backgroundColor=[UIColor clearColor];
+    [titleLabel setText:@"详情"];
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textColor=[UIColor whiteColor];
+    [self.view addSubview:titleLabel];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
-    _tableV.delegate = self;
-    _tableV.dataSource = self.dataSource;
     [self.view addSubview:_tableV];
-    _tableV.showsVerticalScrollIndicator=NO;
+    _tableV.delegate = self;
+    _tableV.dataSource = self;
     
-    UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
-    headV.image = [UIImage imageNamed:@"morenbeijing"];
-    self.tableV.tableHeaderView = headV;
-    headV.userInteractionEnabled = YES;
-    
-    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
-    nameL.font = [UIFont systemFontOfSize:16];
-    
-    nameL.text = self.userName;
-    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
-    nameL.backgroundColor = [UIColor clearColor];
-    nameL.textColor = [UIColor whiteColor];
-    [headV addSubview:nameL];
-
-    UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
-    photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
-    [headV addSubview:photoIV];
-    photoIV.userInteractionEnabled = YES;
-    
-    EGOImageView* headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
-    headIV.frame = CGRectMake(5, 5, 70, 70);
-    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.HeadImageID]];
-    [photoIV addSubview:headIV];
-    
-    self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
-    _footAct.backgroundColor = [UIColor redColor];
-    self.footAct= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
-    _footAct.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    [_footV addSubview:_footAct];
-    UILabel* loadmoveL = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 120, 20)];
-    loadmoveL.text = @"加载更多";
-    loadmoveL.textAlignment = NSTextAlignmentCenter;
-    [_footV addSubview:loadmoveL];
-    
-    
-	// Do any additional setup after loading the view.
-    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
-    [inPutView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:inPutView];
-    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
-    [inPutView addSubview:inputbg];
-    
-    self.inputTF = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
-    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
-    self.inputTF.delegate = self;
-    self.inputTF.maximumNumberOfLines=5;
-    [inPutView addSubview:self.inputTF];
-    
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (version >= 5.0) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    self.highArray = [[NSMutableArray alloc]init];
+    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+        Reply* rel = self.dynamic.replyViews[i];
+        [self.highArray addObject:rel];
+        for (int j = 0; j < rel.replyComments.count; j++) {
+            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+            [self.highArray addObject:recom];
+        }
     }
-    else{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.delegate = self;
     hud.labelText = @"正在加载，请稍后";
-    
-    [self reloadData];
     [hud show:YES];
 }
--(void)showAlertView
-{
-    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"加载失败，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-    [alert show];
-}
--(void)viewWillAppear:(BOOL)animated
-{
 
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#pragma mark - button action
 -(void)backButton:(UIButton*)button
 {
-    [hud hide:YES];
-    [self keyBoardResign];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark - tableView delegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self removeActionImageView];
+    [self keyBoardResign];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        return self.dynamic.easyRowHigh;
+    }
+    if (indexPath.section == 1) {
+        if ([self.highArray[indexPath.row] isKindOfClass:[Reply class]]) {
+            Reply* rel = (Reply*)self.highArray[indexPath.row];
+            NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
+            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+            return size.height+10;
+        }else{
+            ReplyComment* recom = (ReplyComment*)self.highArray[indexPath.row];
+            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+            return size.height+10;
+        } ;
+    }
+    return 10;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 1;
+    }
+    if (section == 1) {
+        int count = 0;
+        for (Reply* reply in self.dynamic.replyViews) {
+            count++;
+            for (id a in reply.replyComments) {
+                count++;
+            }
+        }
+        return count;
+    }else
+        return 0;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0 ) {
+        static NSString *cellIdentifier = @"EasyDynamicCell";
+        EasyDynamicCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        if (cell == nil) {
+            cell = [[EasyDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        cell.viewC = self;
+        cell.dynamic = self.dynamic;
+        return cell;
+    }else{
+        static NSString *cellIdentifier = @"EasyDynamicCell";
+        ReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        if (cell == nil) {
+            cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        cell.viewC = self;
+        cell.theID = self.highArray[indexPath.row];
+        return cell;
+    }
+
+    
+}
+#pragma mark - button action
 -(void)assess//评论
 {
     [self removeActionImageView];
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
-    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.mycell.dynamic.petUser.nickName];
+    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.petUser.nickName];
 }
 -(void)reprint//转发
 {
@@ -194,7 +195,7 @@
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
                 [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"petuserId"];
-                [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
+                [params setObject:self.dynamic.dynamicID forKey:@"userstateId"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
                 [params setObject:self.inputTF.text forKey:@"msg"];
                 NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
@@ -211,12 +212,8 @@
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     Reply* rep = [[Reply alloc]initWithDictionary:dic];
-                    [self.mycell.dynamic.replyViews addObject:rep];
-                    NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
-                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                    self.mycell.dynamic.rowHigh += (size.height+5);
+                    [self.dynamic.replyViews addObject:rep];
                     [self.tableV reloadData];
-                    self.mycell = nil;
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [hud hide:YES];
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
@@ -233,8 +230,8 @@
                     [params setObject:self.inputTF.text forKey:@"transmitMsg"];
                     [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
                     [params setObject:@"1" forKey:@"ifTransmitMsg"];
-                    [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
-                    [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
+                    [params setObject:self.dynamic.msg forKey:@"msg"];
+                    [params setObject:self.dynamic.imageID forKey:@"imgid"];
                     [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
                     [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
                     [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
@@ -249,13 +246,6 @@
                     [hud show:YES];
                     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         [hud hide:YES];
-                        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                        PersonalDynamic* b = [[PersonalDynamic alloc]initWithNSDictionary:dic];
-                        if ([self.dataSource isKindOfClass:[MyDynamicDelegateAndDataSource class]]) {
-                            [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray insertObject:b atIndex:0];
-                        }
-                        [self.tableV reloadData];
-                        self.mycell = nil;
                     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         [hud hide:YES];
                         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
@@ -301,14 +291,11 @@
                     ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
                     if ([self.theID isKindOfClass:[Reply class]]) {
                         [((Reply*)self.theID).replyComments addObject:repcom];
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     if ([self.theID isKindOfClass:[ReplyComment class]]) {
                         Reply* theRep = nil;
-                        for (Reply* re  in self.mycell.dynamic.replyViews) {
+                        for (Reply* re  in self.dynamic.replyViews) {
                             for (ReplyComment* rec in re.replyComments) {
                                 if ([rec isEqual:self.theID]) {
                                     theRep = re;
@@ -319,13 +306,9 @@
                         if (theRep) {
                             [theRep.replyComments addObject:repcom];
                         }
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                    self.mycell = nil;
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [hud hide:YES];
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
@@ -429,85 +412,8 @@
     [UIView commitAnimations];
     NSLog(@"%f",self.view.frame.size.height);
 }
-#pragma mark - tableView delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    [self keyBoardResign];
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    DelegateAndDataSource * dad  = (DelegateAndDataSource *)self.tableV.dataSource;
-    Dynamic*dyn = dad.dataSourceArray[indexPath.row];
-    return dyn.rowHigh;
-}
-#pragma mark - scrollView delegate
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    //开始拖拽
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    [self keyBoardResign];
-    if (!request&&!_tableV.decelerating) {
-        if (_tableV.contentOffset.y<-5) {
-            if (self.act == nil) {
-                self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
-                _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-                [_act startAnimating];
-                [_tableV.tableHeaderView addSubview:_act];
-            }else{
-                [_act startAnimating];
-            }
-        }
-        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
-            if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-5) {
-                if (_tableV.tableFooterView == nil) {
-                    _tableV.tableFooterView = _footV;
-                    [_footAct startAnimating];
-                }else{
-                    [_footAct startAnimating];
-                }
-            }
-        }
-    }
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    //停止滑动
-    if (_tableV.contentSize.height>_tableV.frame.size.height+5 ) {
-        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-35) {
-            [_footAct stopAnimating];
-            [UIView animateWithDuration:0.3 animations:^{
-                _tableV.tableFooterView = nil;
-            }];
-        }
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    //停止减速
-}
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    //开始减速
-    if (!request) {
-        if (_tableV.contentOffset.y<-5) {
-            [self reloadData];
-        }
-        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
-            if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-30) {
-                [self loadMoreData];
-            }
-        }
-    }
-}
 #pragma mark - cell button action
--(void)showButton:(PersonalDynamicCell*)cell
+-(void)showButton:(EasyDynamicCell*)cell
 {
     CGRect cellRect=[self.view convertRect:cell.frame fromView:_tableV];
     if (_actionIV == nil) {
@@ -534,21 +440,14 @@
         [reprintB addTarget:self action:@selector(reprint) forControlEvents:UIControlEventTouchUpInside];
         [_actionIV addSubview:reprintB];
     }
-    if (cell != _mycell) {
-        [self removeActionImageView];
-        self.mycell = nil;
-        _actionIV.frame = CGRectMake(280, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
-        [self.view addSubview:_actionIV];
-        self.mycell = cell;
-        [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 158, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
-            assessB.frame = CGRectMake(6, 6, 53, 31);
-            reprintB.frame = CGRectMake(65, 6, 53, 31);
-        }];
-    }else{
-        self.mycell = nil;
-        [self removeActionImageView];
-    }
+    [self removeActionImageView];
+    _actionIV.frame = CGRectMake(280, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
+    [self.view addSubview:_actionIV];
+    [UIView animateWithDuration:0.3 animations:^{
+        _actionIV.frame = CGRectMake( 158, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
+        assessB.frame = CGRectMake(6, 6, 53, 31);
+        reprintB.frame = CGRectMake(65, 6, 53, 31);
+    }];
 }
 -(void)removeActionImageView
 {
@@ -579,11 +478,11 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [((DelegateAndDataSource*)self.tableV.dataSource).dataSourceArray removeObject:dyn];
-        [self.tableV reloadData];
+        [[TempData sharedInstance] Panned:NO];
+        [self.navigationController popViewControllerAnimated:YES];
     }];
 }
--(void)recalledreply:(id)theID cell:(PersonalDynamicCell*)cell//回复评论
+-(void)recalledreply:(id)theID cell:(EasyDynamicCell*)cell//回复评论
 {
     if ([theID isKindOfClass:[Reply class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
@@ -591,49 +490,9 @@
     if ([theID isKindOfClass:[ReplyComment class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];
     }
-    self.mycell = cell;
     self.theID = theID;
     [_inputTF becomeFirstResponder];
     assessOrPraise = 3;
     
-}
-#pragma mark - reload and loadmore
--(void)reloadData
-{
-    request = YES;
-    [(DelegateAndDataSource*)self.tableV.dataSource reloadDataSuccess:^{
-        [self.tableV reloadData];
-        [_act stopAnimating];
-        [self.act stopAnimating];
-        request = NO;
-        [hud hide:YES];
-    } failure:^{
-        [self showAlertView];
-        [_act stopAnimating];
-        [self.act stopAnimating];
-        request = NO;
-        [hud hide:YES];
-    }];
-}
--(void)loadMoreData
-{
-    request = YES;
-    [(DelegateAndDataSource*)self.tableV.dataSource loadMoreDataSuccess:^{
-        [self.tableV reloadData];
-        [_footAct stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.tableFooterView = nil;
-        }];
-        request = NO;
-        [hud hide:YES];
-    } failure:^{
-        [self showAlertView];
-        [_footAct stopAnimating];
-        [UIView animateWithDuration:0.3 animations:^{
-            _tableV.tableFooterView = nil;
-        }];
-        request = NO;
-        [hud hide:YES];
-    }];
 }
 @end

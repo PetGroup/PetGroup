@@ -9,7 +9,7 @@
 #import "AddContactViewController.h"
 #import "JSON.h"
 #import "DataStoreManager.h"
-
+#import "TempData.h"
 @interface AddContactViewController ()
 
 @end
@@ -103,7 +103,7 @@
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         self.resultArray =[NSMutableArray arrayWithArray:[receiveStr JSONValue]];
         for (NSDictionary* dic in self.resultArray) {
-            if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[DataStoreManager getMyUserID]]) {
+            if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
                 [_resultArray removeObject:dic];
             }
         }
