@@ -114,4 +114,11 @@ static TempData *sharedInstance=nil;
 {
     return ifNeedChat;
 }
+-(NSString*)getMyUserID
+{
+    if (!self.myUserID) {
+        self.myUserID = [DataStoreManager getMyUserID];
+    }
+    return self.myUserID;
+}
 @end

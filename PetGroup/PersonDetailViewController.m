@@ -828,7 +828,7 @@
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:[DataStoreManager getMyUserID] forKey:@"petuserId"];
+                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"petuserId"];
                 [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
                 [params setObject:self.inputTF.text forKey:@"msg"];
@@ -864,7 +864,7 @@
                     [params setObject:@"1" forKey:@"ifTransmitMsg"];
                     [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
                     [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
-                    [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
+                    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
                     [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
                     [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
                     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
@@ -889,7 +889,7 @@
                 NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
                 NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
                 long long a = (long long)(cT*1000);
-                [params setObject:[DataStoreManager getMyUserID] forKey:@"commentUserid"];
+                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"commentUserid"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
                 if ([self.theID isKindOfClass:[Reply class]]) {
                     [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];

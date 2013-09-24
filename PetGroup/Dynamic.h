@@ -25,6 +25,7 @@
 @property (nonatomic,strong)HostInfo*petUser;
 @property (nonatomic,strong)NSMutableArray* replyViews;
 @property (nonatomic,assign)float rowHigh;
+@property (nonatomic,assign)float easyRowHigh;
 @property (nonatomic,strong)NSString *imageID;
 @property (nonatomic,strong)NSString *countReplys;
 -(id)initWithNSDictionary:(NSDictionary*)dic;

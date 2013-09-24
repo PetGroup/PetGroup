@@ -24,6 +24,7 @@
     BOOL opened;
     NSString * needChatUserName;
 }
+@property (retain,nonatomic)NSString* myUserID;
 @property (assign,nonatomic)BOOL newFriendsReq;
 
 + (id)sharedInstance;
@@ -45,4 +46,5 @@
 -(void)setNeedChatNO;
 -(BOOL)needChat;
 -(NSString *)getNeedChatUser;
+-(NSString*)getMyUserID;
 @end

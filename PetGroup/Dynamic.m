@@ -75,6 +75,7 @@
     }else if(self.smallImage.count>6){
         self.rowHigh+=245;
     }
+    self.easyRowHigh = self.rowHigh;
     for (int i = 0; i < self.replyViews.count; i++) {
         Reply* rel = self.replyViews[i];
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
