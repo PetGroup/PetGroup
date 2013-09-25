@@ -289,6 +289,7 @@
     NSString *from = [[message attributeForName:@"from"] stringValue];
     NSString *type = [[message attributeForName:@"type"] stringValue];
     NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
+    NSString *msgTime = [[message attributeForName:@"msgTime"] stringValue];
    // NSString * fromNickName = [[message attributeForName:@"nickname"] stringValue];
     if(msg!=nil){
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -296,25 +297,39 @@
         [dict setObject:from forKey:@"sender"];
         //[dict setObject:fromNickName forKey:@"nickname"];
         //消息接收到的时间
-        [dict setObject:[Common getCurrentTime] forKey:@"time"];
+        [dict setObject:msgTime forKey:@"time"];
         
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
         if ([type isEqualToString:@"chat"]) {
-            if (msgtype) {
+            if ([msgtype isEqualToString:@"normalchat"]||!msgtype) {
+                [self.chatDelegate newMessageReceived:dict];
+            }
+            else if ([msgtype isEqualToString:@"sayHello"]){
+                [self.addReqDelegate newAddReq:dict];
+            }
+            else {
                 //此处时间应该message里携带，暂时没有，使用当前时间
                 [dict setObject:msgtype forKey:@"msgType"];
-                [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
+                if ([msgtype isEqualToString:@"reply"]||[msgtype isEqualToString:@"zanDynamic"]) {
+                    [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
+                    [dict setObject:[[message attributeForName:@"fromNickname"] stringValue] forKey:@"fromNickname"];
+                    [dict setObject:[[message attributeForName:@"fromHeadImg"] stringValue] forKey:@"fromHeadImg"];
+                    [self.addReqDelegate newCommentReceived:dict];
+                }
+                else if ([msgtype isEqualToString:@"zanPeople"]){
+                    
+                }
+                else if ([msgtype isEqualToString:@"zanPet"]){
+                    
+                }
                 
-                //评论，回复，赞，在这里解析，或者通用newMessageReceived，在那个方法里解析dict
-                [self.addReqDelegate newCommentReceived:dict];
+                
+                //评论，回复，赞，在这里解析，或者通用newMessageReceived，在那个方法里解析dict,赞人赞宠物后面处理...
+                
             }
-            else
-                [self.chatDelegate newMessageReceived:dict];
         }
-        else if ([type isEqualToString:@"sayHello"]){
-            [self.addReqDelegate newAddReq:dict];
-        }
+        
     
     }
 }
