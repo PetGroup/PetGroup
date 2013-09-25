@@ -18,5 +18,6 @@
 @property (strong,nonatomic) UIImageView * sigBgImgV;
 @property (strong,nonatomic) UIImageView * petOneImgV;
 @property (strong,nonatomic) UIImageView * petTwoImgV;
+@property (strong,nonatomic) UIImageView * genderImgV;
 @property (strong,nonatomic) UILabel * petLabel;
 @end

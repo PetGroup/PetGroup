@@ -377,6 +377,12 @@
         }
         [cell.nameLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"]];
         NSString* sigStr = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"signature"];
+        NSString * gender = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"gender"];
+        if ([gender isEqualToString:@"male"]) {
+            [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
+        }
+        else
+            [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
         if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
             [cell.signatureLabel setText:sigStr];
         }else{
@@ -420,6 +426,26 @@
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
         [cell.distLabel setText:[self.petDistanceArray objectAtIndex:indexPath.row]];
         NSString* sigStr = [pet objectForKey:@"trait"];
+        NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
+        NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
+        
+        [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
+        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+        [cell.petLabel setText:[NSString stringWithFormat:@"[主人]%@",[theDict objectForKey:@"nickname"]]];
+        
+        NSString * petGender = [pet objectForKey:@"gender"];
+        if ([petGender isEqualToString:@"male"]) {
+            [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
+        }
+        else if([petGender isEqualToString:@"female"]){
+            [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
+        }
+        else
+        {
+            [cell.genderImgV setImage:nil];
+        }
+        
+
         if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
             [cell.signatureLabel setText:[pet objectForKey:@"trait"]];
         }else{

@@ -23,10 +23,10 @@
         [bgV addSubview:self.backgroudImageV];
         self.headImageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
         self.headImageV.backgroundColor = [UIColor whiteColor];
-        self.headImageV.layer.cornerRadius = 5;
-        self.headImageV.layer.masksToBounds=YES;
+//        self.headImageV.layer.cornerRadius = 5;
+//        self.headImageV.layer.masksToBounds=YES;
         [bgV addSubview:self.headImageV];
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 110, 20)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 150, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:17]];
         [bgV addSubview:self.nameLabel];
@@ -45,15 +45,28 @@
 //        [self.signatureLabel setNumberOfLines:0];
 //        [self.signatureLabel setLineBreakMode:UILineBreakModeCharacterWrap];
         
-        UIImageView * biaoqian = [[UIImageView alloc] initWithFrame:CGRectMake(240, 10, 80, 23)];
-        [biaoqian setImage:[UIImage imageNamed:@"biaoqianNearby.png"]];
-        [bgV addSubview:biaoqian];
+//        UIImageView * biaoqian = [[UIImageView alloc] initWithFrame:CGRectMake(240, 10, 80, 23)];
+//        [biaoqian setImage:[UIImage imageNamed:@"biaoqianNearby.png"]];
+//        [bgV addSubview:biaoqian];
         
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+        
+        self.genderImgV = [[UIImageView alloc] initWithFrame:CGRectMake(240, 15, 12, 12)];
+        [bgV addSubview:self.genderImgV];
+        //[self.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
+       
+//        UILabel * lineLabel= [[UILabel alloc] initWithFrame:CGRectMake(250, 14, 10, 15)];
+//        [lineLabel setTextAlignment:NSTextAlignmentRight];
+//        [lineLabel setFont:[UIFont systemFontOfSize:14]];
+//        [lineLabel setText:@"|"];
+//        [lineLabel setTextColor:[UIColor grayColor]];
+//        [bgV addSubview:lineLabel];
+//        [lineLabel setBackgroundColor:[UIColor clearColor]];
+        
         self.distLabel = [[UILabel alloc] initWithFrame:CGRectMake(260, 10, 55, 20)];
         [self.distLabel setTextAlignment:NSTextAlignmentRight];
         [self.distLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.distLabel setTextColor:[UIColor whiteColor]];
+        [self.distLabel setTextColor:[UIColor orangeColor]];
         [bgV addSubview:self.distLabel];
         [self.distLabel setBackgroundColor:[UIColor clearColor]];
 
@@ -64,6 +77,8 @@
         
         self.petOneImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 40, 30, 30)];
         [bgV addSubview:self.petOneImgV];
+//        self.petOneImgV.layer.cornerRadius = 3;
+//        self.petOneImgV.layer.masksToBounds=YES;
         
         self.petTwoImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 40, 30, 30)];
         [bgV addSubview:self.petTwoImgV];

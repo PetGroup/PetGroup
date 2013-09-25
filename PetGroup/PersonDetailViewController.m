@@ -17,6 +17,7 @@
 #import "PersonalDynamicViewController.h"
 #import "PersonDynamicDelegateAndDataSouce.h"
 #import "HeightCalculate.h"
+#import "Common.h"
 
 @interface PersonDetailViewController ()<UIExpandingTextViewDelegate>
 {
@@ -254,7 +255,10 @@
         NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
         [body setStringValue:message];
         NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
-        [mes addAttributeWithName:@"type" stringValue:@"sayHello"];
+        [mes addAttributeWithName:@"type" stringValue:@"chat"];
+        [mes addAttributeWithName:@"msgtype" stringValue:@"sayHello"];
+        [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+        [mes addAttributeWithName:@"fileType" stringValue:@"no"];
         [mes addAttributeWithName:@"to" stringValue:[self.hostInfo.userName stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
         [mes addChild:body];

@@ -259,6 +259,8 @@
         [replyDict setObject:theID forKey:@"dynamicID"];
         [replyDict setObject:[theDict objectForKey:@"time"] forKey:@"time"];
         [replyDict setObject:[theDict objectForKey:@"msgType"] forKey:@"theType"];
+        [replyDict setObject:[theDict objectForKey:@"fromNickname"] forKey:@"fromNickname"];
+        [replyDict setObject:[theDict objectForKey:@"fromHeadImg"] forKey:@"fromHeadImg"];
         [replyArray addObject:replyDict];
         [userDefault setObject:replyArray forKey:NewComment];
         [userDefault setObject:mydynamicDict forKey:MyDynamic];

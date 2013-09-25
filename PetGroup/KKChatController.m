@@ -710,6 +710,11 @@
         //   NSLog(@"chatWithUser:%@",chatWithUser);
         //由谁发送
         [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+        
+        [mes addAttributeWithName:@"msgtype" stringValue:@"normalchat"];
+        [mes addAttributeWithName:@"fileType" stringValue:@"text"];  //如果发送图片音频改这里
+        [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+
         //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
         //组合
         

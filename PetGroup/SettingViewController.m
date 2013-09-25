@@ -141,7 +141,10 @@
         [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
         [SFHFKeychainUtils deleteItemForUsername:PASSWORD andServiceName:LOCALACCOUNT error:nil];
         [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
+        
         AppDelegate* app = [[UIApplication sharedApplication] delegate];
+        TempData * tempData = [TempData sharedInstance];
+        tempData.myUserID = nil;
         [app.xmppHelper disconnect];
         [self.navigationController popViewControllerAnimated:NO];
     }
