@@ -13,7 +13,7 @@
 #import "PersonDetailViewController.h"
 #import "CustomTabBar.h"
 #import "ParticularDynamicViewController.h"
-@interface ReplyCell ()<UIAlertViewDelegate,UIActionSheetDelegate>
+@interface ReplyCell ()<UIAlertViewDelegate,UIActionSheetDelegate,OHAttributedLabelDelegate>
 
 @end
 @implementation ReplyCell
@@ -23,7 +23,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
          self.ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
+        _ohaL.delegate = self;
     }
     return self;
 }
@@ -36,6 +38,7 @@
 }
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     if ([self.theID isKindOfClass:[Reply class]]) {
         Reply* rel = (Reply*)self.theID;
         NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
@@ -129,9 +132,10 @@
             [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",((Reply*)self.theID).msg);
+                [((ParticularDynamicViewController*)self.viewC).dynamic.replyViews removeObject:self.theID];
                 [(UITableView*)self.superview reloadData];
             }];
-            [((ParticularDynamicViewController*)self.viewC).dynamic.replyViews removeObject:self.theID];
         }
         if ([self.theID isKindOfClass:[ReplyComment class]]) {
             Reply* theReply = nil;

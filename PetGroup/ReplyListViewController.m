@@ -7,13 +7,15 @@
 //
 
 #import "ReplyListViewController.h"
+#import "ReplyComment.h"
 #import "TempData.h"
 #import "ReplyListCell.h"
 #import "ParticularDynamicViewController.h"
+#import "Common.h"
 @interface ReplyListViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain) UITableView* tableV;
-@property (nonatomic,retain) NSArray* dynamicArray;
-@property (nonatomic,retain) NSArray* dicArray;
+@property (nonatomic,retain) NSMutableDictionary* dynamicDic;
+@property (nonatomic,retain) NSMutableArray* dicArray;
 @end
 
 @implementation ReplyListViewController
@@ -45,13 +47,15 @@
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"详情"];
+    [titleLabel setText:@"与我相关"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-//待续
+    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+    self.dicArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+    self.dynamicDic = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:MyDynamic]];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     _tableV.delegate = self;
@@ -70,17 +74,38 @@
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [_tableV reloadData];
+}
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSString * dynamicID = [self.dicArray[indexPath.row] objectForKey:@"dynamicID"];
     ParticularDynamicViewController* parVC = [[ParticularDynamicViewController alloc]init];
-    parVC.dynamic = self.dynamicArray[indexPath.row];
+    parVC.dynamic = [[Dynamic alloc]initWithNSDictionary:[self.dynamicDic objectForKey:dynamicID]];
     [self.navigationController pushViewController:parVC animated:YES];
+    [self.dynamicDic removeObjectForKey:dynamicID];
+    
+    NSMutableArray * a = [self.dicArray mutableCopy];
+    for (NSDictionary*b in _dicArray) {
+        if ([[b objectForKey:@"dynamicID"] isEqualToString:dynamicID]) {
+            [a removeObject:b];
+        }
+    }
+    self.dicArray = a;
+    [_tableV reloadData];
+     NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault setObject:_dicArray forKey:NewComment];
+    [userDefault setObject:_dynamicDic forKey:MyDynamic];
+    [userDefault removeObjectForKey:NewComment];
+    [userDefault removeObjectForKey:MyDynamic];
+    [userDefault synchronize];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dynamicArray.count;
+    return self.dicArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -89,8 +114,26 @@
     if (cell == nil) {
         cell = [[ReplyListCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    cell.dynamic = self.dynamicArray[indexPath.row];
-    cell.dic = self.dicArray[indexPath.row];
+    cell.nameL.text = [_dicArray[indexPath.row] objectForKey:@"fromNickname"];
+//    cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",[_dicArray[indexPath.row] objectForKey:@"from"]]];
+    if ([[_dicArray[indexPath.row] objectForKey:@"theType"]isEqualToString:@"zanDynamic"]) {
+        cell.msgL.text = @"有人赞了这条动态";
+    }else{
+        cell.msgL.text = [_dicArray[indexPath.row] objectForKey:@"replyContent"];
+    }
+    
+    cell.timeL.text = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",[[_dicArray[indexPath.row] objectForKey:@"time"] doubleValue]/1000 ]];
+    NSString * dynamicID = [self.dicArray[indexPath.row] objectForKey:@"dynamicID"];
+    Dynamic* dynamic = [[Dynamic alloc]initWithNSDictionary:[self.dynamicDic objectForKey:dynamicID]];
+    if (dynamic.smallImage.count>0) {
+        cell.dynamicImageV.hidden = NO;
+        cell.dynamicL.hidden = YES;
+        cell.dynamicImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",dynamic.smallImage[0]]];
+    }else{
+        cell.dynamicImageV.hidden = YES;
+        cell.dynamicL.hidden = NO;
+        cell.dynamicL.text = dynamic.msg;
+    }
     return cell;
 }
 @end

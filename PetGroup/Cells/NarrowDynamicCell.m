@@ -393,6 +393,7 @@
             if ([_zanL.text intValue]>0) {
                 _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
             }
+            self.dynamic.countZan-=1;
             _zanimage.image = [UIImage imageNamed:@"zan"];
             zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -403,6 +404,7 @@
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
+            self.dynamic.countZan+=1;
             _zanimage.image = [UIImage imageNamed:@"zaned"];
             zanB.userInteractionEnabled = YES;
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {

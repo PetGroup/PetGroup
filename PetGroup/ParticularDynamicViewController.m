@@ -71,6 +71,7 @@
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [self.view addSubview:_tableV];
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     
@@ -87,7 +88,29 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"正在加载，请稍后";
-    [hud show:YES];
+    
+    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
+    [inPutView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:inPutView];
+    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
+    [inPutView addSubview:inputbg];
+    
+    self.inputTF = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
+    self.inputTF.delegate = self;
+    self.inputTF.maximumNumberOfLines=5;
+    [inPutView addSubview:self.inputTF];
+    
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 5.0) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    }
+    else{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,7 +181,7 @@
         cell.dynamic = self.dynamic;
         return cell;
     }else{
-        static NSString *cellIdentifier = @"EasyDynamicCell";
+        static NSString *cellIdentifier = @"ReplyCell";
         ReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
         if (cell == nil) {
             cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
@@ -213,6 +236,15 @@
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     Reply* rep = [[Reply alloc]initWithDictionary:dic];
                     [self.dynamic.replyViews addObject:rep];
+                    self.highArray = [[NSMutableArray alloc]init];
+                    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+                        Reply* rel = self.dynamic.replyViews[i];
+                        [self.highArray addObject:rel];
+                        for (int j = 0; j < rel.replyComments.count; j++) {
+                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+                            [self.highArray addObject:recom];
+                        }
+                    }
                     [self.tableV reloadData];
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [hud hide:YES];
@@ -291,6 +323,15 @@
                     ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
                     if ([self.theID isKindOfClass:[Reply class]]) {
                         [((Reply*)self.theID).replyComments addObject:repcom];
+                        self.highArray = [[NSMutableArray alloc]init];
+                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+                            Reply* rel = self.dynamic.replyViews[i];
+                            [self.highArray addObject:rel];
+                            for (int j = 0; j < rel.replyComments.count; j++) {
+                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+                                [self.highArray addObject:recom];
+                            }
+                        }
                         [self.tableV reloadData];
                     }
                     if ([self.theID isKindOfClass:[ReplyComment class]]) {
@@ -305,6 +346,15 @@
                         }
                         if (theRep) {
                             [theRep.replyComments addObject:repcom];
+                        }
+                        self.highArray = [[NSMutableArray alloc]init];
+                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+                            Reply* rel = self.dynamic.replyViews[i];
+                            [self.highArray addObject:rel];
+                            for (int j = 0; j < rel.replyComments.count; j++) {
+                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+                                [self.highArray addObject:recom];
+                            }
                         }
                         [self.tableV reloadData];
                     }

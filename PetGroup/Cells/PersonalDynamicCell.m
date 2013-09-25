@@ -428,6 +428,7 @@
             if ([_zanL.text intValue]>0) {
                 _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
             }
+            self.dynamic.countZan-=1;
             _zanimage.image = [UIImage imageNamed:@"zan"];
             [_time invalidate];
             _waitView.hidden = YES;
@@ -443,6 +444,7 @@
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
+            self.dynamic.countZan+=1;
             [_time invalidate];
             _waitView.hidden = YES;
              zanB.userInteractionEnabled = YES;

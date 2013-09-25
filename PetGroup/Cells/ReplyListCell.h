@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "DynamicCell.h"
-
+#import "EGOImageView.h"
 @interface ReplyListCell : UITableViewCell
-@property (nonatomic,retain)NSDictionary* dic;
-@property (nonatomic,retain)Dynamic* dynamic;
+@property (nonatomic,retain)EGOImageView *headImageV;
+@property (nonatomic,retain)UILabel*nameL;
+@property (nonatomic,retain)UILabel*msgL;
+@property (nonatomic,retain)UILabel*timeL;
+@property (nonatomic,retain)EGOImageView *dynamicImageV;
+@property (nonatomic,retain)UILabel* dynamicL;
 @end

@@ -18,6 +18,7 @@
 #import "ReplyComment.h"
 #import "MyDynamicDelegateAndDataSource.h"
 #import "HeightCalculate.h"
+#import "ReplyListViewController.h"
 @interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
     UIButton * assessB;
@@ -30,6 +31,7 @@
     UIImageView * inputbg;
     UIView * inPutView;
     BOOL request;
+    UIButton *replyB;
 }
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)UIActivityIndicatorView * act;
@@ -155,7 +157,22 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-
+    if ([self.dataSource isKindOfClass:[MyDynamicDelegateAndDataSource class]]) {
+        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+        NSArray *dicArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+        if (dicArray.count>0) {
+            if (!replyB) {
+                replyB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [replyB addTarget:self action:@selector(kanpinlun) forControlEvents:UIControlEventTouchUpInside];
+            }
+            replyB.frame = CGRectMake(100, 100, 50, 20);
+            [replyB setTitle:[NSString stringWithFormat:@"%d",dicArray.count] forState:UIControlStateNormal];
+            [_tableV.tableHeaderView addSubview:replyB];
+        }else{
+            [replyB removeFromSuperview];
+            replyB = nil;
+        }
+    }
 }
 - (void)didReceiveMemoryWarning
 {
@@ -163,6 +180,11 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)kanpinlun
+{
+    ReplyListViewController* rel = [[ReplyListViewController alloc]init];
+    [self.navigationController pushViewController:rel animated:YES];
+}
 -(void)backButton:(UIButton*)button
 {
     [hud hide:YES];

@@ -138,6 +138,7 @@
 }
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     for (UIView* a in self.contentView.subviews) {
         a.frame = CGRectZero;
     }
@@ -402,6 +403,7 @@
             if ([_zanL.text intValue]>0) {
                 _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]-1 ];
             }
+            self.dynamic.countZan-=1;
             _zanimage.image = [UIImage imageNamed:@"zan"];
             [_time invalidate];
             _waitView.hidden = YES;
@@ -415,6 +417,7 @@
         [body setObject:@"addZan" forKey:@"method"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.dynamic.ifIZaned=!self.dynamic.ifIZaned;
+            self.dynamic.countZan+=1;
             _zanL.text =[NSString stringWithFormat:@"%d",[_zanL.text intValue]+1 ];
             _zanimage.image = [UIImage imageNamed:@"zaned"];
             [_time invalidate];
@@ -436,7 +439,7 @@
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [self.viewC performSelector:@selector(deleteDynamic:) withObject:nil];
+        [self.viewC performSelector:@selector(deleteDynamic:) withObject:self.dynamic];
     }
 }
 @end

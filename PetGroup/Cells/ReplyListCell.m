@@ -7,14 +7,8 @@
 //
 
 #import "ReplyListCell.h"
-#import "EGOImageView.h"
+
 @interface ReplyListCell ()
-@property (nonatomic,retain)EGOImageView *headImageV;
-@property (nonatomic,retain)UILabel*nameL;
-@property (nonatomic,retain)UILabel*msgL;
-@property (nonatomic,retain)UILabel*timeL;
-@property (nonatomic,retain)EGOImageView *dynamicImageV;
-@property (nonatomic,retain)UILabel* dynamicL;
 @end
 @implementation ReplyListCell
 
