@@ -17,6 +17,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
+
+        
         self.headImageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 40,40)];
         _headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
         [self.contentView addSubview:_headImageV];
