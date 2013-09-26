@@ -53,6 +53,7 @@
 @property (nonatomic,weak)DynamicCell* mycell;
 @property (nonatomic,weak)id theID;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
+@property (nonatomic,retain)NSString* myUserID;
 @end
 
 @implementation DynamicViewController
@@ -202,6 +203,15 @@
     nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
     NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
+    
+    if (_myUserID != [[TempData sharedInstance] getMyUserID]) {
+        _myUserID = [[TempData sharedInstance] getMyUserID];
+        [self.nearbyDDS.dataSourceArray removeAllObjects];
+        [self.friendDDS.dataSourceArray removeAllObjects];
+        [self.tableV reloadData];
+        [self reloadData];
+        [hud show:YES];
+    }
 }
 -(void)viewDidAppear:(BOOL)animated
 {
