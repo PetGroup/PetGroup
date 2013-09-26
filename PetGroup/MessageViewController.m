@@ -578,11 +578,11 @@
     self.appDel.xmppHelper.xmpptype = login;
     [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
         NSLog(@"登陆成功xmpp");
-        self.appDel.xmppHelper.buddyListDelegate = self;
-        self.appDel.xmppHelper.chatDelegate = self;
-        self.appDel.xmppHelper.processFriendDelegate = self;
-        self.appDel.xmppHelper.addReqDelegate = self;
-        self.appDel.xmppHelper.commentDelegate = self;
+//        self.appDel.xmppHelper.buddyListDelegate = self;
+//        self.appDel.xmppHelper.chatDelegate = self;
+//        self.appDel.xmppHelper.processFriendDelegate = self;
+//        self.appDel.xmppHelper.addReqDelegate = self;
+//        self.appDel.xmppHelper.commentDelegate = self;
         titleLabel.text = @"消息";
         [[TempData sharedInstance] setOpened:YES];
     }fail:^(NSError *result){
