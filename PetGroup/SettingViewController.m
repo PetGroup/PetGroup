@@ -145,6 +145,10 @@
         AppDelegate* app = [[UIApplication sharedApplication] delegate];
         TempData * tempData = [TempData sharedInstance];
         tempData.myUserID = nil;
+        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+        [userDefault removeObjectForKey:NewComment];
+        [userDefault removeObjectForKey:MyDynamic];
+        [userDefault synchronize];
         [app.xmppHelper disconnect];
         [self.navigationController popViewControllerAnimated:NO];
     }

@@ -28,7 +28,7 @@
         [bgV addSubview:self.headImageV];
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 150, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:17]];
+        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
         [bgV addSubview:self.nameLabel];
 //        [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
 

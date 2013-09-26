@@ -464,9 +464,12 @@
     }
     else if (actionSheet.tag==88)
     {
-        UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除这个宠物么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
-        delAlert.tag = 112;
-        [delAlert show];
+        if (buttonIndex==0) {
+            UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除这个宠物么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+            delAlert.tag = 112;
+            [delAlert show];
+        }
+
     }
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

@@ -41,7 +41,7 @@
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 8.5, 180, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         self.nameLabel.backgroundColor = [UIColor clearColor];
-        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:17]];
+        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
         [self.contentView addSubview:self.nameLabel];
         self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 36.5, 240, 20)];
         self.contentLabel.backgroundColor = [UIColor clearColor];

@@ -505,7 +505,14 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
-        [self logInServerSuccessWithInfo:recDict];
+        if ([[recDict objectForKey:@"token"] length]>3) {
+            [self logInServerSuccessWithInfo:recDict];
+        }
+        else
+        {
+            titleLabel.text = @"消息(未连接)";
+        }
+     
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self makeLogFailurePrompt];
     }];
