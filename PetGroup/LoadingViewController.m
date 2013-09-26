@@ -37,15 +37,24 @@
         
         NSData * nsData= [NSData dataWithContentsOfFile:openImgStr];
         UIImage * openPic= [UIImage imageWithData:nsData];
-        if (iPhone5) {
+        if (openPic) {
             splashImageView=[[UIImageView alloc]initWithImage:openPic];
             splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
         }
         else
         {
-            splashImageView=[[UIImageView alloc]initWithImage:openPic];
-            splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"OpenImg"];
+            if (iPhone5) {
+                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"568screen.png"]];
+                splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
+            }
+            else
+            {
+                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"normalScreen.png"]];
+                splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
+            }
         }
+        
     }
     else
     {

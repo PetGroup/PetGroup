@@ -554,6 +554,8 @@
             
             if ([UIImageJPEGRepresentation(image, 1.0) writeToFile:openImgPath atomically:YES]) {
                 NSLog(@"success///");
+                [[NSUserDefaults standardUserDefaults] setObject:openImgPath forKey:@"OpenImg"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
             }
             else
             {
@@ -563,8 +565,7 @@
 //            if ([file_manager fileExistsAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"]]) {
 //                [file_manager removeItemAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"] error:nil];
 //            }
-            [[NSUserDefaults standardUserDefaults] setObject:openImgPath forKey:@"OpenImg"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         
