@@ -11,6 +11,5 @@
 @protocol AddReqDelegate <NSObject>
 @optional
 -(void)newAddReq:(NSDictionary *)userInfo;
--(void)newCommentReceived:(NSDictionary *)theDict;
 
 @end

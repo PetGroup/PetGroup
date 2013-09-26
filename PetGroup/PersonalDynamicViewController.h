@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "DelegateAndDataSource.h"
+@class AppDelegate,XMPPHelper;
 @interface PersonalDynamicViewController : UIViewController<UITableViewDelegate>
 @property (nonatomic,retain)DelegateAndDataSource* dataSource;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)NSString* userName;
 @property (nonatomic,retain)NSString* HeadImageID;
+@property (strong,nonatomic) AppDelegate * appDel;
 @end
 

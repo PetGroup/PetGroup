@@ -17,24 +17,29 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.headImageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 5, 40,40)];
+        self.headImageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 40,40)];
         _headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
         [self.contentView addSubview:_headImageV];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(60, 5, 150, 20)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 190, 20)];
+        _nameL.font = [UIFont boldSystemFontOfSize:16];
         [self.contentView addSubview:_nameL];
         
-        self.msgL = [[UILabel alloc]initWithFrame:CGRectMake(60, 30, 150, 40)];
+        self.msgL = [[UILabel alloc]initWithFrame:CGRectMake(60, 35, 190, 15)];
+        _msgL.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_msgL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(60, 75, 150, 20)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(60, 55, 190, 15)];
+        _timeL.font = [UIFont systemFontOfSize:12];
+        _timeL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_timeL];
         
-        self.dynamicImageV = [[EGOImageView alloc]initWithFrame:CGRectMake(220, 5, 90,90)];
+        self.dynamicImageV = [[EGOImageView alloc]initWithFrame:CGRectMake(250, 10, 60,60)];
         _dynamicImageV.placeholderImage = [UIImage imageNamed:@"placeholder.png"];
         [self.contentView addSubview:_dynamicImageV];
         
-        self.dynamicL = [[UILabel alloc]initWithFrame:CGRectMake(220, 5, 90,90)];
+        self.dynamicL = [[UILabel alloc]initWithFrame:CGRectMake(250, 10, 60,60)];
+        _dynamicL.font = [UIFont systemFontOfSize:14];
         _dynamicL.numberOfLines = 0;
         [self.contentView addSubview:_dynamicL];
     }

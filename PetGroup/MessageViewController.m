@@ -167,6 +167,7 @@
     self.appDel.xmppHelper.chatDelegate = self;
     self.appDel.xmppHelper.processFriendDelegate = self;
     self.appDel.xmppHelper.addReqDelegate = self;
+    self.appDel.xmppHelper.commentDelegate = self;
 //    self.appDel.xmppHelper.notConnect = self;
 }
 
@@ -261,7 +262,7 @@
         [replyDict setObject:[theDict objectForKey:@"msgType"] forKey:@"theType"];
         [replyDict setObject:[theDict objectForKey:@"fromNickname"] forKey:@"fromNickname"];
         [replyDict setObject:[theDict objectForKey:@"fromHeadImg"] forKey:@"fromHeadImg"];
-        [replyArray addObject:replyDict];
+        [replyArray insertObject:replyDict atIndex:0];
         [userDefault setObject:replyArray forKey:NewComment];
         [userDefault setObject:mydynamicDict forKey:MyDynamic];
         [userDefault synchronize];
@@ -580,6 +581,7 @@
         self.appDel.xmppHelper.chatDelegate = self;
         self.appDel.xmppHelper.processFriendDelegate = self;
         self.appDel.xmppHelper.addReqDelegate = self;
+        self.appDel.xmppHelper.commentDelegate = self;
         titleLabel.text = @"消息";
         [[TempData sharedInstance] setOpened:YES];
     }fail:^(NSError *result){

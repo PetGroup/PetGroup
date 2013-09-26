@@ -31,7 +31,6 @@
 @property (nonatomic,strong)UIImageView*  actionIV;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
 @property (nonatomic,weak)id theID;
-@property (nonatomic,retain)NSMutableArray* highArray;
 @end
 
 @implementation ParticularDynamicViewController

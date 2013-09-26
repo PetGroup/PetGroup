@@ -11,6 +11,7 @@
 #import "BuddyListDelegate.h"
 #import "ChatDelegate.h"
 #import "AddReqDelegate.h"
+#import "CommentDelegate.h"
 #import "NotConnectDelegate.h"
 #import "Common.h"
 #import "XMPPRoster.h"
@@ -315,7 +316,7 @@
                     [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
                     [dict setObject:[[message attributeForName:@"fromNickname"] stringValue] forKey:@"fromNickname"];
                     [dict setObject:[[message attributeForName:@"fromHeadImg"] stringValue] forKey:@"fromHeadImg"];
-                    [self.addReqDelegate newCommentReceived:dict];
+                    [self.commentDelegate newCommentReceived:dict];
                 }
                 else if ([msgtype isEqualToString:@"zanPeople"]){
                     

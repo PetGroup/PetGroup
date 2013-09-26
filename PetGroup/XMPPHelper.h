@@ -18,6 +18,7 @@
 @class XMPPPresence;
 @class XMPPRoster;
 
+
 @interface XMPPHelper : NSObject
 
 typedef void (^CallBackBlock) (void);
@@ -38,12 +39,13 @@ typedef enum {
 @property (nonatomic,strong) NSString *account;
 @property (nonatomic,strong) NSString *password;
 
-@property (nonatomic, retain)id addReqDelegate;
-@property (nonatomic, retain)id buddyListDelegate;
-@property (nonatomic, retain)id chatDelegate;
-@property (nonatomic, retain)id xmpprosterDelegate;
-@property (nonatomic,retain) id processFriendDelegate;
-@property (nonatomic,retain) id notConnect;
+@property (nonatomic, assign)id addReqDelegate;
+@property (nonatomic, assign)id commentDelegate;
+@property (nonatomic, assign)id buddyListDelegate;
+@property (nonatomic, assign)id chatDelegate;
+@property (nonatomic, assign)id xmpprosterDelegate;
+@property (nonatomic,assign) id processFriendDelegate;
+@property (nonatomic,assign) id notConnect;
 @property (nonatomic) xmppType xmpptype;
 
 @property (strong,nonatomic) CallBackBlock success;
