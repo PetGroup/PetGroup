@@ -61,7 +61,7 @@
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
-    _tableV.rowHeight = 100;
+    _tableV.rowHeight = 80;
 }
 
 - (void)didReceiveMemoryWarning
@@ -99,8 +99,6 @@
      NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault setObject:_dicArray forKey:NewComment];
     [userDefault setObject:_dynamicDic forKey:MyDynamic];
-    [userDefault removeObjectForKey:NewComment];
-    [userDefault removeObjectForKey:MyDynamic];
     [userDefault synchronize];
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -115,9 +113,14 @@
         cell = [[ReplyListCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     cell.nameL.text = [_dicArray[indexPath.row] objectForKey:@"fromNickname"];
-//    cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",[_dicArray[indexPath.row] objectForKey:@"from"]]];
+    NSString* headimage;
+    NSArray *arr = [[_dicArray[indexPath.row] objectForKey:@"fromHeadImg"] componentsSeparatedByString:@"_"];
+    if (arr.count>1) {
+        headimage = arr[0];
+    }
+    cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",headimage]];
     if ([[_dicArray[indexPath.row] objectForKey:@"theType"]isEqualToString:@"zanDynamic"]) {
-        cell.msgL.text = @"有人赞了这条动态";
+        cell.msgL.text = @"赞了这条动态";
     }else{
         cell.msgL.text = [_dicArray[indexPath.row] objectForKey:@"replyContent"];
     }

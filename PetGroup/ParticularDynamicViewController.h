@@ -11,4 +11,5 @@
 
 @interface ParticularDynamicViewController : UIViewController
 @property (nonatomic,retain)Dynamic* dynamic;
+@property (nonatomic,retain)NSMutableArray* highArray;
 @end

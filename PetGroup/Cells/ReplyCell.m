@@ -132,8 +132,16 @@
             [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"%@",((Reply*)self.theID).msg);
                 [((ParticularDynamicViewController*)self.viewC).dynamic.replyViews removeObject:self.theID];
+                ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
+                for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
+                    Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
+                    [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
+                    for (int j = 0; j < rel.replyComments.count; j++) {
+                        ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
+                    }
+                }
                 [(UITableView*)self.superview reloadData];
             }];
         }
@@ -161,6 +169,15 @@
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [theReply.replyComments removeObject:self.theID];
+                    ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
+                    for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
+                        Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
+                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
+                        for (int j = 0; j < rel.replyComments.count; j++) {
+                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+                            [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
+                        }
+                    }
                     [(UITableView*)self.superview reloadData];
                 }];
             }

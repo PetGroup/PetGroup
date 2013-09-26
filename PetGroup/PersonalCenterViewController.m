@@ -10,6 +10,9 @@
 #import "CustomTabBar.h"
 #import "PersonalDynamicViewController.h"
 #import "MyDynamicDelegateAndDataSource.h"
+#import "AppDelegate.h"
+#import "XMPPHelper.h"
+#import "JSON.h"
 @interface PersonalCenterViewController ()
 
 @end
@@ -22,6 +25,7 @@
     if (self) {
         // Custom initialization
         unreadComment = 0;
+        self.appDel = [[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -58,6 +62,8 @@
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
+    
+   
 	// Do any additional setup after loading the view.
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -94,6 +100,7 @@
     if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
         [self.customTabBarController setSelectedPage:0]; 
     }
+    self.appDel.xmppHelper.commentDelegate = self;
 
 }
 -(NSArray *)imageToURL:(NSArray *)imageArray;
@@ -308,6 +315,66 @@
     
     
     
+    
+}
+
+-(void)newCommentReceived:(NSDictionary *)theDict
+{
+    
+    [self requestOneStateByStateID:[theDict objectForKey:@"dynamicID"] WithDict:theDict];
+    
+}
+
+-(void)requestOneStateByStateID:(NSString *)theID WithDict:(NSDictionary *)theDict
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:theID forKey:@"stateid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"findOneState" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"rrrrrrrr:%@",recDict);
+        
+        
+        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+        
+        NSMutableDictionary * mydynamicDict = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:MyDynamic]];
+        if (!mydynamicDict) {
+            mydynamicDict = [NSMutableDictionary dictionary];
+        }
+        [mydynamicDict setObject:recDict forKey:theID];
+        
+        
+        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+        if (!replyArray) {
+            replyArray = [NSMutableArray array];
+        }
+        int unreadOfComment = replyArray.count+1;
+        unreadComment = unreadOfComment;
+        [self.profileTableV reloadData];
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadOfComment OrDot:NO WithButtonIndex:4];
+        NSMutableDictionary * replyDict = [NSMutableDictionary dictionary];
+        [replyDict setObject:[theDict objectForKey:@"sender"] forKey:@"username"];
+        [replyDict setObject:[theDict objectForKey:@"msg"] forKey:@"replyContent"];
+        [replyDict setObject:theID forKey:@"dynamicID"];
+        [replyDict setObject:[theDict objectForKey:@"time"] forKey:@"time"];
+        [replyDict setObject:[theDict objectForKey:@"msgType"] forKey:@"theType"];
+        [replyDict setObject:[theDict objectForKey:@"fromNickname"] forKey:@"fromNickname"];
+        [replyDict setObject:[theDict objectForKey:@"fromHeadImg"] forKey:@"fromHeadImg"];
+        [replyArray insertObject:replyDict atIndex:0];
+        [userDefault setObject:replyArray forKey:NewComment];
+        [userDefault setObject:mydynamicDict forKey:MyDynamic];
+        [userDefault synchronize];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
     
 }
 

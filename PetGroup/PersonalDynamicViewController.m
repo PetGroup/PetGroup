@@ -19,6 +19,10 @@
 #import "MyDynamicDelegateAndDataSource.h"
 #import "HeightCalculate.h"
 #import "ReplyListViewController.h"
+#import "EditDynamicViewController.h"
+#import "AppDelegate.h"
+#import "XMPPHelper.h"
+#import "JSON.h"
 @interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
     UIButton * assessB;
@@ -33,6 +37,7 @@
     BOOL request;
     UIButton *replyB;
 }
+@property (nonatomic,retain)UIView* headV;
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)UIActivityIndicatorView * act;
 @property (nonatomic,strong)UIActivityIndicatorView * footAct;
@@ -49,6 +54,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.appDel = [[UIApplication sharedApplication] delegate];
     }
     return self;
 }
@@ -76,16 +82,28 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
+    if ([self.dataSource isKindOfClass:[MyDynamicDelegateAndDataSource class]]) {
+        UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        publishButton.frame=CGRectMake(278, 3, 35, 33);
+        [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+        [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:publishButton];
+    }
+    
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     _tableV.delegate = self;
     _tableV.dataSource = self.dataSource;
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
+   
+    self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
+    _headV.backgroundColor = [UIColor whiteColor];
+    self.tableV.tableHeaderView = _headV;
     
-    UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
-    headV.image = [UIImage imageNamed:@"morenbeijing"];
-    self.tableV.tableHeaderView = headV;
-    headV.userInteractionEnabled = YES;
+    UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
+    imageV.image = [UIImage imageNamed:@"morenbeijing"];
+    imageV.userInteractionEnabled = YES;
+    [_headV addSubview:imageV];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -95,11 +113,11 @@
     nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
     nameL.backgroundColor = [UIColor clearColor];
     nameL.textColor = [UIColor whiteColor];
-    [headV addSubview:nameL];
+    [imageV addSubview:nameL];
 
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
     photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
-    [headV addSubview:photoIV];
+    [imageV addSubview:photoIV];
     photoIV.userInteractionEnabled = YES;
     
     EGOImageView* headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
@@ -161,18 +179,95 @@
         NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
         NSArray *dicArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
         if (dicArray.count>0) {
+            _headV.frame = CGRectMake(0, 0, 320, 280.5);
             if (!replyB) {
-                replyB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                replyB = [UIButton buttonWithType:UIButtonTypeCustom];
+                [replyB setBackgroundImage:[UIImage imageNamed:@"notiBG2"] forState:UIControlStateNormal];
+                [replyB setBackgroundImage:[UIImage imageNamed:@"notiBG"] forState:UIControlStateHighlighted];
                 [replyB addTarget:self action:@selector(kanpinlun) forControlEvents:UIControlEventTouchUpInside];
             }
-            replyB.frame = CGRectMake(100, 100, 50, 20);
-            [replyB setTitle:[NSString stringWithFormat:@"%d",dicArray.count] forState:UIControlStateNormal];
-            [_tableV.tableHeaderView addSubview:replyB];
+            replyB.frame = CGRectMake(100, 245.5, 120, 30);
+            [replyB setTitle:[NSString stringWithFormat:@"%d条新消息",dicArray.count] forState:UIControlStateNormal];
+            replyB.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+            [_headV addSubview:replyB];
         }else{
+            _headV.frame = CGRectMake(0, 0, 320, 240.5);
             [replyB removeFromSuperview];
-            replyB = nil;
         }
+        _tableV.tableHeaderView = _headV;
+        self.appDel.xmppHelper.commentDelegate = self;
     }
+    
+}
+-(void)newCommentReceived:(NSDictionary *)theDict
+{
+    
+    [self requestOneStateByStateID:[theDict objectForKey:@"dynamicID"] WithDict:theDict];
+    
+}
+
+-(void)requestOneStateByStateID:(NSString *)theID WithDict:(NSDictionary *)theDict
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:theID forKey:@"stateid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"findOneState" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"rrrrrrrr:%@",recDict);
+        
+        
+        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+        
+        NSMutableDictionary * mydynamicDict = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:MyDynamic]];
+        if (!mydynamicDict) {
+            mydynamicDict = [NSMutableDictionary dictionary];
+        }
+        [mydynamicDict setObject:recDict forKey:theID];
+        
+        
+        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+        if (!replyArray) {
+            replyArray = [NSMutableArray array];
+        }
+        NSMutableDictionary * replyDict = [NSMutableDictionary dictionary];
+        [replyDict setObject:[theDict objectForKey:@"sender"] forKey:@"username"];
+        [replyDict setObject:[theDict objectForKey:@"msg"] forKey:@"replyContent"];
+        [replyDict setObject:theID forKey:@"dynamicID"];
+        [replyDict setObject:[theDict objectForKey:@"time"] forKey:@"time"];
+        [replyDict setObject:[theDict objectForKey:@"msgType"] forKey:@"theType"];
+        [replyDict setObject:[theDict objectForKey:@"fromNickname"] forKey:@"fromNickname"];
+        [replyDict setObject:[theDict objectForKey:@"fromHeadImg"] forKey:@"fromHeadImg"];
+        [replyArray insertObject:replyDict atIndex:0];
+        [userDefault setObject:replyArray forKey:NewComment];
+        [userDefault setObject:mydynamicDict forKey:MyDynamic];
+        [userDefault synchronize];
+        
+        
+        if (!replyB) {
+            replyB = [UIButton buttonWithType:UIButtonTypeCustom];
+        }
+        [replyB setBackgroundImage:[UIImage imageNamed:@"notiBG2"] forState:UIControlStateNormal];
+        [replyB setBackgroundImage:[UIImage imageNamed:@"notiBG"] forState:UIControlStateHighlighted];
+        [replyB addTarget:self action:@selector(kanpinlun) forControlEvents:UIControlEventTouchUpInside];
+        replyB.frame = CGRectMake(100, 245.5, 120, 30);
+        replyB.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [_headV addSubview:replyB];
+        _headV.frame = CGRectMake(0, 0, 320, 280.5);
+        _tableV.tableHeaderView = _headV;
+        [replyB setTitle:[NSString stringWithFormat:@"%d条新消息",replyArray.count] forState:UIControlStateNormal];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -180,6 +275,13 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)updateSelfMassage
+{
+    EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
+    editVC.viewC = self;
+    [self.navigationController pushViewController:editVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
 -(void)kanpinlun
 {
     ReplyListViewController* rel = [[ReplyListViewController alloc]init];

@@ -43,6 +43,7 @@
     
     BOOL request;
 }
+@property (nonatomic,retain)UIView* headV;
 @property (nonatomic,strong)UIView* footV;
 @property (nonatomic,strong)NearbyDynamicDelegateAndDataSource* nearbyDDS;
 @property (nonatomic,strong)FriendDynamicDelegateAndDataSource* friendDDS;
@@ -112,20 +113,24 @@
     [self.view addSubview:_tableV];
     _tableV.showsVerticalScrollIndicator=NO;
     
-    UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
-    headV.image = [UIImage imageNamed:@"morenbeijing"];
-    self.tableV.tableHeaderView = headV;
-    headV.userInteractionEnabled = YES;
+    self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
+    _headV.backgroundColor = [UIColor whiteColor];
+    self.tableV.tableHeaderView = _headV;
+    
+    UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
+    imageV.image = [UIImage imageNamed:@"morenbeijing"];
+    imageV.userInteractionEnabled = YES;
+    [_headV addSubview:imageV];
     
     nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
     nameL.backgroundColor = [UIColor clearColor];
     nameL.textColor = [UIColor whiteColor];
-    [headV addSubview:nameL];
+    [imageV addSubview:nameL];
     
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
     photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
-    [headV addSubview:photoIV];
+    [imageV addSubview:photoIV];
     photoIV.userInteractionEnabled = YES;
     
     headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
@@ -197,6 +202,22 @@
     nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
     NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+    NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+    int unreadComment = 0;
+    if (replyArray) {
+        unreadComment = replyArray.count;
+    }
+    else
+        unreadComment = 0;
+    if (unreadComment>0) {
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
+    }
+    else
+        [self.customTabBarController removeNotificatonOfIndex:4];
 }
 - (void)didReceiveMemoryWarning
 {
