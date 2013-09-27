@@ -312,7 +312,10 @@
     
     }
     if (!self.requestNextPage) {
-        if (self.nearbyArray.count>0||self.appearPetArray.count>0) {
+        if (personOrPet&&self.nearbyArray.count>0) {
+            [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        else if (!personOrPet&&self.appearPetArray.count>0) {
             [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
         
@@ -392,6 +395,7 @@
         NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petInfoViews"];
         if (tempPetArray.count>0) {
             PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
+            cell.petOneImgV.hidden = NO;
             NSArray * head = [self imageToURL:petInfo.headImgArray];
             [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"cat.png"]];
             [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
@@ -403,6 +407,7 @@
         }
         else
         {
+            cell.petOneImgV.hidden = YES;
             [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
             [cell.petLabel setText:@"用户暂时还没有宠物呢"];
         }
@@ -428,7 +433,7 @@
         NSString* sigStr = [pet objectForKey:@"trait"];
         NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
         NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
-        
+        cell.petOneImgV.hidden = NO;
         [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
         [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
         [cell.petLabel setText:[NSString stringWithFormat:@"[主人]%@",[theDict objectForKey:@"nickname"]]];

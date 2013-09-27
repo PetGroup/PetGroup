@@ -77,6 +77,7 @@
         
         self.petOneImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 40, 30, 30)];
         [bgV addSubview:self.petOneImgV];
+        self.petOneImgV.hidden = YES;
 //        self.petOneImgV.layer.cornerRadius = 3;
 //        self.petOneImgV.layer.masksToBounds=YES;
         
