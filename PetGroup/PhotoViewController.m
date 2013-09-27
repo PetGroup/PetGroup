@@ -12,6 +12,7 @@
 @interface PhotoViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,EGOImageViewDelegate>
 @property (nonatomic,retain)UIScrollView* sc;
 @property (nonatomic,retain)UIImage* myimage;
+@property (nonatomic,retain)NSArray* smallImageArray;
 @end
 
 @implementation PhotoViewController
@@ -19,6 +20,7 @@
 {
     self = [super init];
     if (self) {
+        self.smallImageArray = sImages;
         self.imgIDArray = images;
         self.indext = indext;
     }
@@ -40,7 +42,8 @@
     [self.view addSubview:_sc];
     for (int i = 0;i < self.imgIDArray.count;i++) {
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(i*320, 0, 320, _sc.frame.size.height)];
-        EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, 0, 320, _sc.frame.size.height)];
+        EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(110,(_sc.frame.size.height-100)/2 , 100, 100)];
+        imageV.placeholderImage = _smallImageArray[i];
         [subSC addSubview:imageV];
         imageV.userInteractionEnabled = YES;
         UIActivityIndicatorView*act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((_sc.frame.size.width-10)/2, (_sc.frame.size.height-10)/2, 10, 10)];
@@ -157,7 +160,7 @@
     if (320*size.height/size.width<_sc.frame.size.height) {
         a = (_sc.frame.size.height-320*size.height/size.width)/2;
     }
-    imageView.frame = CGRectMake(160,_sc.frame.size.height/2,0,0);
+//    imageView.frame = CGRectMake(160,_sc.frame.size.height/2,0,0);
     [UIView animateWithDuration:0.3 animations:^{
         imageView.frame = CGRectMake(0, a, 320, 320*size.height/size.width);
     }];
