@@ -192,11 +192,9 @@
 		9736BC8917C489F2007DFE36 /* NSXMLElement+XEP_0297.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC3317C489F2007DFE36 /* NSXMLElement+XEP_0297.m */; };
 		9736BC8A17C489F2007DFE36 /* XMPPMessage+XEP_0308.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC3617C489F2007DFE36 /* XMPPMessage+XEP_0308.m */; };
 		9736BCBC17C48B7B007DFE36 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9017C48B72007DFE36 /* Common.m */; };
-		9736BCBD17C48B7B007DFE36 /* DeviceIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9317C48B73007DFE36 /* DeviceIdentifier.m */; };
 		9736BCBE17C48B7B007DFE36 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9517C48B73007DFE36 /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9736BCC017C48B7B007DFE36 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9917C48B74007DFE36 /* LocationManager.m */; };
 		9736BCC117C48B7B007DFE36 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9C17C48B74007DFE36 /* MBProgressHUD.m */; };
-		9736BCC217C48B7B007DFE36 /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BC9E17C48B75007DFE36 /* MD5.m */; };
 		9736BCC417C48B7B007DFE36 /* MLNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BCA217C48B76007DFE36 /* MLNavigationController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9736BCC517C48B7B007DFE36 /* petCategory.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9736BCA417C48B76007DFE36 /* petCategory.xml */; };
 		9736BCC717C48B7B007DFE36 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BCA917C48B77007DFE36 /* Reachability.m */; };
@@ -830,16 +828,12 @@
 		9736BC3617C489F2007DFE36 /* XMPPMessage+XEP_0308.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XMPPMessage+XEP_0308.m"; sourceTree = "<group>"; };
 		9736BC8F17C48B72007DFE36 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		9736BC9017C48B72007DFE36 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
-		9736BC9217C48B72007DFE36 /* DeviceIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceIdentifier.h; sourceTree = "<group>"; };
-		9736BC9317C48B73007DFE36 /* DeviceIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceIdentifier.m; sourceTree = "<group>"; };
 		9736BC9417C48B73007DFE36 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		9736BC9517C48B73007DFE36 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		9736BC9817C48B74007DFE36 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		9736BC9917C48B74007DFE36 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		9736BC9B17C48B74007DFE36 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		9736BC9C17C48B74007DFE36 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		9736BC9D17C48B75007DFE36 /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
-		9736BC9E17C48B75007DFE36 /* MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MD5.m; sourceTree = "<group>"; };
 		9736BCA117C48B75007DFE36 /* MLNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLNavigationController.h; sourceTree = "<group>"; };
 		9736BCA217C48B76007DFE36 /* MLNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLNavigationController.m; sourceTree = "<group>"; };
 		9736BCA417C48B76007DFE36 /* petCategory.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = petCategory.xml; sourceTree = "<group>"; };
@@ -2231,17 +2225,6 @@
 			name = Navigators;
 			sourceTree = "<group>";
 		};
-		9736BCD417C49068007DFE36 /* MacAddress */ = {
-			isa = PBXGroup;
-			children = (
-				9736BC9217C48B72007DFE36 /* DeviceIdentifier.h */,
-				9736BC9317C48B73007DFE36 /* DeviceIdentifier.m */,
-				9736BC9D17C48B75007DFE36 /* MD5.h */,
-				9736BC9E17C48B75007DFE36 /* MD5.m */,
-			);
-			name = MacAddress;
-			sourceTree = "<group>";
-		};
 		9736BCD517C490C0007DFE36 /* GDataXML */ = {
 			isa = PBXGroup;
 			children = (
@@ -2964,7 +2947,6 @@
 				86EEB14217CF0F36000162E8 /* EGOImageView */,
 				9736BCD617C490DA007DFE36 /* MBProgress */,
 				9736BCD517C490C0007DFE36 /* GDataXML */,
-				9736BCD417C49068007DFE36 /* MacAddress */,
 				9736BCD217C48E10007DFE36 /* UIExpandingTextView */,
 				9736BCD117C48BA5007DFE36 /* SrRefresh */,
 				9736BAD517C48919007DFE36 /* XMPP */,
@@ -3400,11 +3382,9 @@
 				9736BC8917C489F2007DFE36 /* NSXMLElement+XEP_0297.m in Sources */,
 				9736BC8A17C489F2007DFE36 /* XMPPMessage+XEP_0308.m in Sources */,
 				9736BCBC17C48B7B007DFE36 /* Common.m in Sources */,
-				9736BCBD17C48B7B007DFE36 /* DeviceIdentifier.m in Sources */,
 				9736BCBE17C48B7B007DFE36 /* GDataXMLNode.m in Sources */,
 				9736BCC017C48B7B007DFE36 /* LocationManager.m in Sources */,
 				9736BCC117C48B7B007DFE36 /* MBProgressHUD.m in Sources */,
-				9736BCC217C48B7B007DFE36 /* MD5.m in Sources */,
 				9736BCC417C48B7B007DFE36 /* MLNavigationController.m in Sources */,
 				9736BCC717C48B7B007DFE36 /* Reachability.m in Sources */,
 				9736BCCA17C48B7B007DFE36 /* SRRefreshView.m in Sources */,

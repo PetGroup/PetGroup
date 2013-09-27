@@ -9,7 +9,6 @@
 #import "XMPPHelper.h"
 #import "CustomTabBar.h"
 #import "JSON.h"
-#import "DeviceIdentifier.h"
 #import "KKChatController.h"
 @interface MessageViewController ()
 

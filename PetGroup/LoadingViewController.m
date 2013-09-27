@@ -70,9 +70,10 @@
     }
     [self.view addSubview:splashImageView];
     if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
-        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
-        NSString * macAddress = [dv macaddress];
-        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:macAddress forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
+//        NSString * macAddress = [dv macaddress];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
     
     NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
