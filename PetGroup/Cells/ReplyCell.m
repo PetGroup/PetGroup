@@ -14,7 +14,10 @@
 #import "CustomTabBar.h"
 #import "ParticularDynamicViewController.h"
 @interface ReplyCell ()<UIAlertViewDelegate,UIActionSheetDelegate,OHAttributedLabelDelegate>
-
+{
+    UIActionSheet*delOrReplyReplyAction;
+    UIActionSheet*delReplyAction;
+}
 @end
 @implementation ReplyCell
 
@@ -74,7 +77,7 @@
         hostInfo = ((ReplyComment*)theid).replyUserView;
     }
     if ([hostInfo.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-        [self.viewC  performSelector:@selector(headAct) withObject:nil];
+
         return YES;
     }
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
@@ -88,16 +91,26 @@
 -(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
 {
     if ([theID isKindOfClass:[Reply class]]) {
-        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID]integerValue]||[((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [action showInView:self.superview];
+        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID]integerValue]&&[((Reply*)theID).petUser.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
+            delOrReplyReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
+            [delOrReplyReplyAction showInView:self.superview];
+            return;
+        }
+        if ([((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+            [delReplyAction showInView:self.superview];
             return;
         }
     }
     if ([theID isKindOfClass:[ReplyComment class]]) {
-        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]||[((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((ReplyComment*)theID).commentUserView.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
             UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
             [action showInView:self.superview];
+            return;
+        }
+        if ([((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+            [delReplyAction showInView:self.superview];
             return;
         }
     }
@@ -106,13 +119,22 @@
 #pragma mark - OHAttributedLabel Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        UIAlertView*delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
-        [delReplyAlert show];
+    if (actionSheet == delOrReplyReplyAction) {
+        if (buttonIndex == 0) {
+            UIAlertView*delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+            [delReplyAlert show];
+        }
+        if (buttonIndex == 1) {
+            [self.viewC performSelector:@selector(recalledreply: cell:) withObject:_theID withObject:self];
+        }
     }
-    if (buttonIndex == 1) {
-        [self.viewC performSelector:@selector(recalledreply: cell:) withObject:_theID withObject:self];
+    if (actionSheet ==delReplyAction) {
+        if (buttonIndex == 0) {
+            UIAlertView*delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除该评论?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确定", nil];
+            [delReplyAlert show];
+        }
     }
+    
 }
 #pragma mark - alert view delegate
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
