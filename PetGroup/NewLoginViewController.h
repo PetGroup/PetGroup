@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "TempData.h"
 @interface NewLoginViewController : UIViewController
 
 @end

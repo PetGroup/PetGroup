@@ -112,7 +112,7 @@
     else
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-        if (![self.appDel.xmppHelper ifXMPPConnected]) {
+        if (![self.appDel.xmppHelper ifXMPPConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
             [self logInToServer];
         }
         
@@ -176,6 +176,11 @@
     titleLabel.text=@"消息(未连接)";
  //   [self connectChatServer];
    // NSLog(@"ddddd");
+}
+
+-(void)reConnectChatServer
+{
+    
 }
 
 -(NSString *)convertChineseToPinYin:(NSString *)chineseName
@@ -532,6 +537,7 @@
         alert.tag = 21;
         [alert show];
     }
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[dict objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     [self saveMyInfo:[dict objectForKey:@"petUserView"]];
     NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];

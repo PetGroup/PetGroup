@@ -219,6 +219,9 @@
     self.tabBarC = [[CustomTabBar alloc] initWithImages:normalPic AndSelected:selectPic AndControllers:views];
     
     [self presentModalViewController:self.tabBarC animated:NO];
+    
+    [splashImageView setImage:nil];
+    splashImageView = nil;
 }
 
 - (void)didReceiveMemoryWarning

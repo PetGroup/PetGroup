@@ -767,16 +767,14 @@
     
     NSRange range = [[messageCotent objectForKey:@"sender"] rangeOfString:@"@"];
     NSString * sender = [[messageCotent objectForKey:@"sender"] substringToIndex:range.location];
+     [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
     if ([sender isEqualToString:self.chatWithUser]) {
-        [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
         [messages addObject:messageCotent];
         [self.tView reloadData];
         if (messages.count>0) {
             [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     }
-    else
-        [self.msgDelegate makeMsgVStoreMsg:messageCotent];
     
 }
 -(void)makeMsgVStoreMsg:(NSDictionary *)messageContent

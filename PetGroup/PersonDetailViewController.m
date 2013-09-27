@@ -139,7 +139,7 @@
     [self.rejectBtn setFrame:CGRectMake(165, self.view.frame.size.height-10-40, 145, 40)];
     [self.rejectBtn setBackgroundImage:[UIImage imageNamed:@"regbg-normal.png"] forState:UIControlStateNormal];
     [self.rejectBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.rejectBtn addTarget:self action:@selector(helloBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rejectBtn addTarget:self action:@selector(rejectBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     self.rejectBtn.hidden = YES;
     
     if ([DataStoreManager ifHaveThisFriend:self.hostInfo.userName]) {

@@ -180,6 +180,7 @@
             [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.PhoneNoTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
             [self dismissModalViewControllerAnimated:YES];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -188,6 +189,24 @@
         [hud hide:YES];
     }];
 }
+-(void)upLoadUserLocationWithLat:(double)userLatitude Lon:(double)userLongitude
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"setUserLocation" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+
 -(void)resetPassWord
 {
     ReSetPassWordViewController* resetPasswordVC = [[ReSetPassWordViewController alloc]init];

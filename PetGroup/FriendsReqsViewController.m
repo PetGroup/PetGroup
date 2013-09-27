@@ -62,6 +62,56 @@
     [DataStoreManager blankReceivedHellosUnreadCount];
 	// Do any additional setup after loading the view.
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.appDel.xmppHelper.addReqDelegate = self;
+    self.appDel.xmppHelper.chatDelegate = self;
+}
+-(void)newAddReq:(NSDictionary *)userInfo
+{
+    NSString * fromUser = [userInfo objectForKey:@"sender"];
+    NSRange range = [fromUser rangeOfString:@"@"];
+    fromUser = [fromUser substringToIndex:range.location];
+    [self requestPeopleInfoWithName:fromUser ForType:0 Msg:[userInfo objectForKey:@"msg"]];
+
+}
+-(void)requestPeopleInfoWithName:(NSString *)userName ForType:(int)type Msg:(NSString *)msg
+{
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [paramDict setObject:userName forKey:@"username"];
+    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        if (type==0) {
+            NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",msg,@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
+            [DataStoreManager addPersonToReceivedHellos:uDict];
+            [self loadTableviewData];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+
+-(void)newMessageReceived:(NSDictionary *)messageCotent{
+    
+    AudioServicesPlayAlertSound(1003);
+
+//    NSRange range = [[messageCotent objectForKey:@"sender"] rangeOfString:@"@"];
+//    NSString * sender = [[messageCotent objectForKey:@"sender"] substringToIndex:range.location];
+    [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [self loadTableviewData];
