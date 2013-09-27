@@ -417,7 +417,11 @@
 }
 -(void)loadBagImage:(UIButton*)button
 {
-    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:self.dynamic.smallImage images:self.dynamic.imgIDArray indext:button.tag-1000];
+    NSMutableArray* array = [NSMutableArray new];
+    for (UIButton* button in self.imageViews) {
+        [array addObject:button.currentImage];
+    }
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:array images:self.dynamic.imgIDArray indext:button.tag-1000];
     [self.viewC presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - OHAttributedLabel Delegate
