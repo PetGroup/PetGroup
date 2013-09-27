@@ -66,10 +66,10 @@
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.hostInfo.nickName;
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];

@@ -291,6 +291,7 @@
     NSString *type = [[message attributeForName:@"type"] stringValue];
     NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
     NSString *msgTime = [[message attributeForName:@"msgTime"] stringValue];
+    NSString *receiver = [[message attributeForName:@"to"] stringValue];
    // NSString * fromNickName = [[message attributeForName:@"nickname"] stringValue];
     if(msg!=nil){
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -312,7 +313,7 @@
             else {
                 //此处时间应该message里携带，暂时没有，使用当前时间
                 [dict setObject:msgtype forKey:@"msgType"];
-                if ([msgtype isEqualToString:@"reply"]||[msgtype isEqualToString:@"zanDynamic"]) {
+                if (![from isEqualToString:receiver]&&([msgtype isEqualToString:@"reply"]||[msgtype isEqualToString:@"zanDynamic"])) {
                     [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
                     [dict setObject:[[message attributeForName:@"fromNickname"] stringValue] forKey:@"fromNickname"];
                     [dict setObject:[[message attributeForName:@"fromHeadImg"] stringValue] forKey:@"fromHeadImg"];

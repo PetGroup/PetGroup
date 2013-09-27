@@ -20,17 +20,16 @@
         self.headImageV.layer.cornerRadius = 5;
         self.headImageV.layer.masksToBounds=YES;
         [self.contentView addSubview:self.headImageV];
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 110, 20)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 230, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
         [self.contentView addSubview:self.nameLabel];
         //        [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
         
-        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 200, 20)];
+        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 40, 230, 20)];
         [self.signatureLabel setTextColor:[UIColor grayColor]];
         [self.signatureLabel setFont:[UIFont systemFontOfSize:14]];
-        [self.signatureLabel setAdjustsFontSizeToFitWidth:YES];
         [self.signatureLabel setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:self.signatureLabel];
         
