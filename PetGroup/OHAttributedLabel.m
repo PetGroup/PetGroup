@@ -283,6 +283,8 @@ BOOL CTRunContainsCharactersFromStringRange(CTRunRef run, NSRange range) {
 //            [self addCustomLink:[NSURL URLWithString:phoneNum] inRange:[string rangeOfString:phoneNum] AndStr:phoneNum TheID:phoneNum];
 //        }
 //    }
+    [nickNameArray removeAllObjects];
+    [theIDArray removeAllObjects];
     
     if ([httpArr count]) {
         for (NSString *httpStr in httpArr) {
