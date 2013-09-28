@@ -199,6 +199,13 @@
     }
     
 }
+-(void)viewWillDisappear:(BOOL)animated
+{
+    if ([self.dataSource isKindOfClass:[MyDynamicDelegateAndDataSource class]]) {
+        MLNavigationController* nav = self.customTabBarController.viewControllers[0];
+        self.appDel.xmppHelper.commentDelegate = nav.viewControllers[0];
+    }
+}
 -(void)newCommentReceived:(NSDictionary *)theDict
 {
     
