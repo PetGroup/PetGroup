@@ -39,6 +39,8 @@
     NSString * theType; 
     NSString * theCity;
     
+    UILabel * noResultLabel;
+    
 }
 @property (strong,nonatomic) UITableView * messageTable;
 @property (strong,nonatomic) UITableView * petTypeTable;

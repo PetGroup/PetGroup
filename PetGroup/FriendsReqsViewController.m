@@ -188,6 +188,7 @@
         kkchat.chatWithUser = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"userName"];
         kkchat.nickName = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"nickName"];
         kkchat.chatUserImg = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"];
+        kkchat.friendStatus = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"];
         [self.navigationController pushViewController:kkchat animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 

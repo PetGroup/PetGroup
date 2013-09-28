@@ -596,6 +596,7 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
+        infoDict = [recDict mutableCopy];
         self.hostInfo = [[HostInfo alloc] initWithHostInfo:recDict];
         [self reloadTheViews];
         if (self.myFriend) {
@@ -627,10 +628,18 @@
 //        [alert show];
         if ([self.helloBtn.currentTitle isEqualToString:@"同意"]) {
             [self.appDel.xmppHelper addOrDenyFriend:YES user:self.hostInfo.userName];
-            [DataStoreManager addFriendToLocal:self.hostInfo.userName];
+            if (infoDict) {
+                [DataStoreManager saveUserInfo:infoDict];
+                [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+            }
+            else
+            {
+                [DataStoreManager addFriendToLocal:self.hostInfo.userName];
+                [self.helloBtn setTitle:@"已同意" forState:UIControlStateNormal];
+                [self.helloBtn setEnabled:NO];
+            }
             [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:self.hostInfo.userName];
-            [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 300, 40)];
-            [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+            [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 300, 40)]; 
             self.rejectBtn.hidden = YES;
             self.myFriend = YES;
             return;

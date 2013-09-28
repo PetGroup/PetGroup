@@ -94,7 +94,7 @@
         NSDictionary * theDict = (NSDictionary *)[DataStoreManager queryOneFriendInfoWithUserName:[[TempData sharedInstance] getNeedChatUser]];
         KKChatController * kkchat = [[KKChatController alloc] init];
         kkchat.chatWithUser = [theDict objectForKey:@"username"];
-        kkchat.nickName = [theDict objectForKey:@"nickname"];
+        kkchat.nickName = [[theDict objectForKey:@"nickname"] length]>1?[theDict objectForKey:@"nickname"]:[theDict objectForKey:@"username"];
         kkchat.chatUserImg = [DataStoreManager queryFirstHeadImageForUser:[theDict objectForKey:@"username"]];
         [self.navigationController pushViewController:kkchat animated:YES];
         kkchat.msgDelegate = self;
@@ -633,11 +633,13 @@
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSDictionary * recDict = [receiveStr JSONValue];
         if (type==0) {
+            AudioServicesPlayAlertSound(1007);
             NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",msg,@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
             [DataStoreManager addPersonToReceivedHellos:uDict];
             [self displayMsgsForDefaultView];
         }
         else if (type==1){
+            AudioServicesPlayAlertSound(1007);
             [DataStoreManager saveUserInfo:recDict];
             NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[recDict objectForKey:@"nickname"]];
             NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];

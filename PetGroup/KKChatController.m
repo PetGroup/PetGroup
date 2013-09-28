@@ -12,6 +12,7 @@
 #import "KKMessageCell.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
+#import "JSON.h"
 #define padding 20
 #define LocalMessage @"localMessage"
 #define NameKeys @"namekeys"
@@ -156,9 +157,51 @@
     btnLongTap.minimumPressDuration = 1;
     
     [DataStoreManager blankMsgUnreadCountForUser:self.chatWithUser];
+    
+    if ([self.chatUserImg isEqualToString:@"no"]) {
+        [self getUserInfoWithUserName:self.chatWithUser];
+    }
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
+}
+-(void)getUserInfoWithUserName:(NSString *)userNameit
+{
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict2 = [NSMutableDictionary dictionary];
+    [paramDict setObject:userNameit forKey:@"username"];
+    [postDict2 setObject:paramDict forKey:@"params"];
+    [postDict2 setObject:@"1" forKey:@"channel"];
+    [postDict2 setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict2 setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict2 setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict2 TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = [receiveStr JSONValue];
+        [DataStoreManager saveUserInfo:recDict];
+        self.chatUserImg = [self getHead:[recDict objectForKey:@"img"]];
+        self.nickName = [recDict objectForKey:@"nickname"];
+        titleLabel.text=self.nickName;
+        [self.tView reloadData];
+  
+    }];
+    
+}
+-(NSString *)getHead:(NSString *)headStr
+{
+    NSArray* i = [headStr componentsSeparatedByString:@","];
+
+    NSArray *arr = [[i objectAtIndex:0] componentsSeparatedByString:@"_"];
+    if (arr.count>1) {
+        return arr[0];
+    }
+    return @"";
+
 }
 -(void)moreOperation
 {
@@ -180,6 +223,7 @@
     HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.nickName,@"nickname",self.chatWithUser,@"username", nil]];
     detailV.hostInfo = hostInfo;
     detailV.needRequest = YES;
+    detailV.friendStatus = self.friendStatus;
     [self.navigationController pushViewController:detailV animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }

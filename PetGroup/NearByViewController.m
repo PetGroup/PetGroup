@@ -114,6 +114,15 @@
     [hud show:YES];
     [self addFiterPage];
     [self getUserLocation];
+    
+    noResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
+    [noResultLabel setTextAlignment:NSTextAlignmentCenter];
+    noResultLabel.text = @"不好意思呀，没找到^_^";
+    //    noResultLabel.adjustsFontSizeToFitWidth = YES;
+    noResultLabel.backgroundColor = [UIColor clearColor];
+    noResultLabel.textColor = [UIColor grayColor];
+    [self.view addSubview:noResultLabel];
+    noResultLabel.hidden = YES;
    // [self getCheatUser];
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -174,9 +183,17 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSArray * recArray = [receiveStr JSONValue];
-        [self parseData:recArray];
+        if (responseObject) {
+            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            [self parseData:recArray];
+        }
+        else
+        {
+            [_slimeView endRefresh];
+            [self endrefresh];
+            self.canRefresh = YES;
+        }
+
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
@@ -205,9 +222,17 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSArray * recArray = [receiveStr JSONValue];
-        [self parseData:recArray];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        if (responseObject) {
+            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            [self parseData:recArray];
+        }
+        else
+        {
+            [_slimeView endRefresh];
+            [self endrefresh];
+            self.canRefresh = YES;
+        }
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
@@ -247,9 +272,17 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSArray * recArray = [receiveStr JSONValue];
-        [self parseData:recArray];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        if (responseObject) {
+            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            [self parseData:recArray];
+        }
+        else
+        {
+            [_slimeView endRefresh];
+            [self endrefresh];
+            self.canRefresh = YES;
+        }
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];

@@ -22,6 +22,7 @@
     UITextField * locationTextF;
     UIView * typeMsgView;
     UIView * blackV;
+    NSDictionary * infoDict;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong, nonatomic) HGPhotoWall *photoWall;

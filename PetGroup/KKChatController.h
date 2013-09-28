@@ -52,6 +52,7 @@
 @property(nonatomic, retain) NSString *chatWithUser;
 @property(nonatomic, assign) BOOL ifFriend;
 @property(nonatomic, retain) NSString *nickName;
+@property(nonatomic, retain) NSString *friendStatus;
 @property(nonatomic, retain) NSString *chatUserImg;
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic) UIExpandingTextView *textView;
