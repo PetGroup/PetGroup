@@ -21,6 +21,9 @@
 		86A96A2D17E85391001105AD /* liuyan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A2B17E8538D001105AD /* liuyan.png */; };
 		86A96A2E17E85391001105AD /* zan.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A2C17E8538E001105AD /* zan.png */; };
 		86A96A3217E85C7A001105AD /* zaned.png in Resources */ = {isa = PBXBuildFile; fileRef = 86A96A3117E85C79001105AD /* zaned.png */; };
+		86BDA5CF17F6E98B00613866 /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 86BDA5CE17F6E98B00613866 /* shezhi22.png */; };
+		86C799431803EAEE00DF89C5 /* third_common_selected_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */; };
+		86C799441803EAEE00DF89C5 /* third_common_selected_no.png in Resources */ = {isa = PBXBuildFile; fileRef = 86C799421803EAEE00DF89C5 /* third_common_selected_no.png */; };
 		86D173C217E2B2490032A479 /* NarrowDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86D173C117E2B2490032A479 /* NarrowDynamicCell.m */; };
 		86D69CED17C5EFC800FFFBDD /* fabu.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEA17C5EFC200FFFBDD /* fabu.png */; };
 		86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */ = {isa = PBXBuildFile; fileRef = 86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */; };
@@ -500,6 +503,9 @@
 		86A96A2B17E8538D001105AD /* liuyan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = liuyan.png; sourceTree = "<group>"; };
 		86A96A2C17E8538E001105AD /* zan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zan.png; sourceTree = "<group>"; };
 		86A96A3117E85C79001105AD /* zaned.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zaned.png; sourceTree = "<group>"; };
+		86BDA5CE17F6E98B00613866 /* shezhi22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shezhi22.png; sourceTree = "<group>"; };
+		86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = third_common_selected_clicked.png; sourceTree = "<group>"; };
+		86C799421803EAEE00DF89C5 /* third_common_selected_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = third_common_selected_no.png; sourceTree = "<group>"; };
 		86D173C017E2B2490032A479 /* NarrowDynamicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NarrowDynamicCell.h; sourceTree = "<group>"; };
 		86D173C117E2B2490032A479 /* NarrowDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NarrowDynamicCell.m; sourceTree = "<group>"; };
 		86D69CEA17C5EFC200FFFBDD /* fabu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fabu.png; sourceTree = "<group>"; };
@@ -2299,6 +2305,8 @@
 		9736BCF717C49146007DFE36 /* log */ = {
 			isa = PBXGroup;
 			children = (
+				86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */,
+				86C799421803EAEE00DF89C5 /* third_common_selected_no.png */,
 				97DB09D817C5B045000EC195 /* city.txt */,
 				8629653F17DAFCBC00236F3E /* UserTreaty.txt */,
 				97DB099A17C5B037000EC195 /* anjiao.png */,
@@ -2357,8 +2365,8 @@
 				9718F46017E8668300BEC495 /* dyn.png */,
 				97E3AB2F17E81FA000674321 /* placeholder.png */,
 				97E3AB2D17E7F8E400674321 /* shanchu.png */,
+				86BDA5CE17F6E98B00613866 /* shezhi22.png */,
 				97E3AB2B17E7E67000674321 /* gengduoxinxi.png */,
-				97F8D20817E7177C00A6CCA3 /* shezhi22.png */,
 				9736BD1517C49146007DFE36 /* outkuang.png */,
 				9736BD1717C49146007DFE36 /* reportinput.png */,
 			);
@@ -3168,7 +3176,6 @@
 				86D69D1817C72CD600FFFBDD /* zhaoxiangji.png in Resources */,
 				97DA1C0917D42A5A00F7B507 /* addPhoto@2x.png in Resources */,
 				8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */,
-				97F8D20917E7177C00A6CCA3 /* shezhi22.png in Resources */,
 				97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */,
 				97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */,
 				97E3AB3017E81FA000674321 /* placeholder.png in Resources */,

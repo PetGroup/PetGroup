@@ -16,6 +16,7 @@
 {
     BOOL canNext;
     MBProgressHUD * hud;
+    UIButton* readB;
 }
 @property (nonatomic, strong) UITextField * phoneTF;
 
@@ -28,7 +29,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        canNext = NO;
+        canNext = YES;
     }
     return self;
 }
@@ -79,13 +80,25 @@
     [self.view addSubview:tishi1L];
     
     UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 221, 257.5, 40)];
-    tishi2.text = @"下一步将发送验证码到你号码对应手机上，点击下一步表示同意";
+    tishi2.text = @"下一步将发送验证码到你号码对应手机上。";
     tishi2.font = [UIFont systemFontOfSize:15];
     tishi2.numberOfLines = 0;
     tishi2.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishi2];
     
-    UILabel* xieyiL = [[UILabel alloc]initWithFrame:CGRectMake(190, 240, 90, 20)];
+    readB = [UIButton buttonWithType:UIButtonTypeCustom];
+    readB.frame = CGRectMake(31.25, 288.5, 15, 15);
+    [readB setBackgroundImage:[UIImage imageNamed:@"third_common_selected_clicked"] forState:UIControlStateNormal];
+    [readB addTarget:self action:@selector(readUserTreaty) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:readB];
+    
+    UILabel* tishi3 = [[UILabel alloc]initWithFrame:CGRectMake(52.25, 285, 257.5, 20)];
+    tishi3.text = @"已阅读并同意";
+    tishi3.font = [UIFont systemFontOfSize:15];
+    tishi3.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:tishi3];
+    
+    UILabel* xieyiL = [[UILabel alloc]initWithFrame:CGRectMake(140, 285, 90, 20)];
     xieyiL.text = @"《用户协议》";
     xieyiL.font = [UIFont systemFontOfSize:15];
     xieyiL.textColor = [UIColor colorWithRed:8/255.0 green:141/255.0 blue:184/255.0 alpha:1];
@@ -117,8 +130,23 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)readUserTreaty
+{
+    if (canNext) {
+        [readB setBackgroundImage:[UIImage imageNamed:@"third_common_selected_no"] forState:UIControlStateNormal];
+    }else{
+        [readB setBackgroundImage:[UIImage imageNamed:@"third_common_selected_clicked"] forState:UIControlStateNormal];
+    }
+    canNext = !canNext;
+
+}
 -(void)next
 {
+    if (!canNext) {
+        UIAlertView* a = [[UIAlertView alloc]initWithTitle:nil message:@"请阅读并同意《阅读协议》" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [a show];
+        return;
+    }
     if ([IdentifyingString validateMobile:_phoneTF.text]) {
         [_phoneTF resignFirstResponder];
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];

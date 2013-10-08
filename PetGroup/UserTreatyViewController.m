@@ -53,6 +53,7 @@
     UITextView*a = [[UITextView alloc]initWithFrame:CGRectMake(0, 44, 320,self.view.frame.size.height-44)];
     NSString *path =[[NSString alloc]initWithString:[[NSBundle mainBundle]pathForResource:@"UserTreaty"ofType:@"txt"]];
     NSData* data = [[NSData alloc]initWithContentsOfFile:path];
+    a.editable = NO;
     a.font = [UIFont systemFontOfSize:14];
     a.backgroundColor = [UIColor clearColor];
     a.text = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
