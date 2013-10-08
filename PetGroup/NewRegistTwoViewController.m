@@ -174,38 +174,38 @@
 }
 -(void)next
 {
-//    if ([IdentifyingString isValidateIdentionCode:_identifyingCodeTF.text]) {
-//        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-//        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-//        long long a = (long long)(cT*1000);
-//        [params setObject:self.phoneNo forKey:@"phoneNum"];
-//        [params setObject:_identifyingCodeTF.text forKey:@"verificationCode"];
-//        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-//        [body setObject:@"1" forKey:@"channel"];
-//        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-//        [body setObject:@"iphone" forKey:@"imei"];
-//        [body setObject:params forKey:@"params"];
-//        [body setObject:@"verifyCode" forKey:@"method"];
-//        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-//        [hud show:YES];
-//        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            [hud hide:YES];
-//            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-//            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
+    if ([IdentifyingString isValidateIdentionCode:_identifyingCodeTF.text]) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:self.phoneNo forKey:@"phoneNum"];
+        [params setObject:_identifyingCodeTF.text forKey:@"verificationCode"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"verifyCode" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [hud show:YES];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [hud hide:YES];
+            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
                 NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
                 newReg.phoneNo = self.phoneNo;
                 [self.navigationController pushViewController:newReg animated:YES];
-//            }else{
-//                [self showAlertView];
-//            }
-//        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            [hud hide:YES];
-//            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-//            [alert show];
-//        }];
-//    }else{
-//        [self showAlertView];
-//    }
+            }else{
+                [self showAlertView];
+            }
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [hud hide:YES];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+        }];
+    }else{
+        [self showAlertView];
+    }
 }
 -(void)showAlertView
 {

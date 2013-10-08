@@ -8,16 +8,17 @@
 	<string>宠物圈</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.aichongwu.chongwuquan</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>icon.png</string>
 		<string>icon@2x.png</string>
 		<string>icon-72.png</string>
+		<string>icon-120.png</string>
 		<string>icon-144.png</string>
 		<string>icon-256.png</string>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string>com.aichongwu.chongwuquan</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

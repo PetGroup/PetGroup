@@ -85,6 +85,14 @@
     [self.view addSubview:updateButton];
     [updateButton addTarget:self action:@selector(checkNewVersion) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton * protocolBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [protocolBtn setFrame:CGRectMake(0, 330+self.view.frame.size.height-480, 320, 30)];
+    [protocolBtn setTitle:@"用户协议及隐私政策" forState:UIControlStateNormal];
+    [self.view addSubview:protocolBtn];
+    [protocolBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [protocolBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [protocolBtn addTarget:self action:@selector(userProtocol) forControlEvents:UIControlEventTouchUpInside];
+    
    UILabel * protocal=[[UILabel alloc]init];
 
     protocal.frame=CGRectMake(10, 370+self.view.frame.size.height-480, 300, 20);
@@ -121,6 +129,11 @@
     [self.view addSubview:protocal2];
 
 	// Do any additional setup after loading the view.
+}
+-(void)userProtocol
+{
+    UserTreatyViewController * uvv = [[UserTreatyViewController alloc] init];
+    [self.navigationController pushViewController:uvv animated:YES];
 }
 -(void)checkNewVersion
 {

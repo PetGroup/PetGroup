@@ -344,7 +344,13 @@
     if (cell == nil) {
         cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    if (indexPath.row==0) {
+        cell.headImageV.placeholderImage = [UIImage imageNamed:@"newfriend.png"];
+    }
+    else
+    {
+        cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    }
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
         NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
