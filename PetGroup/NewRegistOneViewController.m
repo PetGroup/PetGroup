@@ -73,14 +73,14 @@
     [self.view addSubview:nameBG];
     
     UILabel* tishi1L = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 141, 257.5, 60)];
-    tishi1L.text = @"输入那你的手机号，免费注册宠物圈，宠物圈不会在任何地方泄露你的电话号码。";
+    tishi1L.text = @"输入您的手机号，免费注册宠物圈，宠物圈不会在任何地方泄露您的电话号码。";
     tishi1L.font = [UIFont systemFontOfSize:15];
     tishi1L.numberOfLines = 0;
     tishi1L.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishi1L];
     
     UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 221, 257.5, 40)];
-    tishi2.text = @"下一步将发送验证码到你号码对应手机上。";
+    tishi2.text = @"下一步将发送验证码到您的手机上。";
     tishi2.font = [UIFont systemFontOfSize:15];
     tishi2.numberOfLines = 0;
     tishi2.backgroundColor = [UIColor clearColor];
@@ -143,7 +143,7 @@
 -(void)next
 {
     if (!canNext) {
-        UIAlertView* a = [[UIAlertView alloc]initWithTitle:nil message:@"请阅读并同意《阅读协议》" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* a = [[UIAlertView alloc]initWithTitle:nil message:@"请阅读并同意《用户协议》" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [a show];
         return;
     }

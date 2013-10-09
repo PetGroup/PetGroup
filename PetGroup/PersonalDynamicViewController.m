@@ -23,6 +23,7 @@
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "JSON.h"
+#import "ParticularDynamicViewController.h"
 @interface PersonalDynamicViewController ()<MBProgressHUDDelegate,UIExpandingTextViewDelegate>
 {
     UIButton * assessB;
@@ -303,17 +304,31 @@
 }
 -(void)assess//评论
 {
+    Dynamic*dyn = (Dynamic*)self.mycell.dynamic;
+    ParticularDynamicViewController* parVC = [[ParticularDynamicViewController alloc]init];
+    parVC.dynamic = dyn;
+    parVC.selfTypr = 1;
+    [self.navigationController pushViewController:parVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
     [self removeActionImageView];
-    [_inputTF becomeFirstResponder];
-    assessOrPraise = 1;
-    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.mycell.dynamic.petUser.nickName];
+    self.mycell = nil;
+    //    [_inputTF becomeFirstResponder];
+    //    assessOrPraise = 1;
+    //    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.mycell.dynamic.petUser.nickName];
 }
 -(void)reprint//转发
 {
+    Dynamic*dyn = (Dynamic*)self.mycell.dynamic;
+    ParticularDynamicViewController* parVC = [[ParticularDynamicViewController alloc]init];
+    parVC.dynamic = dyn;
+    parVC.selfTypr = 2;
+    [self.navigationController pushViewController:parVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
     [self removeActionImageView];
-    [_inputTF becomeFirstResponder];
-    assessOrPraise = 2;
-    _inputTF.placeholder = @"转发至我的动态";
+    self.mycell = nil;
+    //    [_inputTF becomeFirstResponder];
+    //    assessOrPraise = 2;
+    //    _inputTF.placeholder = @"转发至我的动态";
 }
 -(void)didInput
 {
@@ -566,6 +581,14 @@
     [self removeActionImageView];
     self.mycell = nil;
     [self keyBoardResign];
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DelegateAndDataSource * dad  = (DelegateAndDataSource *)self.tableV.dataSource;
+    Dynamic*dyn = dad.dataSourceArray[indexPath.row];
+    ParticularDynamicViewController* parVC = [[ParticularDynamicViewController alloc]init];
+    parVC.dynamic = dyn;
+    [self.navigationController pushViewController:parVC animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -668,11 +691,11 @@
     if (cell != _mycell) {
         [self removeActionImageView];
         self.mycell = nil;
-        _actionIV.frame = CGRectMake(280, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
+        _actionIV.frame = CGRectMake(250, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
         [self.view addSubview:_actionIV];
         self.mycell = cell;
         [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 158, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
+            _actionIV.frame = CGRectMake( 128, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
             assessB.frame = CGRectMake(6, 6, 53, 31);
             reprintB.frame = CGRectMake(65, 6, 53, 31);
         }];

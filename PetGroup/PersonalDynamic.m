@@ -68,25 +68,50 @@
             }
         }
     }
-    if (self.smallImage.count>=1&&self.smallImage.count<=3) {
-        self.rowHigh+=75;
-    }else if(self.smallImage.count>3&&self.smallImage.count<=6){
-        self.rowHigh+=145;
-    }else if(self.smallImage.count>6){
-        self.rowHigh+=215;
-    }
-    for (int i = 0; i < self.replyViews.count; i++) {
-        Reply* rel = self.replyViews[i];
-        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-        self.rowHigh += (size.height+5);
-        for (int j = 0; j < rel.replyComments.count; j++) {
-            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-            self.rowHigh += (size.height+5);
+    self.easyRowHigh = 75;
+    if (self.ifTransmitMsg!=0) {
+        CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+        self.easyRowHigh+=(size.height+10);
+        CGSize msgSize = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        if (msgSize.height>90) {
+            self.easyRowHigh+=28;
+        }else{
+            self.easyRowHigh+=(msgSize.height+10);
+        }
+    }else{
+        CGSize size = [_msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+        if (size.height>=180) {
+            self.easyRowHigh+=28;
+        }else if(size.height>90){
+            self.easyRowHigh+=108+25;
+        }else{
+            self.easyRowHigh+=(size.height+10);
         }
     }
+    
+    if (self.smallImage.count>=1&&self.smallImage.count<=3) {
+        self.rowHigh+=75;
+        self.easyRowHigh+=85;
+    }else if(self.smallImage.count>3&&self.smallImage.count<=6){
+        self.rowHigh+=145;
+        self.easyRowHigh+=165;
+    }else if(self.smallImage.count>6){
+        self.rowHigh+=215;
+        self.easyRowHigh+=245;
+    }
+    
+//    for (int i = 0; i < self.replyViews.count; i++) {
+//        Reply* rel = self.replyViews[i];
+//        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
+//        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+//        self.rowHigh += (size.height+5);
+//        for (int j = 0; j < rel.replyComments.count; j++) {
+//            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+//            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+//            self.rowHigh += (size.height+5);
+//        }
+//    }
     return self;
 }
 @end
