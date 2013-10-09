@@ -87,7 +87,7 @@
     
     UIButton * protocolBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [protocolBtn setFrame:CGRectMake(0, 330+self.view.frame.size.height-480, 320, 30)];
-    [protocolBtn setTitle:@"用户协议及隐私政策" forState:UIControlStateNormal];
+    [protocolBtn setTitle:@"点此查看《用户协议》" forState:UIControlStateNormal];
     [self.view addSubview:protocolBtn];
     [protocolBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [protocolBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
