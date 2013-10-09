@@ -26,6 +26,7 @@
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *messageDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
     NSString *currentStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT]];
+    NSString *chaStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theCurrentT - theMessageT]];
     NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
     [dateFormatter2 setDateFormat:@"HH:mm"];
     NSString * msgT = [dateFormatter2 stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];
@@ -48,6 +49,9 @@
         int msgDay = [[messageDateStr substringFromIndex:8] integerValue];
         int day = [[currentStr substringFromIndex:8] integerValue];
         finalTime = [NSString stringWithFormat:@"%d天前",day - msgDay];
+    }else if([[chaStr substringToIndex:7] isEqualToString:@"1970-01"]){
+        int day = [[chaStr substringFromIndex:8] integerValue];
+        finalTime = [NSString stringWithFormat:@"%d天前",day];
     }else if([[messageDateStr substringToIndex:4] isEqualToString:[currentStr substringToIndex:4]]){
         int msgMonth = [[[messageDateStr substringToIndex:7] substringFromIndex:5]integerValue];
         int month = [[[currentStr substringToIndex:7] substringFromIndex:5]integerValue];
