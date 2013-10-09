@@ -14,7 +14,7 @@
 #import "UIExpandingTextView.h"
 #import "HeightCalculate.h"
 #import "ReplyComment.h"
-@interface ParticularDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,UIExpandingTextViewDelegate>
+@interface ParticularDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,UIExpandingTextViewDelegate,UIActionSheetDelegate>
 {
     UIButton * assessB;
     UIButton * reprintB;
@@ -27,10 +27,12 @@
     UIView * inPutView;
     BOOL request;
 }
+@property (nonatomic,retain)NSString* reportType;
 @property (nonatomic,retain)UITableView * tableV;
 @property (nonatomic,strong)UIImageView*  actionIV;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
 @property (nonatomic,weak)id theID;
+@property (nonatomic,strong)UIView* reportView;
 @end
 
 @implementation ParticularDynamicViewController
@@ -40,6 +42,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.selfTypr = 0;
     }
     return self;
 }
@@ -48,9 +51,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
-    [self.view addSubview:bgimgV];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
@@ -67,6 +67,12 @@
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    UIButton *moreButten=[UIButton buttonWithType:UIButtonTypeCustom];
+    moreButten.frame=CGRectMake(278, 3, 35, 33);
+    [moreButten setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi"] forState:UIControlStateNormal];
+    [moreButten addTarget:self action:@selector(more) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:moreButten];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [self.view addSubview:_tableV];
@@ -110,12 +116,23 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if (self.selfTypr == 1) {
+        [self assess];
+    }
+    if (self.selfTypr == 2) {
+        [self reprint];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+   _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height); 
 }
 -(void)backButton:(UIButton*)button
 {
@@ -193,6 +210,11 @@
     
 }
 #pragma mark - button action
+-(void)more
+{
+    UIActionSheet* a = [[UIActionSheet alloc]initWithTitle:@"您想要做什么？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"举报" otherButtonTitles: nil];
+    [a showInView:self.view];
+}
 -(void)assess//评论
 {
     [self removeActionImageView];
@@ -543,5 +565,73 @@
     [_inputTF becomeFirstResponder];
     assessOrPraise = 3;
     
+}
+#pragma mark - actionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (!self.reportView) {
+        self.reportView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+        _reportView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:.01 alpha:0.3];
+        [self.view addSubview: _reportView];
+        UIView* smallReportView = [[UIView alloc]initWithFrame:CGRectMake(50, 150, 220, 260)];
+        smallReportView.backgroundColor = [UIColor whiteColor];
+        [_reportView addSubview:smallReportView];
+        UIButton *shamB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [shamB setTitle:@"虚假信息" forState:UIControlStateNormal];
+        shamB.frame = CGRectMake(10, 10, 200, 40);
+        [shamB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        self.reportType = @"";
+        [smallReportView addSubview:shamB];
+        
+        UIButton *eroticismB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [eroticismB setTitle:@"色情" forState:UIControlStateNormal];
+        eroticismB.frame = CGRectMake(10, 60, 200, 40);
+        [eroticismB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        self.reportType = @"";
+        [smallReportView addSubview:eroticismB];
+        
+        UIButton *advertisementB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [advertisementB setTitle:@"广告" forState:UIControlStateNormal];
+        advertisementB.frame = CGRectMake(10, 110, 200, 40);
+        [advertisementB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        self.reportType = @"";
+        [smallReportView addSubview:advertisementB];
+        
+        UIButton *abuseB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [abuseB setTitle:@"辱骂" forState:UIControlStateNormal];
+        abuseB.frame = CGRectMake(10, 160, 200, 40);
+        [abuseB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        self.reportType = @"";
+        [smallReportView addSubview:abuseB];
+        
+        UIButton *cancelB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [cancelB setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelB setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        cancelB.frame = CGRectMake(10, 210, 200, 40);
+        [cancelB addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+        self.reportType = @"";
+        [smallReportView addSubview:cancelB];
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        _reportView.frame = self.view.frame;
+    }];
+}
+#pragma mark - report button act
+-(void)cancel
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        _reportView.frame = CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height);
+    }];
+}
+-(void)report
+{
+    
+    [self cancel];
+}
+#pragma mark - touch
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self removeActionImageView];
+    [self keyBoardResign];
 }
 @end

@@ -48,6 +48,7 @@
 @property (nonatomic,assign)id deleteObject;
 @property (nonatomic,retain)UIView * waitView;
 @property (nonatomic,retain)NSTimer * time;
+@property (nonatomic,retain)UILabel* replyCountL;
 @end
 @implementation DynamicCell
 
@@ -134,6 +135,11 @@
         [_moveB setBackgroundImage:[UIImage imageNamed:@"liuyan"] forState:UIControlStateNormal];
         [self.contentView addSubview:_moveB];
         [_moveB addTarget:self action:@selector(showButton) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.replyCountL = [[UILabel alloc]initWithFrame:CGRectZero];
+        _replyCountL.font = [UIFont systemFontOfSize:12];
+        _replyCountL.textColor = [UIColor grayColor];
+        [self.contentView addSubview:_replyCountL];
         
         self.OHALabelArray = [[NSMutableArray alloc]init];
         
@@ -336,11 +342,11 @@
     }else{
         _zanimage.image = [UIImage imageNamed:@"zan"];
     }
-    zanB.frame = CGRectMake(220, origin, 50, 30);
-    _moveB.frame = CGRectMake(280, origin, 30, 30);
+    zanB.frame = CGRectMake(200, origin, 50, 30);
+    _moveB.frame = CGRectMake(260, origin, 30, 30);
     _waitView.frame = zanB.frame;
     
-    origin+=35;
+//    origin+=35;
     
     int count = 0;
     for (Reply* reply in self.dynamic.replyViews) {
@@ -349,37 +355,40 @@
             count++;
         }
     }
-    if (self.OHALabelArray.count<count) {
-        int a = count - self.OHALabelArray.count;
-        for (int i = 0; i < a; i++) {
-            OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
-            ohaL.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
-            ohaL.delegate = self;
-            [self.OHALabelArray addObject:ohaL];
-            [self.contentView addSubview:ohaL];
-        }
-    }
-    int number = 0;
-    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
-        number++;
-        Reply* rel = (Reply*)self.dynamic.replyViews[i];
-        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:240];
-        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-        [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
-        origin += (size.height+5);
-        for (int j = 0; j < rel.replyComments.count; j++) {
-            OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
-            number++;
-            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:240];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-            [ohaL setFrame:CGRectMake(60 , origin, 260, size.height)];
-            origin += (size.height+5);
-        }
-    }
+    _replyCountL.text = [NSString stringWithFormat:@"%d",count];
+    _replyCountL.frame = CGRectMake(290, origin, 30, 30);
+    
+//    if (self.OHALabelArray.count<count) {
+//        int a = count - self.OHALabelArray.count;
+//        for (int i = 0; i < a; i++) {
+//            OHAttributedLabel* ohaL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
+//            ohaL.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
+//            ohaL.delegate = self;
+//            [self.OHALabelArray addObject:ohaL];
+//            [self.contentView addSubview:ohaL];
+//        }
+//    }
+//    int number = 0;
+//    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+//        OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
+//        number++;
+//        Reply* rel = (Reply*)self.dynamic.replyViews[i];
+//        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
+//        [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": rel.petUser.nickName,@"petUser":rel}] MaxWidth:240];
+//        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+//        [ohaL setFrame:CGRectMake(60 , origin, 250, size.height)];
+//        origin += (size.height+5);
+//        for (int j = 0; j < rel.replyComments.count; j++) {
+//            OHAttributedLabel* ohaL = (OHAttributedLabel*)self.OHALabelArray[number];
+//            number++;
+//            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+//            [ohaL setDisplayText:repS WithCommentArray:@[@{@"nickName": recom.commentUserView.nickName,@"petUser":recom},@{@"nickName": recom.replyUserView.nickName,@"petUser":recom}] MaxWidth:240];
+//            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+//            [ohaL setFrame:CGRectMake(60 , origin, 260, size.height)];
+//            origin += (size.height+5);
+//        }
+//    }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
