@@ -14,7 +14,6 @@
 #import "DDTTYLogger.h"
 
 
-#import "ViewController.h"
 #define DataStoreModel @"LocalDataStore.sqlite"
 @implementation AppDelegate
 
