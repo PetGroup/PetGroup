@@ -570,52 +570,55 @@
 #pragma mark - actionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (!self.reportView) {
-        self.reportView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
-        _reportView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:.01 alpha:0.3];
-        [self.view addSubview: _reportView];
-        UIView* smallReportView = [[UIView alloc]initWithFrame:CGRectMake(50, 150, 220, 260)];
-        smallReportView.backgroundColor = [UIColor whiteColor];
-        [_reportView addSubview:smallReportView];
-        UIButton *shamB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [shamB setTitle:@"虚假信息" forState:UIControlStateNormal];
-        shamB.frame = CGRectMake(10, 10, 200, 40);
-        [shamB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-        self.reportType = @"";
-        [smallReportView addSubview:shamB];
-        
-        UIButton *eroticismB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [eroticismB setTitle:@"色情" forState:UIControlStateNormal];
-        eroticismB.frame = CGRectMake(10, 60, 200, 40);
-        [eroticismB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-        self.reportType = @"";
-        [smallReportView addSubview:eroticismB];
-        
-        UIButton *advertisementB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [advertisementB setTitle:@"广告" forState:UIControlStateNormal];
-        advertisementB.frame = CGRectMake(10, 110, 200, 40);
-        [advertisementB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-        self.reportType = @"";
-        [smallReportView addSubview:advertisementB];
-        
-        UIButton *abuseB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [abuseB setTitle:@"辱骂" forState:UIControlStateNormal];
-        abuseB.frame = CGRectMake(10, 160, 200, 40);
-        [abuseB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-        self.reportType = @"";
-        [smallReportView addSubview:abuseB];
-        
-        UIButton *cancelB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [cancelB setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelB setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-        cancelB.frame = CGRectMake(10, 210, 200, 40);
-        [cancelB addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
-        self.reportType = @"";
-        [smallReportView addSubview:cancelB];
+    if (buttonIndex==0) {
+        if (!self.reportView) {
+            self.reportView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+            _reportView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:.01 alpha:0.3];
+            [self.view addSubview: _reportView];
+            UIView* smallReportView = [[UIView alloc]initWithFrame:CGRectMake(50, 150, 220, 260)];
+            smallReportView.backgroundColor = [UIColor whiteColor];
+            [_reportView addSubview:smallReportView];
+            UIButton *shamB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [shamB setTitle:@"垃圾信息" forState:UIControlStateNormal];
+            shamB.frame = CGRectMake(10, 10, 200, 40);
+            [shamB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+            self.reportType = @"";
+            [smallReportView addSubview:shamB];
+            
+            UIButton *eroticismB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [eroticismB setTitle:@"色情" forState:UIControlStateNormal];
+            eroticismB.frame = CGRectMake(10, 60, 200, 40);
+            [eroticismB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+            self.reportType = @"";
+            [smallReportView addSubview:eroticismB];
+            
+            UIButton *advertisementB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [advertisementB setTitle:@"广告" forState:UIControlStateNormal];
+            advertisementB.frame = CGRectMake(10, 110, 200, 40);
+            [advertisementB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+            self.reportType = @"";
+            [smallReportView addSubview:advertisementB];
+            
+            UIButton *abuseB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [abuseB setTitle:@"辱骂" forState:UIControlStateNormal];
+            abuseB.frame = CGRectMake(10, 160, 200, 40);
+            [abuseB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+            self.reportType = @"";
+            [smallReportView addSubview:abuseB];
+            
+            UIButton *cancelB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            [cancelB setTitle:@"取消" forState:UIControlStateNormal];
+            [cancelB setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            cancelB.frame = CGRectMake(10, 210, 200, 40);
+            [cancelB addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
+            self.reportType = @"";
+            [smallReportView addSubview:cancelB];
+        }
+        [UIView animateWithDuration:0.3 animations:^{
+            _reportView.frame = self.view.frame;
+        }];
+
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        _reportView.frame = self.view.frame;
-    }];
 }
 #pragma mark - report button act
 -(void)cancel

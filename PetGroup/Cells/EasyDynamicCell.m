@@ -339,7 +339,7 @@
 -(void)PersonDetail
 {
     if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-        [self.viewC  performSelector:@selector(headAct) withObject:nil];
+      //  [self.viewC  performSelector:@selector(headAct) withObject:nil];
         return;
     }
     PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
