@@ -51,6 +51,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
