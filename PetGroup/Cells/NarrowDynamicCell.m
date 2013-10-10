@@ -42,6 +42,7 @@
 @property (nonatomic,retain)NSMutableArray* OHALabelArray;
 @property (nonatomic,assign)id deleteObject;
 @property (nonatomic,retain)UILabel* replyCountL;
+@property (nonatomic,retain)UILabel* warningL;
 @end
 @implementation NarrowDynamicCell
 
@@ -128,6 +129,13 @@
         _replyCountL.backgroundColor = [UIColor clearColor];
         
         self.OHALabelArray = [[NSMutableArray alloc]init];
+        
+        self.warningL = [[UILabel alloc]initWithFrame:CGRectZero];
+        _warningL.backgroundColor = [UIColor yellowColor];
+        _warningL.alpha = 0.5;
+        _warningL.text = @"该动态内容不适合对外公开";
+        _warningL.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:_warningL];
     }
     return self;
 }
@@ -147,6 +155,11 @@
     origin = 10;
     _timeL.text = self.dynamic.submitTime;
     _timeL.frame = CGRectMake(10, origin, 60 , 30);
+    
+    if ([self.dynamic.stateType intValue] == 4||[self.dynamic.stateType intValue] == 5) {
+        self.warningL.frame = CGRectMake(80, origin, 150, 20);
+        origin+=28;
+    }
     
     if (self.dynamic.ifTransmitMsg != 0) {
         CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];

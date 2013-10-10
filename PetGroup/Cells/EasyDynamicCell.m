@@ -32,6 +32,7 @@
 @property (nonatomic,retain)UILabel* zanL;
 @property (nonatomic,retain)UIView * waitView;
 @property (nonatomic,retain)NSTimer * time;
+@property (nonatomic,retain)UILabel* warningL;
 @end
 @implementation EasyDynamicCell
 
@@ -125,7 +126,12 @@
             a.tag = 1000+i;
             [_waitView addSubview:a];
         }
-
+        self.warningL = [[UILabel alloc]initWithFrame:CGRectZero];
+        _warningL.backgroundColor = [UIColor yellowColor];
+        _warningL.alpha = 0.5;
+        _warningL.text = @"该动态内容不适合对外公开";
+        _warningL.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:_warningL];
     }
     return self;
 }
@@ -155,6 +161,11 @@
     nameB.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
     
     origin = 40;
+    
+    if ([self.dynamic.stateType intValue] == 4||[self.dynamic.stateType intValue] == 5) {
+        self.warningL.frame = CGRectMake(60, origin, 150, 20);
+        origin+=28;
+    }
     
     if (self.dynamic.ifTransmitMsg != 0) {
         CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];

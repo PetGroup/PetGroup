@@ -175,14 +175,8 @@
         return 1;
     }
     if (section == 1) {
-        int count = 0;
-        for (Reply* reply in self.dynamic.replyViews) {
-            count++;
-            for (id a in reply.replyComments) {
-                count++;
-            }
-        }
-        return count;
+        
+        return self.highArray.count;
     }else
         return 0;
 }
@@ -198,10 +192,10 @@
         cell.dynamic = self.dynamic;
         return cell;
     }else{
-        static NSString *cellIdentifier = @"ReplyCell";
-        ReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        static NSString *ReplyCellIdentifier = @"ReplyCell";
+        ReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:ReplyCellIdentifier ];
         if (cell == nil) {
-            cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ReplyCellIdentifier];
         }
         cell.viewC = self;
         cell.theID = self.highArray[indexPath.row];
@@ -267,7 +261,9 @@
                             [self.highArray addObject:recom];
                         }
                     }
+                    NSLog(@"%d===%@",self.highArray.count,self);
                     [self.tableV reloadData];
+                     _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [hud hide:YES];
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
@@ -355,6 +351,7 @@
                             }
                         }
                         [self.tableV reloadData];
+                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
                     }
                     if ([self.theID isKindOfClass:[ReplyComment class]]) {
                         Reply* theRep = nil;
@@ -379,6 +376,7 @@
                             }
                         }
                         [self.tableV reloadData];
+                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
                     }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -27,5 +27,6 @@
 @property (nonatomic,assign)float easyRowHigh;
 @property (nonatomic,strong)NSString *imageID;
 @property (nonatomic,strong)NSString *countReplys;
+@property (nonatomic,strong)NSString *stateType;
 -(id)initWithNSDictionary:(NSDictionary*)dic;
 @end

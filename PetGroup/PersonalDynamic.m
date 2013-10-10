@@ -46,8 +46,13 @@
         self.transmitMsg = [dic objectForKey:@"transmitMsg"];//转发内容
         self.countZan = [[dic objectForKey:@"countZan"] intValue];//赞的数目
         self.ifIZaned = [[dic objectForKey:@"ifIZaned"]boolValue];//我是否赞过，0 没攒，1 赞。
+        self.stateType = [dic objectForKey:@"stateType"];
         
         self.rowHigh = 45;
+        
+        if ([self.stateType intValue] == 4||[self.stateType intValue] == 5) {
+            self.rowHigh+=28;
+        }
         if (self.ifTransmitMsg!=0) {
             CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(210, 108) lineBreakMode:NSLineBreakByWordWrapping];
             self.rowHigh+=(size.height+10);
@@ -69,6 +74,9 @@
         }
     }
     self.easyRowHigh = 75;
+    if ([self.stateType intValue] == 4||[self.stateType intValue] == 5) {
+        self.easyRowHigh+=28;
+    }
     if (self.ifTransmitMsg!=0) {
         CGSize size = [_transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
         self.easyRowHigh+=(size.height+10);
