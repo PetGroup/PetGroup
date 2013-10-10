@@ -34,17 +34,19 @@
 #define BaseImageUrl @"http://www.52pet.net/pet/static/"
 #define BaseUploadImageUrl @"http://www.52pet.net/pet/client/upload"
 
-//#define BaseClientUrl @"http://192.168.2.118:8080/pet/client/request"
+//#define BaseClientUrl @"http://192.168.2.115:8080/pet/client/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
-//#define BaseCoreUrl @"http://192.168.2.118:8080/pet/core/request"
-//#define BaseImageUrl @"http://192.168.2.118:8080/pet/static/"
-//#define BaseUploadImageUrl @"http://192.168.2.118:8080/pet/client/upload"
+//#define BaseCoreUrl @"http://192.168.2.115:8080/pet/core/request"
+//#define BaseImageUrl @"http://192.168.2.115:8080/pet/static/"
+//#define BaseUploadImageUrl @"http://192.168.2.115:8080/pet/client/upload"
 
 //define sender type
 #define COMMONUSER @"commonUser"
 #define PUBLICACCOUNT  @"publicAccount"
 #define SUBSCRIBEDACCOUNT  @"subscribedAccount"
 #define SAYHELLOS @"sayhellos"
+
+#define NormalRequestTimeout  60.0f
 
 //define local account store in SFHFKeychainUtils
 #define LOCALACCOUNT @"lovePetLocalAccountTolecen"
