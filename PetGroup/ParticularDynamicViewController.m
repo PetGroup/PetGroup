@@ -574,10 +574,13 @@
         if (!self.reportView) {
             self.reportView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
             _reportView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:.01 alpha:0.3];
+
             [self.view addSubview: _reportView];
             UIView* smallReportView = [[UIView alloc]initWithFrame:CGRectMake(50, 150, 220, 260)];
             smallReportView.backgroundColor = [UIColor whiteColor];
             [_reportView addSubview:smallReportView];
+            smallReportView.layer.cornerRadius = 8;
+            smallReportView.layer.masksToBounds = YES;
             UIButton *shamB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [shamB setTitle:@"垃圾信息" forState:UIControlStateNormal];
             shamB.frame = CGRectMake(10, 10, 200, 40);
