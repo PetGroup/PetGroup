@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
-
+#import "KGStatusBar.h"
 @interface ParticularDynamicViewController : UIViewController
 @property (nonatomic,retain)Dynamic* dynamic;
 @property (nonatomic,retain)NSMutableArray* highArray;

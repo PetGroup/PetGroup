@@ -582,29 +582,29 @@
             UIButton *shamB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [shamB setTitle:@"垃圾信息" forState:UIControlStateNormal];
             shamB.frame = CGRectMake(10, 10, 200, 40);
-            [shamB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-            self.reportType = @"";
+            shamB.tag = 1;
+            [shamB addTarget:self action:@selector(report:) forControlEvents:UIControlEventTouchUpInside];
             [smallReportView addSubview:shamB];
             
             UIButton *eroticismB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [eroticismB setTitle:@"色情" forState:UIControlStateNormal];
             eroticismB.frame = CGRectMake(10, 60, 200, 40);
-            [eroticismB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-            self.reportType = @"";
+            eroticismB.tag = 2;
+            [eroticismB addTarget:self action:@selector(report:) forControlEvents:UIControlEventTouchUpInside];
             [smallReportView addSubview:eroticismB];
             
             UIButton *advertisementB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [advertisementB setTitle:@"广告" forState:UIControlStateNormal];
             advertisementB.frame = CGRectMake(10, 110, 200, 40);
-            [advertisementB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-            self.reportType = @"";
+            advertisementB.tag = 3;
+            [advertisementB addTarget:self action:@selector(report:) forControlEvents:UIControlEventTouchUpInside];
             [smallReportView addSubview:advertisementB];
             
             UIButton *abuseB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             [abuseB setTitle:@"辱骂" forState:UIControlStateNormal];
             abuseB.frame = CGRectMake(10, 160, 200, 40);
-            [abuseB addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
-            self.reportType = @"";
+            abuseB.tag = 4;
+            [abuseB addTarget:self action:@selector(report:) forControlEvents:UIControlEventTouchUpInside];
             [smallReportView addSubview:abuseB];
             
             UIButton *cancelB = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -612,7 +612,6 @@
             [cancelB setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
             cancelB.frame = CGRectMake(10, 210, 200, 40);
             [cancelB addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
-            self.reportType = @"";
             [smallReportView addSubview:cancelB];
         }
         [UIView animateWithDuration:0.3 animations:^{
@@ -628,12 +627,13 @@
         _reportView.frame = CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height);
     }];
 }
--(void)report
+-(void)report:(UIButton *)sender
 {
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
+    [params setObject:[NSString stringWithFormat:@"%d",sender.tag] forKey:@"reporttype"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -643,9 +643,9 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+        [KGStatusBar showSuccessWithStatus:@"举报成功，请等待管理员审核"];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [KGStatusBar showSuccessWithStatus:@"举报失败，可能是网络不好"];
     }];
     [self cancel];
 }
