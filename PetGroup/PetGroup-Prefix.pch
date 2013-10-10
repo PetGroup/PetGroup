@@ -49,7 +49,7 @@
 #define NormalRequestTimeout  60.0f
 
 //define local account store in SFHFKeychainUtils
-#define LOCALACCOUNT @"lovePetLocalAccountTolecen"
+#define LOCALACCOUNT @"lovePetLocalAccountCreatedByChongWuQuan"
 #define ACCOUNT @"lovePetAccount"
 #define USERNICKNAME  @"lovepetusernickname"
 #define PASSWORD @"lovePetPassword"

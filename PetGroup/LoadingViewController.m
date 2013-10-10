@@ -80,7 +80,7 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
-        [self firtOpen];
+    //    [self firtOpen];
     }
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];
