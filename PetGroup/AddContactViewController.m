@@ -22,7 +22,7 @@
     if (self) {
         // Custom initialization
         self.pageIndex = 0;
-        self.resultArray = [NSArray array];
+        self.resultArray = [NSMutableArray array];
     }
     return self;
 }
@@ -102,9 +102,10 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         self.resultArray =[NSMutableArray arrayWithArray:[receiveStr JSONValue]];
-        for (NSDictionary* dic in self.resultArray) {
+        NSMutableArray * tempArray = [self.resultArray mutableCopy];
+        for (NSDictionary* dic in tempArray) {
             if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
-                [_resultArray removeObject:dic];
+                [self.resultArray removeObject:dic];
             }
         }
         if (self.resultArray.count>0) {

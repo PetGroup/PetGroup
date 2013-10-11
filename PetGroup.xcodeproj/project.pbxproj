@@ -326,6 +326,7 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
+		97CCB6121807889D000BD1BE /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 86BDA5CE17F6E98B00613866 /* shezhi22.png */; };
 		97D4B2B417D6D83600B331A4 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D4B2B317D6D83600B331A4 /* ButtonCell.m */; };
 		97D4BAD617E944EB00929BF4 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D4BAD117E944EB00929BF4 /* icon-72.png */; };
 		97D4BAD717E944EB00929BF4 /* icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D4BAD217E944EB00929BF4 /* icon-144.png */; };
@@ -414,8 +415,6 @@
 		97DB09FE17C5B167000EC195 /* UpLoadPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09EF17C5B167000EC195 /* UpLoadPhotoViewController.m */; };
 		97DB09FF17C5B167000EC195 /* UserTreatyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F117C5B167000EC195 /* UserTreatyViewController.m */; };
 		97DB0A0017C5B167000EC195 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DB09F317C5B167000EC195 /* WelcomeViewController.m */; };
-		97DB4FB117E024EB00B74E73 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		97DB4FB217E024EB00B74E73 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 97DD8CA517E19D09002E36BE /* selectContactPage.m */; };
 		97E25BEA17C33F8D007E187D /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BE917C33F8D007E187D /* LoadingViewController.m */; };
 		97E25BFF17C34418007E187D /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25BED17C34418007E187D /* AFHTTPClient.m */; };
@@ -3022,10 +3021,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97CCB6121807889D000BD1BE /* shezhi22.png in Resources */,
 				97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */,
 				97D632FD1803F6EA00204363 /* third_common_selected_no.png in Resources */,
-				97DB4FB117E024EB00B74E73 /* (null) in Resources */,
-				97DB4FB217E024EB00B74E73 /* (null) in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
 				979546CA17BA368F00D05874 /* Default.png in Resources */,
 				979546CC17BA368F00D05874 /* Default@2x.png in Resources */,
