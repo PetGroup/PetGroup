@@ -381,6 +381,10 @@
     [self autoMovekeyBoard:0];
 }
 
+-(void)addEmojiScrollView
+{
+
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
