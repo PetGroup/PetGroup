@@ -10,10 +10,8 @@
 #import <CoreText/CoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import "NSAttributedString+Attributes.h"
-#import "MarkupParser.h"
 #import "OHAttributedLabel.h"
-#import "RegexKitLite.h"
-#import "SCGIFImageView.h"
+
 @interface HeightCalculate : NSObject
 +(CGSize)calSizeWithString:(NSString *)theStr WithMaxWidth:(float)maxWidth;
 @end

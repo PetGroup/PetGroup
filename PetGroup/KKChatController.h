@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "XMPPFramework.h"
@@ -17,8 +18,9 @@
 #import "PersonDetailViewController.h"
 #import "MyProfileViewController.h"
 #import "selectContactPage.h"
+#import "OHASBasicHTMLParser.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -45,8 +47,27 @@
     NSMutableDictionary * postDict;
     NSString * myHeadImg;
     NSDictionary * tempDict;
+    
+    BOOL ifAudio;
+    BOOL ifEmoji;
+    
+    UIButton * audioBtn;
+    UIButton * emojiBtn;
+    UIButton * picBtn;
+    UIButton * audioRecordBtn;
+    
+    NSTimeInterval beginTime;
+    UIButton * audioplayButton;
+    UIImageView *recordAnimationIV;
+    
+    UIScrollView *m_EmojiScrollView;
+    UIPageControl *m_Emojipc;
+    UIView * emojiBGV;
+    
+    NSMutableDictionary *recordSetting;
 }
 @property (strong, nonatomic)  UITableView *tView;
+@property (strong, nonatomic)  NSMutableArray *finalMessageArray;
 @property (strong, nonatomic)  UITextField *messageTextField;
 //@property (strong, nonatomic)  UIButton * sendBtn;
 @property(nonatomic, retain) NSString *chatWithUser;
@@ -57,6 +78,8 @@
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic) UIExpandingTextView *textView;
 @property (assign,nonatomic) id<StoreMsgDelegate> msgDelegate;
+@property (nonatomic,retain) AVAudioSession *session;
+@property (nonatomic,retain) AVAudioRecorder *recorder;
 - (void)sendButton:(id)sender;
 - (void)closeButton:(id)sender;
 @end

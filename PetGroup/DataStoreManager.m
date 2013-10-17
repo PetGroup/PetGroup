@@ -493,10 +493,23 @@
         NSRange range=[dFriend.headImgID rangeOfString:@","];
         if (range.location!=NSNotFound) {
             NSArray *imageArray = [dFriend.headImgID componentsSeparatedByString:@","];
-            return [imageArray objectAtIndex:0];
+
+            NSArray *arr = [[imageArray objectAtIndex:0] componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                return [arr objectAtIndex:0];
+            }
+            else
+                return [imageArray objectAtIndex:0];
         }
         else
-            return dFriend.headImgID;
+        {
+            NSArray *arr = [dFriend.headImgID componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                return [arr objectAtIndex:0];
+            }
+            else
+                return dFriend.headImgID;
+        }
     }
     else
         return @"no";

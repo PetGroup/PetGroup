@@ -342,15 +342,25 @@
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
-        [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.phoneNo forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-        [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-        
-        [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-        
-        DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
-        newReg.dic = params;
-        [self.navigationController pushViewController:newReg animated:YES];
+        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSRange range=[dede rangeOfString:@"token"];
+        if (range.location!=NSNotFound) {
+            [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+            [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.phoneNo forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+            
+            [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
+            
+            DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
+            newReg.dic = params;
+            [self.navigationController pushViewController:newReg animated:YES];
+        }
+        else
+        {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+            [hud hide:YES];
+        }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];

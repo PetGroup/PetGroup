@@ -184,7 +184,8 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject) {
-            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSArray * recArray = [receiveStr JSONValue];
             [self parseData:recArray];
         }
         else
@@ -222,9 +223,9 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         if (responseObject) {
-            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            NSArray * recArray = [receiveStr JSONValue];
             [self parseData:recArray];
         }
         else
@@ -272,9 +273,9 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         if (responseObject) {
-            NSArray * recArray = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+            NSArray * recArray = [receiveStr JSONValue];
             [self parseData:recArray];
         }
         else
@@ -460,7 +461,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
 //        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
-        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,[pet objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
+        NSString * petImgStr = [self getFistHeadImg:[pet objectForKey:@"img"]];
+        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
         [cell.distLabel setText:[self.petDistanceArray objectAtIndex:indexPath.row]];
         NSString* sigStr = [pet objectForKey:@"trait"];
@@ -932,13 +934,37 @@
 }
 -(NSString *)getFistHeadImg:(NSString *)headImgStr
 {
-    NSRange range=[headImgStr rangeOfString:@","];
-    if (range.location!=NSNotFound) {
-        NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
-        return [imageArray objectAtIndex:0];
+//    NSRange range=[headImgStr rangeOfString:@","];
+//    if (range.location!=NSNotFound) {
+//        NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
+//        return [imageArray objectAtIndex:0];
+//    }
+//    else
+//        return headImgStr;
+    if (headImgStr) {
+        NSRange range=[headImgStr rangeOfString:@","];
+        if (range.location!=NSNotFound) {
+            NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
+            
+            NSArray *arr = [[imageArray objectAtIndex:0] componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                return [arr objectAtIndex:0];
+            }
+            else
+                return [imageArray objectAtIndex:0];
+        }
+        else
+        {
+            NSArray *arr = [headImgStr componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                return [arr objectAtIndex:0];
+            }
+            else
+                return headImgStr;
+        }
     }
     else
-        return headImgStr;
+        return @"no";
 }
 - (void)didReceiveMemoryWarning
 {

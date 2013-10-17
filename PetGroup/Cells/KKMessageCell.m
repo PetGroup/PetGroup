@@ -44,24 +44,25 @@
         
         bgImageView = [UIButton buttonWithType:UIButtonTypeCustom];
         [bgImageView setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-      //  [bgImageView setAdjustsImageWhenHighlighted:NO];
+        //  [bgImageView setAdjustsImageWhenHighlighted:NO];
         [self.contentView addSubview:bgImageView];
         
         
         //聊天信息
-        messageContentView = [[UILabel alloc] init];
+        messageContentView = [[OHAttributedLabel alloc] initWithFrame:CGRectZero];
         messageContentView.backgroundColor = [UIColor clearColor];
-        //不可编辑
-        //        messageContentView.editable = NO;
-        //        messageContentView.scrollEnabled = NO;
-        [messageContentView setNumberOfLines:0];
-        [messageContentView setLineBreakMode:UILineBreakModeCharacterWrap];
-        [messageContentView setFont:[UIFont boldSystemFontOfSize:13]];
+//        messageContentView.backgroundColor = [UIColor clearColor];
+//        //不可编辑
+//        //        messageContentView.editable = NO;
+//        //        messageContentView.scrollEnabled = NO;
+//        [messageContentView setNumberOfLines:0];
+//        [messageContentView setLineBreakMode:UILineBreakModeCharacterWrap];
+//        [messageContentView setFont:[UIFont boldSystemFontOfSize:13]];
         // [messageContentView sizeToFit];
         [self.contentView addSubview:messageContentView];
         NSLog(@"fffff%f",self.frame.size.height);
         
-
+        
     }
     
     return self;

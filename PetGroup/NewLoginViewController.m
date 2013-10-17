@@ -164,24 +164,24 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"login2" forKey:@"method"];
+    [body setObject:@"login" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"\"用户不存在\""]) {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户不存在" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [alert show];
-        }else if([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"\"密码错误\""]){
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [alert show];
-        }else{
+        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSRange range=[dede rangeOfString:@"authenticationToken"];
+        if (range.location!=NSNotFound) {
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
             [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.PhoneNoTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
             [self dismissModalViewControllerAnimated:YES];
+        }
+        else {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];

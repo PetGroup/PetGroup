@@ -25,8 +25,10 @@
 #define BaseClientUrl @"http://123.178.27.74/pet/client/request"
 //#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
 #define BaseCoreUrl @"http://123.178.27.74/pet/core/request"
-#define BaseImageUrl @"http://123.178.27.74/pet/static/"
-#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
+//#define BaseImageUrl @"http://123.178.27.74/pet/static/"
+//#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
+#define BaseUploadImageUrl  @"http://123.178.27.74/pet-file-server/put"
+#define BaseImageUrl  @"http://123.178.27.74/pet-file-server/get/"
 
 //#define BaseClientUrl @"http://www.52pet.net/pet/client/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
@@ -34,11 +36,11 @@
 //#define BaseImageUrl @"http://www.52pet.net/pet/static/"
 //#define BaseUploadImageUrl @"http://www.52pet.net/pet/client/upload"
 
-//#define BaseClientUrl @"http://192.168.2.115:8080/pet/client/request"
+//#define BaseClientUrl @"http://192.168.2.117:8080/pet/client/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
-//#define BaseCoreUrl @"http://192.168.2.115:8080/pet/core/request"
-//#define BaseImageUrl @"http://192.168.2.115:8080/pet/static/"
-//#define BaseUploadImageUrl @"http://192.168.2.115:8080/pet/client/upload"
+//#define BaseCoreUrl @"http://192.168.2.117:8080/pet/core/request"
+//#define BaseImageUrl @"http://192.168.2.117:8080/pet/static/"
+//#define BaseUploadImageUrl @"http://192.168.2.117:8080/pet/client/upload"
 
 //define sender type
 #define COMMONUSER @"commonUser"
@@ -79,3 +81,5 @@
 #else
 #define NSLog(...) {}
 #endif
+
+//#define NotUseSimulator  @"YES"
