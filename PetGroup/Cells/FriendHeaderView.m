@@ -1,0 +1,49 @@
+//
+//  FriendHeaderView.m
+//  PetGroup
+//
+//  Created by 阿铛 on 13-10-14.
+//  Copyright (c) 2013年 Tolecen. All rights reserved.
+//
+
+#import "FriendHeaderView.h"
+
+@implementation FriendHeaderView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization
+        UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
+        searchB.frame = CGRectMake(0, 0, 320, 36.5);
+        [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
+        [searchB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:searchB];
+        UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 36.5, 320, 26)];
+        bg.image = [UIImage imageNamed:@"biaoti"];
+        [self addSubview:bg];
+        UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 39.5, 100, 20)];
+        titleL.backgroundColor = [UIColor clearColor];
+        titleL.text = @"朋友圈";
+        titleL.font = [UIFont boldSystemFontOfSize:16];
+        [self addSubview:titleL];
+    }
+    return self;
+}
+-(void)selector
+{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(didSelectSearchBAtFriendHeaderView:)]) {
+        [self.delegate didSelectSearchBAtFriendHeaderView:self];
+    }
+}
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
+
+@end

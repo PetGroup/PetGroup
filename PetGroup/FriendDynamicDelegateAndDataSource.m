@@ -56,7 +56,7 @@
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
-    [params setObject:[NSString stringWithFormat:@"%d",self.lastStateid] forKey:@"lastStateid"];
+    [params setObject:[NSString stringWithFormat:@"%lld",self.lastStateid] forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getAllFriendStates" forKey:@"method"];
