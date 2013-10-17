@@ -40,6 +40,14 @@
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
     [self.view addSubview:TopBarBGV];
     
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(0, 0, 80, 44);
+    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
+    [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
+    [self.view addSubview:backButton];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"选择联系人";
@@ -56,7 +64,7 @@
 //    [self.view addSubview:addButton];
 //    [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-88) style:UITableViewStylePlain];
+    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44) style:UITableViewStylePlain];
     [self.view addSubview:self.contactsTable];
     self.contactsTable.dataSource = self;
     self.contactsTable.delegate = self;
@@ -260,6 +268,10 @@
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     return sectionIndexArray;
+}
+-(void)back
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

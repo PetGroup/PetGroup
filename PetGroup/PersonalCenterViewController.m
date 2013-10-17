@@ -86,6 +86,24 @@
         [self.customTabBarController removeNotificatonOfIndex:4];
 
     [self.profileTableV reloadData];
+    
+    
+//    [NetManager uploadImageWithCompres:[UIImage imageNamed:@"xuanzechongwu-bg.png"] WithURLStr:NewUploadURL ImageName:@"test.jpg" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+//        
+//    } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSDictionary * gg = [receiveStr JSONValue];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//    }];
+//    [NetManager downloadImageWithBaseURLStr:NewDownloadURL ImageId:@"973" success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+//        UIImageView * hh = [[UIImageView alloc] initWithFrame:CGRectMake(10, 100, 300, 300)];
+//        [hh setImage:image];
+//        [self.view addSubview:hh];
+//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+//        
+//    }];
+    
 }
 -(void)viewWillAppear:(BOOL)animated
 {

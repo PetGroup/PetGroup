@@ -7,6 +7,7 @@
 //
 
 #import "NetManager.h"
+#import "JSON.h"
 #define CompressionQuality 1  //图片上传时压缩质量
 @implementation NetManager
 
@@ -74,7 +75,16 @@
     [operation setUploadProgressBlock:block];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (controller) {
-            success(operation,responseObject);
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            if ([dict objectForKey:@"success"]) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                failure(operation,nil);
+            }
+        
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(operation,error);
@@ -97,7 +107,15 @@
     [operation setUploadProgressBlock:block];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (controller) {
-            success(operation,responseObject);
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            if ([dict objectForKey:@"success"]) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                failure(operation,nil);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (controller) {
@@ -113,7 +131,7 @@
     NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
         [NetManager uploadImageWithCompres:[imageArray objectAtIndex:i] WithURLStr:urlStr ImageName:[imageNameArray objectAtIndex:i] TheController:controller Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *response = [operation responseString];
+                NSString *response = responseObject;
                 [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
                 if (reponseStrArray.count==imageArray.count) {
                     if (controller) {
@@ -135,7 +153,7 @@
     NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
     for (int i = 0; i<imageArray.count; i++) {
         [NetManager uploadImage:[imageArray objectAtIndex:i] WithURLStr:urlStr ImageName:[imageNameArray objectAtIndex:i] TheController:controller Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *response = [operation responseString];
+            NSString *response = responseObject;
             [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
             if (reponseStrArray.count==imageArray.count) {
                 if (controller) {
@@ -149,6 +167,28 @@
             }
         }];
     }
+}
+
++(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
+                   failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"amr"];
+    }];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (controller) {
+            success(operation,responseObject);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (controller) {
+            failure(operation,error);
+        }
+    }];
+    [httpClient enqueueHTTPRequestOperation:operation];
 }
 //图片压缩 两个方法组合
 +(UIImage*)compressImageDownToPhoneScreenSize:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY

@@ -13,6 +13,11 @@
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "JSON.h"
+#import "HeightCalculate.h"
+#ifdef NotUseSimulator
+    #import "amrFileCodec.h"
+#endif
+
 #define padding 20
 #define LocalMessage @"localMessage"
 #define NameKeys @"namekeys"
@@ -29,6 +34,8 @@
 @synthesize messageTextField;
 @synthesize chatWithUser;
 @synthesize nickName;
+@synthesize session;
+@synthesize recorder;
 
 
 - (void)loadView
@@ -69,6 +76,7 @@
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
     [self.view addSubview:bgV];
     messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+    [self normalMsgToFinalMsg];
     myHeadImg = @"";
     myHeadImg = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     
@@ -127,18 +135,49 @@
 //    self.messageTextField.returnKeyType = UIReturnKeySend;
 //    [inPutView addSubview:self.messageTextField];
     
-    self.textView = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 262, 30)];
+    ifAudio = NO;
+    ifEmoji = NO;
+    audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [audioBtn setFrame:CGRectMake(8, 50-12-27, 25, 27)];
+    [audioBtn setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
+    [inPutView addSubview:audioBtn];
+    [audioBtn addTarget:self action:@selector(audioBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.textView = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 25)];
     self.textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
     [self.textView.internalTextView setReturnKeyType:UIReturnKeySend];
     self.textView.delegate = self;
     self.textView.maximumNumberOfLines=5;
     [inPutView addSubview:self.textView];
     
-    senBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
-    [senBtn setImage:[UIImage imageNamed:@"chat_send.png"] forState:UIControlStateNormal];
-    [inPutView addSubview:senBtn];
-    [senBtn addTarget:self action:@selector(sendButton:) forControlEvents:UIControlEventTouchUpInside];
+    audioRecordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [audioRecordBtn setFrame:CGRectMake(40, 8, 200, 35)];
+    [audioRecordBtn setBackgroundImage:[UIImage imageNamed:@"yanzhengma_normal.png"] forState:UIControlStateNormal];
+    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    [inPutView addSubview:audioRecordBtn];
+    [audioRecordBtn addTarget:self action:@selector(audioRecordBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    audioRecordBtn.hidden = YES;
+    [audioRecordBtn addTarget:self action:@selector(buttonDown) forControlEvents:UIControlEventTouchDown];
+    [audioRecordBtn addTarget:self action:@selector(buttonCancel) forControlEvents:UIControlEventTouchCancel];
+    [audioRecordBtn addTarget:self action:@selector(buttonCancel) forControlEvents:UIControlEventTouchUpInside];
+    
+    emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emojiBtn setFrame:CGRectMake(250, 50-12-27, 25, 27)];
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    [inPutView addSubview:emojiBtn];
+    [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    picBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [picBtn setFrame:CGRectMake(285, 50-12-27, 25, 27)];
+    [picBtn setImage:[UIImage imageNamed:@"picBtn.png"] forState:UIControlStateNormal];
+    [inPutView addSubview:picBtn];
+    [picBtn addTarget:self action:@selector(picBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+//    senBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
+//    [senBtn setImage:[UIImage imageNamed:@"chat_send.png"] forState:UIControlStateNormal];
+//    [inPutView addSubview:senBtn];
+//    [senBtn addTarget:self action:@selector(sendButton:) forControlEvents:UIControlEventTouchUpInside];
 
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (version >= 5.0) {
@@ -161,10 +200,271 @@
     if ([self.chatUserImg isEqualToString:@"no"]) {
         [self getUserInfoWithUserName:self.chatWithUser];
     }
+    
+    self.session = [AVAudioSession sharedInstance];
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
 }
+
+-(void)normalMsgToFinalMsg 
+{
+    NSMutableArray* formattedEntries = [NSMutableArray arrayWithCapacity:messages.count];
+    for(NSDictionary* plainEntry in messages)
+    {
+        NSString *message = [plainEntry objectForKey:@"msg"];
+        NSMutableAttributedString* mas = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:message];
+        [mas setFont:[UIFont systemFontOfSize:15]];
+        //            [mas setTextColor:[randomColors objectAtIndex:(idx%5)]];
+        [mas setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
+        [formattedEntries addObject:mas];
+    }
+    self.finalMessageArray = formattedEntries;
+}
+
+-(void)audioBtnClicked:(UIButton *)sender
+{
+    if (!ifAudio) {
+        self.textView.text = @"";
+        ifAudio = YES;
+        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
+        audioRecordBtn.hidden = NO;
+        self.textView.hidden = YES;
+        [self.textView resignFirstResponder];
+        if ([clearView superview]) {
+            [clearView removeFromSuperview];
+        }
+        if ([popLittleView superview]) {
+            [popLittleView removeFromSuperview];
+        }
+        canAdd = YES;
+        if (ifEmoji) {
+            [self autoMovekeyBoard:0];
+            ifEmoji = NO;
+            [UIView animateWithDuration:0.2 animations:^{
+                [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260, 320, 253)];
+                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260, 320, emojiBGV.frame.size.height)];
+                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260, 320, m_Emojipc.frame.size.height)];
+            } completion:^(BOOL finished) {
+                [m_EmojiScrollView removeFromSuperview];
+                [emojiBGV removeFromSuperview];
+                [m_Emojipc removeFromSuperview];
+            }];
+            
+            [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+        }
+    }
+    else
+    {
+        ifAudio = NO;
+        [sender setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
+        self.textView.hidden = NO;
+        audioRecordBtn.hidden = YES;
+        [self.textView becomeFirstResponder];
+    }
+}
+-(void)emojiBtnClicked:(UIButton *)sender
+{
+    if (!ifEmoji) {
+        [self.textView resignFirstResponder];
+        ifEmoji = YES;
+        ifAudio = NO;
+        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
+        [audioBtn setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
+        self.textView.hidden = NO;
+        audioRecordBtn.hidden = YES;
+        [self showEmojiScrollView];
+        
+    }
+    else
+    {
+        [self.textView becomeFirstResponder];
+        ifEmoji = NO;
+        [m_EmojiScrollView removeFromSuperview];
+        [emojiBGV removeFromSuperview];
+        [m_Emojipc removeFromSuperview];
+        [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    }
+}
+-(void)picBtnClicked:(UIButton *)sender
+{
+    
+}
+-(void)audioRecordBtnClicked:(UIButton *)sender
+{
+    
+}
+-(void)buttonDown
+{
+    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
+    beginTime = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"recording voice button touchDown");
+    if (audioplayButton == nil) {
+        audioplayButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        audioplayButton.frame=CGRectMake(80, self.view.frame.size.height/2-80, 160, 160);
+        [audioplayButton setImage:[UIImage imageNamed:@"third_xiemessage_record_icon.png"] forState:UIControlStateNormal];
+        [self.view addSubview:audioplayButton];
+        
+    }
+    if (recordAnimationIV == nil)
+    {
+        recordAnimationIV=[[UIImageView alloc]initWithFrame:CGRectMake(180, self.view.frame.size.height/2-55, 50, 100)];
+    }
+    NSMutableArray *arr=[[NSMutableArray alloc]init] ;
+    for(int i=1;i<=24;i++){
+        NSString *str=nil;
+        str=[NSString stringWithFormat:@"third_xiemessage_record_ani%d.png",i];
+        UIImage *img=[UIImage imageNamed:str];
+        [arr addObject:img];
+    }
+    recordAnimationIV.animationImages=arr;
+    recordAnimationIV.animationDuration=1.0;
+    recordAnimationIV.animationRepeatCount=0;
+    [recordAnimationIV startAnimating];
+    [self.view addSubview:recordAnimationIV];
+//    [self Beginrecord];
+    // beginTime =
+}
+-(void)buttonCancel
+{
+    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+    if(endTime-beginTime>0.5)
+    {
+
+    }
+    else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+    }
+    [recordAnimationIV stopAnimating];
+    [recordAnimationIV removeFromSuperview];
+    recordAnimationIV = nil;
+    [audioplayButton removeFromSuperview];
+    audioplayButton = nil;
+
+}
+
+-(void)showEmojiScrollView
+{
+    [self.textView resignFirstResponder];
+    [inPutView setFrame:CGRectMake(0, self.view.frame.size.height-227-inPutView.frame.size.height, 320, inPutView.frame.size.height)];
+    //表情列表如果存在就隐藏
+    //if (m_EmojiScrollView==nil)
+    //{
+    //将面板先于工具栏加入视图，避免遮挡
+    UIImageView *sixGridBGV=[[UIImageView alloc]initWithFrame:CGRectMake(-320, 0, 1280, self.view.frame.size.height-227)];//原来是253
+    [sixGridBGV setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+    
+    //创建表情视图
+    UIScrollView *i_emojiScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  self.view.frame.size.height-253, 320, self.view.frame.size.height-227)];//原来是227和253
+    //设置表情列表scrollview属性
+    i_emojiScrollView.backgroundColor=[UIColor yellowColor];
+    m_EmojiScrollView = i_emojiScrollView;
+    [m_EmojiScrollView addSubview:sixGridBGV];
+    m_EmojiScrollView.delegate=self;
+    m_EmojiScrollView.bouncesZoom = YES;
+    m_EmojiScrollView.pagingEnabled = YES;
+    m_EmojiScrollView.showsHorizontalScrollIndicator = NO;
+    m_EmojiScrollView.showsVerticalScrollIndicator = NO;
+    [m_EmojiScrollView setContentSize:CGSizeMake(960,self.view.frame.size.height-227)];//原来是253
+    m_EmojiScrollView.backgroundColor = [UIColor clearColor];
+    m_EmojiScrollView.scrollEnabled = YES;
+    [self.view addSubview:m_EmojiScrollView];
+    [self emojiView];
+    //启动pagecontrol
+    [self loadPageControl];
+    emojiBGV = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-45.5-26.5-10, 320, 45.5+26.5+10)];
+    emojiBGV.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:emojiBGV];
+    UIImageView * ebgv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 26.5+10, 320, 45.5)];
+    [ebgv setImage:[UIImage imageNamed:@"qqqqq_06.png"]];
+    [emojiBGV addSubview:ebgv];
+    UIButton * backEmojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backEmojiBtn setFrame:CGRectMake(320-12-49.5, 5, 40.5, 23)];
+    [backEmojiBtn setImage:[UIImage imageNamed:@"qqqqq_03.png"] forState:UIControlStateNormal];
+    [emojiBGV addSubview:backEmojiBtn];
+    [backEmojiBtn addTarget:self action:@selector(backBtnDo) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * sendEmojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sendEmojiBtn setFrame:CGRectMake(320-12-71.5, 43.5, 71.5, 32)];
+    [sendEmojiBtn setImage:[UIImage imageNamed:@"btn_03.png"] forState:UIControlStateNormal];
+    [emojiBGV addSubview:sendEmojiBtn];
+    [sendEmojiBtn addTarget:self action:@selector(sendButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self autoMovekeyBoard:253];
+
+}
+-(void)backBtnDo
+{
+    if (self.textView.text.length>=1) {
+        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
+    }
+    
+}
+-(void)loadPageControl
+{
+	//创建并初始化uipagecontrol
+	m_Emojipc=[[UIPageControl alloc]initWithFrame:CGRectMake(20, self.view.frame.size.height-70, 280, 20)];
+	//设置背景颜色
+	m_Emojipc.backgroundColor=[UIColor clearColor];
+	//设置pc页数（此时不会同步跟随显示）
+	m_Emojipc.numberOfPages=3;
+	//设置当前页,为第一张，索引为零
+	m_Emojipc.currentPage=0;
+	//添加事件处理，btn点击
+	[m_Emojipc addTarget:self action:@selector(pagePressed:) forControlEvents:UIControlEventTouchUpInside];
+	//将pc添加到视图上
+	[self.view addSubview:m_Emojipc];
+    NSLog(@"load page control");
+}
+-(void)emojiView
+{
+    for (int n = 0; n <=84; n++) {
+        UIButton *btn = [[UIButton alloc]init];
+        if (n<28) {
+            [btn setFrame:CGRectMake(13.75*(n%7+1)+30*(n%7), (n/7+1)*12+30*(n/7), 30, 30)];
+        }
+        else if(n>=28&&n<56)
+            [btn setFrame:CGRectMake(13.75*(n%7+1)+30*(n%7)+320, ((n-28)/7+1)*12+30*((n-28)/7), 30, 30)];
+        else
+            [btn setFrame:CGRectMake(13.75*(n%7+1)+30*(n%7)+640, ((n-56)/7+1)*12+30*((n-56)/7), 30, 30)];
+        [btn setBackgroundColor:[UIColor clearColor]];
+        NSString * emojiStr = n+1>=10?[NSString stringWithFormat:@"0%d",n+1]:[NSString stringWithFormat:@"00%d",n+1];
+        [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%@.png",emojiStr]] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(emojiButtonPress:) forControlEvents:UIControlEventTouchUpInside];
+        [btn setTag:n];
+        
+        [m_EmojiScrollView addSubview:btn];
+    }
+}
+-(void)emojiButtonPress:(id)sender
+{
+	//获取对应的button
+	UIButton *selectedButton = (UIButton *) sender;
+	int  n = selectedButton.tag;
+	//根据button的tag获取对应的图片名
+	NSString *facefilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"emotionThird.plist"];
+	NSDictionary *m_pEmojiDic = [[NSDictionary alloc] initWithContentsOfFile:facefilePath];
+	NSString *i_transCharacter = [m_pEmojiDic objectForKey:[NSString stringWithFormat:@"%d",n+1]];
+    //提示文字标签隐藏
+	//判断输入框是否有内容，追加转义字符
+	if (self.textView.text == nil) {
+		self.textView.text = [NSString stringWithFormat:@"[%@] ",i_transCharacter];
+	}
+	else {
+		self.textView.text = [self.textView.text stringByAppendingString:[NSString stringWithFormat:@"[%@] ",i_transCharacter]];
+	}
+    [self autoMovekeyBoard:253];
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	float a=m_EmojiScrollView.contentOffset.x;
+	int page=floor((a-320/2)/320)+1;
+	m_Emojipc.currentPage=page;
+}
+
+
 -(void)getUserInfoWithUserName:(NSString *)userNameit
 {
     NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
@@ -238,6 +538,22 @@
     UITouch * touch = [touches anyObject];
     if ([touch view]==clearView) {
         [self.textView resignFirstResponder];
+        if (ifEmoji) {
+            [self autoMovekeyBoard:0];
+            ifEmoji = NO;
+            [UIView animateWithDuration:0.2 animations:^{
+                [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260, 320, 253)];
+                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260, 320, emojiBGV.frame.size.height)];
+                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260, 320, m_Emojipc.frame.size.height)];
+            } completion:^(BOOL finished) {
+                [m_EmojiScrollView removeFromSuperview];
+                [emojiBGV removeFromSuperview];
+                [m_Emojipc removeFromSuperview];
+            }];
+
+            [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+        }
+        
         [clearView removeFromSuperview];
         if ([popLittleView superview]) {  
             [popLittleView removeFromSuperview];
@@ -282,7 +598,7 @@
     [UIView commitAnimations];
     self.tView.frame = CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height-44-inPutView.frame.size.height-h);
     if (messages.count>0) {
-        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
     
     if (h>0&&canAdd) {
@@ -318,8 +634,10 @@
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
-    
+//    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
+    [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
+    [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
+    [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
 }
 //return方法
 - (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView{
@@ -335,6 +653,11 @@
 #pragma mark -
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {
+    ifEmoji = NO;
+    [m_EmojiScrollView removeFromSuperview];
+    [emojiBGV removeFromSuperview];
+    [m_Emojipc removeFromSuperview];
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     if ([clearView superview]) {
         [clearView removeFromSuperview];
     }
@@ -377,10 +700,16 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     
-    
-    [self autoMovekeyBoard:0];
+   
+        [self autoMovekeyBoard:0];
+ 
+
 }
 
+-(void)addEmojiScrollView
+{
+
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -406,34 +735,45 @@
     }
     
     NSMutableDictionary *dict = [messages objectAtIndex:indexPath.row];
-  //  NSLog(@"dict:%@",dict);
+    //  NSLog(@"dict:%@",dict);
     
     //发送者
     NSString *sender = [dict objectForKey:@"sender"];
     //消息
-    NSString *message = [dict objectForKey:@"msg"];
- //   NSLog(@"nnnnnn:%@",message);
+    //NSString *message = [dict objectForKey:@"msg"];
+    //   NSLog(@"nnnnnn:%@",message);
     //时间
     NSString *time = [dict objectForKey:@"time"];
     
- //   NSLog(@"kkkkkkkkkkk:%@,llllllll:%@",dict,time);
+    //   NSLog(@"kkkkkkkkkkk:%@,llllllll:%@",dict,time);
     
-    CGSize textSize = {260.0-10-30 ,10000.0};
-    CGSize size = [message sizeWithFont:[UIFont boldSystemFontOfSize:13] constrainedToSize:textSize lineBreakMode:UILineBreakModeCharacterWrap];
+//    CGSize textSize = {260.0-10-30 ,10000.0};
+//    CGSize size = [message sizeWithFont:[UIFont boldSystemFontOfSize:13] constrainedToSize:textSize lineBreakMode:UILineBreakModeCharacterWrap];
+//    
+//    //size.width +=(padding/2);
+//    
+//    cell.messageContentView.text = message;
+
+//    [cell.messageContentView setDisplayText:message WithCommentArray:nil MaxWidth:220];
+    cell.messageContentView.attributedText = [self.finalMessageArray objectAtIndex:indexPath.row];
+//    float x = [cell.messageContentView sizeThatFits:CGSizeMake(220, CGFLOAT_MAX)].width;
+//    float y = [cell.messageContentView sizeThatFits:CGSizeMake(220, CGFLOAT_MAX)].height;
+//    CGSize size = CGSizeMake(x<20?20:x, y<20?20:y);
     
-    //size.width +=(padding/2);
-    
-    cell.messageContentView.text = message;
+//    NSAttributedString* attrStr = [self.finalMessageArray objectAtIndex:indexPath.row];
+    CGSize size = [cell.messageContentView.attributedText sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
+    size.width = size.width<20?20:size.width;
+    size.height = size.height<20?20:size.height;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-   // cell.userInteractionEnabled = NO;
+    // cell.userInteractionEnabled = NO;
     
     UIImage *bgImage = nil;
-//    NSString * imgid = [[[[NSUserDefaults standardUserDefaults] objectForKey:@"pUserView"] objectForKey:@"petUserView"] objectForKey:@"img"];
+    //    NSString * imgid = [[[[NSUserDefaults standardUserDefaults] objectForKey:@"pUserView"] objectForKey:@"petUserView"] objectForKey:@"img"];
     //发送消息
     if ([sender isEqualToString:@"you"]) {
-//        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
-//        [cell.headImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgid]] placeholderImage:[UIImage imageNamed:imgid]];
+        //        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
+        //        [cell.headImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://123.178.27.74/pet/static/%@",imgid]] placeholderImage:[UIImage imageNamed:imgid]];
         cell.headImgV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",myHeadImg]];
         cell.headImgV.imageURL = theUrl;
@@ -450,17 +790,17 @@
         [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchBegin:) forControlEvents:UIControlEventTouchDown];
         [cell.bgImageView setTag:(indexPath.row+1)];
     }else {
-
+        
         [cell.headImgV setFrame:CGRectMake(10, padding*2-15, 40, 40)];
         [cell.chattoHeadBtn setFrame:cell.headImgV.frame];
         [cell.chattoHeadBtn addTarget:self action:@selector(chatToBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//        NSRange range = [sender rangeOfString:@"@"];
-//        sender = [sender substringToIndex:range.location];
-//        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
+        //        NSRange range = [sender rangeOfString:@"@"];
+        //        sender = [sender substringToIndex:range.location];
+        //        [cell.headImgV setImage:[UIImage imageNamed:@"moren_people.png"]];
         cell.headImgV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",self.chatUserImg]];
         cell.headImgV.imageURL = theUrl;
-            
+        
         if ([userName isEqualToString:@"爱宠小助手"])
             [cell.headImgV setImage:[UIImage imageNamed:@"sss.png"]];
         bgImage = [[UIImage imageNamed:@"bubble_01.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
@@ -472,9 +812,9 @@
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
-
+    
     if (indexPath.row>0) {
-            NSLog(@"mmmm:%d",[time intValue]-[[[messages objectAtIndex:(indexPath.row-1)] objectForKey:@"time"] intValue]);
+        NSLog(@"mmmm:%d",[time intValue]-[[[messages objectAtIndex:(indexPath.row-1)] objectForKey:@"time"] intValue]);
         if ([time intValue]-[[[messages objectAtIndex:(indexPath.row-1)] objectForKey:@"time"] intValue]<60) {
             cell.senderAndTimeLabel.hidden = YES;
         }
@@ -496,7 +836,7 @@
         CGRect rect = [self.view convertRect:cell.frame fromView:self.tView];
         NSLog(@"dsdsdsdsdsd%@",NSStringFromCGRect(rect));
     }
-
+    
     return cell;
     
 }
@@ -531,7 +871,7 @@
         NSLog(@"haha");
         indexPathTo = [NSIndexPath indexPathForRow:(tempBtn.tag-1) inSection:0];
         KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
-        tempStr = cell.messageContentView.text;
+        tempStr = [[messages objectAtIndex:indexPathTo.row] objectForKey:@"msg"];
         CGRect rect = [self.view convertRect:tempBtn.frame fromView:cell.contentView];
         NSLog(@"ssasasasasa%@",NSStringFromCGRect(rect));
         readyIndex = tempBtn.tag-1;
@@ -655,6 +995,7 @@
         if (alertView.tag==112) {
             [DataStoreManager deleteMsgsWithSender:self.chatWithUser Type:COMMONUSER];
             messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+            [self normalMsgToFinalMsg];
             [self.tView reloadData];
         }
         else
@@ -673,6 +1014,7 @@
         self.ifFriend = NO;
     }
     messages = [DataStoreManager qureyAllCommonMessages:self.chatWithUser];
+    [self normalMsgToFinalMsg];
     [DataStoreManager blankMsgUnreadCountForUser:self.chatWithUser];
     [self sendMsg:tempStr];
     [self.tView reloadData];
@@ -685,6 +1027,7 @@
     }
     [DataStoreManager deleteCommonMsg:[[messages objectAtIndex:readyIndex] objectForKey:@"msg"] Time:[[messages objectAtIndex:readyIndex] objectForKey:@"time"]];
      [messages removeObjectAtIndex:readyIndex];
+    [self.finalMessageArray removeObjectAtIndex:readyIndex];
     if (messages.count>0) {
         [DataStoreManager refreshThumbMsgsAfterDeleteCommonMsg:[messages lastObject] ForUser:self.chatWithUser ifDel:NO];
     }
@@ -710,8 +1053,10 @@
     NSMutableDictionary *dict  = [messages objectAtIndex:indexPath.row];
     NSString *msg = [dict objectForKey:@"msg"];
     
-    CGSize textSize = {260.0-10-30 , 10000.0};
-    CGSize size = [msg sizeWithFont:[UIFont boldSystemFontOfSize:13] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+//    CGSize textSize = {260.0-10-30 , 10000.0};
+//    CGSize size = [msg sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
+    NSAttributedString* attrStr = [self.finalMessageArray objectAtIndex:indexPath.row];
+    CGSize size = [attrStr sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
     
     size.height += padding*2;
     
@@ -786,6 +1131,7 @@
         [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
         [dictionary setObject:self.chatWithUser forKey:@"receiver"];
         [messages addObject:dictionary];
+        [self normalMsgToFinalMsg];
         [DataStoreManager storeMyMessage:dictionary];
         //重新刷新tableView
         [self.tView reloadData];
@@ -796,13 +1142,6 @@
     }
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-//    [self.messageTextField resignFirstResponder];
-//    if ([popLittleView superview]) {
-//        [popLittleView removeFromSuperview];
-//    }
-}
 #pragma mark KKMessageDelegate
 -(void)newMessageReceived:(NSDictionary *)messageCotent{
     
@@ -814,6 +1153,7 @@
      [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
     if ([sender isEqualToString:self.chatWithUser]) {
         [messages addObject:messageCotent];
+        [self normalMsgToFinalMsg];
         [self.tView reloadData];
         if (messages.count>0) {
             [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -915,6 +1255,91 @@
   //  NSLog(@"finalTime:%@",finalTime);
     return finalTime;
 }
+
+
+
+
+
+- (BOOL)Beginrecord
+{
+	NSError *error;
+    [recordSetting setObject:
+     [NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
+	// Recording settings
+    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:kAudioFormatLinearPCM], AVFormatIDKey,
+                              //[NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+                              [NSNumber numberWithFloat:8000.00], AVSampleRateKey,
+                              [NSNumber numberWithInt:1], AVNumberOfChannelsKey,
+                              //  [NSData dataWithBytes:&channelLayout length:sizeof(AudioChannelLayout)], AVChannelLayoutKey,
+                              [NSNumber numberWithInt:16], AVLinearPCMBitDepthKey,
+                              [NSNumber numberWithBool:NO], AVLinearPCMIsNonInterleaved,
+                              [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
+                              [NSNumber numberWithBool:NO], AVLinearPCMIsBigEndianKey,
+                              nil];
+	
+	// File URL
+    NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
+	NSURL *url = [NSURL fileURLWithPath:filePath1];
+	
+	// Create recorder
+	self.recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
+    [recorder recordForDuration:(NSTimeInterval)60];
+    [recorder prepareToRecord];
+	if (!self.recorder)
+	{
+		NSLog(@"Error: %@", [error localizedDescription]);
+		return NO;
+	}
+	// Initialize degate, metering, etc.
+	self.recorder.delegate = self;
+	self.recorder.meteringEnabled = YES;
+	
+	if (![self.recorder prepareToRecord])
+	{
+		NSLog(@"Error: Prepare to record failed");
+        
+		return NO;
+	}
+	
+	if (![self.recorder record])
+	{
+		NSLog(@"Error: Record failed");
+        
+		return NO;
+	}
+	return YES;
+}
+- (void) stopRecording
+{
+	// This causes the didFinishRecording delegate method to fire
+	[self.recorder stop];
+}
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
+{
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        #ifdef NotUseSimulator
+        NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
+        NSString *filePath2 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.amr"];
+        
+        NSURL *url = [NSURL fileURLWithPath:filePath1];
+        NSURL *url2 = [NSURL fileURLWithPath:filePath2];
+        
+        NSData * data = [NSData dataWithContentsOfURL:url];
+        NSLog(@"LENGTH:%d",[data length]);
+        NSData * data1 =EncodeWAVEToAMR(data,1,16);
+        [data1 writeToURL:url2 atomically:YES];
+        #endif
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [succeful show];
+        });
+    });
+
+
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
