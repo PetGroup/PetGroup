@@ -156,15 +156,16 @@
 }
 -(void)logoutFromServer
 {
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+  //  NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
+//    [body setObject:params forKey:@"params"];
     [body setObject:@"logout" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     

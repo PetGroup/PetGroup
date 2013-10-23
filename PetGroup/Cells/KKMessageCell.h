@@ -17,5 +17,7 @@
 @property(nonatomic, retain) EGOImageView * headImgV;
 @property(nonatomic, retain) UIButton * headBtn;
 @property(nonatomic ,retain) UIButton * chattoHeadBtn;
+@property(nonatomic ,retain) UIImageView * ifRead;
+@property(nonatomic ,retain) UIImageView * playAudioImageV;
 
 @end

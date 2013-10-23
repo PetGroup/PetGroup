@@ -15,6 +15,7 @@
 @synthesize bgImageView;
 @synthesize headImgV;
 @synthesize headBtn,chattoHeadBtn;
+@synthesize ifRead,playAudioImageV;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -61,6 +62,15 @@
         // [messageContentView sizeToFit];
         [self.contentView addSubview:messageContentView];
         NSLog(@"fffff%f",self.frame.size.height);
+        
+        self.ifRead = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        [ifRead setImage:[UIImage imageNamed:@"redpot.png"]];
+        [self.contentView addSubview:self.ifRead];
+        
+        self.playAudioImageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        self.playAudioImageV.animationDuration=1.0;
+        self.playAudioImageV.animationRepeatCount=0;
+        [self.contentView addSubview:self.playAudioImageV];
         
         
     }

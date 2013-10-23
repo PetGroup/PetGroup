@@ -19,7 +19,20 @@
     [httpClient setParameterEncoding:AFFormURLParameterEncoding];
     [httpClient postPath:@"" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (controller) {
-            success(operation,responseObject);
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                if ([dict objectForKey:@"entity"]) {
+                    failure(operation,[dict objectForKey:@"entity"]);
+                }
+                else
+                    failure(operation,nil);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (controller) {
@@ -169,13 +182,13 @@
     }
 }
 
-+(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
++(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  id responseObject))success
                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"amr"];
+        [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"audio/amr"];
     }];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -189,6 +202,19 @@
         }
     }];
     [httpClient enqueueHTTPRequestOperation:operation];
+}
+
++(void)downloadAudioFileWithURL:(NSString *)downloadURL FileName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  id responseObject))success
+                        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[downloadURL stringByAppendingString:audioName]]];
+    AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(operation,responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    [operation start];;
 }
 //图片压缩 两个方法组合
 +(UIImage*)compressImageDownToPhoneScreenSize:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY

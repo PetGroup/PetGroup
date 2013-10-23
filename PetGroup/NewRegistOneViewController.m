@@ -159,10 +159,11 @@
         [body setObject:@"iphone" forKey:@"imei"];
         [body setObject:params forKey:@"params"];
         [body setObject:@"isUsernameInuse" forKey:@"method"];
+        [body setObject:@"service.uri.pet_sso" forKey:@"service"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [hud show:YES];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding] isEqualToString:@"true"]) {
+            if ([responseObject boolValue]==true) {
                 UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"该手机号已被注册" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
                 [alert show];
                 [hud hide:YES];
@@ -193,6 +194,7 @@
 //    [body setObject:@"iphone" forKey:@"imei"];
 //    [body setObject:params forKey:@"params"];
 //    [body setObject:@"getVerificationCode" forKey:@"method"];
+//    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
 //    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
 //    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        [hud hide:YES];

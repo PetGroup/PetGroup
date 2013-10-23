@@ -20,7 +20,7 @@
 #import "selectContactPage.h"
 #import "OHASBasicHTMLParser.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -65,6 +65,10 @@
     UIView * emojiBGV;
     
     NSMutableDictionary *recordSetting;
+    AVAudioPlayer * audioPlayer;
+    NSString * rootRecordPath;
+    NSMutableArray * animationOne;
+    NSMutableArray * animationTwo;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;

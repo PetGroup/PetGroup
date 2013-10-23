@@ -524,7 +524,7 @@
     NSString * signature = [self toString:[myInfo objectForKey:@"signature"]];
     NSString * hobby = [self toString:[myInfo objectForKey:@"hobby"]];
     NSString * age = [self toString:[myInfo objectForKey:@"birthdate"]];
-    NSString * userId = [self toString:[myInfo objectForKey:@"userid"]];
+    NSString * userId = [self toString:[myInfo objectForKey:@"id"]];
     NSString * theCity = [self toString:[myInfo objectForKey:@"city"]];
  
     if (myUserName) {
@@ -569,7 +569,7 @@
                 
             }
         }];
-        [self storePetInfo:myInfo];
+      //  [self storePetInfo:myInfo];
       } 
 }
 

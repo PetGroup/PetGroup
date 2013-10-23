@@ -318,12 +318,12 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [params setObject:self.nickNameTF.text forKey:@"nickname"];
-    [params setObject:self.phoneNo forKey:@"username"];
+//    [params setObject:self.phoneNo forKey:@"username"];
     [params setObject:_passWordTF.text forKey:@"password"];
-    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
+//    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
     [params setObject:self.phoneNo forKey:@"phonenumber"];
-    [params setObject:@"" forKey:@"email"];
-    [params setObject:@"" forKey:@"deviceId"];
+//    [params setObject:@"" forKey:@"email"];
+//    [params setObject:@"" forKey:@"deviceId"];
     [params setObject:self.sexS forKey:@"gender"];
     [params setObject:self.ageL.text forKey:@"birthdate"];
     [params setObject:self.cityL.text forKey:@"city"];
@@ -337,15 +337,16 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"register2" forKey:@"method"];
+    [body setObject:@"register" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSRange range=[dede rangeOfString:@"token"];
-        if (range.location!=NSNotFound) {
-            [self saveSelfUserInFo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+//        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSRange range=[dede rangeOfString:@"token"];
+//        if (range.location!=NSNotFound) {
+            [self saveSelfUserInFo:responseObject];
             [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.phoneNo forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             
@@ -354,13 +355,13 @@
             DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
             newReg.dic = params;
             [self.navigationController pushViewController:newReg animated:YES];
-        }
-        else
-        {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [alert show];
-            [hud hide:YES];
-        }
+//        }
+//        else
+//        {
+//            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//            [alert show];
+//            [hud hide:YES];
+//        }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
@@ -378,7 +379,8 @@
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"setUserLocation" forKey:@"method"];
+    [postDict setObject:@"updateUserLocation" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];

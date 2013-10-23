@@ -767,6 +767,7 @@
         [body setObject:@"iphone" forKey:@"imei"];
         [body setObject:params forKey:@"params"];
         [body setObject:@"savePetinfo" forKey:@"method"];
+        [body setObject:@"service.uri.pet_user" forKey:@"service"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         
@@ -803,6 +804,7 @@
         [body setObject:@"iphone" forKey:@"imei"];
         [body setObject:params forKey:@"params"];
         [body setObject:@"updatePetinfo" forKey:@"method"];
+        [body setObject:@"service.uri.pet_user" forKey:@"service"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         

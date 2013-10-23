@@ -140,16 +140,17 @@
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"setUserLocation" forKey:@"method"];
+    [postDict setObject:@"updateUserLocation" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
-        NSLog(@"rrrrrrrr:%@",recDict);
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSDictionary * recDict = [receiveStr JSONValue];
+        NSLog(@"rrrrrrrr:%@",responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];

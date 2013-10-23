@@ -22,7 +22,7 @@
     #import "MakeDict.h"
 #endif
 
-#define BaseClientUrl @"http://123.178.27.74/pet/client/request"
+#define BaseClientUrl @"http://123.178.27.74/pet-hub/request"
 //#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
 #define BaseCoreUrl @"http://123.178.27.74/pet/core/request"
 //#define BaseImageUrl @"http://123.178.27.74/pet/static/"
