@@ -165,24 +165,25 @@
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"login" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSRange range=[dede rangeOfString:@"authenticationToken"];
-        if (range.location!=NSNotFound) {
-            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSRange range=[dede rangeOfString:@"authenticationToken"];
+//        if (range.location!=NSNotFound) {
+        NSDictionary* dic = responseObject;
             [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.PhoneNoTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
             [self dismissModalViewControllerAnimated:YES];
-        }
-        else {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [alert show];
-        }
+//        }
+//        else {
+//            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//            [alert show];
+//        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
@@ -194,7 +195,8 @@
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     NSDictionary * locationDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%f",userLongitude],@"longitude",[NSString stringWithFormat:@"%f",userLatitude],@"latitude", nil];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"setUserLocation" forKey:@"method"];
+    [postDict setObject:@"updateUserLocation" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];

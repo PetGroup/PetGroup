@@ -234,6 +234,15 @@
 		86F690E117E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690E017E06227002C5DBB /* PersonDynamicDelegateAndDataSouce.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9718F46117E8668300BEC495 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9718F46017E8668300BEC495 /* dyn.png */; };
+		971CF337180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */; };
+		971CF338180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */; };
+		971CF339180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF331180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png */; };
+		971CF33A180FB1C600650409 /* ReceiverVoiceNodePlaying003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF332180FB1C600650409 /* ReceiverVoiceNodePlaying003@2x.png */; };
+		971CF33B180FB1C600650409 /* SenderVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF333180FB1C600650409 /* SenderVoiceNodePlaying@2x.png */; };
+		971CF33C180FB1C600650409 /* SenderVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF334180FB1C600650409 /* SenderVoiceNodePlaying001@2x.png */; };
+		971CF33D180FB1C600650409 /* SenderVoiceNodePlaying002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF335180FB1C600650409 /* SenderVoiceNodePlaying002@2x.png */; };
+		971CF33E180FB1C600650409 /* SenderVoiceNodePlaying003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF336180FB1C600650409 /* SenderVoiceNodePlaying003@2x.png */; };
+		971CF340180FB1CD00650409 /* Fav_No_Pic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */; };
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937C17D9C8630001E863 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937B17D9C8630001E863 /* CoreText.framework */; };
 		9727937E17D9C86F0001E863 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937D17D9C86F0001E863 /* libicucore.dylib */; };
@@ -889,6 +898,15 @@
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9718F46017E8668300BEC495 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
+		971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
+		971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying001@2x.png"; sourceTree = "<group>"; };
+		971CF331180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying002@2x.png"; sourceTree = "<group>"; };
+		971CF332180FB1C600650409 /* ReceiverVoiceNodePlaying003@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying003@2x.png"; sourceTree = "<group>"; };
+		971CF333180FB1C600650409 /* SenderVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SenderVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
+		971CF334180FB1C600650409 /* SenderVoiceNodePlaying001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SenderVoiceNodePlaying001@2x.png"; sourceTree = "<group>"; };
+		971CF335180FB1C600650409 /* SenderVoiceNodePlaying002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SenderVoiceNodePlaying002@2x.png"; sourceTree = "<group>"; };
+		971CF336180FB1C600650409 /* SenderVoiceNodePlaying003@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SenderVoiceNodePlaying003@2x.png"; sourceTree = "<group>"; };
+		971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Fav_No_Pic@2x.png"; sourceTree = "<group>"; };
 		9727936917D9C8380001E863 /* HeightCalculate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightCalculate.h; sourceTree = "<group>"; };
 		9727936A17D9C8380001E863 /* HeightCalculate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightCalculate.m; sourceTree = "<group>"; };
 		9727937B17D9C8630001E863 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -1526,6 +1544,8 @@
 		97E25C3817C37177007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		97E25C3E17C3729A007E187D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		97E264BE180F849500A9A883 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		97E264BF180F849500A9A883 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
 		97E3AB2B17E7E67000674321 /* gengduoxinxi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gengduoxinxi.png; sourceTree = "<group>"; };
 		97E3AB2D17E7F8E400674321 /* shanchu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shanchu.png; sourceTree = "<group>"; };
 		97E3AB2F17E81FA000674321 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
@@ -1566,8 +1586,6 @@
 		97F567D0180E868100A72604 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
 		97F567D2180E868100A72604 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
 		97F567D3180E868100A72604 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
-		97F567D5180E868100A72604 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		97F567D6180E868100A72604 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
 		97F764B217F817750063A72E /* newfriend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newfriend.png; sourceTree = "<group>"; };
 		97F8B4811808FF740082BC2A /* audioBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audioBtn.png; sourceTree = "<group>"; };
 		97F8B483180902110082BC2A /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
@@ -2877,6 +2895,15 @@
 		9736BCD917C49146007DFE36 /* chatV */ = {
 			isa = PBXGroup;
 			children = (
+				971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */,
+				971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */,
+				971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */,
+				971CF331180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png */,
+				971CF332180FB1C600650409 /* ReceiverVoiceNodePlaying003@2x.png */,
+				971CF333180FB1C600650409 /* SenderVoiceNodePlaying@2x.png */,
+				971CF334180FB1C600650409 /* SenderVoiceNodePlaying001@2x.png */,
+				971CF335180FB1C600650409 /* SenderVoiceNodePlaying002@2x.png */,
+				971CF336180FB1C600650409 /* SenderVoiceNodePlaying003@2x.png */,
 				97F8B52C180939CD0082BC2A /* btn_03.png */,
 				97F8B52D180939CF0082BC2A /* qqqqq_03.png */,
 				97F8B52E180939D00082BC2A /* qqqqq_06.png */,
@@ -3549,8 +3576,8 @@
 		97F567D4180E868100A72604 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				97F567D5180E868100A72604 /* libopencore-amrnb.a */,
-				97F567D6180E868100A72604 /* libopencore-amrwb.a */,
+				97E264BE180F849500A9A883 /* libopencore-amrnb.a */,
+				97E264BF180F849500A9A883 /* libopencore-amrwb.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";

@@ -112,7 +112,8 @@
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
         if (![self.appDel.xmppHelper ifXMPPConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
-            [self logInToServer];
+           // [self logInToServer];
+            [self getMyUserInfoFromNet];
         }
         
 //        [self tempMakeSomeData];
@@ -489,7 +490,45 @@
                         inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
+-(void)getMyUserInfoFromNet
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:@"getUserinfo" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self saveMyInfo:responseObject];
+        [self getMyPetInfoFromNet];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 
+}
+-(void)getMyPetInfoFromNet
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:@"getPetinfo" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray * petsArray = responseObject;
+        for (NSDictionary * dict in petsArray) {
+            [DataStoreManager storeOnePetInfo:dict];
+        }
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
 
 -(void)logInToServer
 {

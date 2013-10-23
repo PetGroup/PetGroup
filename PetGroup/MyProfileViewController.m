@@ -700,14 +700,17 @@
     [params setObject:[self.discribeArray objectAtIndex:2] forKey:@"birthdate"];
     [params setObject:[self.discribeArray objectAtIndex:3] forKey:@"city"];
     [params setObject:self.hostInfo.headImgStr forKey:@"img"];
+    [params setObject:[DataStoreManager getMyUserID] forKey:@"id"];
     [params setObject:[self.discribeArray objectAtIndex:4] forKey:@"signature"];
     [params setObject:[self.discribeArray objectAtIndex:5] forKey:@"hobby"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"saveUserinfo2" forKey:@"method"];
+    [body setObject:@"updateUser" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
-        [DataStoreManager saveUserInfo:recDict];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSDictionary * recDict = [receiveStr JSONValue];
+        [params setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+        [DataStoreManager saveUserInfo:params];
         [hud hide:YES];
         [self.navigationController popViewControllerAnimated:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

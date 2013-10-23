@@ -125,10 +125,11 @@
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"resetPassword" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
+        if ([responseObject isEqualToString:@"OK"]) {
            [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES]; 
         }else{
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"密码修改失败，请重试" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];

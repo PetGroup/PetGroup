@@ -186,12 +186,13 @@
 //        [body setObject:@"iphone" forKey:@"imei"];
 //        [body setObject:params forKey:@"params"];
 //        [body setObject:@"verifyCode" forKey:@"method"];
+//        [body setObject:@"service.uri.pet_sso" forKey:@"service"];
 //        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
 //        [hud show:YES];
 //        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //            [hud hide:YES];
-//            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-//            if ([[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]isEqualToString:@"true"]) {
+////            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+//            if ([responseObject boolValue]==true) {
                 NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
                 newReg.phoneNo = self.phoneNo;
                 [self.navigationController pushViewController:newReg animated:YES];
