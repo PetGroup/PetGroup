@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CircleEntity.h"
 
 @interface OnceCircleViewController : UIViewController
-
+@property (nonatomic,assign)CircleEntity*circleEntity;
 @end

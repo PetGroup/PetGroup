@@ -7,10 +7,71 @@
 //
 
 #import "NewReplyArticleDataSource.h"
-
+#import "Article.h"
 @implementation NewReplyArticleDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
+{//body={"method":"getNewReplysByReplyct","token":"","params":{"pageNo":"1","pageSize":"3"}}
+    self.pageNo = 1;
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.forumPid forKey:@"forumPid"];
+    [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getNewReplysByReplyct" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSArray* array = [dic objectForKey:@"entity"];
+        [self.dataSourceArray removeAllObjects];
+        if ([dic objectForKey:@"success"] && array.count > 0) {
+            for (NSDictionary* dic in array) {
+                Article* a = [[Article alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:a];
+            }
+        }
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
+}
+-(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
-   success(); 
+    self.pageNo ++;
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.forumPid forKey:@"forumPid"];
+    [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getNewReplysByReplyct" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSArray* array = [dic objectForKey:@"entity"];
+        if ([dic objectForKey:@"success"] && array.count > 0) {
+            for (NSDictionary* dic in array) {
+                Article* a = [[Article alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:a];
+            }
+        }
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
 }
 @end

@@ -69,10 +69,15 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    _imageV.imageURL = [NSURL URLWithString:@""];
-    _todayTopicL.text = @"今日话题:33";
-    _topicL.text = @"话题:24242";
-    _replyL.text = @"回复:122";
-    _nameL.text = @"北京同城圈";
+    _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.entity.imageID]];
+    _todayTopicL.text =[NSString stringWithFormat:@"今日话题:%@",self.entity.todayTotal];
+    _topicL.text = [NSString stringWithFormat:@"话题:%@",self.entity.totalCount];
+    _replyL.text = [NSString stringWithFormat:@"回复:%@",self.entity.totalReply];
+    _nameL.text = [NSString stringWithFormat:@"%@",self.entity.name];
+    if (!self.entity.atte) {
+        _joinI.hidden = NO;
+    }else{
+        _joinI.hidden = YES;
+    }
 }
 @end

@@ -22,6 +22,7 @@
         self.unfoldB = [UIButton buttonWithType:UIButtonTypeCustom];
         _unfoldB.frame = CGRectMake(267, 0, 48, 19);
         [_unfoldB setBackgroundImage:[UIImage imageNamed:@"zhankai"] forState:UIControlStateNormal];
+        [_unfoldB setHighlighted:NO];
         [_unfoldB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_unfoldB];
     }
@@ -29,6 +30,7 @@
 }
 -(void)selector
 {
+    [_unfoldB setHighlighted:NO];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(footerView: didSelectUnfoldBAtIndexPath:)]) {
         [self.delegate footerView:self didSelectUnfoldBAtIndexPath:self.indexPath];
     }

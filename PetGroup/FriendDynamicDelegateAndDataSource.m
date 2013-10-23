@@ -74,7 +74,7 @@
     if (cell == nil) {
         cell = [[DynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    cell.viewC = self.viewC;
+//    cell.viewC = self.viewC;
     cell.dynamic = self.dataSourceArray[indexPath.row];
     return cell;
 }

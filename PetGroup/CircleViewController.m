@@ -24,6 +24,7 @@
 #import "FriendCircleViewController.h"
 #import "hotPintsDataSource.h"
 #import "OnceCircleViewController.h"
+#import "CircleClassify.h"
 
 @interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate>
 {
@@ -111,7 +112,7 @@
     
     UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 62.5)];
     UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchB.frame = CGRectMake(0, 0, 320, 36.5);
+    searchB.frame = CGRectMake(0, 0, 320, 45);
     [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
     [searchB addTarget:self action:@selector(showSearchView) forControlEvents:UIControlEventTouchUpInside];
     [headV addSubview:searchB];
@@ -217,6 +218,10 @@
 }
 
 #pragma mark - button action
+-(void)next
+{
+    
+}
 -(void)showSearchView
 {
     SearchViewController* searchVC = [[SearchViewController alloc]init];
@@ -238,11 +243,9 @@
         self.goodArticleDS = [[GoodArticleDataSource alloc]init];
         _hotPintsV.dataSource = _goodArticleDS;
         hotPintsDS = _goodArticleDS;
+        _goodArticleDS.myController = self;
+        [self reloadHotPintsData];
     }
-}
--(void)next
-{
-    
 }
 -(void)changeDataSource:(UIButton*)button
 {
@@ -254,9 +257,15 @@
                 [newPublishB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
                 if (_goodArticleDS == nil) {
                     self.goodArticleDS = [[GoodArticleDataSource alloc]init];
+                    _hotPintsV.dataSource = _goodArticleDS;
+                    hotPintsDS = _goodArticleDS;
+                    _goodArticleDS.myController = self;
+                    [self reloadHotPintsData];
+                }else{
+                    _hotPintsV.dataSource = _goodArticleDS;
+                    hotPintsDS = _goodArticleDS;
+                    [_hotPintsV reloadData];
                 }
-                _hotPintsV.dataSource = _goodArticleDS;
-                hotPintsDS = _goodArticleDS;
             }
             
         }break;
@@ -267,9 +276,15 @@
                 [newPublishB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
                 if (_replyArticleDS == nil) {
                     self.replyArticleDS = [[NewReplyArticleDataSource alloc]init];
+                    _hotPintsV.dataSource = _replyArticleDS;
+                    hotPintsDS = _replyArticleDS;
+                    _replyArticleDS.myController = self;
+                    [self reloadHotPintsData];
+                }else{
+                    _hotPintsV.dataSource = _replyArticleDS;
+                    hotPintsDS = _replyArticleDS;
+                    [_hotPintsV reloadData];
                 }
-                _hotPintsV.dataSource = _replyArticleDS;
-                hotPintsDS = _replyArticleDS;
             }
             
         }break;
@@ -280,9 +295,16 @@
                 [newPublishB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 if (_publishArticleDS == nil) {
                     self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
+                    _hotPintsV.dataSource = _publishArticleDS;
+                    hotPintsDS = _publishArticleDS;
+                    _publishArticleDS.myController = self;
+                    [self reloadHotPintsData];
+                }else{
+                    _hotPintsV.dataSource = _publishArticleDS;
+                    hotPintsDS = _publishArticleDS;
+                    [_hotPintsV reloadData];
                 }
-                _hotPintsV.dataSource = _publishArticleDS;
-                hotPintsDS = _publishArticleDS;
+                
             }
             
         }break;
@@ -327,6 +349,7 @@
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else{
         OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
+        onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section-1]).circleArray[indexPath.row];
         [self.navigationController pushViewController:onceCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
@@ -334,7 +357,11 @@
 #pragma mark - footer view delegate
 -(void)footerView:(FooterView*)footerV didSelectUnfoldBAtIndexPath:(NSIndexPath *)indexPath
 {
-    [footerV.unfoldB setBackgroundImage:[UIImage imageNamed:@"shouqi"] forState:UIControlStateNormal];
+    
+    ((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section-1]).zhankai = !((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section-1]).zhankai;
+    [self.attentionV reloadData];
+    
+    
 }
 #pragma mark - footer view delegate
 -(void)didSelectSearchBAtFriendHeaderView:(FriendHeaderView*)friendHeaderV

@@ -8,6 +8,9 @@
 
 #import "AttentionDataSource.h"
 #import "Dynamic.h"
+#import "CircleClassify.h"
+#import "TempData.h"
+#import "CircleClassify.h"
 @interface AttentionDataSource()
 
 @end
@@ -23,6 +26,7 @@
 }
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
+    
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
@@ -39,6 +43,7 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        [self.dynamicArray removeAllObjects];
         if (array.count>0) {
             for (NSDictionary*a in array) {
                 Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
@@ -46,6 +51,25 @@
             }
         }
         success();       
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
+    [body setObject:@"getAllForumAsTree" forKey:@"method"];
+    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+    [param setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+    [body setObject:param forKey:@"params"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSArray* array = [dic objectForKey:@"entity"];
+        [self.dataSourceArray removeAllObjects];
+        if ([[dic objectForKey:@"success"] boolValue]&& array.count > 0) {
+            for (NSDictionary* dic in array) {
+                CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:a];
+            }
+        }
+        success();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
     }];
@@ -62,7 +86,7 @@
         }else{
             static NSString *headIdentifier = @"header";
              HeaderView* header= [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headIdentifier forIndexPath:indexPath];
-            header.titleL.text = @"我关注的";
+            header.titleL.text =((CircleClassify*)self.dataSourceArray[indexPath.section-1]).name;
             return header;
         }
         
@@ -70,6 +94,11 @@
     if ([kind isEqualToString:UICollectionElementKindSectionFooter]&&indexPath.section!=0) {
         static NSString *footIdentifier = @"footer";
         FooterView* footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footIdentifier forIndexPath:indexPath];
+        if (((CircleClassify*)self.dataSourceArray[indexPath.section-1]).zhankai) {
+            [footer.unfoldB setBackgroundImage:[UIImage imageNamed:@"shouqi"] forState:UIControlStateNormal];
+        }else{
+            [footer.unfoldB setBackgroundImage:[UIImage imageNamed:@"zhankai"] forState:UIControlStateNormal];
+        }
         footer.delegate = self.myController;
         footer.indexPath = indexPath;
         return footer;
@@ -84,15 +113,26 @@
         }else{
             return 0;
         }
-    }else
-        return 2;
+    }else{
+        CircleClassify* classify = self.dataSourceArray[section-1];
+        if (classify.zhankai) {
+            return classify.circleArray.count;
+        }else{
+            if (classify.circleArray.count>2) {
+                return 2;
+            }else{
+                return classify.circleArray.count;
+            }
+        }
+    }
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section!=0) {
         static NSString *cellIdentifier = @"cell";
         CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.highlighted = YES;
+        CircleClassify* classify = self.dataSourceArray[indexPath.section-1];
+        cell.entity = classify.circleArray[indexPath.row];
         [cell layoutSubviews];
         return cell;
     }else{
@@ -108,7 +148,7 @@
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 5;
+    return self.dataSourceArray.count+1;
 }
 
 @end

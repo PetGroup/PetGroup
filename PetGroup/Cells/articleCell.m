@@ -51,16 +51,16 @@
         readI.image = [UIImage imageNamed:@"guanzhu"];
         [self.contentView addSubview:readI];
         
-        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(186, 70, 70, 12)];
+        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 70, 70, 12)];
         _readL.font = [UIFont systemFontOfSize:14];
         _readL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_readL];
         
-        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 70, 16, 10)];
+        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 71, 16, 10)];
         replyI.image = [UIImage imageNamed:@"huifu"];
         [self.contentView addSubview:replyI];
         
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(272, 70, 50, 12)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 70, 50, 12)];
         _replyL.font = [UIFont systemFontOfSize:14];
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
@@ -87,10 +87,22 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    _nameL.text = @"阿铛";
-    _titleL.text = @"超人会飞";
-    _timeL.text = @"1分钟前发表";
-    _readL.text = @"1351341";
-    _replyL.text = @"124";
+    _headPhote.imageURL = [NSURL URLWithString: [NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
+    _nameL.text = self.article.userName;
+    _titleL.text = self.article.name;
+    _timeL.text = self.article.ct;
+    _readL.text = self.article.clientCount;
+    _replyL.text = self.article.replyCount;
+    if (_article.isTop) {
+        _topI.hidden = NO;
+    }else{
+        _topI.hidden = YES;
+    }
+    if (_article.isEute) {
+        _goodI.hidden = NO;
+    }else{
+        _goodI.hidden = YES;
+    }
+    
 }
 @end

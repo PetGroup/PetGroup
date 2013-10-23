@@ -8,7 +8,12 @@
 
 #import "FriendCircleViewController.h"
 #import "TempData.h"
+#import "EditDynamicViewController.h"
+#import "EGOImageView.h"
+#import "EGOImageButton.h"
+
 @interface FriendCircleViewController ()<UITableViewDelegate>
+@property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
 @end
 
@@ -56,6 +61,47 @@
     _tableV.delegate = self;
     _tableV.dataSource = self.friendCircleDS;
     [self.view addSubview:_tableV];
+    
+    self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 240.5)];
+    _headV.backgroundColor = [UIColor whiteColor];
+    self.tableV.tableHeaderView = _headV;
+    
+    EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 220.5)];
+    imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
+    imageV.userInteractionEnabled = YES;
+    imageV.imageURL = [NSURL URLWithString:@""];
+    [_headV addSubview:imageV];
+    
+    NSDictionary* dic = [DataStoreManager queryMyInfo];
+    
+    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 190, 60, 20)];
+    nameL.font = [UIFont systemFontOfSize:16];
+    nameL.backgroundColor = [UIColor clearColor];
+    nameL.textColor = [UIColor whiteColor];
+    [imageV addSubview:nameL];
+    
+    UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 160, 80, 80)];
+    photoIV.image = [UIImage imageNamed:@"touxiangbeijing"];
+    [imageV addSubview:photoIV];
+    photoIV.userInteractionEnabled = YES;
+    
+    EGOImageButton*headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    headIV.frame = CGRectMake(5, 5, 70, 70);
+    [photoIV addSubview:headIV];
+    [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
+    
+    nameL.text = [dic objectForKey:@"nickname"];
+    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    nameL.frame = CGRectMake(220-size.width, 190, size.width, 20);
+    NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
+    
+    UILabel*signatureL  = [[UILabel alloc]initWithFrame:CGRectMake(0, 220.5, 320, 20)];
+    signatureL.font = [UIFont systemFontOfSize:16];
+    signatureL.backgroundColor = [UIColor clearColor];
+    signatureL.textColor = [UIColor blackColor];
+    signatureL.text = [dic objectForKey:@"signature"];
+    [_headV addSubview:signatureL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,6 +110,10 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)headAct
+{
+    
+}
 -(void)backButton
 {
     [[TempData sharedInstance] Panned:NO];
@@ -71,7 +121,8 @@
 }
 -(void)updateSelfMassage
 {
-    
+    EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
+    [self.navigationController pushViewController:editVC animated:YES];
 }
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

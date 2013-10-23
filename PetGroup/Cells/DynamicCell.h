@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
+@class DynamicCell;
+@protocol DynamicCellDelegate<NSObject>
+-(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray;
+@end
 @interface DynamicCell : UITableViewCell
 
-@property (nonatomic,weak)UIButton* moveB;
 @property (nonatomic,weak)Dynamic*dynamic;
-@property (nonatomic,weak)UIViewController* viewC;
+@property (nonatomic,weak)id<DynamicCellDelegate> delegate;
+@property (nonatomic,weak)NSIndexPath* indexPath;
 
 @end

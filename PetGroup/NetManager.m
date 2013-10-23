@@ -97,7 +97,7 @@
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:960];
+    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:320 targetSizeY:960];
     NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
@@ -239,6 +239,7 @@
 	
     return newimg;
 }
+//图片压缩 设置最宽，按比例压缩
 +(UIImage*)compressImage:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY
 {
 	
@@ -248,27 +249,35 @@
 	float actualWidth = bigImage.size.width;
 	
 	float imgRatio = actualWidth / actualHeight;
-	if(actualWidth > sizeX || actualHeight > sizeY)
-	{
-		float maxRatio = sizeX / sizeY;
-		
-		if(imgRatio < maxRatio){
-            imgRatio = sizeY / actualHeight;
-			actualWidth = imgRatio * actualWidth;
-			actualHeight = sizeY;
-		} else {
-            imgRatio = sizeX / actualWidth;
-			actualHeight = imgRatio * actualHeight;
-			actualWidth = sizeX;
-            
-		}
-        
-	}
+    
+    if (actualWidth > sizeX) {
+        imgRatio = sizeX / actualWidth;
+        actualHeight = imgRatio * actualHeight;
+        actualWidth = sizeX;
+    }
+    
+    //	if(actualWidth > sizeX || actualHeight > sizeY)
+    //	{
+    //		float maxRatio = sizeX / sizeY;
+    //
+    //		if(imgRatio < maxRatio){
+    //            imgRatio = sizeY / actualHeight;
+    //			actualWidth = imgRatio * actualWidth;
+    //			actualHeight = sizeY;
+    //		} else {
+    //            imgRatio = sizeX / actualWidth;
+    //			actualHeight = imgRatio * actualHeight;
+    //			actualWidth = sizeX;
+    //
+    //		}
+    //
+    //	}
 	CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
 	UIGraphicsBeginImageContext(rect.size);
 	[bigImage drawInRect:rect];  // scales image to rect
 	theImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
+    NSLog(@"%f==%f",theImage.size.width,theImage.size.height);
 	return theImage;
 }
 @end

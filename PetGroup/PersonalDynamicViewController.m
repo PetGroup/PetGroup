@@ -286,7 +286,7 @@
 -(void)updateSelfMassage
 {
     EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
-    editVC.viewC = self;
+//    editVC.viewC = self;
     [self.navigationController pushViewController:editVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }

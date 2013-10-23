@@ -9,5 +9,9 @@
 #import "DataSource.h"
 
 @interface hotPintsDataSource : DataSource<UITableViewDataSource>
+@property (nonatomic,assign)int pageNo;
+@property (nonatomic,retain)NSString* forumPid;
+@property (nonatomic,assign)UIViewController* myController;
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
+-(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

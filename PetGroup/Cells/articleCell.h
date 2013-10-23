@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Article.h"
 @interface articleCell : UITableViewCell
-
+@property (nonatomic,assign)Article* article;
 @end

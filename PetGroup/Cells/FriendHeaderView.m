@@ -16,7 +16,7 @@
     if (self) {
         // Initialization
         UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
-        searchB.frame = CGRectMake(0, 0, 320, 36.5);
+        searchB.frame = CGRectMake(0, 0, 320, 45);
         [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
         [searchB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:searchB];

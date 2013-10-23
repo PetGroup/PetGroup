@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CircleEntity.h"
 
 @interface CircleCell : UICollectionViewCell
-
+@property (nonatomic,weak)CircleEntity* entity;
 @end

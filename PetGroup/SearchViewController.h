@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SearchViewController : UIViewController<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
-
+@property (nonatomic,retain)NSString* forumPid;
 @end

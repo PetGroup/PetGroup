@@ -288,7 +288,7 @@
 -(void)updateSelfMassage
 {
     EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
-    editVC.viewC = self;
+//    editVC.viewC = self;
     [self.navigationController pushViewController:editVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
 }
@@ -680,11 +680,11 @@
     if (cell != _mycell) {
         [self removeActionImageView];
         self.mycell = nil;
-        _actionIV.frame = CGRectMake(250, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
+//        _actionIV.frame = CGRectMake(250, cellRect.origin.y+cell.moveB.frame.origin.y-5, 0, 44);
         [self.view addSubview:_actionIV];
         self.mycell = cell;
         [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 128, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
+//            _actionIV.frame = CGRectMake( 128, cellRect.origin.y+cell.moveB.frame.origin.y-5, 127, 44);
             assessB.frame = CGRectMake(6, 6, 53, 31);
             reprintB.frame = CGRectMake(65, 6, 53, 31);
         }];

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-@class DynamicViewController;
-@interface EditDynamicViewController : UIViewController<UITextViewDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
-@property(nonatomic,weak)DynamicViewController* viewC;
+@interface EditDynamicViewController : UIViewController
+
 @end

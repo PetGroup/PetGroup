@@ -1,16 +1,16 @@
 //
-//  GoodArticleDataSource.m
+//  AllArticleDataSource.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-10-14.
+//  Created by 阿铛 on 13-10-18.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "GoodArticleDataSource.h"
+#import "AllArticleDataSource.h"
 #import "Article.h"
-@implementation GoodArticleDataSource
+@implementation AllArticleDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
-{// body={"method":"getEuteNoteList","token":"","params":{"forumPid":"92DE9E82807142A293107DFFC4368177","pageNo":"1","pageSize":"3"}}
+{// body={"method":"newNoteByFid","token":"","params":{"forumPid":"92DE9E82807142A293107DFFC4368177","pageNo":"1","pageSize":"10"}}
     self.pageNo = 1;
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -20,7 +20,7 @@
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getEuteNoteList" forKey:@"method"];
+    [body setObject:@"newNoteByFid" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
@@ -53,7 +53,7 @@
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getEuteNoteList" forKey:@"method"];
+    [body setObject:@"newNoteByFid" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
