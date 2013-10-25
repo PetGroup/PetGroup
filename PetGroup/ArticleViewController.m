@@ -7,9 +7,11 @@
 //
 
 #import "ArticleViewController.h"
+#import "PullingRefreshTableView.h"
 #import "TempData.h"
-@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate>
-@property (nonatomic,retain)UITableView*tableV;
+@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
+@property (nonatomic,retain)NSMutableArray* dataSourceArray;
+@property (nonatomic,retain)PullingRefreshTableView*tableV;
 @end
 
 @implementation ArticleViewController
@@ -41,13 +43,14 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"帖子详情"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    _tableV.pullingDelegate = self;
     _tableV.delegate = self;
-//    _tableV.dataSource = self;
+    _tableV.dataSource = self;
     [self.view addSubview:_tableV];
     
     UIView* bottomV = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
@@ -55,7 +58,7 @@
     [self.view addSubview:bottomV];
     
     UIButton* showB = [UIButton buttonWithType:UIButtonTypeCustom];
-    [showB setTitle:@"分享" forState:UIControlStateNormal];
+    [showB setTitle:@"举报" forState:UIControlStateNormal];
     showB.frame = CGRectMake(10, 4.5, 60, 40);
     [bottomV addSubview:showB];
     
@@ -64,55 +67,26 @@
     replyB.frame = CGRectMake(80, 4.5, 240, 40);
     [bottomV addSubview:replyB];
     
-    //body={"method":"getAllReplyNoteByNoteid","token":"","params":{"noteId":"816B9BA15E8B48E5ADF282BCB7FD640E","pageNo":"1","pageSize":"3"}}
-//    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-//    long long a = (long long)(cT*1000);
-//    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-//    [params setObject:@"1" forKey:@"pageNo"];
-//    [params setObject:self.noteId forKey:@"noteId"];
-//    [params setObject:@"20" forKey:@"pageSize"];
-//    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-//    [body setObject:params forKey:@"params"];
-//    [body setObject:@"getAllReplyNoteByNoteid" forKey:@"method"];
-//    [body setObject:@"1" forKey:@"channel"];
-//    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-//    [body setObject:@"iphone" forKey:@"imei"];
-//    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-//    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-//    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-//       
-//        //未完待续
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
-   // body={"method":"detailNote","token":"","params":{"noteid":"C5564A82DBC749C2A78DE5B0215B41DA"}}
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.noteId forKey:@"noteid"];
-    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"detailNote" forKey:@"method"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dic);
-        UILabel* a = [[UILabel alloc]initWithFrame:CGRectMake(0, 100, 320, 20)];
-        [self.view addSubview:a];
-        a.text = [[dic objectForKey:@"entity"][0] objectForKey:@"content"];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:18.0] constrainedToSize:CGSizeMake(300, 90) lineBreakMode:NSLineBreakByWordWrapping];
+    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 300, size.height)];
+    titleL.numberOfLines = 0;
+    titleL.text = self.article.name;
+    titleL.font = [UIFont systemFontOfSize:18.0];
+    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, size.height+50)];
+    _tableV.tableHeaderView = headV;
+    [headV addSubview:titleL];
     
+    UILabel*readL = [[UILabel alloc]initWithFrame:CGRectMake(170, size.height+20, 70, 12)];
+    readL.text = [NSString stringWithFormat:@"浏览:%@",self.article.clientCount];
+    readL.font = [UIFont systemFontOfSize:14];
+    readL.textColor = [UIColor grayColor];
+    [headV addSubview:readL];
+
+    UILabel*replyL = [[UILabel alloc]initWithFrame:CGRectMake(250, size.height+20, 70, 12)];
+    replyL.text = [NSString stringWithFormat:@"回复:%@",self.article.replyCount];
+    replyL.font = [UIFont systemFontOfSize:14];
+    replyL.textColor = [UIColor grayColor];
+    [headV addSubview:replyL];
 }
 
 - (void)didReceiveMemoryWarning
@@ -125,5 +99,129 @@
 {
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark - table view delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+//    articleVC.article = hotPintsDS.dataSourceArray[indexPath.row];
+//    [self.navigationController pushViewController:articleVC animated:YES];
+}
+#pragma mark - table view data source
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 1;
+    }else
+        return self.dataSourceArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        static NSString *cellIdentifier = @"OwnerCell";
+        UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        return cell;
+    }
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
+    return cell;
+}
+#pragma mark - ScrollDelegate
+
+//刷新必须调用ScrollViewDelegate方法（从写的方法）
+
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView{
+    [self.tableV tableViewDidScroll:scrollView];
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate{
+    
+    [self.tableV tableViewDidEndDragging:scrollView];
+}
+
+
+
+
+#pragma mark -
+#pragma mark - PullingRefreshTableViewDelegate
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
+{
+    [self reloadData];
+}
+
+- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
+{
+    [self loadMoreData];
+}
+
+- (NSDate *)pullingTableViewRefreshingFinishedDate
+{
+    NSDate* date = [NSDate date];
+    return date;
+}
+#pragma mark - load data
+-(void)reloadData
+{
+    //body={"method":"getAllReplyNoteByNoteid","token":"","params":{"noteId":"816B9BA15E8B48E5ADF282BCB7FD640E","pageNo":"1","pageSize":"3"}}
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:@"1" forKey:@"pageNo"];
+    [params setObject:self.article.articleID forKey:@"noteId"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllReplyNoteByNoteid" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        
+        //未完待续
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+-(void)loadMoreData
+{
+    //body={"method":"getAllReplyNoteByNoteid","token":"","params":{"noteId":"816B9BA15E8B48E5ADF282BCB7FD640E","pageNo":"1","pageSize":"3"}}
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:@"1" forKey:@"pageNo"];
+    [params setObject:self.article.articleID forKey:@"noteId"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllReplyNoteByNoteid" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        
+        //未完待续
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 @end

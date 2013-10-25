@@ -22,4 +22,5 @@
 @property (nonatomic,weak)id<DynamicCellDelegate> delegate;
 @property (nonatomic,weak)NSIndexPath* indexPath;
 
++(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 @end

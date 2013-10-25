@@ -25,7 +25,7 @@
         senderAndTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 300, 20)];
         //居中显示
         senderAndTimeLabel.backgroundColor = [UIColor clearColor];
-        senderAndTimeLabel.textAlignment = UITextAlignmentCenter;
+        senderAndTimeLabel.textAlignment = NSTextAlignmentCenter;
         senderAndTimeLabel.font = [UIFont systemFontOfSize:11.0];
         //文字颜色
         senderAndTimeLabel.textColor = [UIColor lightGrayColor];

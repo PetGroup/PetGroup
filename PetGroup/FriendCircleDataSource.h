@@ -6,9 +6,8 @@
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DataSource.h"
+#import "DynamicDataSource.h"
+#import "DynamicCell.h"
+@interface FriendCircleDataSource : DynamicDataSource
 
-@interface FriendCircleDataSource : DataSource<UITableViewDataSource>
--(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
--(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

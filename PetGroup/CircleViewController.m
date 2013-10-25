@@ -25,6 +25,7 @@
 #import "hotPintsDataSource.h"
 #import "OnceCircleViewController.h"
 #import "CircleClassify.h"
+#import "ArticleViewController.h"
 
 @interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate>
 {
@@ -74,7 +75,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"圈子"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -316,6 +317,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.article = hotPintsDS.dataSourceArray[indexPath.row];
+    [self.navigationController pushViewController:articleVC animated:YES];
 }
 
 #pragma mark - collection view delegate flow layout
@@ -363,7 +367,7 @@
     
     
 }
-#pragma mark - footer view delegate
+#pragma mark - header view delegate
 -(void)didSelectSearchBAtFriendHeaderView:(FriendHeaderView*)friendHeaderV
 {
     [self showSearchView];

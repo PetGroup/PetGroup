@@ -64,7 +64,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:self.circleEntity.name];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -364,17 +364,17 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-    articleVC.noteId = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
+    articleVC.article = hotPintsDS.dataSourceArray[indexPath.row];
     [self.navigationController pushViewController:articleVC animated:YES];
 }
 #pragma mark - table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return hotPintsDS.dataSourceArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"NearbyCell";
+    static NSString *cellIdentifier = @"Cell";
     articleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
         cell = [[articleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];

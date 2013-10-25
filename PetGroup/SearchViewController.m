@@ -54,7 +54,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"搜索"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -109,12 +109,11 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSArray* array = [dic objectForKey:@"entity"];
+        NSArray* array =  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         if (self.pageNo == 1) {
             [self.resultArray removeAllObjects];
         }
-        if ([[dic objectForKey:@"success"] boolValue] && array.count > 0) {
+        if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 Article* a = [[Article alloc]initWithDictionnary:dic];
                 [self.resultArray addObject:a];

@@ -114,7 +114,7 @@
         [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
     }
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     

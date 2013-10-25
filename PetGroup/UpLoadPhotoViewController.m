@@ -56,7 +56,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"上传头像"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -79,7 +79,7 @@
     UILabel* hostL = [[UILabel alloc]initWithFrame:CGRectMake(7, 85, 96, 17)];
     hostL.text = @"主淫头像";
     hostL.font = [UIFont boldSystemFontOfSize:13];
-    hostL.textAlignment = UITextAlignmentCenter;
+    hostL.textAlignment = NSTextAlignmentCenter;
     hostL.textColor = [UIColor whiteColor];
     hostL.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.6];
     [_hostPhoto addSubview:hostL];
@@ -127,7 +127,7 @@
         UILabel* petL = [[UILabel alloc]initWithFrame:CGRectMake(7, 85, 96, 17)];
         petL.text = @"宠物头像";
         petL.font = [UIFont boldSystemFontOfSize:13];
-        petL.textAlignment = UITextAlignmentCenter;
+        petL.textAlignment = NSTextAlignmentCenter;
         petL.textColor = [UIColor whiteColor];
         petL.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.6];
         [_petPhoto addSubview:petL];

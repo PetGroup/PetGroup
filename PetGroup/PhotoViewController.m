@@ -166,4 +166,8 @@
     }];
     [((UIActivityIndicatorView*)imageView.superview.subviews[1]) stopAnimating];
 }
+- (void)imageViewFailedToLoadImage:(EGOImageView*)imageView error:(NSError*)error
+{
+    //未完待续
+}
 @end

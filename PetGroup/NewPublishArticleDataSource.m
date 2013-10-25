@@ -28,10 +28,10 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSArray* array = [dic objectForKey:@"entity"];
+        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSArray* array = [dic objectForKey:@"entity"];
         [self.dataSourceArray removeAllObjects];
-        if ([dic objectForKey:@"success"] && array.count > 0) {
+        if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 Article* a = [[Article alloc]initWithDictionnary:dic];
                 [self.dataSourceArray addObject:a];
@@ -61,9 +61,9 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSArray* array = [dic objectForKey:@"entity"];
-        if ([dic objectForKey:@"success"] && array.count > 0) {
+        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSArray* array = [dic objectForKey:@"entity"];
+        if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 Article* a = [[Article alloc]initWithDictionnary:dic];
                 [self.dataSourceArray addObject:a];

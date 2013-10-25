@@ -65,7 +65,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"详情"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     

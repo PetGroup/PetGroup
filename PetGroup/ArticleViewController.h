@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Article.h"
 @interface ArticleViewController : UIViewController
-@property (nonatomic,retain)NSString* noteId;
+@property (nonatomic,retain)Article* article;
 @end

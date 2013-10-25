@@ -50,7 +50,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"关于宠物圈";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -69,7 +69,7 @@
 
 
     showVersion.text=addString;
-    showVersion.textAlignment=UITextAlignmentCenter;
+    showVersion.textAlignment=NSTextAlignmentCenter;
     showVersion.textColor=[UIColor grayColor];
     //showButton.userInteractionEnabled=NO;
     [self.view addSubview:showVersion];
@@ -99,7 +99,7 @@
 
     protocal.text=@"版权所有--爱宠联盟科技有限公司";
     protocal.textColor=[UIColor grayColor];
-    protocal.textAlignment=UITextAlignmentCenter;
+    protocal.textAlignment=NSTextAlignmentCenter;
     protocal.backgroundColor=[UIColor clearColor];
     protocal.font=[UIFont systemFontOfSize:15];
     
@@ -110,7 +110,7 @@
     
     protocal1.text=@"客服电话:010-562921815";
     protocal1.textColor=[UIColor grayColor];
-    protocal1.textAlignment=UITextAlignmentCenter;
+    protocal1.textAlignment=NSTextAlignmentCenter;
     protocal1.backgroundColor=[UIColor clearColor];
     protocal1.font=[UIFont systemFontOfSize:15];
     
@@ -120,7 +120,7 @@
 
     protocal2.text=@"All Rights Reserved";
     protocal2.textColor=[UIColor grayColor];
-    protocal2.textAlignment=UITextAlignmentCenter;
+    protocal2.textAlignment=NSTextAlignmentCenter;
     protocal2.backgroundColor=[UIColor clearColor];
     protocal2.font=[UIFont systemFontOfSize:15];
     

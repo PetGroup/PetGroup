@@ -24,7 +24,7 @@
         [self.describeLabel setBackgroundColor:[UIColor clearColor]];
         [self.describeLabel setFont:[UIFont systemFontOfSize:14]];
         [self.describeLabel setNumberOfLines:0];
-        [self.describeLabel setLineBreakMode:UILineBreakModeCharacterWrap];
+        [self.describeLabel setLineBreakMode:NSLineBreakByCharWrapping];
         [self.contentView addSubview:self.describeLabel];
         
         UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 13.75, 8.5, 12.5)];

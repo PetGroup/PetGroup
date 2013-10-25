@@ -70,7 +70,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.hostInfo.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     self.appDel = [[UIApplication sharedApplication] delegate];

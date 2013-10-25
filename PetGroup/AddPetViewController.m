@@ -76,7 +76,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"填写宠物信息"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     

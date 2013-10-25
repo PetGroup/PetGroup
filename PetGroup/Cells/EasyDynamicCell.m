@@ -158,7 +158,7 @@
     [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
     CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(170, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
-    nameB.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    nameB.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
     
     origin = 40;
     

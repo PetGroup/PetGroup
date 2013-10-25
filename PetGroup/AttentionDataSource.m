@@ -26,11 +26,9 @@
 }
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
-    
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"0" forKey:@"pageIndex"];
     [params setObject:@"-1" forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
@@ -60,10 +58,10 @@
     [body setObject:param forKey:@"params"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSDictionary*dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSArray* array = [dic objectForKey:@"entity"];
+        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSArray* array = [dic objectForKey:@"entity"];
         [self.dataSourceArray removeAllObjects];
-        if ([[dic objectForKey:@"success"] boolValue]&& array.count > 0) {
+        if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
                 [self.dataSourceArray addObject:a];

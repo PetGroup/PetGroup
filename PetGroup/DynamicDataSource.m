@@ -1,23 +1,14 @@
 //
-//  hotPintsDataSource.m
+//  DynamicDataSource.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-10-14.
+//  Created by 阿铛 on 13-10-25.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "hotPintsDataSource.h"
-#import "articleCell.h"
-@implementation hotPintsDataSource
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        self.pageNo = 1;
-        self.forumPid = @"0";
-    }
-    return self;
-}
+#import "DynamicDataSource.h"
+
+@implementation DynamicDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
     
@@ -33,12 +24,13 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"Cell";
-    articleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    static NSString *cellIdentifier = @"cell";
+    DynamicCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
-        cell = [[articleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[DynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.delegate = self.myController;
     }
-    cell.article = self.dataSourceArray[indexPath.row];
+    cell.dynamic = self.dataSourceArray[indexPath.row];
     return cell;
 }
 @end

@@ -80,18 +80,7 @@
         self.rowHigh+=245;
     }
     self.easyRowHigh = self.rowHigh;
-//    for (int i = 0; i < self.replyViews.count; i++) {
-//        Reply* rel = self.replyViews[i];
-//        NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-//        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-//        self.rowHigh += (size.height+5);
-//        for (int j = 0; j < rel.replyComments.count; j++) {
-//            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-//            NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-//            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-//            self.rowHigh += (size.height+5);
-//        }
-//    }
+
     return self;
 }
 @end

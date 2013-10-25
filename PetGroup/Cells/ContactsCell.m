@@ -43,7 +43,7 @@
 //        [self.signatureLabel setAdjustsFontSizeToFitWidth:YES];
         [self.signatureLabel setBackgroundColor:[UIColor clearColor]];
         [self.signatureLabel setNumberOfLines:0];
-        [self.signatureLabel setLineBreakMode:UILineBreakModeCharacterWrap];
+        [self.signatureLabel setLineBreakMode:NSLineBreakByCharWrapping];
         
         [bgV addSubview:self.signatureLabel];
         

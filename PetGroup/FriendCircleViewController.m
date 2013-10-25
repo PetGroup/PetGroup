@@ -12,7 +12,7 @@
 #import "EGOImageView.h"
 #import "EGOImageButton.h"
 
-@interface FriendCircleViewController ()<UITableViewDelegate>
+@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate>
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
 @end
@@ -25,6 +25,7 @@
     if (self) {
         // Custom initialization
         self.friendCircleDS = [[FriendCircleDataSource alloc]init];
+        _friendCircleDS.myController = self;
     }
     return self;
 }
@@ -47,7 +48,7 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"朋友圈"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
@@ -125,7 +126,32 @@
     [self.navigationController pushViewController:editVC animated:YES];
 }
 #pragma mark - tableView delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [DynamicCell heightForRowWithDynamic:self.friendCircleDS.dataSourceArray[indexPath.row]];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+#pragma mark - dynamic cell delegate
+-(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+-(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+-(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+-(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+-(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray
 {
     
 }

@@ -7,30 +7,67 @@
 //
 
 #import "FriendCircleDataSource.h"
-#import "Dynamic.h"
 
 @implementation FriendCircleDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
-{
-    
+{//body={"method":"getAllFriendStates","token":"XXX","channel":"","mac":"","imei":"","params":{"lastStateid":""}}
+    self.lastStateid = @"-1";
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.lastStateid forKey:@"lastStateid"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        [self.dataSourceArray removeAllObjects];
+        if (array.count>0) {
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+        }
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
 }
 -(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
-    
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:@"0" forKey:@"pageIndex"];
+    [params setObject:@"-1" forKey:@"lastStateid"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        [self.dataSourceArray removeAllObjects];
+        if (array.count>0) {
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+        }
+        success();
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
 }
-#pragma mark - table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.dataSourceArray.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellIdentifier = @"cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-    cell.textLabel.text = ((Dynamic*)self.dataSourceArray[indexPath.row]).msg;
-    return cell;
-}
+
 @end

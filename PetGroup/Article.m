@@ -15,8 +15,8 @@
     if (self) {
         self.articleID = [info objectForKey:@"id"];
         self.name = [info objectForKey:@"name"];
+        self.content = [info objectForKey:@"content"];
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
-       
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
         self.userName = [info objectForKey:@"nickname"];
         self.headImage = [info objectForKey:@"userIcon"];
