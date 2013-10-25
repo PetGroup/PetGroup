@@ -161,7 +161,6 @@
     long long a = (long long)(cT*1000);
     [params setObject:@"" forKey:@"transmitUrl"];
     [params setObject:@"" forKey:@"transmitMsg"];
-    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
     [params setObject:@"0" forKey:@"ifTransmitMsg"];
     [params setObject:self.dynamicTV.text forKey:@"msg"];
     [params setObject:imageID forKey:@"imgid"];
