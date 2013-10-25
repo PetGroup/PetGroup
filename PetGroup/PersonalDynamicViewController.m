@@ -594,7 +594,7 @@
 {
     DelegateAndDataSource * dad  = (DelegateAndDataSource *)self.tableV.dataSource;
     Dynamic*dyn = dad.dataSourceArray[indexPath.row];
-    return dyn.rowHigh;
+//    return dyn.rowHigh;
 }
 #pragma mark - scrollView delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -719,10 +719,10 @@
     [params setObject:@"" forKey:@"transmitUrl"];
     [params setObject:dyn.transmitMsg forKey:@"transmitMsg"];
     [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
-    [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
-    [params setObject:dyn.msg forKey:@"msg"];
-    [params setObject:dyn.imageID forKey:@"imgid"];
-    [params setObject:dyn.petUser.userId forKey:@"userid"];
+//    [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
+//    [params setObject:dyn.msg forKey:@"msg"];
+//    [params setObject:dyn.imageID forKey:@"imgid"];
+//    [params setObject:dyn.petUser.userId forKey:@"userid"];
     [params setObject:dyn.dynamicID forKey:@"userStateId"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];

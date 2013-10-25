@@ -347,10 +347,10 @@
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     Reply* rep = [[Reply alloc]initWithDictionary:dic];
-                    [self.mycell.dynamic.replyViews addObject:rep];
+//                    [self.mycell.dynamic.replyViews addObject:rep];
                     NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
                     CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                    self.mycell.dynamic.rowHigh += (size.height+5);
+//                    self.mycell.dynamic.rowHigh += (size.height+5);
                     [self.tableV reloadData];
                     self.mycell = nil;
                 }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -369,7 +369,7 @@
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
                 [params setObject:@"1" forKey:@"ifTransmitMsg"];
                 [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
-                [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
+//                [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
                 [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
                 [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
                 [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
@@ -432,25 +432,25 @@
                         [((Reply*)self.theID).replyComments addObject:repcom];
                         NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
                         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
+//                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     if ([self.theID isKindOfClass:[ReplyComment class]]) {
                         Reply* theRep = nil;
-                        for (Reply* re  in self.mycell.dynamic.replyViews) {
-                            for (ReplyComment* rec in re.replyComments) {
-                                if ([rec isEqual:self.theID]) {
-                                    theRep = re;
-                                    break;
-                                }
-                            }
-                        }
+//                        for (Reply* re  in self.mycell.dynamic.replyViews) {
+//                            for (ReplyComment* rec in re.replyComments) {
+//                                if ([rec isEqual:self.theID]) {
+//                                    theRep = re;
+//                                    break;
+//                                }
+//                            }
+//                        }
                         if (theRep) {
                             [theRep.replyComments addObject:repcom];
                         }
                         NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
                         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
+//                        self.mycell.dynamic.rowHigh += (size.height+5);
                         [self.tableV reloadData];
                     }
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
@@ -583,7 +583,7 @@
 {
     DelegateAndDataSource * dad  = (DelegateAndDataSource *)self.tableV.dataSource;
     Dynamic*dyn = dad.dataSourceArray[indexPath.row];
-    return dyn.rowHigh;
+//    return dyn.rowHigh;
 }
 #pragma mark - scrollView delegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -710,8 +710,8 @@
     [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
     [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
     [params setObject:dyn.msg forKey:@"msg"];
-    [params setObject:dyn.imageID forKey:@"imgid"];
-    [params setObject:dyn.petUser.userId forKey:@"userid"];
+//    [params setObject:dyn.imageID forKey:@"imgid"];
+//    [params setObject:dyn.petUser.userId forKey:@"userid"];
     [params setObject:dyn.dynamicID forKey:@"userStateId"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];

@@ -24,12 +24,8 @@
         self.isTop = [[info objectForKey:@"isTop"] boolValue];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
         self.headImage = arr[0];
-        NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
-        dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-        NSDate *date = [dateF dateFromString:[info objectForKey:@"ct"]];
-        NSTimeInterval cT = [date timeIntervalSince1970];
-        self.ct =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",cT]];//发布时间
-        [info objectForKey:@"ct"];
+        self.ct =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
+        
     }
     return self;
 }

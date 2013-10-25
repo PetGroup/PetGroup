@@ -29,8 +29,9 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"-1" forKey:@"lastStateid"];
+    [params setObject:@"" forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getAllFriendStates" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
@@ -39,8 +40,8 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
         [self.dynamicArray removeAllObjects];
         if (array.count>0) {
             for (NSDictionary*a in array) {
@@ -52,25 +53,25 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
     }];
-    [body setObject:@"getAllForumAsTree" forKey:@"method"];
-    NSMutableDictionary* param = [NSMutableDictionary dictionary];
-    [param setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
-    [body setObject:param forKey:@"params"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-//        NSArray* array = [dic objectForKey:@"entity"];
-        [self.dataSourceArray removeAllObjects];
-        if (array.count > 0) {
-            for (NSDictionary* dic in array) {
-                CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
-                [self.dataSourceArray addObject:a];
-            }
-        }
-        success();
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure();
-    }];
+//    [body setObject:@"getAllForumAsTree" forKey:@"method"];
+//    NSMutableDictionary* param = [NSMutableDictionary dictionary];
+//    [param setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+//    [body setObject:param forKey:@"params"];
+//    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+//        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+////        NSArray* array = [dic objectForKey:@"entity"];
+//        [self.dataSourceArray removeAllObjects];
+//        if (array.count > 0) {
+//            for (NSDictionary* dic in array) {
+//                CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
+//                [self.dataSourceArray addObject:a];
+//            }
+//        }
+//        success();
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        failure();
+//    }];
 }
 #pragma mark - collection view data source
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath

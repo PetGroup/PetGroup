@@ -11,6 +11,7 @@
 #import "EditDynamicViewController.h"
 #import "EGOImageView.h"
 #import "EGOImageButton.h"
+#import "OnceDynamicViewController.h"
 
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate>
 @property (nonatomic,retain)UIView* headV;
@@ -132,7 +133,10 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    [self.navigationController pushViewController:odVC animated:YES];
 }
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath

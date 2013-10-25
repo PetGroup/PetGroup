@@ -145,196 +145,196 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    for (UIView* a in self.contentView.subviews) {
-        a.frame = CGRectZero;
-    }
-    if (self.dynamic.petUser.headImgArray.count>0) {
-        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
-    }else
-    {
-        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl]];
-    }
-    headB.frame = CGRectMake(10, 10, 40, 40);
-    [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
-    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(170, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
-    nameB.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    
-    origin = 40;
-    
-    if ([self.dynamic.stateType intValue] == 4||[self.dynamic.stateType intValue] == 5) {
-        self.warningL.frame = CGRectMake(60, origin, 150, 20);
-        origin+=28;
-    }
-    
-    if (self.dynamic.ifTransmitMsg != 0) {
-        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
-        self.transmitMsgL.text = self.dynamic.transmitMsg;
-        self.transmitMsgL.frame = CGRectMake(60, origin, size.width, size.height);
-        origin += (size.height+10);
-        
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-        self.msgL.backgroundColor = [UIColor clearColor];
-        if (msgSize.height<=90) {
-            self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
-            origin+=(msgSize.height+10);
-        }else{
-            self.msgL.frame =CGRectMake(60, origin, 240, 18);
-            origin+=28;
-            pushB.frame = _msgL.frame;
-        }
-        self.msgL.text = self.dynamic.msg;
-        if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 60;
-            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            origin+=85;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            origin+=165;
-        }else if(self.dynamic.smallImage.count>6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<6; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
-            }
-            origin+=245;
-        }
-        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y-5, 260, origin-self.msgL.frame.origin.y);
-    }else{
-        _msgL.backgroundColor= [UIColor whiteColor];
-        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
-        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
-        _msgL.text = self.dynamic.msg;
-        _msgL.backgroundColor = [UIColor whiteColor];
-        if (msgMinSize.height==msgSize.height){
-            _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
-            origin+=(msgMinSize.height+10);
-        }
-        if (msgMinSize.height<msgSize.height) {
-            if (msgSize.height<180) {
-                if(self.dynamic.ifZhankaied == 0)
-                {
-                    [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
-                    _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
-                    origin+=(msgMinSize.height+10);
-                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
-                    origin+=25;
-                }else{
-                    [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
-                    _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
-                    origin+=(msgSize.height+10);
-                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
-                    origin+=25;
-                }
-                
-            }else{
-                _msgL.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1];
-                _msgL.frame = CGRectMake(60, 40, 240, 18);
-                pushB.frame = _msgL.frame;
-                origin+=28;
-            }
-        }
-        if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 60;
-            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            origin+=85;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            origin+=165;
-        }else if(self.dynamic.smallImage.count>6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<6; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageViews[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
-            }
-            origin+=245;
-        }
-    }
-    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    _timeL.text = self.dynamic.submitTime;
-    _timeL.frame = CGRectMake(60, origin+7, timeSize.width, timeSize.height);
-    if ([[[TempData sharedInstance] getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
-        delB.frame = CGRectMake(150, origin, 30, 30);
-    }
-    _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
-    if (self.dynamic.ifIZaned) {
-        _zanimage.image = [UIImage imageNamed:@"zaned"];
-    }else{
-        _zanimage.image = [UIImage imageNamed:@"zan"];
-    }
-    zanB.frame = CGRectMake(220, origin, 50, 30);
-    _moveB.frame = CGRectMake(280, origin, 30, 30);
-    _waitView.frame = zanB.frame;
-    
-    origin+=35;
+//    for (UIView* a in self.contentView.subviews) {
+//        a.frame = CGRectZero;
+//    }
+//    if (self.dynamic.petUser.headImgArray.count>0) {
+//        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.petUser.headImgArray[0]]];
+//    }else
+//    {
+//        headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl]];
+//    }
+//    headB.frame = CGRectMake(10, 10, 40, 40);
+//    [nameB setTitle:self.dynamic.petUser.nickName forState:UIControlStateNormal];
+//    CGSize nameSize = [self.dynamic.petUser.nickName sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(170, 20) lineBreakMode:NSLineBreakByWordWrapping];
+//    nameB.frame = CGRectMake(60, 10, nameSize.width, nameSize.height);
+//    nameB.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+//    
+//    origin = 40;
+//    
+//    if ([self.dynamic.stateType intValue] == 4||[self.dynamic.stateType intValue] == 5) {
+//        self.warningL.frame = CGRectMake(60, origin, 150, 20);
+//        origin+=28;
+//    }
+//    
+//    if (self.dynamic.ifTransmitMsg != 0) {
+//        CGSize size = [self.dynamic.transmitMsg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+//        self.transmitMsgL.text = self.dynamic.transmitMsg;
+//        self.transmitMsgL.frame = CGRectMake(60, origin, size.width, size.height);
+//        origin += (size.height+10);
+//        
+//        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+//        self.msgL.backgroundColor = [UIColor clearColor];
+//        if (msgSize.height<=90) {
+//            self.msgL.frame =CGRectMake(60, origin, msgSize.width, msgSize.height);
+//            origin+=(msgSize.height+10);
+//        }else{
+//            self.msgL.frame =CGRectMake(60, origin, 240, 18);
+//            origin+=28;
+//            pushB.frame = _msgL.frame;
+//        }
+//        self.msgL.text = self.dynamic.msg;
+//        if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
+//            int originX = 60;
+//            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=85;
+//        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+//            int originX = 60;
+//            for (int i = 0; i<3; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+80, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=165;
+//        }else if(self.dynamic.smallImage.count>6){
+//            int originX = 60;
+//            for (int i = 0; i<3; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 3; i<6; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+80, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+160, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=245;
+//        }
+//        self.beijingL.frame = CGRectMake(self.msgL.frame.origin.x-10, self.msgL.frame.origin.y-5, 260, origin-self.msgL.frame.origin.y);
+//    }else{
+//        _msgL.backgroundColor= [UIColor whiteColor];
+//        msgMinSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 90) lineBreakMode:NSLineBreakByWordWrapping];
+//        msgSize = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:14.0] constrainedToSize:CGSizeMake(240, 200) lineBreakMode:NSLineBreakByWordWrapping];
+//        _msgL.text = self.dynamic.msg;
+//        _msgL.backgroundColor = [UIColor whiteColor];
+//        if (msgMinSize.height==msgSize.height){
+//            _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
+//            origin+=(msgMinSize.height+10);
+//        }
+//        if (msgMinSize.height<msgSize.height) {
+//            if (msgSize.height<180) {
+//                if(self.dynamic.ifZhankaied == 0)
+//                {
+//                    [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
+//                    _msgL.frame = CGRectMake(60, origin, msgMinSize.width, msgMinSize.height);
+//                    origin+=(msgMinSize.height+10);
+//                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
+//                    origin+=25;
+//                }else{
+//                    [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
+//                    _msgL.frame = CGRectMake(60, origin, msgSize.width, msgSize.height);
+//                    origin+=(msgSize.height+10);
+//                    quanwenB.frame = CGRectMake(60, origin, 30, 15);
+//                    origin+=25;
+//                }
+//                
+//            }else{
+//                _msgL.backgroundColor= [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1];
+//                _msgL.frame = CGRectMake(60, 40, 240, 18);
+//                pushB.frame = _msgL.frame;
+//                origin+=28;
+//            }
+//        }
+//        if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
+//            int originX = 60;
+//            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=85;
+//        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+//            int originX = 60;
+//            for (int i = 0; i<3; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+80, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=165;
+//        }else if(self.dynamic.smallImage.count>6){
+//            int originX = 60;
+//            for (int i = 0; i<3; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 3; i<6; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+80, 75, 75);
+//                originX+=80;
+//            }
+//            originX = 60;
+//            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
+//                EGOImageButton * a = self.imageViews[i];
+//                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
+//                a.frame = CGRectMake(originX, origin+160, 75, 75);
+//                originX+=80;
+//            }
+//            origin+=245;
+//        }
+//    }
+//    CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(200, 20) lineBreakMode:NSLineBreakByWordWrapping];
+//    _timeL.text = self.dynamic.submitTime;
+//    _timeL.frame = CGRectMake(60, origin+7, timeSize.width, timeSize.height);
+//    if ([[[TempData sharedInstance] getMyUserID] intValue] == [self.dynamic.petUser.userId intValue]) {
+//        delB.frame = CGRectMake(150, origin, 30, 30);
+//    }
+//    _zanL.text = [NSString stringWithFormat:@"%d",self.dynamic.countZan];
+//    if (self.dynamic.ifIZaned) {
+//        _zanimage.image = [UIImage imageNamed:@"zaned"];
+//    }else{
+//        _zanimage.image = [UIImage imageNamed:@"zan"];
+//    }
+//    zanB.frame = CGRectMake(220, origin, 50, 30);
+//    _moveB.frame = CGRectMake(280, origin, 30, 30);
+//    _waitView.frame = zanB.frame;
+//    
+//    origin+=35;
 }
 #pragma mark - button action
 -(void)showButton
@@ -349,29 +349,29 @@
 
 -(void)PersonDetail
 {
-    if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-      //  [self.viewC  performSelector:@selector(headAct) withObject:nil];
-        return;
-    }
-    PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
-    personVC.hostInfo = self.dynamic.petUser;
-    [self.viewC.navigationController pushViewController:personVC animated:YES];
-    [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
+//    if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//      //  [self.viewC  performSelector:@selector(headAct) withObject:nil];
+//        return;
+//    }
+//    PersonDetailViewController*personVC = [[PersonDetailViewController alloc]init];
+//    personVC.hostInfo = self.dynamic.petUser;
+//    [self.viewC.navigationController pushViewController:personVC animated:YES];
+//    [self.viewC.customTabBarController hidesTabBar:YES animated:YES];
 }
 -(void)quanwen
 {
-    if (_msgL.frame.size.height<msgSize.height) {
-        _msgL.frame = CGRectMake(70, 40, msgSize.width, msgSize.height);
-        self.dynamic.rowHigh+=(msgSize.height-msgMinSize.height);
-        self.dynamic.ifZhankaied = 1;
-        [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
-    }else{
-        _msgL.frame = CGRectMake(70, 40, msgMinSize.width, msgMinSize.height);
-        self.dynamic.ifZhankaied = 0;
-        self.dynamic.rowHigh-=(msgSize.height-msgMinSize.height);
-        [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
-    }
-    [(UITableView*)self.superview reloadData];
+//    if (_msgL.frame.size.height<msgSize.height) {
+//        _msgL.frame = CGRectMake(70, 40, msgSize.width, msgSize.height);
+//        self.dynamic.rowHigh+=(msgSize.height-msgMinSize.height);
+//        self.dynamic.ifZhankaied = 1;
+//        [quanwenB setTitle:@"收起" forState:UIControlStateNormal];
+//    }else{
+//        _msgL.frame = CGRectMake(70, 40, msgMinSize.width, msgMinSize.height);
+//        self.dynamic.ifZhankaied = 0;
+//        self.dynamic.rowHigh-=(msgSize.height-msgMinSize.height);
+//        [quanwenB setTitle:@"展开" forState:UIControlStateNormal];
+//    }
+//    [(UITableView*)self.superview reloadData];
 }
 -(void)pushQuanwen
 {
@@ -398,7 +398,7 @@
     long long a = (long long)(cT*1000);
     [params setObject:@"0" forKey:@"zanType"];
     [params setObject:@"" forKey:@"petid"];
-    [params setObject:self.dynamic.petUser.userId forKey:@"zanUserid"];
+//    [params setObject:self.dynamic.petUser.userId forKey:@"zanUserid"];
     [params setObject:self.dynamic.dynamicID forKey:@"userStateid"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];

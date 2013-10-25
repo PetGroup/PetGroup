@@ -82,14 +82,14 @@
     _tableV.dataSource = self;
     
     self.highArray = [[NSMutableArray alloc]init];
-    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-        Reply* rel = self.dynamic.replyViews[i];
-        [self.highArray addObject:rel];
-        for (int j = 0; j < rel.replyComments.count; j++) {
-            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-            [self.highArray addObject:recom];
-        }
-    }
+//    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+//        Reply* rel = self.dynamic.replyViews[i];
+//        [self.highArray addObject:rel];
+//        for (int j = 0; j < rel.replyComments.count; j++) {
+//            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//            [self.highArray addObject:recom];
+//        }
+//    }
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -152,7 +152,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return self.dynamic.easyRowHigh;
+//        return self.dynamic.easyRowHigh;
     }
     if (indexPath.section == 1) {
         if ([self.highArray[indexPath.row] isKindOfClass:[Reply class]]) {
@@ -215,7 +215,7 @@
     [self removeActionImageView];
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
-    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.petUser.nickName];
+//    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.petUser.nickName];
 }
 -(void)reprint//转发
 {
@@ -230,160 +230,160 @@
         switch (assessOrPraise) {
             case 1:
             {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"petuserId"];
-                [params setObject:self.dynamic.dynamicID forKey:@"userstateId"];
-                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
-                [params setObject:self.inputTF.text forKey:@"msg"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"addReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [hud show:YES];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [hud hide:YES];
-                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                    Reply* rep = [[Reply alloc]initWithDictionary:dic];
-                    [self.dynamic.replyViews addObject:rep];
-                    self.highArray = [[NSMutableArray alloc]init];
-                    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-                        Reply* rel = self.dynamic.replyViews[i];
-                        [self.highArray addObject:rel];
-                        for (int j = 0; j < rel.replyComments.count; j++) {
-                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-                            [self.highArray addObject:recom];
-                        }
-                    }
-                    NSLog(@"%d===%@",self.highArray.count,self);
-                    [self.tableV reloadData];
-                     _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
-                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [hud hide:YES];
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                    [alert show];
-                }];
+//                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//                long long a = (long long)(cT*1000);
+//                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"petuserId"];
+//                [params setObject:self.dynamic.dynamicID forKey:@"userstateId"];
+//                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
+//                [params setObject:self.inputTF.text forKey:@"msg"];
+//                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//                [body setObject:@"1" forKey:@"channel"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//                [body setObject:@"iphone" forKey:@"imei"];
+//                [body setObject:params forKey:@"params"];
+//                [body setObject:@"addReply" forKey:@"method"];
+//                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//                [hud show:YES];
+//                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                    [hud hide:YES];
+//                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+//                    Reply* rep = [[Reply alloc]initWithDictionary:dic];
+//                    [self.dynamic.replyViews addObject:rep];
+//                    self.highArray = [[NSMutableArray alloc]init];
+//                    for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+//                        Reply* rel = self.dynamic.replyViews[i];
+//                        [self.highArray addObject:rel];
+//                        for (int j = 0; j < rel.replyComments.count; j++) {
+//                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//                            [self.highArray addObject:recom];
+//                        }
+//                    }
+//                    NSLog(@"%d===%@",self.highArray.count,self);
+//                    [self.tableV reloadData];
+//                     _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
+//                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                    [hud hide:YES];
+//                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//                    [alert show];
+//                }];
             }break;
             case 2:
             {
-                if (_inputTF.text.length<=80) {
-                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                    long long a = (long long)(cT*1000);
-                    [params setObject:@"" forKey:@"transmitUrl"];
-                    [params setObject:self.inputTF.text forKey:@"transmitMsg"];
-                    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
-                    [params setObject:@"1" forKey:@"ifTransmitMsg"];
-                    [params setObject:self.dynamic.msg forKey:@"msg"];
-                    [params setObject:self.dynamic.imageID forKey:@"imgid"];
-                    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
-                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                    [body setObject:@"1" forKey:@"channel"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                    [body setObject:@"iphone" forKey:@"imei"];
-                    [body setObject:params forKey:@"params"];
-                    [body setObject:@"addUserState" forKey:@"method"];
-                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                    [hud show:YES];
-                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        [hud hide:YES];
-                    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [hud hide:YES];
-                        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                        [alert show];
-                    }];
-                }else{
-                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"转发内容不得超过80个字" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-                    [alert show];
-                }
+//                if (_inputTF.text.length<=80) {
+//                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//                    long long a = (long long)(cT*1000);
+//                    [params setObject:@"" forKey:@"transmitUrl"];
+//                    [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+//                    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
+//                    [params setObject:@"1" forKey:@"ifTransmitMsg"];
+//                    [params setObject:self.dynamic.msg forKey:@"msg"];
+//                    [params setObject:self.dynamic.imageID forKey:@"imgid"];
+//                    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
+//                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
+//                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
+//                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//                    [body setObject:@"1" forKey:@"channel"];
+//                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//                    [body setObject:@"iphone" forKey:@"imei"];
+//                    [body setObject:params forKey:@"params"];
+//                    [body setObject:@"addUserState" forKey:@"method"];
+//                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//                    [hud show:YES];
+//                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                        [hud hide:YES];
+//                    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                        [hud hide:YES];
+//                        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//                        [alert show];
+//                    }];
+//                }else{
+//                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"转发内容不得超过80个字" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//                    [alert show];
+//                }
                 
             }break;
             case 3:
             {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"commentUserid"];
-                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
-                if ([self.theID isKindOfClass:[Reply class]]) {
-                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
-                    [params setObject:((Reply*)self.theID).replyID forKey:@"replyId"];
-                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
-                }
-                if ([self.theID isKindOfClass:[ReplyComment class]]) {
-                    [params setObject:((ReplyComment*)self.theID).commentUserView.userId forKey:@"replyUserid"];
-                    [params setObject:((ReplyComment*)self.theID).replyID forKey:@"replyId"];
-                    [params setObject:((ReplyComment*)self.theID).userStateid forKey:@"userStateid"];
-                }
-                
-                [params setObject:_inputTF.text forKey:@"msg"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"addCommentReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [hud show:YES];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [hud hide:YES];
-                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                    ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
-                    if ([self.theID isKindOfClass:[Reply class]]) {
-                        [((Reply*)self.theID).replyComments addObject:repcom];
-                        self.highArray = [[NSMutableArray alloc]init];
-                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-                            Reply* rel = self.dynamic.replyViews[i];
-                            [self.highArray addObject:rel];
-                            for (int j = 0; j < rel.replyComments.count; j++) {
-                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-                                [self.highArray addObject:recom];
-                            }
-                        }
-                        [self.tableV reloadData];
-                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
-                    }
-                    if ([self.theID isKindOfClass:[ReplyComment class]]) {
-                        Reply* theRep = nil;
-                        for (Reply* re  in self.dynamic.replyViews) {
-                            for (ReplyComment* rec in re.replyComments) {
-                                if ([rec isEqual:self.theID]) {
-                                    theRep = re;
-                                    break;
-                                }
-                            }
-                        }
-                        if (theRep) {
-                            [theRep.replyComments addObject:repcom];
-                        }
-                        self.highArray = [[NSMutableArray alloc]init];
-                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
-                            Reply* rel = self.dynamic.replyViews[i];
-                            [self.highArray addObject:rel];
-                            for (int j = 0; j < rel.replyComments.count; j++) {
-                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-                                [self.highArray addObject:recom];
-                            }
-                        }
-                        [self.tableV reloadData];
-                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
-                    }
-                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [hud hide:YES];
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-                    [alert show];
-                }];
+//                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//                long long a = (long long)(cT*1000);
+//                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"commentUserid"];
+//                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
+//                if ([self.theID isKindOfClass:[Reply class]]) {
+//                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
+//                    [params setObject:((Reply*)self.theID).replyID forKey:@"replyId"];
+//                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
+//                }
+//                if ([self.theID isKindOfClass:[ReplyComment class]]) {
+//                    [params setObject:((ReplyComment*)self.theID).commentUserView.userId forKey:@"replyUserid"];
+//                    [params setObject:((ReplyComment*)self.theID).replyID forKey:@"replyId"];
+//                    [params setObject:((ReplyComment*)self.theID).userStateid forKey:@"userStateid"];
+//                }
+//                
+//                [params setObject:_inputTF.text forKey:@"msg"];
+//                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//                [body setObject:@"1" forKey:@"channel"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//                [body setObject:@"iphone" forKey:@"imei"];
+//                [body setObject:params forKey:@"params"];
+//                [body setObject:@"addCommentReply" forKey:@"method"];
+//                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//                [hud show:YES];
+//                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                    [hud hide:YES];
+//                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//                    ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
+//                    if ([self.theID isKindOfClass:[Reply class]]) {
+//                        [((Reply*)self.theID).replyComments addObject:repcom];
+//                        self.highArray = [[NSMutableArray alloc]init];
+//                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+//                            Reply* rel = self.dynamic.replyViews[i];
+//                            [self.highArray addObject:rel];
+//                            for (int j = 0; j < rel.replyComments.count; j++) {
+//                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//                                [self.highArray addObject:recom];
+//                            }
+//                        }
+//                        [self.tableV reloadData];
+//                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
+//                    }
+//                    if ([self.theID isKindOfClass:[ReplyComment class]]) {
+//                        Reply* theRep = nil;
+//                        for (Reply* re  in self.dynamic.replyViews) {
+//                            for (ReplyComment* rec in re.replyComments) {
+//                                if ([rec isEqual:self.theID]) {
+//                                    theRep = re;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                        if (theRep) {
+//                            [theRep.replyComments addObject:repcom];
+//                        }
+//                        self.highArray = [[NSMutableArray alloc]init];
+//                        for (int i = 0; i < self.dynamic.replyViews.count; i++) {
+//                            Reply* rel = self.dynamic.replyViews[i];
+//                            [self.highArray addObject:rel];
+//                            for (int j = 0; j < rel.replyComments.count; j++) {
+//                                ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//                                [self.highArray addObject:recom];
+//                            }
+//                        }
+//                        [self.tableV reloadData];
+//                         _tableV.frame = CGRectMake(_tableV.frame.origin.x, _tableV.frame.origin.y, _tableV.contentSize.width, _tableV.contentSize.height);
+//                    }
+//                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+//                }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                    [hud hide:YES];
+//                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//                    [alert show];
+//                }];
             }break;
                 
             default:
@@ -534,10 +534,10 @@
     [params setObject:@"" forKey:@"transmitUrl"];
     [params setObject:dyn.transmitMsg forKey:@"transmitMsg"];
     [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
-    [params setObject:[NSString stringWithFormat:@"%d", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
+    [params setObject:[NSString stringWithFormat:@"%@", dyn.ifTransmitMsg] forKey:@"ifTransmitMsg"];
     [params setObject:dyn.msg forKey:@"msg"];
-    [params setObject:dyn.imageID forKey:@"imgid"];
-    [params setObject:dyn.petUser.userId forKey:@"userid"];
+//    [params setObject:dyn.imageID forKey:@"imgid"];
+//    [params setObject:dyn.petUser.userId forKey:@"userid"];
     [params setObject:dyn.dynamicID forKey:@"userStateId"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];

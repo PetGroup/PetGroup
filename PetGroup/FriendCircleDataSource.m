@@ -17,6 +17,7 @@
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:self.lastStateid forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getAllFriendStates" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
@@ -44,9 +45,9 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"0" forKey:@"pageIndex"];
-    [params setObject:@"-1" forKey:@"lastStateid"];
+    [params setObject:@"" forKey:@"lastStateid"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getAllFriendStates" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
