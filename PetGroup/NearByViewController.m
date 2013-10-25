@@ -172,11 +172,12 @@
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
     [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
  //   [locationDict setObject:@"" forKey:@"city"];
-    [locationDict setObject:theGender forKey:@"gender"];
-    [locationDict setObject:theType forKey:@"type"];
+    [locationDict setObject:@"" forKey:@"gender"];
+    [locationDict setObject:theType forKey:@"petType"];
     [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"getNearbyUser" forKey:@"method"];
+    [postDict setObject:@"getNearPerson" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
@@ -184,9 +185,9 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (responseObject) {
-            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-            NSArray * recArray = [receiveStr JSONValue];
-            [self parseData:recArray];
+//            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//            NSArray * recArray = [receiveStr JSONValue];
+            [self parseData:responseObject];
         }
         else
         {
@@ -407,14 +408,14 @@
             cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         //[cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
-        if (![[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
-            NSString * imgStr = [self getFistHeadImg:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"img"]];
+        if (![[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
+            NSString * imgStr = [self getFistHeadImg:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"]];
             
             [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
         }
-        [cell.nameLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"nickname"]];
-        NSString* sigStr = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"signature"];
-        NSString * gender = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"gender"];
+        [cell.nameLabel setText:[[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"]];
+        NSString* sigStr = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"signature"];
+        NSString * gender = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"gender"];
         if ([gender isEqualToString:@"male"]) {
             [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
         }
@@ -426,8 +427,9 @@
             [cell.signatureLabel setText:@"该用户没有设置签名"];
         }
         
-        NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petInfoViews"];
-        if (tempPetArray.count>0) {
+        NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"];
+        
+        if (tempPetArray) {
             PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
             cell.petOneImgV.hidden = NO;
             NSArray * head = [self imageToURL:petInfo.headImgArray];
@@ -447,7 +449,7 @@
         }
         
         
-        [cell.distLabel setText:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"distance"]];
+        [cell.distLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"]];
 
         return cell;
     }else{

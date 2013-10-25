@@ -627,6 +627,31 @@
 //        [alert addSubview:locationTextF];
 //        [alert show];
         if ([self.helloBtn.currentTitle isEqualToString:@"同意"]) {
+            NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+            [body setStringValue:[NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]]];
+            
+            //生成XML消息文档
+            NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+            //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
+            //消息类型
+            [mes addAttributeWithName:@"type" stringValue:@"chat"];
+            
+            //发送给谁
+            [mes addAttributeWithName:@"to" stringValue:[self.hostInfo.userName stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+            //   NSLog(@"chatWithUser:%@",chatWithUser);
+            //由谁发送
+            [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+            
+            [mes addAttributeWithName:@"msgtype" stringValue:@"normalchat"];
+            [mes addAttributeWithName:@"fileType" stringValue:@"text"];  //如果发送图片音频改这里
+            [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+            [mes addChild:body];
+            if (![self.appDel.xmppHelper sendMessage:mes]) {
+                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+                //Do something when send failed...
+                return;
+            }
+
             [self.appDel.xmppHelper addOrDenyFriend:YES user:self.hostInfo.userName];
             if (infoDict) {
                 [DataStoreManager saveUserInfo:infoDict];

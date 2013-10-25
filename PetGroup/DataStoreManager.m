@@ -534,7 +534,7 @@
             if (!dFriend)
                 dFriend = [DSFriends MR_createInContext:localContext]; 
             dFriend.userName = myUserName;
-            dFriend.nickName = nickName?nickName:@"";
+            dFriend.nickName = nickName?(nickName.length>1?nickName:[nickName stringByAppendingString:@" "]):@"";
             dFriend.gender = gender?gender:@"";
             dFriend.userId = userId?userId:@"";
             dFriend.hobby = hobby?hobby:@"";
@@ -544,7 +544,7 @@
             dFriend.theCity = theCity?theCity:@"未知";
             NSString * nameIndex;
             NSString * nameKey;
-            if (nickName.length>1) {
+            if (nickName.length>=1) {
                 nameKey = [[DataStoreManager convertChineseToPinYin:nickName] stringByAppendingFormat:@"+%@",nickName];
                 dFriend.nameKey = nameKey;
                 nameIndex = [[nameKey substringToIndex:1] uppercaseString];
@@ -557,7 +557,7 @@
 //                dFriend.nameIndex = nameIndex;
 //            }
             if (![myUserName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
-                if (nickName.length>1) {
+                if (nickName.length>=1) {
                 NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"index==[c]%@",nameIndex];
                 DSNameIndex * dFname = [DSNameIndex MR_findFirstWithPredicate:predicate2];
                 if (!dFname)

@@ -93,11 +93,35 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     
-    [self refreshFriendList];
-
+//    [self refreshFriendList];
+    [self getFriendByHttp];
  //   [self getFriendInfo:@"england"];
 }
+-(void)getFriendByHttp
+{
+//    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+//    [paramDict setObject:userName forKey:@"username"];
+//    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [postDict setObject:@"getFriendList" forKey:@"method"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSDictionary * recDict = [receiveStr JSONValue];
+//        [DataStoreManager saveUserInfo:responseObject];
+//        [self refreshFriendList];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 
+}
 -(void)refreshFriendList
 {
     friendDict = [DataStoreManager queryAllFriends];

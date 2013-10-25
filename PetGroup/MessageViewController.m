@@ -112,8 +112,8 @@
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
         if (![self.appDel.xmppHelper ifXMPPConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
-           // [self logInToServer];
-            [self getMyUserInfoFromNet];
+            [self logInToServer];
+           // [self getMyUserInfoFromNet];
         }
         
 //        [self tempMakeSomeData];
@@ -279,6 +279,11 @@
 
 -(void)newMessageReceived:(NSDictionary *)messageContent
 {
+    NSRange range = [[messageContent objectForKey:@"sender"] rangeOfString:@"@"];
+    NSString * sender = [[messageContent objectForKey:@"sender"] substringToIndex:range.location];
+    if (![DataStoreManager ifHaveThisFriend:sender]) {
+        [self requestPeopleInfoWithName:sender ForType:1 Msg:nil];
+    }
     AudioServicesPlayAlertSound(1007);
     [self storeNewMessage:messageContent];
     [self displayMsgsForDefaultView];
@@ -535,66 +540,80 @@
     titleLabel.text = @"消息(连接中...)";
     NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
-    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
-    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:PASSWORD andServiceName:LOCALACCOUNT error:nil] forKey:@"password"];
-    [userInfoDict setObject:@"31" forKey:@"imgId"];
-    [userInfoDict setObject:@"2" forKey:@"type"];
+//    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+//    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:PASSWORD andServiceName:LOCALACCOUNT error:nil] forKey:@"password"];
+//    [userInfoDict setObject:@"31" forKey:@"imgId"];
+//    [userInfoDict setObject:@"2" forKey:@"type"];
+    [userInfoDict setObject:@"open" forKey:@"action"];
+//    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+//    [userInfoDict setObject:version forKey:@"version"];
     [postDict setObject:userInfoDict forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"open" forKey:@"method"];
+    [postDict setObject:@"token" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_sso" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict setObject:@"iphone" forKey:@"imei"];
-    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
-    [postDict setObject:version forKey:@"version"];
+
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
-        if ([[recDict objectForKey:@"token"] length]>3) {
-            [self logInServerSuccessWithInfo:recDict];
-        }
-        else
-        {
-            titleLabel.text = @"消息(未连接)";
-        }
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSDictionary * recDict = [receiveStr JSONValue];
+//        if ([[recDict objectForKey:@"token"] length]>3) {
+            [self logInServerSuccessWithInfo:responseObject];
+//        }
+//        else
+//        {
+//            titleLabel.text = @"消息(未连接)";
+//        }
      
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self makeLogFailurePrompt];
     }];
 }
 
+//-(void)authenticToken
+//{
+//    
+//}
+
 -(void)logInServerSuccessWithInfo:(NSDictionary *)dict
 {
-    if ([[dict objectForKey:@"forceUpdate"] intValue]>0) {
-        appStoreURL = [dict objectForKey:@"iosurl"];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
-        alert.tag = 20;
-        [alert show];
-    }
-    else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
-        appStoreURL = [dict objectForKey:@"iosurl"];
+    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+
+    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
+//        appStoreURL = [dict objectForKey:@"iosurl"];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+//        alert.tag = 20;
+//        [alert show];
+        appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
         alert.tag = 21;
         [alert show];
     }
-    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[dict objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
-    [self saveMyInfo:[dict objectForKey:@"petUserView"]];
-    NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
-//    if (iPhone5) {
-//        openImgId = [openImgId stringByAppendingString:@"+ios+320#480"];
+//    else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
+//        appStoreURL = [dict objectForKey:@"iosurl"];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
+//        alert.tag = 21;
+//        [alert show];
 //    }
-    NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
-    NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,openImgId];
-    NSFileManager *file_manager = [NSFileManager defaultManager];
-    if (![file_manager fileExistsAtPath:openImgPath]) {
-        [self downloadImageWithID:openImgId Type:@"open" PicName:nil];
-    }
-
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
+//    [self saveMyInfo:[dict objectForKey:@"petUserView"]];
+//    NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
+////    if (iPhone5) {
+////        openImgId = [openImgId stringByAppendingString:@"+ios+320#480"];
+////    }
+//    NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+//    NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,openImgId];
+//    NSFileManager *file_manager = [NSFileManager defaultManager];
+//    if (![file_manager fileExistsAtPath:openImgPath]) {
+//        [self downloadImageWithID:openImgId Type:@"open" PicName:nil];
+//    }
+    [self getMyUserInfoFromNet];
     [self logInToChatServer];
 }
 -(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
@@ -684,13 +703,13 @@
             [self displayMsgsForDefaultView];
         }
         else if (type==1){
-            AudioServicesPlayAlertSound(1007);
+//            AudioServicesPlayAlertSound(1007);
             [DataStoreManager saveUserInfo:recDict];
-            NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[recDict objectForKey:@"nickname"]];
-            NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-            NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",[recDict objectForKey:@"username"],[[TempData sharedInstance] getDomain]],@"sender",ctime,@"time", nil];
-            [self storeNewMessage:newM];
-            [self displayMsgsForDefaultView];
+//            NSString * theMsg = [NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[recDict objectForKey:@"nickname"]];
+//            NSString * ctime = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+//            NSMutableDictionary * newM = [NSMutableDictionary dictionaryWithObjectsAndKeys:theMsg,@"msg",[NSString stringWithFormat:@"%@%@",[recDict objectForKey:@"username"],[[TempData sharedInstance] getDomain]],@"sender",ctime,@"time", nil];
+//            [self storeNewMessage:newM];
+//            [self displayMsgsForDefaultView];
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
