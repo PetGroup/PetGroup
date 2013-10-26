@@ -35,6 +35,7 @@
     if (self) {
         // Custom initialization
         self.resultArray = [[NSMutableArray alloc]init];
+        self.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleNome;
     }
     return self;
 }
@@ -113,14 +114,22 @@
     self.inputTF.maximumNumberOfLines=5;
     [inPutView addSubview:self.inputTF];
     
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (version >= 5.0) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    }
-    else{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    switch (self.onceDynamicViewControllerStyle) {
+        case OnceDynamicViewControllerStyleNome:{
+            
+        }break;
+        case OnceDynamicViewControllerStyleReply:{
+            [self replyAction];
+        }break;
+        case OnceDynamicViewControllerStyleZhuanfa:{
+            [self zhuanfaAction];
+        }break;
+        default:
+            break;
+    }
     
     [self reloadData];
 }

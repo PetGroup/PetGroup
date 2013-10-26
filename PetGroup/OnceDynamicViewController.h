@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
+typedef enum {
+    OnceDynamicViewControllerStyleNome,
+    OnceDynamicViewControllerStyleReply,
+    OnceDynamicViewControllerStyleZhuanfa
+} OnceDynamicViewControllerStyle;
 @interface OnceDynamicViewController : UIViewController
 @property (nonatomic,retain)Dynamic* dynamic;
+@property (nonatomic,assign)OnceDynamicViewControllerStyle onceDynamicViewControllerStyle;
 @end
