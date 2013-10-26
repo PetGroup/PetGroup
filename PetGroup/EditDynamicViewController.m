@@ -69,7 +69,7 @@
     [self.view addSubview:nextB];
     
     UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75, 292.5, 128)];
-    editIV.image = [UIImage imageNamed:@"shurukuang"] ;
+    editIV.image = [UIImage imageNamed:@"edit_bg"] ;
     [self.view addSubview:editIV];
     
     self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 55.75, 292.5,128)];
@@ -89,7 +89,7 @@
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
     
-    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 57.75, 200, 20)];
+    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75, 200, 20)];
     _placeholderL.backgroundColor = [UIColor clearColor];
     _placeholderL.textColor = [UIColor grayColor];
     _placeholderL.text = @"今天想跟别人说点什么……";
@@ -164,10 +164,8 @@
     [params setObject:@"0" forKey:@"ifTransmitMsg"];
     [params setObject:self.dynamicTV.text forKey:@"msg"];
     [params setObject:imageID forKey:@"imgid"];
-    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
-    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
-    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
@@ -175,7 +173,14 @@
     [body setObject:@"addUserState" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+        //未完待续
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 -(void)getAnActionSheet
 {

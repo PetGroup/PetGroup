@@ -19,9 +19,13 @@
 //动态时间格式
 +(NSString *)DynamicCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime
 {
+    NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+    dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    NSDate *date = [dateF dateFromString:messageTime];
+    NSTimeInterval theMessageT = [date timeIntervalSince1970];
+    
     NSString * finalTime;
     int theCurrentT = [currentTime intValue];
-    int theMessageT = [messageTime intValue];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *messageDateStr = [dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:theMessageT]];

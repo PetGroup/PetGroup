@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
-@class DynamicCell;
 @protocol DynamicCellDelegate<NSObject>
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath;
@@ -20,7 +19,7 @@
 
 @property (nonatomic,weak)Dynamic*dynamic;
 @property (nonatomic,weak)id<DynamicCellDelegate> delegate;
-@property (nonatomic,weak)NSIndexPath* indexPath;
+@property (nonatomic,strong)NSIndexPath* indexPath;
 
 +(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 @end

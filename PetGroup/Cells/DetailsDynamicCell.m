@@ -1,23 +1,19 @@
 //
-//  DynamicCell.m
+//  DetailsDynamicCell.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-8-22.
+//  Created by 阿铛 on 13-10-26.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DynamicCell.h"
+#import "DetailsDynamicCell.h"
 #import "EGOImageButton.h"
 #import "OHAttributedLabel.h"
-
-@interface DynamicCell ()
+@interface DetailsDynamicCell ()
 
 {
     UIButton* nameB;
     EGOImageButton* headB;
-    UIButton* zanB;
-    UIButton* replyB;
-    UIButton* zhuanfaB;
 }
 @property (nonatomic,retain)UIView* backView;
 @property (nonatomic,retain)UIImageView * zanImageV;
@@ -25,10 +21,9 @@
 @property (nonatomic,retain)OHAttributedLabel* transmitMsgL;
 @property (nonatomic,retain)OHAttributedLabel* msgL;
 @property (nonatomic,retain)NSArray* imageButtons;
-@property (nonatomic,retain)UIImageView* bottomIV;
 @end
-@implementation DynamicCell
-+(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic
+@implementation DetailsDynamicCell
++(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 {
     CGFloat height = 60;
     if (!dynamic.ifTransmitMsg) {
@@ -47,16 +42,15 @@
     }else if(dynamic.smallImage.count>6){
         height+=309.9;
     }
-
-    return height+=33.5;
+    return height;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
-    
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         self.backView = [[UIView alloc]init];
         _backView.backgroundColor = [UIColor grayColor];
         [self.contentView addSubview:_backView];
@@ -96,39 +90,6 @@
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
         [self.contentView addSubview:_msgL];
-        
-        self.bottomIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"beijing"]];
-        _bottomIV.userInteractionEnabled = YES;
-        [self.contentView addSubview:_bottomIV];
-        zanB = [UIButton buttonWithType:UIButtonTypeCustom];
-        zanB.frame = CGRectMake(5, 5, 100, 23.5);
-        [zanB addTarget:self action:@selector(zanAction) forControlEvents:UIControlEventTouchUpInside];
-        [zanB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-        [zanB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
-        [_bottomIV addSubview:zanB];
-        replyB = [UIButton buttonWithType:UIButtonTypeCustom];
-        replyB.frame = CGRectMake(110, 5, 100, 23.5);
-        [replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
-        [replyB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-        [replyB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
-        [_bottomIV addSubview:replyB];
-        zhuanfaB = [UIButton buttonWithType:UIButtonTypeCustom];
-        zhuanfaB.frame = CGRectMake(215, 5, 100, 23.5);
-        [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
-        [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-        [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
-        [_bottomIV addSubview:zhuanfaB];
-        
-        self.zanImageV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 14, 15)];
-        [zanB addSubview:_zanImageV];
-        
-        UIImageView* replyIV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 15, 12.5)];
-        replyIV.image = [UIImage imageNamed:@"pinglun"];
-        [replyB addSubview:replyIV];
-        
-        UIImageView * zhuanfaIV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 14, 16.5)];
-        zhuanfaIV.image = [UIImage imageNamed:@"zhuanfa"];
-        [zhuanfaB addSubview:zhuanfaIV];
     }
     return self;
 }
@@ -207,7 +168,7 @@
     }else{
         CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
         self.transmitMsgL.frame =CGRectMake (10, 55, 300, transmitMsgSize.height);
-         _transmitMsgL.attributedText = self.dynamic.transmitMsg;
+        _transmitMsgL.attributedText = self.dynamic.transmitMsg;
         origin = origin + transmitMsgSize.height + 5;
         CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
         _msgL.frame = CGRectMake(10, origin, 300, size.height);
@@ -262,16 +223,8 @@
             }
             origin+=309.9;
         }
-       
         self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y, 300, origin-_msgL.frame.origin.y);
     }
-    if (self.dynamic.ifIZaned) {
-        _zanImageV.image = [UIImage imageNamed:@"zaned"];
-    }else{
-        _zanImageV.image = [UIImage imageNamed:@"zan"];
-    }
-    
-    _bottomIV.frame = CGRectMake(0, origin, 320, 33.5);
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -279,29 +232,10 @@
 
     // Configure the view for the selected state
 }
-#pragma mark - button action
 -(void)PersonDetail
 {
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButtonAtIndexPath:)]) {
-        [self.delegate dynamicCellPressNameButtonOrHeadButtonAtIndexPath:self.indexPath];
-    }
-}
--(void)zanAction
-{
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressZanButtonAtIndexPath:)]) {
-        [self.delegate dynamicCellPressZanButtonAtIndexPath:self.indexPath];
-    }
-}
--(void)replyAction
-{
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressReplyButtonAtIndexPath:)]) {
-        [self.delegate dynamicCellPressReplyButtonAtIndexPath:self.indexPath];
-    }
-}
--(void)zhuanfaAction
-{
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressZhuangFaButtonAtIndexPath:)]) {
-        [self.delegate dynamicCellPressZhuangFaButtonAtIndexPath:self.indexPath];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(detailsDynamicCellPressNameButtonOrHeadButton)]) {
+        [self.delegate detailsDynamicCellPressNameButtonOrHeadButton];
     }
 }
 -(void)loadBagImage
@@ -310,8 +244,8 @@
     for (EGOImageButton*a in _imageButtons) {
         [array addObject:a.currentImage];
     }
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:)]) {
-        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(detailsDynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:)]) {
+        [self.delegate detailsDynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray];
     }
 }
 @end

@@ -8,9 +8,10 @@
 
 #import "FriendCircleCell.h"
 #import "EGOImageView.h"
+#import "OHAttributedLabel.h"
 @interface FriendCircleCell ()
 @property (nonatomic,retain)EGOImageView* imageV;
-@property (nonatomic,retain)UILabel* titleL;
+@property (nonatomic,retain)OHAttributedLabel* titleL;
 @end
 @implementation FriendCircleCell
 
@@ -24,7 +25,7 @@
         _imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
         
-        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 240, 50)];
+        self.titleL = [[OHAttributedLabel alloc]initWithFrame:CGRectMake(70, 10, 240, 50)];
         _titleL.backgroundColor = [UIColor clearColor];
         _titleL.font = [UIFont systemFontOfSize:12];
         _titleL.numberOfLines = 0;
@@ -38,16 +39,16 @@
     if (_dynamic.smallImage.count>0) {
         _imageV.hidden = NO;
         _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[0]]];
-        CGSize size = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(240, 50) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 50)];
         _titleL.frame = CGRectMake(70, 10, 140, size.height);
     }else{
         _imageV.hidden = YES;
         _imageV.imageURL = [NSURL URLWithString:@""];
-        CGSize size = [self.dynamic.msg sizeWithFont:[UIFont systemFontOfSize:12.0] constrainedToSize:CGSizeMake(300, 50) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 50)];
         _titleL.frame = CGRectMake(10, 10, 300, size.height);
     }
     
-    _titleL.text = _dynamic.msg;
+    _titleL.attributedText = _dynamic.msg;
 }
 /*
 // Only override drawRect: if you perform custom drawing.

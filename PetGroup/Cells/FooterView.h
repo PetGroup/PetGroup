@@ -14,5 +14,5 @@
 @interface FooterView : UICollectionReusableView
 @property(nonatomic,assign) UIButton* unfoldB;
 @property(nonatomic,assign) id<FooterViewDelegate>delegate;
-@property(nonatomic,assign) NSIndexPath* indexPath;
+@property(nonatomic,retain) NSIndexPath* indexPath;
 @end

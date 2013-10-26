@@ -30,6 +30,7 @@
         cell = [[DynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         cell.delegate = self.myController;
     }
+    cell.indexPath = indexPath;
     cell.dynamic = self.dataSourceArray[indexPath.row];
     return cell;
 }

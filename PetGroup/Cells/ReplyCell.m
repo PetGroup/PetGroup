@@ -90,31 +90,31 @@
 
 -(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
 {
-    if ([theID isKindOfClass:[Reply class]]) {
-        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID]integerValue]&&[((Reply*)theID).petUser.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            delOrReplyReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [delOrReplyReplyAction showInView:self.superview];
-            return;
-        }
-        if ([((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
-            [delReplyAction showInView:self.superview];
-            return;
-        }
-    }
-    if ([theID isKindOfClass:[ReplyComment class]]) {
-        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((ReplyComment*)theID).commentUserView.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [action showInView:self.superview];
-            return;
-        }
-        if ([((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
-            [delReplyAction showInView:self.superview];
-            return;
-        }
-    }
-    [self.viewC performSelector:@selector(recalledreply: cell:) withObject:theID withObject:self];
+//    if ([theID isKindOfClass:[Reply class]]) {
+//        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID]integerValue]&&[((Reply*)theID).petUser.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            delOrReplyReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
+//            [delOrReplyReplyAction showInView:self.superview];
+//            return;
+//        }
+//        if ([((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+//            [delReplyAction showInView:self.superview];
+//            return;
+//        }
+//    }
+//    if ([theID isKindOfClass:[ReplyComment class]]) {
+//        if ([((ParticularDynamicViewController*)self.viewC).dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((ReplyComment*)theID).commentUserView.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
+//            [action showInView:self.superview];
+//            return;
+//        }
+//        if ([((ReplyComment*)theID).commentUserView.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            delReplyAction= [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+//            [delReplyAction showInView:self.superview];
+//            return;
+//        }
+//    }
+//    [self.viewC performSelector:@selector(recalledreply: cell:) withObject:theID withObject:self];
 }
 #pragma mark - OHAttributedLabel Delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -139,72 +139,72 @@
 #pragma mark - alert view delegate
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        if ([_theID isKindOfClass:[Reply class]]) {
-            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-            long long a = (long long)(cT*1000);
-            [params setObject:((Reply*)_theID).replyID forKey:@"replyId"];
-            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-            [body setObject:@"1" forKey:@"channel"];
-            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-            [body setObject:@"iphone" forKey:@"imei"];
-            [body setObject:params forKey:@"params"];
-            [body setObject:@"delReply" forKey:@"method"];
-            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [((ParticularDynamicViewController*)self.viewC).dynamic.replyViews removeObject:self.theID];
-                ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
-                for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
-                    Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
-                    [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
-                    for (int j = 0; j < rel.replyComments.count; j++) {
-                        ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
-                    }
-                }
-                [(UITableView*)self.superview reloadData];
-            }];
-        }
-        if ([self.theID isKindOfClass:[ReplyComment class]]) {
-            Reply* theReply = nil;
-            for (Reply* rep in ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews) {
-                for (ReplyComment * repcom in rep.replyComments) {
-                    if ([self.theID isEqual:repcom]) {
-                        theReply = rep;
-                    }
-                }
-            }
-            if (theReply) {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:((ReplyComment*)self.theID).replyCommentID forKey:@"replyCommonid"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"delCommentReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [theReply.replyComments removeObject:self.theID];
-                    ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
-                    for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
-                        Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
-                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
-                        for (int j = 0; j < rel.replyComments.count; j++) {
-                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
-                            [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
-                        }
-                    }
-                    [(UITableView*)self.superview reloadData];
-                }];
-            }
-            
-        }
-    }
+//    if (buttonIndex == 1) {
+//        if ([_theID isKindOfClass:[Reply class]]) {
+//            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//            long long a = (long long)(cT*1000);
+//            [params setObject:((Reply*)_theID).replyID forKey:@"replyId"];
+//            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//            [body setObject:@"1" forKey:@"channel"];
+//            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//            [body setObject:@"iphone" forKey:@"imei"];
+//            [body setObject:params forKey:@"params"];
+//            [body setObject:@"delReply" forKey:@"method"];
+//            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                [((ParticularDynamicViewController*)self.viewC).dynamic.replyViews removeObject:self.theID];
+//                ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
+//                for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
+//                    Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
+//                    [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
+//                    for (int j = 0; j < rel.replyComments.count; j++) {
+//                        ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
+//                    }
+//                }
+//                [(UITableView*)self.superview reloadData];
+//            }];
+//        }
+//        if ([self.theID isKindOfClass:[ReplyComment class]]) {
+//            Reply* theReply = nil;
+//            for (Reply* rep in ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews) {
+//                for (ReplyComment * repcom in rep.replyComments) {
+//                    if ([self.theID isEqual:repcom]) {
+//                        theReply = rep;
+//                    }
+//                }
+//            }
+//            if (theReply) {
+//                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//                long long a = (long long)(cT*1000);
+//                [params setObject:((ReplyComment*)self.theID).replyCommentID forKey:@"replyCommonid"];
+//                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//                [body setObject:@"1" forKey:@"channel"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//                [body setObject:@"iphone" forKey:@"imei"];
+//                [body setObject:params forKey:@"params"];
+//                [body setObject:@"delCommentReply" forKey:@"method"];
+//                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                    [theReply.replyComments removeObject:self.theID];
+//                    ((ParticularDynamicViewController*)self.viewC).highArray  = [[NSMutableArray alloc]init];
+//                    for (int i = 0; i < ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews.count; i++) {
+//                        Reply* rel = ((ParticularDynamicViewController*)self.viewC).dynamic.replyViews[i];
+//                        [((ParticularDynamicViewController*)self.viewC).highArray addObject:rel];
+//                        for (int j = 0; j < rel.replyComments.count; j++) {
+//                            ReplyComment* recom = (ReplyComment*)rel.replyComments[j];
+//                            [((ParticularDynamicViewController*)self.viewC).highArray addObject:recom];
+//                        }
+//                    }
+//                    [(UITableView*)self.superview reloadData];
+//                }];
+//            }
+//            
+//        }
+//    }
 }
 @end

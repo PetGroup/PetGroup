@@ -13,7 +13,7 @@
 -(void)owenrCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath;
 @end
 @interface OwenrCell : UITableViewCell
-@property (nonatomic,assign)NSIndexPath*indexPath;
+@property (nonatomic,retain)NSIndexPath*indexPath;
 @property (nonatomic,assign)id<OwenrCellDelegate>delegate;
 @property (nonatomic,retain)Article*article;
 +(CGFloat)heightForRowWithArticle:(Article*)article;

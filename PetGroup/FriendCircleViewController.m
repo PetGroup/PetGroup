@@ -11,10 +11,12 @@
 #import "EditDynamicViewController.h"
 #import "EGOImageView.h"
 #import "EGOImageButton.h"
+#import "OnceDynamicViewController.h"
 
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate>
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
+@property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
 @end
 
 @implementation FriendCircleViewController
@@ -103,6 +105,8 @@
     signatureL.textColor = [UIColor blackColor];
     signatureL.text = [dic objectForKey:@"signature"];
     [_headV addSubview:signatureL];
+    
+    [self reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -132,7 +136,10 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    [self.navigationController pushViewController:odVC animated:YES];
 }
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
@@ -141,18 +148,88 @@
 }
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    NSLog(@"indext= %d= %d",indexPath.section,indexPath.row);
+    Dynamic* dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    if (!dynamic.ifIZaned) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:dynamic.dynamicID forKey:@"srcid"];
+        [params setObject:@"赞动态" forKey:@"type"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"service.uri.pet_pat" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"addPat" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            dynamic.ifIZaned = !dynamic.ifIZaned;
+            dynamic.countZan++;
+            [self.tableV reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }else{
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:dynamic.dynamicID forKey:@"srcid"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"service.uri.pet_pat" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"delPat" forKey:@"method"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            dynamic.ifIZaned = !dynamic.ifIZaned;
+            dynamic.countZan--;
+            [self.tableV reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
 }
 -(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleReply;
+    [self.navigationController pushViewController:odVC animated:YES];
 }
 -(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleZhuanfa;
+    [self.navigationController pushViewController:odVC animated:YES];
 }
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray
 {
     
+}
+#pragma mark - load data
+-(void)reloadData
+{
+    [_friendCircleDS reloadDataSuccess:^{
+        [self.tableV reloadData];
+    } failure:^{
+        
+    }];
+}
+-(void)loadMoreData
+{
+    [_friendCircleDS loadMoreDataSuccess:^{
+        [self.tableV reloadData];
+    } failure:^{
+        
+    }];
 }
 @end
