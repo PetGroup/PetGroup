@@ -94,7 +94,7 @@
 {
     
 //    [self refreshFriendList];
-    [self getFriendByHttp];
+//    [self getFriendByHttp];
  //   [self getFriendInfo:@"england"];
 }
 -(void)getFriendByHttp

@@ -172,7 +172,8 @@
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
     [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
  //   [locationDict setObject:@"" forKey:@"city"];
-    [locationDict setObject:@"" forKey:@"gender"];
+    [locationDict setObject:@"pet" forKey:@"personOrPet"];
+    [locationDict setObject:theGender forKey:@"gender"];
     [locationDict setObject:theType forKey:@"petType"];
     [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
@@ -214,20 +215,21 @@
     [locationDict setObject:[NSString stringWithFormat:@"%f",longitude] forKey:@"longitude"];
     [locationDict setObject:[NSString stringWithFormat:@"%f",latitude] forKey:@"latitude"];
     [locationDict setObject:theGender forKey:@"gender"];
-    [locationDict setObject:theType forKey:@"type"];
+    [locationDict setObject:theType forKey:@"petType"];
     [locationDict setObject:[NSString stringWithFormat:@"%d",self.currentPage] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"getNearbyUserAndPet" forKey:@"method"];
+    [postDict setObject:@"getNearPerson" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         if (responseObject) {
-            NSArray * recArray = [receiveStr JSONValue];
-            [self parseData:recArray];
+//            NSArray * recArray = [receiveStr JSONValue];
+            [self parseData:responseObject];
         }
         else
         {
@@ -308,7 +310,7 @@
     if (!personOrPet) {
         [self.appearPetArray removeAllObjects];
         for (int i = 0;i<self.nearbyArray.count;i++) {
-            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petInfoViews"]];
+            [self.appearPetArray addObjectsFromArray:[[self.nearbyArray objectAtIndex:i] objectForKey:@"petList"]];
         }
         [self makeDistanceArray];
     }
@@ -601,9 +603,9 @@
 {
     NSString * userID = [NSString stringWithFormat:@"%@",uid];
     for (NSDictionary * uDict in self.nearbyArray) {
-        NSString * tempID = [NSString stringWithFormat:@"%@",[uDict objectForKey:@"userid"]];
+        NSString * tempID = [NSString stringWithFormat:@"%@",[[uDict objectForKey:@"user"]objectForKey:@"id"]];
         if ([tempID isEqualToString:userID]) {
-            return uDict;
+            return [uDict objectForKey:@"user"];
         }
     }
     return nil;

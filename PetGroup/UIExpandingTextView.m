@@ -106,11 +106,12 @@
         
         /* Custom Background image */
         textViewBackgroundImage = [[UIImageView alloc] initWithFrame:backgroundFrame];
-        textViewBackgroundImage.image          = [UIImage imageNamed:@"chat_input.png"];
+//        textViewBackgroundImage.image          = [UIImage imageNamed:@"chat_input.png"];
         textViewBackgroundImage.contentMode    = UIViewContentModeScaleToFill;
-//        UIEdgeInsets insets = UIEdgeInsetsMake(0.5, 0.5, 0, 0);
-//        [textViewBackgroundImage setImage:[[UIImage imageNamed:@"keyBoardBack"] resizableImageWithCapInsets:insets]];
-        textViewBackgroundImage.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
+        UIEdgeInsets insets = UIEdgeInsetsMake(0.5, 0.5, 0, 0);
+        [textViewBackgroundImage setImage:[[UIImage imageNamed:@"chat_input.png"] resizableImageWithCapInsets:insets]];
+ //       textViewBackgroundImage.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
+
         [self addSubview:textViewBackgroundImage];
         [self addSubview:internalTextView];
 
@@ -343,12 +344,12 @@
 	return internalTextView.textColor;
 }
 
--(void)setTextAlignment:(UITextAlignment)aligment
+-(void)setTextAlignment:(NSTextAlignment)aligment
 {
 	internalTextView.textAlignment = aligment;
 }
 
--(UITextAlignment)textAlignment
+-(NSTextAlignment)textAlignment
 {
 	return internalTextView.textAlignment;
 }

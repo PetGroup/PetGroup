@@ -18,4 +18,6 @@
 +(int)minusNowDate:(NSDate *)date;
 +(NSString *)getmessageTime:(NSDate *)date;
 +(UIImage *)imageFromText:(int)count image:(UIImage *)image;
+
++(float)diffHeight:(UIViewController *)controller;
 @end

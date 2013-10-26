@@ -50,7 +50,7 @@
 
 
     
-    self.petInfo.petType = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
+    
     self.petInfo.petTrait = self.petInfo.petTrait.length>1?self.petInfo.petTrait:@"主人还没有给她填写特点呢";
 //    if ([self.petInfo.petGender isEqualToString:@"male"]) {
 //        self.petInfo.petGender = @"公";
@@ -67,7 +67,8 @@
     
     self.titleArray = [NSArray arrayWithObjects:@"品种",@"昵称",@"性别",@"年龄",@"特点", nil];
     self.placeHolderArray = [NSMutableArray arrayWithObjects:@"告诉大家宝贝的品种吧",@"给宝贝起个昵称吧",@"请选择宝贝性别",@"请选择宝贝年龄",@"说说宝贝的特点吧", nil];
-    self.discribeArray = [NSMutableArray arrayWithObjects:self.petInfo.petType?self.petInfo.petType:PlaceHolder,self.petInfo.petNickname?self.petInfo.petNickname:PlaceHolder,self.petInfo.petGender?self.petInfo.petGender:PlaceHolder,self.petInfo.petAge?self.petInfo.petAge:PlaceHolder,self.petInfo.petTrait?self.petInfo.petTrait:PlaceHolder, nil];
+    NSString * typeRealString = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
+    self.discribeArray = [NSMutableArray arrayWithObjects:typeRealString?typeRealString:PlaceHolder,self.petInfo.petNickname?self.petInfo.petNickname:PlaceHolder,self.petInfo.petGender?self.petInfo.petGender:PlaceHolder,self.petInfo.petAge?self.petInfo.petAge:PlaceHolder,self.petInfo.petTrait?self.petInfo.petTrait:PlaceHolder, nil];
     [self makeHeight];
     self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
@@ -485,17 +486,18 @@
     NSMutableDictionary * petinfo = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [petinfo setObject:self.petInfo.petID forKey:@"id"];
-    [petinfo setObject:@"0" forKey:@"version"];
+//    [petinfo setObject:@"0" forKey:@"version"];
     [postDict setObject:petinfo forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"delPetInfo" forKey:@"method"];
+    [postDict setObject:@"delPetinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dic);
+//        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSLog(@"%@",dic);
         [DataStoreManager deleteOnePetForPetID:self.petInfo.petID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [self.navigationController popViewControllerAnimated:YES];
@@ -773,9 +775,9 @@
         
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [hud hide:YES];
-            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"%@",dic);
-            [DataStoreManager storeOnePetInfo:dic];
+//            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//            NSLog(@"%@",dic);
+            [DataStoreManager storeOnePetInfo:params];
             [self.navigationController popViewControllerAnimated:YES];
             
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -810,9 +812,9 @@
         
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [hud hide:YES];
-            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"%@",dic);
-            [DataStoreManager storeOnePetInfo:dic];
+//            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//            NSLog(@"%@",dic);
+            [DataStoreManager storeOnePetInfo:params];
             [self.navigationController popViewControllerAnimated:YES];
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [hud hide:YES];

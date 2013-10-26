@@ -13,6 +13,7 @@
 #import "XMPPFramework.h"
 #import "Common.h"
 #import "UIExpandingTextView.h"
+#import "BHExpandingTextView.h"
 #import "TempData.h"
 #import "StoreMsgDelegate.h"
 #import "PersonDetailViewController.h"
@@ -20,7 +21,7 @@
 #import "selectContactPage.h"
 #import "OHASBasicHTMLParser.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -69,6 +70,8 @@
     NSString * rootRecordPath;
     NSMutableArray * animationOne;
     NSMutableArray * animationTwo;
+    
+    float diffH;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;
@@ -80,7 +83,7 @@
 @property(nonatomic, retain) NSString *friendStatus;
 @property(nonatomic, retain) NSString *chatUserImg;
 @property (strong,nonatomic) AppDelegate * appDel;
-@property (strong,nonatomic) UIExpandingTextView *textView;
+@property (strong,nonatomic) BHExpandingTextView *textView;
 @property (assign,nonatomic) id<StoreMsgDelegate> msgDelegate;
 @property (nonatomic,retain) AVAudioSession *session;
 @property (nonatomic,retain) AVAudioRecorder *recorder;

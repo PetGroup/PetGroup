@@ -252,4 +252,19 @@
     return watermarkedImage;
 }
 
++(float)diffHeight:(UIViewController *)controller
+{
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // Load resources for iOS 6.1 or earlier
+        return 0.0f;
+    } else {
+        // Load resources for iOS 7 or later
+        if (controller) {
+            [controller setNeedsStatusBarAppearanceUpdate];
+        }
+        
+        return 20.0f;
+    }
+}
+
 @end

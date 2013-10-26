@@ -44,12 +44,14 @@
     // If you create your views manually, you MUST override this method and use it to create your views.
     // If you use Interface Builder to create your views, then you must NOT override this method.
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
-   
+    diffH = [Common diffHeight:self];
     postDict = [NSMutableDictionary dictionary];
     canAdd = YES;
     previousTime = 0;
@@ -80,7 +82,7 @@
     myHeadImg = @"";
     myHeadImg = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     
-    self.tView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-50) style:UITableViewStylePlain];
+    self.tView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(44+diffH)-50) style:UITableViewStylePlain];
    // NSLog(@"wwwwww%f",self.view.frame.size.height);
     [self.view addSubview:self.tView];
     [self.tView setBackgroundColor:[UIColor clearColor]];
@@ -88,12 +90,16 @@
     self.tView.dataSource = self;
     self.tView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    if (messages.count>0) {
+        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    }
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
  //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -101,14 +107,14 @@
     [backButton addTarget:self action:@selector(closeButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    profileButton.frame=CGRectMake(282, 7, 30, 30);
+    profileButton.frame=CGRectMake(282, 7+diffH, 30, 30);
     [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:profileButton];
     [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
     
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -143,11 +149,11 @@
     [inPutView addSubview:audioBtn];
     [audioBtn addTarget:self action:@selector(audioBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.textView = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 25)];
+    self.textView = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
     self.textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+    self.textView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     [self.textView.internalTextView setReturnKeyType:UIReturnKeySend];
     self.textView.delegate = self;
-    self.textView.maximumNumberOfLines=5;
     [inPutView addSubview:self.textView];
     
     audioRecordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -245,9 +251,9 @@
             [self autoMovekeyBoard:0];
             ifEmoji = NO;
             [UIView animateWithDuration:0.2 animations:^{
-                [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260, 320, 253)];
-                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260, 320, emojiBGV.frame.size.height)];
-                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260, 320, m_Emojipc.frame.size.height)];
+                [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260+diffH, 320, 253)];
+                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260+diffH, 320, emojiBGV.frame.size.height)];
+                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260+diffH, 320, m_Emojipc.frame.size.height)];
             } completion:^(BOOL finished) {
                 [m_EmojiScrollView removeFromSuperview];
                 [emojiBGV removeFromSuperview];
@@ -263,7 +269,7 @@
         [sender setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
         self.textView.hidden = NO;
         audioRecordBtn.hidden = YES;
-        [self.textView becomeFirstResponder];
+        [self.textView.internalTextView becomeFirstResponder];
     }
 }
 -(void)emojiBtnClicked:(UIButton *)sender
@@ -281,7 +287,7 @@
     }
     else
     {
-        [self.textView becomeFirstResponder];
+        [self.textView.internalTextView becomeFirstResponder];
         ifEmoji = NO;
         [m_EmojiScrollView removeFromSuperview];
         [emojiBGV removeFromSuperview];
@@ -581,8 +587,8 @@
             ifEmoji = NO;
             [UIView animateWithDuration:0.2 animations:^{
                 [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260, 320, 253)];
-                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260, 320, emojiBGV.frame.size.height)];
-                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260, 320, m_Emojipc.frame.size.height)];
+                [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260+diffH, 320, emojiBGV.frame.size.height)];
+                [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260+diffH, 320, m_Emojipc.frame.size.height)];
             } completion:^(BOOL finished) {
                 [m_EmojiScrollView removeFromSuperview];
                 [emojiBGV removeFromSuperview];
@@ -634,19 +640,19 @@
 //	UITableView *tableView = (UITableView *)[self.view viewWithTag:TABLEVIEWTAG];
 //	tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-108.0));
     [UIView commitAnimations];
-    self.tView.frame = CGRectMake(0.0f, 44, 320.0f, self.view.frame.size.height-44-inPutView.frame.size.height-h);
+    self.tView.frame = CGRectMake(0.0f, 44+diffH, 320.0f, self.view.frame.size.height-(44+diffH)-inPutView.frame.size.height-h);
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
     
     if (h>0&&canAdd) {
         canAdd = NO;
-        clearView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-inPutView.frame.size.height-h)];
+        clearView = [[UIView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(44+diffH)-inPutView.frame.size.height-h)];
         [clearView setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:clearView];
     }
     if ([clearView superview]) {
-        [clearView setFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-inPutView.frame.size.height-h)];
+        [clearView setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(44+diffH)-inPutView.frame.size.height-h)];
     }
 
 
@@ -658,6 +664,7 @@
 {
     /* Adjust the height of the toolbar when the input component expands */
     float diff = (self.textView.frame.size.height - height);
+    NSLog(@"bbbb:%f",self.textView.frame.size.height);
     CGRect r = inPutView.frame;
     CGRect r2 = inputbg.frame;
     r.origin.y += diff;
@@ -666,9 +673,9 @@
     inPutView.frame = r;
     inputbg.frame = r2;
     if ([clearView superview]) {
-        [clearView setFrame:CGRectMake(0, 44, 320, clearView.frame.size.height+diff)];
+        [clearView setFrame:CGRectMake(0, 44+diffH, 320, clearView.frame.size.height+diff)];
     }
-    self.tView.frame = CGRectMake(0.0f, 44, 320.0f, self.tView.frame.size.height+diff);
+    self.tView.frame = CGRectMake(0.0f, 44+diffH, 320.0f, self.tView.frame.size.height+diff);
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
@@ -676,6 +683,7 @@
     [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
     [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
     [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
+    
 }
 //return方法
 - (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView{
@@ -898,13 +906,13 @@
         
     }
     if (![clearView superview]) {
-        clearView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44-50)];
+        clearView = [[UIView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(44+diffH)-50)];
         [clearView setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:clearView];
     }
 
 
-    popLittleView = [[UIView alloc] initWithFrame:CGRectMake(originX, originY, 182, 54.5)];
+    popLittleView = [[UIView alloc] initWithFrame:CGRectMake(originX, originY+diffH, 182, 54.5)];
     UIImageView * popBG = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 182, 54.5)];
     [popBG setImage:[UIImage imageNamed:@"popview2.png"]];
     [popLittleView addSubview:popBG];
@@ -947,15 +955,15 @@
     [btnBG addSubview:btn3];
     if (originX+182>320) {
         originX = originX-(originX+182-320);
-        [popLittleView setFrame:CGRectMake(originX, originY, 182, 54.5)];
+        [popLittleView setFrame:CGRectMake(originX, originY+diffH, 182, 54.5)];
     }
     else if (originX<0)
     {
-        [popLittleView setFrame:CGRectMake(0, originY, 182, 54.5)];
+        [popLittleView setFrame:CGRectMake(0, originY+diffH, 182, 54.5)];
     }
-    if (originY<44) {
+    if (originY<(44+diffH)) {
         originY = originY+54.5+rect.size.height;
-        [popLittleView setFrame:CGRectMake(originX, originY, 182, 54.5)];
+        [popLittleView setFrame:CGRectMake(originX, originY+diffH, 182, 54.5)];
         CGAffineTransform atransform;
         atransform = CGAffineTransformRotate(popLittleView.transform, M_PI);
         popLittleView.transform =  atransform;

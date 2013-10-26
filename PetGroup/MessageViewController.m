@@ -31,20 +31,25 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+    
+    float diffH = [Common diffHeight:self];
+    
     [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
 
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
 
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -53,12 +58,12 @@
     [self.view addSubview:titleLabel];
     [titleLabel setText:@"消息"];
     
-    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-88) style:UITableViewStylePlain];
+    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(88+diffH)) style:UITableViewStylePlain];
     [self.view addSubview:self.messageTable];
     self.messageTable.dataSource = self;
     self.messageTable.delegate = self;
     self.messageTable.contentOffset = CGPointMake(0, 44);
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44, 320, 44)];
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, 44)];
     searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
@@ -421,7 +426,6 @@
         if ([[allNickNameArray objectAtIndex:theIndex] isEqualToString:ZhaoHuLan]) {
             FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
             [self.navigationController pushViewController:friq animated:YES];
-            [self.customTabBarController hidesTabBar:YES animated:YES];
             [searchDisplay setActive:NO animated:NO];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -441,7 +445,6 @@
     if ([[allNickNameArray objectAtIndex:indexPath.row] isEqualToString:ZhaoHuLan]) {
         FriendsReqsViewController * friq = [[FriendsReqsViewController alloc] init];
         [self.navigationController pushViewController:friq animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
         [searchDisplay setActive:NO animated:NO];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];

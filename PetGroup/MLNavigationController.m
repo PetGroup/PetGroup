@@ -149,10 +149,14 @@ static MLNavigationController *mlNavigationController;
     frame.origin.x = x;
     self.view.frame = frame;
     
-    float scale = (x/6400)+0.95;
+//    float scale = (x/6400)+0.95;
+    float scale = 1;  //改为无大小变化
     float alpha = 0.4 - (x/800);
 
     lastScreenShotView.transform = CGAffineTransformMakeScale(scale, scale);
+//    CGRect frame2 = lastScreenShotView.frame;
+    float newx = x/2-160;
+    lastScreenShotView.frame = CGRectMake(newx, lastScreenShotView.frame.origin.y, lastScreenShotView.frame.size.width, lastScreenShotView.frame.size.height);
     blackMask.alpha = alpha;
     
 }
@@ -205,10 +209,10 @@ static MLNavigationController *mlNavigationController;
             NSLog(@"nonononno");
         }
         lastScreenShotView = [[[UIImageView alloc]initWithImage:lastScreenShot]autorelease];
-        UIView * bg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
-        [bg setBackgroundColor:[UIColor blackColor]];
-        [lastScreenShotView addSubview:bg];
-        [bg release];
+//        UIView * bg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
+//        [bg setBackgroundColor:[UIColor blackColor]];
+//        [lastScreenShotView addSubview:bg];
+//        [bg release];
         [lastScreenShotView setBackgroundColor:[UIColor blackColor]];
         [self.backgroundView insertSubview:lastScreenShotView belowSubview:blackMask];
          

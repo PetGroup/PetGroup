@@ -29,10 +29,19 @@
     }
     return self;
 }
-
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//        // Load resources for iOS 6.1 or earlier
+//    } else {
+//        // Load resources for iOS 7 or later
+//        [UIApplication sharedApplication].statusBarHidden = YES;
+//    }
     NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
     if (openImgStr) {
         
@@ -198,6 +207,7 @@
     CircleViewController* circleVC = [[CircleViewController alloc]init];
     self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:circleVC];
 
+    
 //    DynamicViewController * dynamicV = [[DynamicViewController alloc] init];
 //    self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:dynamicV];
     NearByViewController * nearbyV = [[NearByViewController alloc] init];
@@ -219,9 +229,11 @@
     self.NaviMore.navigationBarHidden = YES;
     self.NaviDynamic.navigationBarHidden = YES;
     
+    float diffH = [Common diffHeight:self];
+    
     NSArray * views = [NSArray arrayWithObjects:self.NaviMessage,self.NaviDynamic,self.NaviNearBy,self.NaviContacts,self.NaviMore, nil];
-    NSArray * normalPic = [NSArray arrayWithObjects:@"normal_02.png",@"normal_03.png",@"normal_04.png",@"normal_05.png",@"normal_06", nil];
-    NSArray * selectPic = [NSArray arrayWithObjects:@"select_02.png", @"select_03.png",@"select_04.png",@"select_05.png",@"select_06",nil];
+    NSArray * normalPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6normal_01.png":@"os7normal_01.png",diffH==0.0f?@"os6normal_02.png":@"os7normal_02.png",diffH==0.0f?@"os6normal_03.png":@"os7normal_03.png",diffH==0.0f?@"os6normal_04.png":@"os7normal_04.png",diffH==0.0f?@"os6normal_05.png":@"os7normal_05.png", nil];
+    NSArray * selectPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6select_01.png":@"os7select_01.png", diffH==0.0f?@"os6select_02.png":@"os7select_02.png",diffH==0.0f?@"os6select_03.png":@"os7select_03.png",diffH==0.0f?@"os6select_04.png":@"os7select_04.png",diffH==0.0f?@"os6select_05.png":@"os7select_05.png",nil];
     self.tabBarC = [[CustomTabBar alloc] initWithImages:normalPic AndSelected:selectPic AndControllers:views];
     
     [self presentModalViewController:self.tabBarC animated:NO];

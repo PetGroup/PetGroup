@@ -20,6 +20,7 @@
     #import "DataStoreManager.h"
     #import "NetManager.h"
     #import "MakeDict.h"
+    #import "Common.h"
 #endif
 
 #define BaseClientUrl @"http://123.178.27.74/pet-hub/request"

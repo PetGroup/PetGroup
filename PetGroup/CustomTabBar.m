@@ -68,6 +68,7 @@ static CustomTabBar *customTabBarController;
 - (void)hidesTabBar:(BOOL)yesOrNO animated:(BOOL)animated
 {
   //  [self hidesTabBar];
+    [self hidesTabBar];
 	if (yesOrNO == YES)
 	{
 		if (tabBarBackgroundView.frame.origin.y == self.view.frame.size.height)
@@ -110,6 +111,7 @@ static CustomTabBar *customTabBarController;
 			tabBarBackgroundView.frame = CGRectMake(tabBarBackgroundView.frame.origin.x, tabBarBackgroundView.frame.origin.y - TabbarHeight, tabBarBackgroundView.frame.size.width, tabBarBackgroundView.frame.size.height);
 		}
 	}
+    
 }
 -(void) customTabBar
 {
@@ -125,7 +127,7 @@ static CustomTabBar *customTabBarController;
 	//[self.view insertSubview:tabBarBackgroundView atIndex:1];
 	[self.view addSubview:tabBarBackgroundView];
     
-    tabTitle = [[NSDictionary alloc] initWithObjectsAndKeys:@"消息",@"1",@"动态",@"2",@"附近",@"3",@"联系人",@"4",@"我",@"5", nil];
+//    tabTitle = [[NSDictionary alloc] initWithObjectsAndKeys:@"消息",@"1",@"动态",@"2",@"附近",@"3",@"联系人",@"4",@"我",@"5", nil];
 	//将滚动视图加载到tabBarBackGroundView上去
 
 	//创建button
@@ -147,8 +149,8 @@ static CustomTabBar *customTabBarController;
 		button.frame = CGRectMake(width*i, 0, width, height);
 		[button addTarget:self action:@selector(selectedTabBarItem:) forControlEvents:UIControlEventTouchUpInside];
 		button.tag = i+1;
-		UILabel*label = [[UILabel alloc] initWithFrame:CGRectMake(0,height-22, width, height-22)];
-		[label setBackgroundColor:[UIColor clearColor]];
+//		UILabel*label = [[UILabel alloc] initWithFrame:CGRectMake(0,height-22, width, height-22)];
+//		[label setBackgroundColor:[UIColor clearColor]];
         UIImageView *imageView2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
         imageView2.tag=button.tag+100;
        // imageView2.image = [UIImage imageNamed:[NSString stringWithFormat:@"normal_0%d.png",i+1+1]];
@@ -156,14 +158,14 @@ static CustomTabBar *customTabBarController;
         [button addSubview:imageView2];
         [imageView2 release];
 
-        [label setText:[tabTitle objectForKey:[NSString stringWithFormat:@"%d",i+1]]];
-
-        label.tag=button.tag+200;
-        label.textColor = [UIColor whiteColor];
-		[label setFont:[UIFont systemFontOfSize:12.0]];//改变字体大小
-		[label setTextAlignment:NSTextAlignmentCenter];//字体中间对齐
-		[button addSubview:label];
-		[label release];
+//        [label setText:[tabTitle objectForKey:[NSString stringWithFormat:@"%d",i+1]]];
+//
+//        label.tag=button.tag+200;
+//        label.textColor = [UIColor whiteColor];
+//		[label setFont:[UIFont systemFontOfSize:12.0]];//改变字体大小
+//		[label setTextAlignment:NSTextAlignmentCenter];//字体中间对齐
+//		[button addSubview:label];
+//		[label release];
 //		[button setBackgroundImage:nil forState:UIControlStateNormal];
 		[self.buttons addObject:button];
 		[tabBarBackgroundView addSubview:button];

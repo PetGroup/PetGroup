@@ -22,6 +22,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         //日期标签
+        self.backgroundColor = [UIColor clearColor];
         senderAndTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 300, 20)];
         //居中显示
         senderAndTimeLabel.backgroundColor = [UIColor clearColor];
