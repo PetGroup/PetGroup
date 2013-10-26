@@ -148,6 +148,7 @@
 }
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"indext= %d= %d",indexPath.section,indexPath.row);
     Dynamic* dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     if (!dynamic.ifIZaned) {
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];

@@ -19,7 +19,7 @@
 
 @property (nonatomic,weak)Dynamic*dynamic;
 @property (nonatomic,weak)id<DynamicCellDelegate> delegate;
-@property (nonatomic,weak)NSIndexPath* indexPath;
+@property (nonatomic,strong)NSIndexPath* indexPath;
 
 +(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 @end

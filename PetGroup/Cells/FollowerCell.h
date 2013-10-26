@@ -13,6 +13,6 @@
 -(void)followerCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath;
 @end
 @interface FollowerCell : UITableViewCell
-@property (nonatomic,assign)NSIndexPath*indexPath;
+@property (nonatomic,retain)NSIndexPath*indexPath;
 @property (nonatomic,assign)id<OwenrCellDelegate>delegate;
 @end
