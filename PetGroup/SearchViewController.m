@@ -35,22 +35,26 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"搜索"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -58,7 +62,7 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    self.resultTable = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44) style:UITableViewStylePlain];
+    self.resultTable = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.resultTable];
     self.resultTable.footerOnly = YES;
     self.resultTable.pullingDelegate = self;

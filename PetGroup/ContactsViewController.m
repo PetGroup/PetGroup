@@ -29,18 +29,24 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
+    
     self.appDel = [[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
-    [self.view addSubview:TopBarBGV];
+    float diffH = [Common diffHeight:self];
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
+    [self.view addSubview:TopBarBGV];
+
+    
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"联系人";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -49,14 +55,14 @@
     [self.view addSubview:titleLabel];
     
     UIButton *addButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    addButton.frame=CGRectMake(275, 6, 40, 30);
+    addButton.frame=CGRectMake(275, 6+diffH, 40, 30);
     [addButton setBackgroundImage:[UIImage imageNamed:@"tianjia.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [addButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:addButton];
     [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
  
-    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-88) style:UITableViewStylePlain];
+    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-88-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.contactsTable];
     self.contactsTable.dataSource = self;
     self.contactsTable.delegate = self;

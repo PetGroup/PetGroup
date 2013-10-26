@@ -25,22 +25,26 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"设置";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -50,7 +54,7 @@
     
     titlesArray=[[NSMutableArray alloc]initWithObjects:@"评价一下",@"意见反馈",@"关于宠物圈",@"清除缓存", nil];
     
-    self.settingTV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
+    self.settingTV = [[UITableView alloc] initWithFrame:CGRectMake(0,44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     [self.view addSubview:self.settingTV];
     self.settingTV.backgroundView = nil;
     self.settingTV.dataSource = self;

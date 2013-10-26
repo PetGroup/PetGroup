@@ -60,18 +60,22 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.hidesBottomBarWhenPushed = YES;
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"圈子"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -80,12 +84,12 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 0+diffH, 80, 44);
     [nextB setBackgroundImage:[UIImage imageNamed:@"mail"] forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44, 320, 31.5)];
+    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
     tabIV.image = [UIImage imageNamed:@"table_bg"];
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
@@ -106,7 +110,7 @@
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
     
-    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(0, 75.5, 320, self.view.frame.size.height-124.5)];
+    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH)];
     _hotPintsV.rowHeight = 100;
     _hotPintsV.delegate = self;
     [self.view addSubview:_hotPintsV];
@@ -119,7 +123,7 @@
     [headV addSubview:searchB];
     
     UIImageView* tableHeadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 36.5, 320, 26)];
-    tableHeadView.image = [UIImage imageNamed:@"biaoti"];
+    tableHeadView.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
     tableHeadView.userInteractionEnabled = YES;
     
     goodB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -159,7 +163,7 @@
     cv.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
     cv.headerReferenceSize = CGSizeMake(320, 26);
     cv.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 75.5, 320, self.view.frame.size.height-124.5) collectionViewLayout:cv];
+    self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
     _attentionV.delegate = self;
     _attentionV.backgroundColor = [UIColor whiteColor];
     [_attentionV registerClass:[CircleCell class] forCellWithReuseIdentifier:@"cell"];

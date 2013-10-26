@@ -41,6 +41,8 @@
     
     UILabel * noResultLabel;
     
+    float diffH;
+    
 }
 @property (strong,nonatomic) UITableView * messageTable;
 @property (strong,nonatomic) UITableView * petTypeTable;

@@ -34,13 +34,15 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
 
-    
+    float diffH = [Common diffHeight:self];
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypeImage;
@@ -58,25 +60,27 @@
     self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
     self.placeHolderArray = [NSMutableArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"选择一个地区",@"写一下签名吧",@"填一下爱好吧", nil];
     [self makeHeight];
-    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2, 140, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text = self.hostInfo.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
@@ -85,6 +89,9 @@
     [self.view addSubview:titleLabel];
     
     self.cityPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    if (diffH==20.0f) {
+        [self.cityPV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+    }
     _cityPV.dataSource = self;
     _cityPV.delegate = self;
     _cityPV.showsSelectionIndicator = YES;
@@ -105,6 +112,9 @@
     
     
     self.agePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    if (diffH==20.0f) {
+        [self.agePV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+    }
     _agePV.showsSelectionIndicator = YES;
     _agePV.dataSource = self;
     _agePV.delegate = self;
@@ -116,6 +126,9 @@
     [chooseRegionV addSubview:self.agePV];
     
     self.genderPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    if (diffH==20.0f) {
+        [self.genderPV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+    }
     _genderPV.showsSelectionIndicator = YES;
     _genderPV.dataSource = self;
     _genderPV.delegate = self;

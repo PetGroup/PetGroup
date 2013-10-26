@@ -32,12 +32,16 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
         
+    float diffH = [Common diffHeight:self];
+    
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypeImage;
@@ -83,12 +87,12 @@
         self.petInfo.petType = @"";
     }
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
@@ -97,7 +101,7 @@
     
     
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2, 140, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     if (self.pageType==PageStyleAdd) {
         titleLabel.text=@"添加新宠物";
@@ -107,7 +111,7 @@
     {
         titleLabel.text=self.petInfo.petNickname;
         UIButton *profileButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        profileButton.frame=CGRectMake(282, 7, 30, 30);
+        profileButton.frame=CGRectMake(282, 7+diffH, 30, 30);
         [profileButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi.png"] forState:UIControlStateNormal];
         //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
         [profileButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -152,7 +156,11 @@
     _genderPV.dataSource = self;
     _genderPV.delegate = self;
     self.genderPV.hidden = YES;
-    
+    if (diffH==20.0f) {
+        [self.cityPV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+        [self.genderPV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+        [self.agePV setBackgroundColor:[UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1]];
+    }
     [chooseRegionV addSubview:self.genderPV];
 
     hud = [[MBProgressHUD alloc] initWithView:self.view];

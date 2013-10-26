@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface WelcomeViewController : UIViewController<UIScrollViewDelegate>
-
+{
+    float diffH;
+}
 @end

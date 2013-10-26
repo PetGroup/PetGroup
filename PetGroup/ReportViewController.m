@@ -23,7 +23,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,12 +39,14 @@
     // messages = [NSMutableArray array];
     
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -50,7 +54,7 @@
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.theTitle;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -59,15 +63,15 @@
     [self.view addSubview:titleLabel];
     
     
-    UIImageView * bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 54, 300, 160)];
+    UIImageView * bg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 54+diffH, 300, 160)];
     [bg setImage:[UIImage imageNamed:@"outkuang.png"]];
     [bigBG addSubview:bg];
     
-    UIImageView * inputBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 64, 280, 110)];
+    UIImageView * inputBg = [[UIImageView alloc] initWithFrame:CGRectMake(20, 64+diffH, 280, 110)];
     [inputBg setImage:[UIImage imageNamed:@"reportinput.png"]];
     [bigBG addSubview:inputBg];
     
-    self.inputTextF = [[UITextView alloc] initWithFrame:CGRectMake(25, 69, 260, 90)];
+    self.inputTextF = [[UITextView alloc] initWithFrame:CGRectMake(25, 69+diffH, 260, 90)];
     [self.inputTextF setBackgroundColor:[UIColor clearColor]];
     self.inputTextF.text = self.defaultContent;
     self.inputTextF.delegate = self;
@@ -79,8 +83,8 @@
 
 
     UIButton * bottomBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bottomBtn setFrame:CGRectMake(10, 224, 300, 38)];
-    [bottomBtn setBackgroundImage:[UIImage imageNamed:@"brownlong-normal.png"] forState:UIControlStateNormal];
+    [bottomBtn setFrame:CGRectMake(10, 224+diffH, 300, 38)];
+    diffH==0.0f?[bottomBtn setBackgroundImage:[UIImage imageNamed:@"brownlong-normal.png"] forState:UIControlStateNormal]:[bottomBtn setBackgroundColor:[UIColor orangeColor]];
     [bottomBtn setTitle:@"确定" forState:UIControlStateNormal];
     [bottomBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [bottomBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -88,18 +92,18 @@
     [bottomBtn addTarget:self action:@selector(submitBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     if (self.realReport) {
-        self.emailField = [[UITextField alloc] initWithFrame:CGRectMake(10, 224, 300, 30)];
+        self.emailField = [[UITextField alloc] initWithFrame:CGRectMake(10, 224+diffH, 300, 30)];
         self.emailField.borderStyle = UITextBorderStyleRoundedRect;
         self.emailField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.emailField.delegate = self;
         self.emailField.backgroundColor = [UIColor whiteColor];
         self.emailField.placeholder = @"留一下邮箱吧，以便给您反馈";
         [bigBG addSubview:self.emailField];
-        [bottomBtn setFrame:CGRectMake(10, 264, 300, 38)];
+        [bottomBtn setFrame:CGRectMake(10, 264+diffH, 300, 38)];
     }
     
     remainingLabel=[[UILabel alloc]init];
-    [remainingLabel setFrame:CGRectMake(180, 184, 120, 20)];
+    [remainingLabel setFrame:CGRectMake(180, 184+diffH, 120, 20)];
     remainingLabel.backgroundColor=[UIColor clearColor];
     [remainingLabel setTextAlignment:NSTextAlignmentRight];
     remainingLabel.textColor=[UIColor grayColor];

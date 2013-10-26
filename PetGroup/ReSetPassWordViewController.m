@@ -29,32 +29,35 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    float diffH = [Common diffHeight:self];
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
     [nextB addTarget:self action:@selector(numberIsUser) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"重置密码"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -62,15 +65,15 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80, 257.5, 41)];
+    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
     [nameBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
     [self.view addSubview:nameBG];
     
-    UIImageView * passWordIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 122, 257.5, 41)];
+    UIImageView * passWordIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 122+diffH, 257.5, 41)];
     [passWordIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
     [self.view addSubview:passWordIV];
     
-    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 121, 256.5, 1)];
+    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 121+diffH, 256.5, 1)];
     a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
     [self.view addSubview:a];
     
@@ -80,7 +83,7 @@
     nameL.backgroundColor = [UIColor clearColor];
     [nameBG addSubview:nameL];
     
-    self.phoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(33.25, 129.5, 257.5, 25)];
+    self.phoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(33.25, 129.5+diffH, 257.5, 25)];
     _phoneNoTF.placeholder = @"请输入手机号";
     [self.view addSubview:_phoneNoTF];
     _phoneNoTF.keyboardType = UIKeyboardTypeNumberPad;

@@ -45,23 +45,28 @@
     }
     return self;
 }
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *filterButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    filterButton.frame=CGRectMake(275, 5, 45, 32.5);
+    filterButton.frame=CGRectMake(275, 5+diffH, 45, 32.5);
     [filterButton setBackgroundImage:[UIImage imageNamed:@"shaixuan.png"] forState:UIControlStateNormal];
     [self.view addSubview:filterButton];
     [filterButton addTarget:self action:@selector(filterButtonDo:) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"附近的人（全部）";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -70,7 +75,7 @@
     [self.view addSubview:titleLabel];
     self.titleLabel = titleLabel;
     
-    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-94) style:UITableViewStylePlain];
+    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-94-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.messageTable];
     self.messageTable.dataSource = self;
     self.messageTable.delegate = self;
@@ -645,7 +650,7 @@
     filterPage.hidden = NO;
     filterBGV.hidden = NO;
     [UIView animateWithDuration:0.3 animations:^(void){
-        [filterPage setFrame:CGRectMake(8.25, 60, 303.5, 340)];
+        [filterPage setFrame:CGRectMake(8.25, 60+diffH, 303.5, 340)];
         
     }];
 }

@@ -34,7 +34,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -42,17 +44,19 @@
     UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"新动态"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -61,22 +65,29 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    if (diffH==20.0f) {
+        
+    }
+    else
+    {
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75, 292.5, 128)];
+    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, 128)];
     editIV.image = [UIImage imageNamed:@"edit_bg"] ;
     [self.view addSubview:editIV];
     
-    self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 55.75, 292.5,128)];
+    self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5,128)];
     _dynamicTV.backgroundColor = [UIColor clearColor];
     _dynamicTV.font = [UIFont systemFontOfSize:17];
     _dynamicTV.delegate = self;
     [self.view addSubview:_dynamicTV];
+    [self.dynamicTV becomeFirstResponder];
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
     tool.image = [UIImage imageNamed:@"table_bg"];
@@ -84,12 +95,12 @@
     _dynamicTV.inputAccessoryView = tool;
     
     UIButton* imageB = [UIButton buttonWithType:UIButtonTypeCustom];
-    imageB.frame = CGRectMake(270, 2, 40, 40);
+    imageB.frame = CGRectMake(270, 4, 35, 35);
     [imageB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
     
-    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75, 200, 20)];
+    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75+diffH, 200, 20)];
     _placeholderL.backgroundColor = [UIColor clearColor];
     _placeholderL.textColor = [UIColor grayColor];
     _placeholderL.text = @"今天想跟别人说点什么……";
@@ -97,7 +108,7 @@
     
     
     PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
-    PhotoB.frame = CGRectMake(13, 195, 48.5, 48.5);
+    PhotoB.frame = CGRectMake(13, 195+diffH, 48.5, 48.5);
     [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
     [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     PhotoB.hidden = YES;
@@ -265,6 +276,7 @@
             PhotoB.hidden = NO;
         }
     }
+    [self.dynamicTV becomeFirstResponder];
     
 }
 #pragma mark - imagePickerController delegate
@@ -291,6 +303,7 @@
     }
     UITapGestureRecognizer*tapGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapImage:)];
     [imageV addGestureRecognizer:tapGR];
+    [self.dynamicTV becomeFirstResponder];
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

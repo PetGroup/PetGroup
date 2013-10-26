@@ -23,6 +23,8 @@
     UIView * typeMsgView;
     UIView * blackV;
     NSDictionary * infoDict;
+    
+    float diffH;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong, nonatomic) HGPhotoWall *photoWall;

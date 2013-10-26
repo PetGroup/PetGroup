@@ -18,7 +18,7 @@
 
         float diffH = [Common diffHeight:nil];
         self.saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.saveBtn setFrame:CGRectMake(0, 0, self.frame.size.width, 40)];
+        diffH==0.0f?[self.saveBtn setFrame:CGRectMake(0, 0, 300, 40)]:[self.saveBtn setFrame:CGRectMake(0, 0, 320, 40)];
         diffH==0.0f?[self.saveBtn setBackgroundImage:[UIImage imageNamed:@"brownlong-normal"] forState:UIControlStateNormal]:[self.saveBtn setBackgroundColor:[UIColor orangeColor]];
         [self.saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.contentView addSubview:self.saveBtn];

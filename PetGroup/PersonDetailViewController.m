@@ -50,23 +50,27 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2, 140, 40)];
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.hostInfo.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
@@ -119,7 +123,7 @@
     NSNumber * height2 = [NSNumber numberWithFloat:size2.height];
     self.heightArray = [NSArray arrayWithObjects:height1,height2, nil];
 
-    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-58.5-44) style:UITableViewStyleGrouped];
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44+diffH, 320, self.view.frame.size.height-58.5-44-diffH) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;
@@ -175,7 +179,7 @@
     typeMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
     typeMsgView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:typeMsgView];
-    blackV = [[UIView alloc] initWithFrame:CGRectMake(40, 90, 240, 150)];
+    blackV = [[UIView alloc] initWithFrame:CGRectMake(40, 90+diffH, 240, 150)];
     blackV.backgroundColor = [UIColor blackColor];
     blackV.layer.cornerRadius = 5;
     blackV.alpha = 0.8;
@@ -1058,7 +1062,7 @@
     [UIView setAnimationDuration:0.3];
     if (typeMsgView.frame.origin.y<0) {
         if (iPhone5) {
-            if (self.view.frame.size.height == 499.0) {
+            if (self.view.frame.size.height == 499.0+diffH) {
                 inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
             }else{
                 inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
@@ -1066,7 +1070,7 @@
         }
         else
         {
-            if (self.view.frame.size.height == 411.0) {
+            if (self.view.frame.size.height == 411.0+diffH) {
                 inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
             }else{
                 inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);

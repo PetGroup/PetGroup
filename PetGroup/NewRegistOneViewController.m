@@ -33,34 +33,37 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
     
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    float diffH = [Common diffHeight:self];
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"填写手机号(1/3)"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -68,18 +71,18 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80, 257.5, 41)];
+    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
     [nameBG setImage:[UIImage imageNamed:@"logininputbg.png"]];
     [self.view addSubview:nameBG];
     
-    UILabel* tishi1L = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 141, 257.5, 60)];
+    UILabel* tishi1L = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 141+diffH, 257.5, 60)];
     tishi1L.text = @"输入您的手机号，免费注册宠物圈，宠物圈不会在任何地方泄露您的电话号码。";
     tishi1L.font = [UIFont systemFontOfSize:15];
     tishi1L.numberOfLines = 0;
     tishi1L.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishi1L];
     
-    UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 221, 257.5, 40)];
+    UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 221+diffH, 257.5, 40)];
     tishi2.text = @"下一步将发送验证码到您的手机上。";
     tishi2.font = [UIFont systemFontOfSize:15];
     tishi2.numberOfLines = 0;
@@ -87,18 +90,18 @@
     [self.view addSubview:tishi2];
     
     readB = [UIButton buttonWithType:UIButtonTypeCustom];
-    readB.frame = CGRectMake(31.25, 288.5, 15, 15);
+    readB.frame = CGRectMake(31.25, 288.5+diffH, 15, 15);
     [readB setBackgroundImage:[UIImage imageNamed:@"third_common_selected_clicked"] forState:UIControlStateNormal];
     [readB addTarget:self action:@selector(readUserTreaty) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:readB];
     
-    UILabel* tishi3 = [[UILabel alloc]initWithFrame:CGRectMake(52.25, 285, 257.5, 20)];
+    UILabel* tishi3 = [[UILabel alloc]initWithFrame:CGRectMake(52.25, 285+diffH, 257.5, 20)];
     tishi3.text = @"已阅读并同意";
     tishi3.font = [UIFont systemFontOfSize:15];
     tishi3.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishi3];
     
-    UILabel* xieyiL = [[UILabel alloc]initWithFrame:CGRectMake(140, 285, 90, 20)];
+    UILabel* xieyiL = [[UILabel alloc]initWithFrame:CGRectMake(140, 285+diffH, 90, 20)];
     xieyiL.text = @"《用户协议》";
     xieyiL.font = [UIFont systemFontOfSize:15];
     xieyiL.textColor = [UIColor colorWithRed:8/255.0 green:141/255.0 blue:184/255.0 alpha:1];
@@ -108,7 +111,7 @@
     
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(userTreaty:)];
     [xieyiL addGestureRecognizer:tap];
-     self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake(42.25, 85, 245.5, 30)];
+     self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake(42.25, 85+diffH, 245.5, 30)];
     _phoneTF.placeholder = @"请输入手机号";
     _phoneTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;

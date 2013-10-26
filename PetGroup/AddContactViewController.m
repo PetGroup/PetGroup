@@ -26,7 +26,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -36,12 +38,14 @@
     [bgV setImage:[UIImage imageNamed:@"chat_bg.png"]];
     [self.view addSubview:bgV];
 
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -49,7 +53,7 @@
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"添加联系人";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -57,7 +61,7 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    self.resultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44) style:UITableViewStylePlain];
+    self.resultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.resultTable];
     self.resultTable.dataSource = self;
     self.resultTable.delegate = self;
@@ -75,7 +79,7 @@
     [asearchBar insertSubview:dd atIndex:1];
     asearchBar.delegate = self;
     
-    noResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 320, 60)];
+    noResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 150+diffH, 320, 60)];
     [noResultLabel setTextAlignment:NSTextAlignmentCenter];
     noResultLabel.text = @"不好意思呀，没找到^_^";
 //    noResultLabel.adjustsFontSizeToFitWidth = YES;

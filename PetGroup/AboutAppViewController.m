@@ -22,7 +22,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,12 +35,14 @@
     // messages = [NSMutableArray array];
     
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
@@ -46,7 +50,7 @@
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2, 120, 40)];
+    UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=@"关于宠物圈";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -55,13 +59,13 @@
     [self.view addSubview:titleLabel];
     
     UIImageView * iconImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"icon-256.png"]];
-    iconImageView.frame=CGRectMake(120, 80, 80, 80);
+    iconImageView.frame=CGRectMake(120, 80+diffH, 80, 80);
     iconImageView.layer.cornerRadius=10;
     [self.view addSubview:iconImageView];
     
     UILabel *showVersion=[[UILabel alloc] init];
     [showVersion setBackgroundColor:[UIColor clearColor]];
-    showVersion.frame= CGRectMake(20, 180, 280, 40);
+    showVersion.frame= CGRectMake(20, 180+diffH, 280, 40);
     
     version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
 
@@ -76,7 +80,7 @@
 
     UIButton * updateButton=[UIButton buttonWithType:UIButtonTypeRoundedRect];
 
-    updateButton.frame=CGRectMake(20, 240+self.view.frame.size.height-480+30, 280, 40);
+    updateButton.frame=CGRectMake(20, 240+self.view.frame.size.height-480+30+diffH, 280, 40);
  
     [updateButton setTitle:@"检查新版本" forState:UIControlStateNormal];
     updateButton.titleLabel.textColor=[UIColor grayColor];
@@ -86,7 +90,7 @@
     [updateButton addTarget:self action:@selector(checkNewVersion) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * protocolBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [protocolBtn setFrame:CGRectMake(0, 330+self.view.frame.size.height-480, 320, 30)];
+    [protocolBtn setFrame:CGRectMake(0, 330+self.view.frame.size.height-480+diffH, 320, 30)];
     [protocolBtn setTitle:@"点此查看《用户协议》" forState:UIControlStateNormal];
     [self.view addSubview:protocolBtn];
     [protocolBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
@@ -95,7 +99,7 @@
     
    UILabel * protocal=[[UILabel alloc]init];
 
-    protocal.frame=CGRectMake(10, 370+self.view.frame.size.height-480, 300, 20);
+    protocal.frame=CGRectMake(10, 370+self.view.frame.size.height-480+diffH, 300, 20);
 
     protocal.text=@"版权所有--爱宠联盟科技有限公司";
     protocal.textColor=[UIColor grayColor];
@@ -105,7 +109,7 @@
     
     UILabel * protocal1=[[UILabel alloc]init];
 
-    protocal1.frame=CGRectMake(10, 390+self.view.frame.size.height-480, 300, 20);
+    protocal1.frame=CGRectMake(10, 390+self.view.frame.size.height-480+diffH, 300, 20);
 
     
     protocal1.text=@"客服电话:010-562921815";
@@ -116,7 +120,7 @@
     
     UILabel * protocal2=[[UILabel alloc]init];
 
-    protocal2.frame=CGRectMake(10, 410+self.view.frame.size.height-480, 300, 20);
+    protocal2.frame=CGRectMake(10, 410+self.view.frame.size.height-480+diffH, 300, 20);
 
     protocal2.text=@"All Rights Reserved";
     protocal2.textColor=[UIColor grayColor];

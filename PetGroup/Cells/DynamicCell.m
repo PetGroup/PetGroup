@@ -119,14 +119,14 @@
         [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
         [_bottomIV addSubview:zhuanfaB];
         
-        self.zanImageV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 14, 15)];
+        self.zanImageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 4, 14, 15)];
         [zanB addSubview:_zanImageV];
         
-        UIImageView* replyIV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 15, 12.5)];
+        UIImageView* replyIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 5, 17, 14.5)];
         replyIV.image = [UIImage imageNamed:@"pinglun"];
         [replyB addSubview:replyIV];
         
-        UIImageView * zhuanfaIV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 14, 16.5)];
+        UIImageView * zhuanfaIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 3.5, 14, 16.5)];
         zhuanfaIV.image = [UIImage imageNamed:@"zhuanfa"];
         [zhuanfaB addSubview:zhuanfaIV];
     }

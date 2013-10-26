@@ -45,20 +45,24 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    
+    float diffH = [Common diffHeight:self];
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:backButton];
@@ -66,13 +70,13 @@
     
 
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"填写宠物信息"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -80,14 +84,14 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(100, 70, 120, 20)];
+    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(100, 70+diffH, 120, 20)];
     tishiL.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
     tishiL.backgroundColor = [UIColor clearColor];
     tishiL.textColor = [UIColor whiteColor];
     tishiL.text = @"填写宠物资料";
     [self.view addSubview:tishiL];
     
-    UIImageView* petIV = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 120, 120)];
+    UIImageView* petIV = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100+diffH, 120, 120)];
     [self.view addSubview:petIV];
     switch (self.petType) {
         case 1:{
@@ -108,19 +112,19 @@
         default:
             break;
     }
-    UIImageView * typeBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 290, 257.5, 41)];
+    UIImageView * typeBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 290+diffH, 257.5, 41)];
     [typeBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
     [self.view addSubview:typeBG];
     
-    UIImageView * ageIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 332, 257.5, 41)];
+    UIImageView * ageIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 332+diffH, 257.5, 41)];
     [ageIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
     [self.view addSubview:ageIV];
     
-    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 331, 256.5, 1)];
+    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 331+diffH, 256.5, 1)];
     a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
     [self.view addSubview:a];
     
-    UIImageView * sexIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 240, 257.5, 41)];
+    UIImageView * sexIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 240+diffH, 257.5, 41)];
     [sexIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
     [self.view addSubview:sexIV];
     
@@ -143,33 +147,33 @@
     [sexIV addSubview:sexL];
     
     manB = [UIButton buttonWithType:UIButtonTypeCustom];
-    manB.frame = CGRectMake(111.25, 250, 21, 21);
+    manB.frame = CGRectMake(111.25, 250+diffH, 21, 21);
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [manB addTarget:self action:@selector(setSexIsMan) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:manB];
     
     womanB = [UIButton buttonWithType:UIButtonTypeCustom];
-    womanB.frame = CGRectMake(181.25, 250, 21, 21);
+    womanB.frame = CGRectMake(181.25, 250+diffH, 21, 21);
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [womanB addTarget:self action:@selector(setSexIsWoman) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:womanB];
     
-    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 250, 20, 20)];
+    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 250+diffH, 20, 20)];
     manL.text = @"公";
     manL.textColor = [UIColor grayColor];
     manL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:manL];
     
-    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 250, 20, 20)];
+    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 250+diffH, 20, 20)];
     womanL.text = @"母";
     womanL.textColor = [UIColor grayColor];
     womanL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:womanL];
     
-    self.typeTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 340, 0, 0)];
+    self.typeTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 340+diffH, 0, 0)];
     [self.view addSubview:_typeTF];
     
-    self.typePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
+    self.typePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0+diffH, 320, 200)];
     _typePV.dataSource = self;
     _typePV.delegate = self;
     _typePV.showsSelectionIndicator = YES;
@@ -182,7 +186,7 @@
     toolbar.items = @[rb];
     _typeTF.inputAccessoryView = toolbar;
     
-    self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 382, 0, 0)];
+    self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 382+diffH, 0, 0)];
     [self.view addSubview:_ageTF];
     
     self.agePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
@@ -199,23 +203,23 @@
     _ageTF.inputAccessoryView = aToolbar;
     
     typeB = [UIButton buttonWithType:UIButtonTypeCustom];
-    typeB.frame = CGRectMake(31.25, 290, 257.5, 40);
+    typeB.frame = CGRectMake(31.25, 290+diffH, 257.5, 40);
     [self.view addSubview:typeB];
     [typeB addTarget:self action:@selector(selectCity) forControlEvents:UIControlEventTouchUpInside];
     
     ageB = [UIButton buttonWithType:UIButtonTypeCustom];
-    ageB.frame = CGRectMake(31.25, 332, 257.5, 40);
+    ageB.frame = CGRectMake(31.25, 332+diffH, 257.5, 40);
     [self.view addSubview:ageB];
     [ageB addTarget:self action:@selector(selectAge) forControlEvents:UIControlEventTouchUpInside];
     
     self.typeL = [[UILabel alloc]init];
-    _typeL.frame = CGRectMake(111.25, 300, 175, 20);
+    _typeL.frame = CGRectMake(111.25, 300+diffH, 175, 20);
     _typeL.backgroundColor = [UIColor clearColor];
     _typeL.textColor = [UIColor grayColor];
     [self.view addSubview:_typeL];
     
     self.ageL = [[UILabel alloc]init];
-    _ageL.frame = CGRectMake(111.25, 342, 175, 20);
+    _ageL.frame = CGRectMake(111.25, 342+diffH, 175, 20);
     _ageL.backgroundColor = [UIColor clearColor];
     _ageL.textColor = [UIColor grayColor];
     [self.view addSubview:_ageL];
@@ -267,17 +271,18 @@
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];
     [body setObject:@"savePetinfo" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [hud show:YES];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dic);
+//        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSLog(@"%@",dic);
         UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
         upLoadVC.petType = self.petType;
         upLoadVC.hostDic = self.hostDic;
-        [params setObject:[dic objectForKey:@"id"] forKey:@"id"];
+//        [params setObject:[dic objectForKey:@"id"] forKey:@"id"];
         upLoadVC.petDic = params;
         [self.navigationController pushViewController:upLoadVC animated:YES];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -285,6 +290,7 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
     }];
+
 }
 -(void)savePetInFo:(NSDictionary*)dic
 {

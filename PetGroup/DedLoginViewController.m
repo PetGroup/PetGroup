@@ -23,18 +23,22 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    float diffH = [Common diffHeight:self];
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"注册完成"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -42,17 +46,17 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView* heheIV = [[UIImageView alloc]initWithFrame:CGRectMake(112.5, 70, 95, 45)];
+    UIImageView* heheIV = [[UIImageView alloc]initWithFrame:CGRectMake(112.5, 70+diffH, 95, 45)];
     heheIV.image = [UIImage imageNamed:@"chenggong"];
     [self.view addSubview:heheIV];
     
-    UILabel* tishiL1 = [[UILabel alloc]initWithFrame:CGRectMake(20, 150, 250, 30)];
+    UILabel* tishiL1 = [[UILabel alloc]initWithFrame:CGRectMake(20, 150+diffH, 250, 30)];
     tishiL1.text = @"恭喜你，你已经注册成功！";
     tishiL1.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
     tishiL1.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishiL1];
     
-    UILabel* tishiL2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 190, 280, 60)];
+    UILabel* tishiL2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 190+diffH, 280, 60)];
     tishiL2.text = @"快去选择你的宠物，并且给你和你的宠物设置一个高端大气上档次的头像吧，可以更好地与宠友们交流。";
     tishiL2.backgroundColor = [UIColor clearColor];
     tishiL2.numberOfLines = 0;
@@ -60,7 +64,7 @@
     
     UIButton * laterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [laterBtn setBackgroundImage:[UIImage imageNamed:@"denglu_normal.png"] forState:UIControlStateNormal];
-    [laterBtn setFrame:CGRectMake(32, 320, 110, 41)];
+    [laterBtn setFrame:CGRectMake(32, 320+diffH, 110, 41)];
     [self.view addSubview:laterBtn];
     [laterBtn setTitle:@"以后再说" forState:UIControlStateNormal];
     [laterBtn setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
@@ -68,7 +72,7 @@
     [laterBtn addTarget:self action:@selector(laterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     UIButton * goBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [goBtn setBackgroundImage:[UIImage imageNamed:@"zhuce_normal.png"] forState:UIControlStateNormal];
-    [goBtn setFrame:CGRectMake(152, 320, 136, 41)];
+    [goBtn setFrame:CGRectMake(152, 320+diffH, 136, 41)];
     [self.view addSubview:goBtn];
     goBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
     [goBtn setTitle:@"现在去完善" forState:UIControlStateNormal];

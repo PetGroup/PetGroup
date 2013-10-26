@@ -28,14 +28,18 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
-    self.view.backgroundColor = [UIColor whiteColor];
-    sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    self.view.backgroundColor = [UIColor blackColor];
+    diffH = [Common diffHeight:self];
+
+    sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0+diffH, 320, self.view.frame.size.height-diffH)];
 	//设置委托
 	sc.delegate=self;
     //设置背景颜色
@@ -123,7 +127,7 @@
         }
     }
 	//设置sc内容大小
-	[sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height)];
+	[sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height-diffH)];
 }
 #pragma mark - scrollView delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView

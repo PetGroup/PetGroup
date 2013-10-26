@@ -28,28 +28,31 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
     
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    float diffH = [Common diffHeight:self];
+    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
     [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"选择爱宠"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -57,14 +60,14 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UILabel* a = [[UILabel alloc]initWithFrame:CGRectMake(100, 80, 120, 20)];
+    UILabel* a = [[UILabel alloc]initWithFrame:CGRectMake(100, 80+diffH, 120, 20)];
     a.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
     a.backgroundColor = [UIColor clearColor];
     a.textColor = [UIColor whiteColor];
     a.text = @"请选择您的爱宠";
     [self.view addSubview:a];
     
-    UIImageView * yuanIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 125, 280, 280)];
+    UIImageView * yuanIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 125+diffH, 280, 280)];
     yuanIV.image = [UIImage imageNamed:@"xuanzechongwu-bg"];
     yuanIV.userInteractionEnabled = YES;
     [self.view addSubview:yuanIV];
