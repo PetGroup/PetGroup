@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
-@class DynamicCell;
 @protocol DynamicCellDelegate<NSObject>
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath;

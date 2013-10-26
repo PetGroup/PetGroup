@@ -348,7 +348,6 @@
 {
     if (indexPath.section == 0) {
         FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
-        friendCircleVC.friendCircleDS.dataSourceArray = [self.attentionDS.dynamicArray mutableCopy];
         [self.navigationController pushViewController:friendCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else{

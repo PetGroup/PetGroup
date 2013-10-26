@@ -53,19 +53,20 @@
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
     
-    UIView* bottomV = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
-    bottomV.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:bottomV];
+    UIImageView* bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
+    bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+    bottomIV.userInteractionEnabled = YES;
+    [self.view addSubview:bottomIV];
     
     UIButton* showB = [UIButton buttonWithType:UIButtonTypeCustom];
     [showB setTitle:@"举报" forState:UIControlStateNormal];
     showB.frame = CGRectMake(10, 4.5, 60, 40);
-    [bottomV addSubview:showB];
+    [bottomIV addSubview:showB];
     
     UIButton* replyB = [UIButton  buttonWithType:UIButtonTypeCustom];
     [replyB setTitle:@"回复" forState:UIControlStateNormal];
     replyB.frame = CGRectMake(80, 4.5, 240, 40);
-    [bottomV addSubview:replyB];
+    [bottomIV addSubview:replyB];
     
     CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:18.0] constrainedToSize:CGSizeMake(300, 90) lineBreakMode:NSLineBreakByWordWrapping];
     UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 300, size.height)];

@@ -29,7 +29,8 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"" forKey:@"lastStateid"];
+    [params setObject:@"0" forKey:@"pageNo"];
+    [params setObject:@"1" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];

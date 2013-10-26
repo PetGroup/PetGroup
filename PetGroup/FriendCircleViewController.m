@@ -16,6 +16,7 @@
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate>
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
+@property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
 @end
 
 @implementation FriendCircleViewController
@@ -104,6 +105,8 @@
     signatureL.textColor = [UIColor blackColor];
     signatureL.text = [dic objectForKey:@"signature"];
     [_headV addSubview:signatureL];
+    
+    [self reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,5 +161,22 @@
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray
 {
     
+}
+#pragma mark - load data
+-(void)reloadData
+{
+    [_friendCircleDS reloadDataSuccess:^{
+        [self.tableV reloadData];
+    } failure:^{
+        
+    }];
+}
+-(void)loadMoreData
+{
+    [_friendCircleDS loadMoreDataSuccess:^{
+        [self.tableV reloadData];
+    } failure:^{
+        
+    }];
 }
 @end

@@ -16,11 +16,12 @@
 {
     self = [super init];
     if (self) {
-        self.countZan = [[dic objectForKey:@"countZan"] integerValue];
+        self.countZan = [[dic objectForKey:@"totalPat"] integerValue];
         self.submitTime = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[dic objectForKey:@"ct"]];
         self.dynamicID = [dic objectForKey:@"id"];
-        self.ifIZaned = [[dic objectForKey:@"ifIZaned"] boolValue];
+        self.ifIZaned = [[dic objectForKey:@"didIpat"] boolValue];
         self.ifTransmitMsg = [[dic objectForKey:@"ifTransmitMsg"] intValue];
+        self.imageID = [dic objectForKey:@"imgid"];
         NSArray* i = [[dic objectForKey:@"imgid"] componentsSeparatedByString:@","];
         if (i.count>1) {
             self.smallImage = [NSMutableArray array];
@@ -36,11 +37,9 @@
         self.msg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"msg"]];
         [_msg setFont:[UIFont systemFontOfSize:15]];
         [_msg setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
-       
-//        self.zanUsers = [dic ];
-        self.userHeadImage = [[[dic objectForKey:@"petUserView"] objectForKey:@"img"] componentsSeparatedByString:@"_"][0];
-        self.nickName = [[dic objectForKey:@"petUserView"] objectForKey:@"nickname"];
-        self.userID = [[dic objectForKey:@"petUserView"] objectForKey:@"userid"];
+        self.userHeadImage = [[dic objectForKey:@"img"] componentsSeparatedByString:@"_"][0];
+        self.nickName = [dic objectForKey:@"nickname"];
+        self.userID = [dic objectForKey:@"userid"];
         self.state = [dic objectForKey:@"state"];
         self.transmitMsg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"transmitMsg"]];
         [_transmitMsg setFont:[UIFont systemFontOfSize:15]];

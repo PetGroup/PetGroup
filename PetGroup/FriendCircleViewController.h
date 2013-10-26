@@ -10,5 +10,5 @@
 #import "FriendCircleDataSource.h"
 
 @interface FriendCircleViewController : UIViewController
-@property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
+
 @end

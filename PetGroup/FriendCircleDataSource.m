@@ -7,15 +7,18 @@
 //
 
 #import "FriendCircleDataSource.h"
-
+@interface FriendCircleDataSource ()
+@property (nonatomic,assign)int pageNo;
+@end
 @implementation FriendCircleDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {//body={"method":"getAllFriendStates","token":"XXX","channel":"","mac":"","imei":"","params":{"lastStateid":""}}
-    self.lastStateid = @"-1";
+    self.pageNo = 0;
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.lastStateid forKey:@"lastStateid"];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
@@ -26,10 +29,11 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
         [self.dataSourceArray removeAllObjects];
         if (array.count>0) {
+            self.pageNo++;
             for (NSDictionary*a in array) {
                 Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
                 [self.dataSourceArray addObject:b];
@@ -45,7 +49,8 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"" forKey:@"lastStateid"];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
@@ -56,10 +61,10 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        [self.dataSourceArray removeAllObjects];
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
         if (array.count>0) {
+            self.pageNo++;
             for (NSDictionary*a in array) {
                 Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
                 [self.dataSourceArray addObject:b];

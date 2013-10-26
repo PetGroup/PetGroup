@@ -16,10 +16,10 @@
 @property (nonatomic,strong)NSString*dynamicID;
 @property (nonatomic,assign)BOOL ifIZaned;
 @property (nonatomic,assign)int ifTransmitMsg;
+@property (nonatomic,retain)NSString* imageID;
 @property (nonatomic,strong)NSMutableArray* smallImage;
 @property (nonatomic,strong)NSMutableArray* imgIDArray;
 @property (nonatomic,strong)NSMutableAttributedString* msg;
-@property (nonatomic,strong)NSMutableArray* zanUsers;
 @property (nonatomic,strong)NSString* userHeadImage;
 @property (nonatomic,strong)NSString* nickName;
 @property (nonatomic,strong)NSString* userID;
