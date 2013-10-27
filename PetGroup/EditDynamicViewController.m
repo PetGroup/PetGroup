@@ -87,7 +87,7 @@
     _dynamicTV.font = [UIFont systemFontOfSize:17];
     _dynamicTV.delegate = self;
     [self.view addSubview:_dynamicTV];
-    [self.dynamicTV becomeFirstResponder];
+    
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
     tool.image = [UIImage imageNamed:@"table_bg"];
@@ -120,7 +120,10 @@
     hud.labelText = @"正在发送，请稍后";
     
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self.dynamicTV becomeFirstResponder];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -235,7 +238,10 @@
                 }
                 if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                     imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
-                    [self presentModalViewController:imagePicker animated:YES];
+//                    [self presentModalViewController:imagePicker animated:YES];
+                    [self presentViewController:imagePicker animated:YES completion:^{
+                        
+                    }];
                 }
                 else {
                     UIAlertView *cameraAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相机" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil];
@@ -251,7 +257,10 @@
                 }
                 if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                     imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
-                    [self presentModalViewController:imagePicker animated:YES];
+//                    [self presentModalViewController:imagePicker animated:YES];
+                    [self presentViewController:imagePicker animated:YES completion:^{
+                        
+                    }];
                 }
                 else {
                     UIAlertView *libraryAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相册" delegate:self cancelButtonTitle:@"了解" otherButtonTitles:nil];

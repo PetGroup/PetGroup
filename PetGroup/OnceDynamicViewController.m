@@ -11,7 +11,8 @@
 #import "TempData.h"
 #import "DetailsDynamicCell.h"
 #import "UIExpandingTextView.h"
-@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate>
+#import "BHExpandingTextView.h"
+@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate>
 {
     int assessOrPraise;
     UIImageView * inputbg;
@@ -23,7 +24,7 @@
 @property (strong,nonatomic) UIActionSheet* reportAction;
 @property (strong,nonatomic) UIAlertView* delAlert;
 @property (strong,nonatomic) UIAlertView* reportAlert;
-@property (nonatomic,strong)UIExpandingTextView* inputTF;
+@property (nonatomic,strong)BHExpandingTextView* inputTF;
 //@property (strong,nonatomic) NSString* lastReplyid;
 @end
 
@@ -39,22 +40,26 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"详情"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -63,12 +68,12 @@
     [self.view addSubview:titleLabel];
     
     UIButton *moveButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    moveButton.frame=CGRectMake(278, 3, 35, 33);
+    moveButton.frame=CGRectMake(278, 3+diffH, 35, 33);
     [moveButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi"] forState:UIControlStateNormal];
     [moveButton addTarget:self action:@selector(showActionShoot) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moveButton];
     
-    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-93)];
+    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.pullingDelegate = self;
@@ -107,11 +112,12 @@
     [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
     [inPutView addSubview:inputbg];
     
-    self.inputTF = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+    self.inputTF = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
     self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+    self.inputTF.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
     [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
     self.inputTF.delegate = self;
-    self.inputTF.maximumNumberOfLines=5;
+//    self.inputTF.maximumNumberOfLines=5;
     [inPutView addSubview:self.inputTF];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -122,10 +128,10 @@
             
         }break;
         case OnceDynamicViewControllerStyleReply:{
-            [self replyAction];
+            [self performSelector:@selector(replyAction) withObject:nil afterDelay:0.5];
         }break;
         case OnceDynamicViewControllerStyleZhuanfa:{
-            [self zhuanfaAction];
+            [self performSelector:@selector(zhuanfaAction) withObject:nil afterDelay:0.5];
         }break;
         default:
             break;
@@ -189,7 +195,7 @@
 }
 -(void)replyAction//评论
 {
-    [_inputTF becomeFirstResponder];
+    [_inputTF.internalTextView becomeFirstResponder];
     assessOrPraise = 1;
     _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
     NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -197,7 +203,7 @@
 }
 -(void)zhuanfaAction//转发
 {
-    [_inputTF becomeFirstResponder];
+    [_inputTF.internalTextView becomeFirstResponder];
     assessOrPraise = 2;
     _inputTF.placeholder = @"转发至我的动态";
     NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -441,7 +447,7 @@
     }];
 }
 #pragma mark - Responding to keyboard events
--(void)expandingTextView:(UIExpandingTextView *)expandingTextView willChangeHeight:(float)height
+-(void)expandingTextView:(BHExpandingTextView *)expandingTextView willChangeHeight:(float)height
 {
     /* Adjust the height of the toolbar when the input component expands */
     float diff = (expandingTextView.frame.size.height - height);
@@ -454,7 +460,7 @@
     inputbg.frame = r2;
     
 }
-- (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView
+- (BOOL)expandingTextViewShouldReturn:(BHExpandingTextView *)expandingTextView
 {
     if (expandingTextView.text.length>=1) {
         [self didInput];
@@ -508,7 +514,7 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     if (iPhone5) {
-        if (self.view.frame.size.height == 499.0) {
+        if (self.view.frame.size.height == 499.0+diffH) {
             inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
         }else{
             inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
@@ -516,7 +522,7 @@
     }
     else
     {
-        if (self.view.frame.size.height == 411.0) {
+        if (self.view.frame.size.height == 411.0+diffH) {
             inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
         }else{
             inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);

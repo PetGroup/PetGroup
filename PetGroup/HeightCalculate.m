@@ -20,7 +20,7 @@
 //    [attString setFont:[UIFont systemFontOfSize:14]];
 //
 //    return [attString sizeConstrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX) fitRange:NULL];
-
+    return CGSizeMake(0, 0);
 }
 //+ (NSString *)transformString:(NSString *)originalStr
 //{

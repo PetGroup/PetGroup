@@ -85,8 +85,11 @@
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    if (diffH==0) {
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
+
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];

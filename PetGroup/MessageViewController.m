@@ -674,7 +674,10 @@
 
     WelcomeViewController * welcomeV = [[WelcomeViewController alloc] init];
         UINavigationController * navi = [[UINavigationController alloc] initWithRootViewController:welcomeV];
-    [self presentModalViewController:navi animated:NO];
+//    [self presentModalViewController:navi animated:NO];
+    [self presentViewController:navi animated:NO completion:^{
+        
+    }];
 }
 -(void)saveMyInfo:(NSDictionary *)dict
 {

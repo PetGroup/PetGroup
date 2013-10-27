@@ -321,7 +321,9 @@
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.petInfo.headBigImgArray indext:index];
-    [self presentModalViewController:pV animated:NO];
+    [self presentViewController:pV animated:YES completion:^{
+        
+    }];
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex

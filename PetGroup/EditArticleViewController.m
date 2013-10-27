@@ -239,7 +239,10 @@
                 }
                 if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                     imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
-                    [self presentModalViewController:imagePicker animated:YES];
+//                    [self presentModalViewController:imagePicker animated:YES];
+                    [self presentViewController:imagePicker animated:YES completion:^{
+                        
+                    }];
                 }
                 else {
                     UIAlertView *libraryAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相册" delegate:self cancelButtonTitle:@"了解" otherButtonTitles:nil];

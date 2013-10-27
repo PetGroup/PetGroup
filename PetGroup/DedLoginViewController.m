@@ -118,10 +118,15 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [DataStoreManager saveUserInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         [hud hide:YES];
-        [self dismissModalViewControllerAnimated:YES];
+//        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
     }];
     
 }

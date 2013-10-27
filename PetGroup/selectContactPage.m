@@ -236,7 +236,10 @@
         tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
     }
     [self.contactDelegate getContact:tempDict];
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 //    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
 //    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:tempDict];
 //    detailV.hostInfo = hostInfo;
@@ -271,7 +274,10 @@
 }
 -(void)back
 {
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 - (void)didReceiveMemoryWarning
 {

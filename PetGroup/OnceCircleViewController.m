@@ -9,6 +9,7 @@
 #import "OnceCircleViewController.h"
 #import "TempData.h"
 #import "articleCell.h"
+#import "BHExpandingTextView.h"
 #import "EGOImageView.h"
 #import "EditArticleViewController.h"
 #import "PullingRefreshTableView.h"
@@ -20,7 +21,7 @@
 #import "NewPublishArticleDataSource.h"
 #import "ArticleViewController.h"
 
-@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
+@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,BHExpandingTextViewDelegate>
 {
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;

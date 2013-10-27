@@ -91,7 +91,7 @@
     NSNumber * height4 = [NSNumber numberWithFloat:size4.height];
     CGSize size5 = [self.petInfo.petTrait sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height5 = [NSNumber numberWithFloat:size5.height];
-    self.heightArray = [NSArray arrayWithObjects:height1,height2,height3,height4,height5, nil];
+    self.heightArray = [NSMutableArray arrayWithObjects:height1,height2,height3,height4,height5, nil];
 }
 -(NSArray *)imageToURL:(NSArray *)imageArray;
 {
@@ -183,7 +183,9 @@
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.petInfo.headBigImgArray indext:index];
-    [self presentModalViewController:pV animated:NO];
+    [self presentViewController:pV animated:YES completion:^{
+        
+    }];
 }
 
 - (void)photoWallMovePhotoFromIndex:(NSInteger)index toIndex:(NSInteger)newIndex

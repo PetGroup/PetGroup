@@ -29,9 +29,8 @@
     }
     return self;
 }
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 - (void)viewDidLoad
 {
@@ -42,6 +41,8 @@
 //        // Load resources for iOS 7 or later
 //        [UIApplication sharedApplication].statusBarHidden = YES;
 //    }
+    float diffH = [Common diffHeight:self];
+    diffH++;
     NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
     if (openImgStr) {
         
@@ -236,7 +237,9 @@
     NSArray * selectPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6select_01.png":@"os7select_01.png", diffH==0.0f?@"os6select_02.png":@"os7select_02.png",diffH==0.0f?@"os6select_03.png":@"os7select_03.png",diffH==0.0f?@"os6select_04.png":@"os7select_04.png",diffH==0.0f?@"os6select_05.png":@"os7select_05.png",nil];
     self.tabBarC = [[CustomTabBar alloc] initWithImages:normalPic AndSelected:selectPic AndControllers:views];
     
-    [self presentModalViewController:self.tabBarC animated:NO];
+    [self presentViewController:self.tabBarC animated:NO completion:^{
+        
+    }];
     
     [splashImageView setImage:nil];
     splashImageView = nil;

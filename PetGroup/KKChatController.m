@@ -996,7 +996,9 @@
     }
     selectContactPage * selectV = [[selectContactPage alloc] init];
     selectV.contactDelegate = self;
-    [self presentModalViewController:selectV animated:YES];
+    [self presentViewController:selectV animated:YES completion:^{
+        
+    }];
     [self.customTabBarController hidesTabBar:YES animated:NO];
     
 }

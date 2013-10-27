@@ -14,6 +14,9 @@ typedef enum {
     OnceDynamicViewControllerStyleZhuanfa
 } OnceDynamicViewControllerStyle;
 @interface OnceDynamicViewController : UIViewController
+{
+    float diffH;
+}
 @property (nonatomic,retain)Dynamic* dynamic;
 @property (nonatomic,assign)OnceDynamicViewControllerStyle onceDynamicViewControllerStyle;
 @end

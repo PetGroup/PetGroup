@@ -51,8 +51,11 @@
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    if (diffH==0) {
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
+
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
@@ -281,7 +284,10 @@
         [params setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
         [DataStoreManager saveUserInfo:params];
         [hud hide:YES];
-        [self dismissModalViewControllerAnimated:YES];
+//        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self showAlertView];
         [hud hide:YES];
@@ -344,7 +350,10 @@
         }
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
-            [self presentModalViewController:imagePicker animated:YES];
+//            [self presentModalViewController:imagePicker animated:YES];
+            [self presentViewController:imagePicker animated:YES completion:^{
+                
+            }];
         }
         else {
             UIAlertView *cameraAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相机" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil];
@@ -362,7 +371,10 @@
         }
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
             imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
-            [self presentModalViewController:imagePicker animated:YES];
+//            [self presentModalViewController:imagePicker animated:YES];
+            [self presentViewController:imagePicker animated:YES completion:^{
+                
+            }];
         }
         else {
             UIAlertView *libraryAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相册" delegate:self cancelButtonTitle:@"了解" otherButtonTitles:nil];
