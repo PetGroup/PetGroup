@@ -192,7 +192,7 @@
         
         //未完待续
         if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
-//            [self.delegate dynamicListNeedReloadData:];
+            [self.delegate dynamicListNeedReloadData:nil];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

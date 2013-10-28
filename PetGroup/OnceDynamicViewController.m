@@ -12,11 +12,12 @@
 #import "DetailsDynamicCell.h"
 #import "UIExpandingTextView.h"
 #import "BHExpandingTextView.h"
-@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate>
+@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate>
 {
     int assessOrPraise;
     UIImageView * inputbg;
     UIView * inPutView;
+    BOOL request;
 }
 @property (strong,nonatomic) PullingRefreshTableView * tableV;
 @property (strong,nonatomic) NSMutableArray * resultArray;
@@ -86,9 +87,14 @@
     
     UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
     zanB.frame = CGRectMake(10, 9, 94.5, 31);
-    [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
-    [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
-    [zanB addTarget:self action:@selector(zanAction) forControlEvents:UIControlEventTouchUpInside];
+    if (self.dynamic.ifIZaned) {
+        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_normal"] forState:UIControlStateNormal];
+        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_click"] forState:UIControlStateHighlighted];
+    }else{
+        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
+        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
+    }
+    [zanB addTarget:self action:@selector(zanAction:) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zanB];
     
     UIButton * replyB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -191,9 +197,25 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
--(void)zanAction
+-(void)zanAction:(UIButton*)button
 {
     if (!self.dynamic.ifIZaned) {
+        self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
+        self.dynamic.countZan++;
+        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_normal"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_click"] forState:UIControlStateHighlighted];
+    }else{
+        self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
+        self.dynamic.countZan--;
+        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
+    }
+    [self.delegate dynamicListNeedReloadData:nil];
+    if (request) {
+        return;
+    }
+    if (self.dynamic.ifIZaned) {
+        request = YES;
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
@@ -210,12 +232,12 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
-            self.dynamic.countZan++;
+            request = NO;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            request = NO;
         }];
     }else{
+        request = YES;
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
@@ -231,10 +253,9 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
-            self.dynamic.countZan--;
+            request = NO;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+            request = NO;
         }];
     }
 }
@@ -284,7 +305,7 @@
                 
                 //未完待续
                 if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
-//                    [self.delegate dynamicListNeedReloadData];
+                    [self.delegate dynamicListNeedReloadData:nil];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -332,6 +353,7 @@
         DetailsDynamicCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
         if (cell == nil) {
             cell = [[DetailsDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell.delegate = self;
         }
         cell.dynamic  = self.dynamic;
         return cell;

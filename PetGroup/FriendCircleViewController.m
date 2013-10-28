@@ -306,7 +306,9 @@
 #pragma mark - dynamic list reload data
 -(void)dynamicListNeedReloadData:(Dynamic *)dynamic
 {
-    [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
+    if (dynamic) {
+        [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
+    }
     [self.tableV reloadData];
 }
 #pragma mark - load data
