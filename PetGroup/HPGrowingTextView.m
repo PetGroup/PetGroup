@@ -218,6 +218,7 @@
 - (void)setPlaceholder:(NSString *)placeholder
 {
     [internalTextView setPlaceholder:placeholder];
+    [self refreshHeight];
 }
 
 - (UIColor *)placeholderColor
