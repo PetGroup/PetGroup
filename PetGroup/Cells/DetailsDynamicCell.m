@@ -71,7 +71,7 @@
             EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
             [self.contentView addSubview:a];
             a.tag = 1000+i;
-            [a addTarget:self action:@selector(loadBagImage)  forControlEvents:UIControlEventTouchUpInside];
+            [a addTarget:self action:@selector(loadBagImage:)  forControlEvents:UIControlEventTouchUpInside];
             [arr addObject:a];
         }
         self.imageButtons = arr;
@@ -234,18 +234,18 @@
 }
 -(void)PersonDetail
 {
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(detailsDynamicCellPressNameButtonOrHeadButton)]) {
-        [self.delegate detailsDynamicCellPressNameButtonOrHeadButton];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButtonAtIndexPath:)]) {
+        [self.delegate dynamicCellPressNameButtonOrHeadButtonAtIndexPath:nil];
     }
 }
--(void)loadBagImage
+-(void)loadBagImage:(EGOImageButton*)button
 {
     NSMutableArray* array = [[NSMutableArray alloc]init];
     for (EGOImageButton*a in _imageButtons) {
         [array addObject:a.currentImage];
     }
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(detailsDynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:)]) {
-        [self.delegate detailsDynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
+        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:button.tag-1000];
     }
 }
 @end

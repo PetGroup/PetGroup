@@ -12,11 +12,18 @@
 #import "EGOImageView.h"
 #import "EGOImageButton.h"
 #import "OnceDynamicViewController.h"
+#import "PhotoViewController.h"
 
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewNeedReloadData>
+{
+    BOOL request;
+}
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
+@property (nonatomic,strong)UIActivityIndicatorView * act;
+@property (nonatomic,strong)UIActivityIndicatorView * footAct;
+@property (nonatomic,strong)UIView* footV;
 @end
 
 @implementation FriendCircleViewController
@@ -110,6 +117,16 @@
     signatureL.text = [dic objectForKey:@"signature"];
     [_headV addSubview:signatureL];
     
+    self.footV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
+    _footAct.backgroundColor = [UIColor redColor];
+    self.footAct= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+    _footAct.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    [_footV addSubview:_footAct];
+    UILabel* loadmoveL = [[UILabel alloc]initWithFrame:CGRectMake(100, 10, 120, 20)];
+    loadmoveL.text = @"加载更多";
+    loadmoveL.textAlignment = NSTextAlignmentCenter;
+    [_footV addSubview:loadmoveL];
+    
     [self reloadData];
 }
 
@@ -146,6 +163,68 @@
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     odVC.delegate = self;
     [self.navigationController pushViewController:odVC animated:YES];
+}
+#pragma mark -
+#pragma mark - scrollView delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    //开始拖拽
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (!request&&!_tableV.decelerating) {
+        if (_tableV.contentOffset.y<-5) {
+            if (self.act == nil) {
+                self.act= [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(10, 10, 10, 10)];
+                _act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+                [_act startAnimating];
+                [_tableV.tableHeaderView addSubview:_act];
+            }else{
+                [_act startAnimating];
+            }
+        }
+        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
+            if (_tableV.contentOffset.y>_tableV.contentSize.height-_tableV.frame.size.height-5) {
+                if (_tableV.tableFooterView == nil) {
+                    _tableV.tableFooterView = _footV;
+                    [_footAct startAnimating];
+                }else{
+                    [_footAct startAnimating];
+                }
+            }
+        }
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    //停止滑动
+    if (_tableV.contentSize.height>_tableV.frame.size.height+5 ) {
+        if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-35) {
+            [_footAct stopAnimating];
+            [UIView animateWithDuration:0.3 animations:^{
+                _tableV.tableFooterView = nil;
+            }];
+        }
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //停止减速
+}
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    //开始减速
+    if (!request) {
+        if (_tableV.contentOffset.y<-5) {
+            [self reloadData];
+        }
+        if (_tableV.contentSize.height>_tableV.frame.size.height+5) {
+            if (_tableV.contentOffset.y>=_tableV.contentSize.height-_tableV.frame.size.height-30) {
+                [self loadMoreData];
+            }
+        }
+    }
 }
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
@@ -219,9 +298,10 @@
     odVC.delegate = self;
     [self.navigationController pushViewController:odVC animated:YES];
 }
--(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray
+-(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
-    
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
+    [self presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - dynamic list reload data
 -(void)dynamicListNeedReloadData:(Dynamic *)dynamic
@@ -232,18 +312,32 @@
 #pragma mark - load data
 -(void)reloadData
 {
+    request = YES;
     [_friendCircleDS reloadDataSuccess:^{
+        request = NO;
         [self.tableV reloadData];
+        [self.act stopAnimating];
     } failure:^{
-        
+        request = NO;
+        [self.act stopAnimating];
     }];
 }
 -(void)loadMoreData
 {
+    request = YES;
     [_friendCircleDS loadMoreDataSuccess:^{
+        request = NO;
         [self.tableV reloadData];
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
     } failure:^{
-        
+        request = NO;
+        [_footAct stopAnimating];
+        [UIView animateWithDuration:0.3 animations:^{
+            _tableV.tableFooterView = nil;
+        }];
     }];
 }
 @end

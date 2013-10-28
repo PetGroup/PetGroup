@@ -8,12 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
-@protocol DetailsDynamicCellDelegate<NSObject>
--(void)detailsDynamicCellPressNameButtonOrHeadButton;
--(void)detailsDynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray;
-@end
+#import "DynamicCellDelegate.h"
 @interface DetailsDynamicCell : UITableViewCell
 @property (nonatomic,weak)Dynamic*dynamic;
-@property (nonatomic,weak)id<DetailsDynamicCellDelegate> delegate;
+@property (nonatomic,weak)id<DynamicCellDelegate> delegate;
 +(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 @end
