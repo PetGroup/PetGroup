@@ -228,8 +228,9 @@
         [params setObject:[self.petDic objectForKey:@"id"] forKey:@"id"];
         [body setObject:params forKey:@"params"];
         [body setObject:@"updatePetinfo" forKey:@"method"];
+        [body setObject:@"service.uri.pet_user" forKey:@"service"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [self savePetInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
+//            [self savePetInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
             [self updataUserInfo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self showAlertView];

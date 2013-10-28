@@ -125,12 +125,12 @@
 
     
     
-    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, 320, 50)];
-    [inPutView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:inPutView];
-    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
-    [inPutView addSubview:inputbg];
+//    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, 320, 50)];
+//    [inPutView setBackgroundColor:[UIColor clearColor]];
+//    [self.view addSubview:inPutView];
+//    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+//    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
+//    [inPutView addSubview:inputbg];
 //    UIImageView * inputbg2 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 6.5, 262, 37)];
 //    [inputbg2 setImage:[UIImage imageNamed:@"chat_input.png"]];
 //    [inPutView addSubview:inputbg2];
@@ -143,21 +143,70 @@
     
     ifAudio = NO;
     ifEmoji = NO;
+
+    
+//    self.textView = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
+//    self.textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+//    self.textView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
+//    [self.textView.internalTextView setReturnKeyType:UIReturnKeySend];
+//    self.textView.delegate = self;
+//    [inPutView addSubview:self.textView];
+    
+    
+    
+    
+    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, 320, 50)];
+    
+	self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
+    self.textView.isScrollable = NO;
+    self.textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+	self.textView.minNumberOfLines = 1;
+	self.textView.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
+	self.textView.returnKeyType = UIReturnKeySend; //just as an example
+	self.textView.font = [UIFont systemFontOfSize:15.0f];
+	self.textView.delegate = self;
+    self.textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    self.textView.backgroundColor = [UIColor clearColor];
+    //    self.inputTF.placeholder = @"Type to see the textView grow!";
+    
+    // textView.text = @"test\n\ntest";
+	// textView.animateHeightChange = NO; //turns off animation
+    
+    [self.view addSubview:inPutView];
+	
+    UIImage *rawEntryBackground = [UIImage imageNamed:@"chat_input.png"];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+    entryImageView.frame = CGRectMake(40, 7, 200, 35);
+    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    UIImage *rawBackground = [UIImage imageNamed:@"inputbg.png"];
+    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
+    imageView.frame = CGRectMake(0, 0, inPutView.frame.size.width, inPutView.frame.size.height);
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    self.textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // view hierachy
+    [inPutView addSubview:imageView];
+    
+    [inPutView addSubview:entryImageView];
+    [inPutView addSubview:self.textView];
+    
+    
+    
     audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [audioBtn setFrame:CGRectMake(8, 50-12-27, 25, 27)];
+    [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
     [audioBtn setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
     [inPutView addSubview:audioBtn];
     [audioBtn addTarget:self action:@selector(audioBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.textView = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
-    self.textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
-    self.textView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-    [self.textView.internalTextView setReturnKeyType:UIReturnKeySend];
-    self.textView.delegate = self;
-    [inPutView addSubview:self.textView];
-    
     audioRecordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [audioRecordBtn setFrame:CGRectMake(40, 8, 200, 35)];
+    [audioRecordBtn setFrame:CGRectMake(40, inPutView.frame.size.height-42, 200, 35)];
     [audioRecordBtn setBackgroundImage:[UIImage imageNamed:@"yanzhengma_normal.png"] forState:UIControlStateNormal];
     [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     [inPutView addSubview:audioRecordBtn];
@@ -169,13 +218,13 @@
     [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchCancel];
     
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emojiBtn setFrame:CGRectMake(250, 50-12-27, 25, 27)];
+    [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     [inPutView addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     picBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [picBtn setFrame:CGRectMake(285, 50-12-27, 25, 27)];
+    [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
     [picBtn setImage:[UIImage imageNamed:@"picBtn.png"] forState:UIControlStateNormal];
     [inPutView addSubview:picBtn];
     [picBtn addTarget:self action:@selector(picBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -634,9 +683,21 @@
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.2];
-	inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
+	//inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
 
     
+    CGRect containerFrame = inPutView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (h + containerFrame.size.height);
+	// animations settings
+
+	
+	// set views with new info
+	inPutView.frame = containerFrame;
+    
+	
+	// commit animations
+
+
 //	UITableView *tableView = (UITableView *)[self.view viewWithTag:TABLEVIEWTAG];
 //	tableView.frame = CGRectMake(0.0f, 0.0f, 320.0f,(float)(480.0-h-108.0));
     [UIView commitAnimations];
@@ -658,20 +719,17 @@
 
 }
 #pragma mark -
-#pragma mark UIExpandingTextView delegate
+#pragma mark HPExpandingTextView delegate
 //改变键盘高度
--(void)expandingTextView:(UIExpandingTextView *)expandingTextView willChangeHeight:(float)height
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-    /* Adjust the height of the toolbar when the input component expands */
-    float diff = (self.textView.frame.size.height - height);
-    NSLog(@"bbbb:%f",self.textView.frame.size.height);
-    CGRect r = inPutView.frame;
-    CGRect r2 = inputbg.frame;
-    r.origin.y += diff;
+    float diff = (growingTextView.frame.size.height - height);
+    
+	CGRect r = inPutView.frame;
     r.size.height -= diff;
-    r2.size.height-=diff;
-    inPutView.frame = r;
-    inputbg.frame = r2;
+    r.origin.y += diff;
+	inPutView.frame = r;
+    
     if ([clearView superview]) {
         [clearView setFrame:CGRectMake(0, 44+diffH, 320, clearView.frame.size.height+diff)];
     }
@@ -679,23 +737,17 @@
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-//    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
+    //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
     [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
     [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
     [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
-    
 }
-//return方法
-- (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView{
+
+-(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
+{
     [self sendButton:nil];
     return YES;
 }
-//文本是否改变
--(void)expandingTextViewDidChange:(UIExpandingTextView *)expandingTextView
-{
- 
-}
-
 #pragma mark -
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {

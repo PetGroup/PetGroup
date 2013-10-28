@@ -45,6 +45,7 @@
         // Custom initialization
         self.needRequest = NO;
         self.myFriend = NO;
+        self.needRequestPet = NO;
         self.friendStatus = @"";
         self.dynamicArray = [[NSMutableArray alloc]init];
     }
@@ -174,6 +175,9 @@
     [self.view addSubview:self.rejectBtn];
     if (self.needRequest) {
         [self getUserInfoWithUserName:self.hostInfo.userName];
+    }
+    if (self.needRequestPet) {
+        [self getUserPetListByUserID:self.hostInfo.userId];
     }
     
     typeMsgView = [[UIView alloc] initWithFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
@@ -589,7 +593,8 @@
     [paramDict setObject:userName forKey:@"username"];
     [postDict setObject:paramDict forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:@"getUserinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict setObject:@"iphone" forKey:@"imei"];
@@ -598,16 +603,51 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = responseObject;
         infoDict = [recDict mutableCopy];
-        self.hostInfo = [[HostInfo alloc] initWithHostInfo:recDict];
+        self.hostInfo = [[HostInfo alloc] initWithNewHostInfo:recDict PetsArray:nil];
         [self reloadTheViews];
+        [self getUserPetListByUserID:self.hostInfo.userId];
         if (self.myFriend) {
             [DataStoreManager saveUserInfo:recDict];
         }
         [self reloadDynamicData];
 
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
+}
+-(void)getUserPetListByUserID:(NSString *)userID
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary * params = [[NSMutableDictionary alloc]init];
+    [params setObject:userID forKey:@"userid"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:@"getPetinfo" forKey:@"method"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray * petsArray = responseObject;
+        NSMutableArray * tempArray = [NSMutableArray array];
+        NSMutableArray * petH = [NSMutableArray array];
+        for (NSDictionary * dict in petsArray) {
+            PetInfo * petinfo = [[PetInfo alloc] initWithPetInfo:dict];
+            [tempArray addObject:petinfo];
+            [petH addObject:petinfo.firstHead];
+        }
+        self.hostInfo.petsArray = tempArray;
+        self.hostInfo.petsHeadArray = petH;
+//        self.hostInfo.petsArray = petsArray;
+        [self reloadTheViews];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
     }];
 
 }
@@ -716,7 +756,7 @@
 {
     if (photoWall.tag==1) {
         PhotoViewController * pV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.hostInfo.headBigImgArray indext:index];
-        [self presentViewController:pV animated:YES completion:^{
+        [self presentViewController:pV animated:NO completion:^{
             
         }];
     }

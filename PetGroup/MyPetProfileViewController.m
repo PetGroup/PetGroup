@@ -799,6 +799,8 @@
             [hud hide:YES];
 //            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
 //            NSLog(@"%@",dic);
+            [params setObject:responseObject forKey:@"id"];
+            [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
             [DataStoreManager storeOnePetInfo:params];
             [self.navigationController popViewControllerAnimated:YES];
             
@@ -836,6 +838,7 @@
             [hud hide:YES];
 //            NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
 //            NSLog(@"%@",dic);
+            [params setObject:[DataStoreManager getMyUserID] forKey:@"userid"];
             [DataStoreManager storeOnePetInfo:params];
             [self.navigationController popViewControllerAnimated:YES];
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {

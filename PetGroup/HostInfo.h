@@ -26,4 +26,5 @@
 @property (strong,nonatomic) NSArray * petsArray;
 @property (strong,nonatomic) NSArray * petsHeadArray;
 - (id)initWithHostInfo:(NSDictionary*)info;
+- (id)initWithNewHostInfo:(NSDictionary*)info PetsArray:(NSArray *)petsArray;
 @end

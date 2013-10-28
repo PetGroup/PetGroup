@@ -285,7 +285,7 @@
         UpLoadPhotoViewController* upLoadVC = [[UpLoadPhotoViewController alloc]init];
         upLoadVC.petType = self.petType;
         upLoadVC.hostDic = self.hostDic;
-//        [params setObject:[dic objectForKey:@"id"] forKey:@"id"];
+        [params setObject:responseObject forKey:@"id"];
         upLoadVC.petDic = params;
         [self.navigationController pushViewController:upLoadVC animated:YES];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {

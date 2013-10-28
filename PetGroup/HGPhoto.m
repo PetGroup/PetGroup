@@ -88,7 +88,7 @@
 
 -(void)SetPhotoUrlWithCache:(NSString *)url
 {
-    self.viewPhoto.placeholderImage = [UIImage imageNamed:@"cat.png"];
+    self.viewPhoto.placeholderImage = [UIImage imageNamed:@"placeholder.png"];
     NSRange range=[url rangeOfString:@"<local>"];
     if (range.location!=NSNotFound) {
 //        self.viewPhoto.image =
