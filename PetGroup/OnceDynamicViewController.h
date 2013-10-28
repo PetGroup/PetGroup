@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
 #import "TableViewNeedReloadData.h"
+#import "HPGrowingTextView.h"
 typedef enum {
     OnceDynamicViewControllerStyleNome,
     OnceDynamicViewControllerStyleReply,

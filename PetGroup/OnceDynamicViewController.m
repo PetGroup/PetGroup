@@ -12,7 +12,7 @@
 #import "DetailsDynamicCell.h"
 #import "UIExpandingTextView.h"
 #import "BHExpandingTextView.h"
-@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate>
+@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate>
 {
     int assessOrPraise;
     UIImageView * inputbg;
@@ -24,7 +24,7 @@
 @property (strong,nonatomic) UIActionSheet* reportAction;
 @property (strong,nonatomic) UIAlertView* delAlert;
 @property (strong,nonatomic) UIAlertView* reportAlert;
-@property (nonatomic,strong)BHExpandingTextView* inputTF;
+@property (nonatomic,strong)HPGrowingTextView* inputTF;
 //@property (strong,nonatomic) NSString* lastReplyid;
 @end
 
@@ -105,19 +105,61 @@
     [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zhuanfaB];
     
-    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
-    [inPutView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:inPutView];
-    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
-    [inPutView addSubview:inputbg];
+//    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
+//    [inPutView setBackgroundColor:[UIColor clearColor]];
+//    [self.view addSubview:inPutView];
+//    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+//    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
+//    [inPutView addSubview:inputbg];
+//    
+//    self.inputTF = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+//    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
+//    self.inputTF.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
+//    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
+//    self.inputTF.delegate = self;
+////    self.inputTF.maximumNumberOfLines=5;
+//    [inPutView addSubview:self.inputTF];
     
-    self.inputTF = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
-    self.inputTF.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
-    self.inputTF.delegate = self;
-//    self.inputTF.maximumNumberOfLines=5;
+    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
+    
+	self.inputTF = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 20)];
+    self.inputTF.isScrollable = NO;
+    self.inputTF.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+	self.inputTF.minNumberOfLines = 1;
+	self.inputTF.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
+	self.inputTF.returnKeyType = UIReturnKeyGo; //just as an example
+	self.inputTF.font = [UIFont systemFontOfSize:15.0f];
+	self.inputTF.delegate = self;
+    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    self.inputTF.backgroundColor = [UIColor clearColor];
+//    self.inputTF.placeholder = @"Type to see the textView grow!";
+    
+    // textView.text = @"test\n\ntest";
+	// textView.animateHeightChange = NO; //turns off animation
+    
+    [self.view addSubview:inPutView];
+	
+    UIImage *rawEntryBackground = [UIImage imageNamed:@"chat_input.png"];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+    entryImageView.frame = CGRectMake(10, 10, 300, 35);
+    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    UIImage *rawBackground = [UIImage imageNamed:@"inputbg.png"];
+    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
+    imageView.frame = CGRectMake(0, 0, inPutView.frame.size.width, inPutView.frame.size.height);
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    self.inputTF.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // view hierachy
+    [inPutView addSubview:imageView];
+
+    [inPutView addSubview:entryImageView];
     [inPutView addSubview:self.inputTF];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -198,17 +240,17 @@
 }
 -(void)replyAction//评论
 {
-    [_inputTF.internalTextView becomeFirstResponder];
+    [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
-    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
+    self.inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
     NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
     [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 -(void)zhuanfaAction//转发
 {
-    [_inputTF.internalTextView becomeFirstResponder];
+    [_inputTF becomeFirstResponder];
     assessOrPraise = 2;
-    _inputTF.placeholder = @"转发至我的动态";
+    self.inputTF.placeholder = @"转发至我的动态";
     NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
     [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
@@ -502,6 +544,15 @@
     inputbg.frame = r2;
     
 }
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+	CGRect r = inPutView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+	inPutView.frame = r;
+}
 - (BOOL)expandingTextViewShouldReturn:(BHExpandingTextView *)expandingTextView
 {
     if (expandingTextView.text.length>=1) {
@@ -531,8 +582,25 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     
+    NSNumber *duration = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    CGRect containerFrame = inPutView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardRect.size.height + containerFrame.size.height);
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+	
+	// set views with new info
+	inPutView.frame = containerFrame;
+    
+	
+	// commit animations
+	[UIView commitAnimations];
     // Animate the resize of the text view's frame in sync with the keyboard's appearance.
-    [self autoMovekeyBoard:keyboardRect.size.height];
+//    [self autoMovekeyBoard:keyboardRect.size.height];
 }
 
 
@@ -548,8 +616,25 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     
+    NSNumber *duration = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = inPutView.frame;
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+	
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
     
-    [self autoMovekeyBoard:0];
+	// set views with new info
+	inPutView.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
+//    [self autoMovekeyBoard:0];
 }
 -(void) autoMovekeyBoard: (float) h{
     

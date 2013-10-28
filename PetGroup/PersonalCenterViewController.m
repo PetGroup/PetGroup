@@ -67,7 +67,7 @@
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
     
-   
+   NSLog(@"table Height:%f,table origin y:%f,view Height:%f",self.profileTableV.frame.size.height,self.profileTableV.frame.origin.y,self.view.frame.size.height);
 	// Do any additional setup after loading the view.
 }
 -(void)viewDidAppear:(BOOL)animated

@@ -167,6 +167,8 @@
     [self.view addSubview:hud];
     hud.delegate = self;
     hud.labelText = @"提交中...";
+    
+    NSLog(@"table Height:%f,table origin y:%f,view Height:%f",self.profileTableV.frame.size.height,self.profileTableV.frame.origin.y,self.view.frame.size.height);
 	// Do any additional setup after loading the view.
 }
 -(void)moreOperation

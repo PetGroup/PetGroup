@@ -42,7 +42,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
 
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     
     self.photoWall = [[HGPhotoWall alloc] initWithFrame:CGRectZero];
     self.photoWall.descriptionType = DescriptionTypeImage;
@@ -60,11 +60,12 @@
     self.discribeArray = [NSMutableArray arrayWithObjects:self.hostInfo.nickName?self.hostInfo.nickName:PlaceHolder,self.hostInfo.gender?self.hostInfo.gender:PlaceHolder,self.hostInfo.age?self.hostInfo.age:PlaceHolder,self.hostInfo.region?self.hostInfo.region:PlaceHolder,self.hostInfo.signature?self.hostInfo.signature:PlaceHolder,self.hostInfo.hobby?self.hostInfo.hobby:PlaceHolder, nil];
     self.placeHolderArray = [NSMutableArray arrayWithObjects:@"昵称",@"性别",@"年龄",@"选择一个地区",@"写一下签名吧",@"填一下爱好吧", nil];
     [self makeHeight];
-    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44, 320, self.view.frame.size.height-44) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
+    NSLog(@"table Height:%f,table origin y:%f,view Height:%f",self.profileTableV.frame.size.height,self.profileTableV.frame.origin.y,self.view.frame.size.height);
     
     
     

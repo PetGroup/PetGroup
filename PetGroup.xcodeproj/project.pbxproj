@@ -254,6 +254,8 @@
 		86FCCC88181B6B490077A409 /* DetailsDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FCCC87181B6B490077A409 /* DetailsDynamicCell.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		9707FDF3181CFCEE00795C00 /* topBar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9707FDF2181CFCEE00795C00 /* topBar1.png */; };
+		9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A18E181E1890009891A6 /* HPGrowingTextView.m */; };
+		9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A190181E1890009891A6 /* HPTextViewInternal.m */; };
 		9718F46117E8668300BEC495 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9718F46017E8668300BEC495 /* dyn.png */; };
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937C17D9C8630001E863 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937B17D9C8630001E863 /* CoreText.framework */; };
@@ -953,6 +955,10 @@
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
 		9715A18C181E0054009891A6 /* TableViewNeedReloadData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewNeedReloadData.h; sourceTree = "<group>"; };
+		9715A18D181E1890009891A6 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
+		9715A18E181E1890009891A6 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
+		9715A18F181E1890009891A6 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
+		9715A190181E1890009891A6 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		9718F46017E8668300BEC495 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
 		971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
 		971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying001@2x.png"; sourceTree = "<group>"; };
@@ -2956,6 +2962,10 @@
 		9736BCD217C48E10007DFE36 /* UIExpandingTextView */ = {
 			isa = PBXGroup;
 			children = (
+				9715A18D181E1890009891A6 /* HPGrowingTextView.h */,
+				9715A18E181E1890009891A6 /* HPGrowingTextView.m */,
+				9715A18F181E1890009891A6 /* HPTextViewInternal.h */,
+				9715A190181E1890009891A6 /* HPTextViewInternal.m */,
 				9765D7A9181BD46E0021B36F /* BHExpandingTextView.h */,
 				9765D7AA181BD46E0021B36F /* BHExpandingTextView.m */,
 				9765D7A5181BC8E70021B36F /* BHExpandingTextViewInternal.h */,
@@ -4477,6 +4487,7 @@
 				97DB098C17C5A95C000EC195 /* ProfileImageCell.m in Sources */,
 				97DB09F417C5B167000EC195 /* AddPetViewController.m in Sources */,
 				97DB09F517C5B167000EC195 /* DedLoginViewController.m in Sources */,
+				9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */,
 				97DB09F617C5B167000EC195 /* IdentifyingString.m in Sources */,
 				97DB09F717C5B167000EC195 /* NewLoginViewController.m in Sources */,
 				97DB09F817C5B167000EC195 /* NewRegistOneViewController.m in Sources */,
@@ -4525,6 +4536,7 @@
 				97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */,
 				8645D73817EFD463002DBD5A /* ParticularDynamicViewController.m in Sources */,
 				8645D73E17F008F2002DBD5A /* EasyDynamicCell.m in Sources */,
+				9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */,
 				8645D74117F00922002DBD5A /* ReplyCell.m in Sources */,
 				8645D74417F15B83002DBD5A /* ReplyListCell.m in Sources */,
 				8645D74717F15C05002DBD5A /* ReplyListViewController.m in Sources */,
