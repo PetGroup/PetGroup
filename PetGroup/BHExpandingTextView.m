@@ -126,7 +126,7 @@
     backgroundFrame.origin.x = 0;
     CGRect textViewFrame = CGRectInset(backgroundFrame, kTextInsetX, 0);
 	self.internalTextView.frame   = CGRectMake(textViewFrame.origin.x, textViewFrame.origin.y+5, textViewFrame.size.width, textViewFrame.size.height);
-//    backgroundFrame.size.height  -= 8;
+    backgroundFrame.size.height  -= 8;
     self.textViewBackgroundImage.frame = backgroundFrame;
     self.forceSizeUpdate = YES;
 	[super setFrame:aframe];
@@ -187,7 +187,7 @@
                                                   context:nil];
         
         CGFloat measuredHeight = ceilf(CGRectGetHeight(size) + topBottomPadding);
-        return measuredHeight+8.0f;
+        return measuredHeight;
     }
     else
     {
@@ -303,7 +303,7 @@
 			r.origin.y += 5;
 			r.origin.x = 0;
             self.internalTextView.frame = CGRectInset(r, kTextInsetX, 0);
-//            r.size.height -= 8;
+            r.size.height -= 8;
             self.textViewBackgroundImage.frame = r;
 
 			if(self.animateHeightChange)

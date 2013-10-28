@@ -27,6 +27,8 @@ typedef  enum
     UIView * chooseRegionV;
     UIView * chooseAgeV;
     MBProgressHUD * hud;
+    
+    float diffH;
 }
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong,nonatomic) UITableView * profileTableV;
