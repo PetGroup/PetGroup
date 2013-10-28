@@ -13,7 +13,7 @@
 #import "EGOImageButton.h"
 #import "OnceDynamicViewController.h"
 
-@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate>
+@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewNeedReloadData>
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
@@ -131,6 +131,7 @@
 -(void)updateSelfMassage
 {
     EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
+    editVC.delegate = self;
     [self.navigationController pushViewController:editVC animated:YES];
 }
 #pragma mark - tableView delegate
@@ -143,6 +144,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    odVC.delegate = self;
     [self.navigationController pushViewController:odVC animated:YES];
 }
 #pragma mark - dynamic cell delegate
@@ -205,6 +207,7 @@
 {
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
+    odVC.delegate = self;
     odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleReply;
     [self.navigationController pushViewController:odVC animated:YES];
 }
@@ -213,11 +216,18 @@
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleZhuanfa;
+    odVC.delegate = self;
     [self.navigationController pushViewController:odVC animated:YES];
 }
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray
 {
     
+}
+#pragma mark - dynamic list reload data
+-(void)dynamicListNeedReloadData:(Dynamic *)dynamic
+{
+    [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
+    [self.tableV reloadData];
 }
 #pragma mark - load data
 -(void)reloadData

@@ -191,7 +191,9 @@
         NSLog(@"%@",responseObject);
         
         //未完待续
-        
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
+//            [self.delegate dynamicListNeedReloadData:];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
