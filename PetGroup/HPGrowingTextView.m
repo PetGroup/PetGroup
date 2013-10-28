@@ -218,6 +218,7 @@
 - (void)setPlaceholder:(NSString *)placeholder
 {
     [internalTextView setPlaceholder:placeholder];
+    [self refreshHeight];
 }
 
 - (UIColor *)placeholderColor
@@ -320,12 +321,12 @@
 	}
     // Display (or not) the placeholder string
     
-    BOOL wasDisplayingPlaceholder = internalTextView.displayPlaceHolder;
+//    BOOL wasDisplayingPlaceholder = internalTextView.displayPlaceHolder;
     internalTextView.displayPlaceHolder = self.internalTextView.text.length == 0;
 	
-    if (wasDisplayingPlaceholder != internalTextView.displayPlaceHolder) {
+//    if (internalTextView.displayPlaceHolder) {
         [internalTextView setNeedsDisplay];
-    }
+//    }
     
     // Tell the delegate that the text view changed
 	
