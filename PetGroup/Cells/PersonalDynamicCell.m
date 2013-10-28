@@ -348,9 +348,9 @@
     int count = 0;
     for (Reply* reply in self.dynamic.replyViews) {
         count++;
-        for (id a in reply.replyComments) {
-            count++;
-        }
+//        for (id a in reply.replyComments) {
+//            count++;
+//        }
     }
     _replyCountL.text = [NSString stringWithFormat:@"%d",count];
     _replyCountL.frame = CGRectMake(290, origin, 30, 30);
@@ -499,7 +499,7 @@
     HostInfo* hostInfo = nil;
     if (theIndex == 0) {
         if ([theid isKindOfClass:[Reply class]]) {
-            hostInfo = ((Reply*)theid).petUser;
+//            hostInfo = ((Reply*)theid).petUser;
         }
         if ([theid isKindOfClass:[ReplyComment class]]) {
             hostInfo = ((ReplyComment*)theid).commentUserView;
@@ -521,19 +521,19 @@
 -(void)labelTouchedWithNickName:(NSString *)nickName TheID:(id)theID
 {
     if ([theID isKindOfClass:[Reply class]]) {
-        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((Reply*)theID).petUser.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            
-            delOrReplyReplyAction = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
-            [delOrReplyReplyAction showInView:self.superview];
-            self.deleteObject = theID;
-            return;
-        }
-        if ([((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
-            delReplyAction = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
-            [delReplyAction showInView:self.superview];
-            self.deleteObject = theID;
-            return;
-        }
+//        if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((Reply*)theID).petUser.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            
+//            delOrReplyReplyAction = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复", nil];
+//            [delOrReplyReplyAction showInView:self.superview];
+//            self.deleteObject = theID;
+//            return;
+//        }
+//        if ([((Reply*)theID).petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]) {
+//            delReplyAction = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+//            [delReplyAction showInView:self.superview];
+//            self.deleteObject = theID;
+//            return;
+//        }
     }
     if ([theID isKindOfClass:[ReplyComment class]]) {
         if ([self.dynamic.petUser.userId integerValue] == [[[TempData sharedInstance] getMyUserID] integerValue]&&[((ReplyComment*)theID).commentUserView.userId integerValue] != [[[TempData sharedInstance] getMyUserID] integerValue]) {
@@ -595,15 +595,15 @@
                 [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                 [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [self.dynamic.replyViews removeObject:self.deleteObject];
-                    NSString* repS = [NSString stringWithFormat:@"%@:%@",((Reply*)self.deleteObject).petUser.nickName,((Reply*)self.deleteObject).msg];
-                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                    self.dynamic.rowHigh-= (size.height+5);
-                    for (int j = 0; j < ((Reply*)self.deleteObject).replyComments.count; j++) {
-                        ReplyComment* recom = (ReplyComment*)((Reply*)self.deleteObject).replyComments[j];
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                        self.dynamic.rowHigh-= (size.height+5);
-                    }
+//                    NSString* repS = [NSString stringWithFormat:@"%@:%@",((Reply*)self.deleteObject).petUser.nickName,((Reply*)self.deleteObject).msg];
+//                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+//                    self.dynamic.rowHigh-= (size.height+5);
+//                    for (int j = 0; j < ((Reply*)self.deleteObject).replyComments.count; j++) {
+//                        ReplyComment* recom = (ReplyComment*)((Reply*)self.deleteObject).replyComments[j];
+//                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
+//                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
+//                        self.dynamic.rowHigh-= (size.height+5);
+//                    }
                     [(UITableView*)self.superview reloadData];
                 }];
                 [self.dynamic.replyViews removeObject:self.deleteObject];
@@ -611,11 +611,11 @@
             if ([self.deleteObject isKindOfClass:[ReplyComment class]]) {
                 Reply* theReply = nil;
                 for (Reply* rep in self.dynamic.replyViews) {
-                    for (ReplyComment * repcom in rep.replyComments) {
-                        if ([self.deleteObject isEqual:repcom]) {
-                            theReply = rep;
-                        }
-                    }
+//                    for (ReplyComment * repcom in rep.replyComments) {
+//                        if ([self.deleteObject isEqual:repcom]) {
+//                            theReply = rep;
+//                        }
+//                    }
                 }
                 if (theReply) {
                     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
@@ -631,7 +631,7 @@
                     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
                     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
                     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.viewC success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        [theReply.replyComments removeObject:self.deleteObject];
+//                        [theReply.replyComments removeObject:self.deleteObject];
                         NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",((ReplyComment*)self.deleteObject).commentUserView.nickName,((ReplyComment*)self.deleteObject).replyUserView.nickName,((ReplyComment*)self.deleteObject).commentsMsg];
                         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
                         self.dynamic.rowHigh-=(size.height+5);

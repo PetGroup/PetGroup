@@ -236,6 +236,14 @@
     NSLog(@"indext= %d= %d",indexPath.section,indexPath.row);
     Dynamic* dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     if (!dynamic.ifIZaned) {
+        dynamic.ifIZaned = !dynamic.ifIZaned;
+        dynamic.countZan++;
+    }else{
+        dynamic.ifIZaned = !dynamic.ifIZaned;
+        dynamic.countZan--;
+    }
+    [self.tableV reloadData];
+    if (dynamic.ifIZaned) {
         NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
@@ -252,9 +260,8 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            dynamic.ifIZaned = !dynamic.ifIZaned;
-            dynamic.countZan++;
-            [self.tableV reloadData];
+            
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
@@ -274,9 +281,7 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            dynamic.ifIZaned = !dynamic.ifIZaned;
-            dynamic.countZan--;
-            [self.tableV reloadData];
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];

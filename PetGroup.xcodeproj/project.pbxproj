@@ -2013,6 +2013,8 @@
 				86FCCC86181B6B490077A409 /* DetailsDynamicCell.h */,
 				86FCCC87181B6B490077A409 /* DetailsDynamicCell.m */,
 				86BDFC6E181E24CA0089C889 /* DynamicCellDelegate.h */,
+				8645D73F17F00922002DBD5A /* ReplyCell.h */,
+				8645D74017F00922002DBD5A /* ReplyCell.m */,
 			);
 			name = DynamicCells;
 			sourceTree = "<group>";
@@ -3481,8 +3483,6 @@
 				86D173C117E2B2490032A479 /* NarrowDynamicCell.m */,
 				8645D73C17F008F2002DBD5A /* EasyDynamicCell.h */,
 				8645D73D17F008F2002DBD5A /* EasyDynamicCell.m */,
-				8645D73F17F00922002DBD5A /* ReplyCell.h */,
-				8645D74017F00922002DBD5A /* ReplyCell.m */,
 				8645D74217F15B82002DBD5A /* ReplyListCell.h */,
 				8645D74317F15B82002DBD5A /* ReplyListCell.m */,
 			);

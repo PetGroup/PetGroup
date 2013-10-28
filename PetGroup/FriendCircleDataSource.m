@@ -18,13 +18,12 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
     [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getUserState" forKey:@"method"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];

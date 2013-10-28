@@ -12,6 +12,8 @@
 #import "DetailsDynamicCell.h"
 #import "UIExpandingTextView.h"
 #import "BHExpandingTextView.h"
+#import "Reply.h"
+#import "ReplyCell.h"
 @interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate>
 {
     int assessOrPraise;
@@ -23,10 +25,16 @@
 @property (strong,nonatomic) NSMutableArray * resultArray;
 @property (strong,nonatomic) UIActionSheet* delAction;
 @property (strong,nonatomic) UIActionSheet* reportAction;
+@property (strong,nonatomic) UIActionSheet* delReplyAction;
+@property (strong,nonatomic) UIActionSheet* delReplyOrReplyAction;
+@property (strong,nonatomic) UIAlertView* delReplyAlert;
 @property (strong,nonatomic) UIAlertView* delAlert;
 @property (strong,nonatomic) UIAlertView* reportAlert;
 @property (nonatomic,strong)HPGrowingTextView* inputTF;
-//@property (strong,nonatomic) NSString* lastReplyid;
+@property (assign,nonatomic) int pageNo;
+@property (nonatomic,retain) NSString* pid;
+@property (nonatomic,retain) NSString* puserid;
+@property (nonatomic,retain) NSIndexPath* indexPath;
 @end
 
 @implementation OnceDynamicViewController
@@ -111,21 +119,6 @@
     [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zhuanfaB];
     
-//    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
-//    [inPutView setBackgroundColor:[UIColor clearColor]];
-//    [self.view addSubview:inPutView];
-//    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-//    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
-//    [inPutView addSubview:inputbg];
-//    
-//    self.inputTF = [[BHExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-//    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
-//    self.inputTF.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-//    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
-//    self.inputTF.delegate = self;
-////    self.inputTF.maximumNumberOfLines=5;
-//    [inPutView addSubview:self.inputTF];
-    
     inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
     
 	self.inputTF = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 20)];
@@ -136,15 +129,11 @@
 	self.inputTF.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
-	self.inputTF.returnKeyType = UIReturnKeyGo; //just as an example
+	self.inputTF.returnKeyType = UIReturnKeySend; //just as an example
 	self.inputTF.font = [UIFont systemFontOfSize:15.0f];
 	self.inputTF.delegate = self;
     self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     self.inputTF.backgroundColor = [UIColor clearColor];
-//    self.inputTF.placeholder = @"Type to see the textView grow!";
-    
-    // textView.text = @"test\n\ntest";
-	// textView.animateHeightChange = NO; //turns off animation
     
     [self.view addSubview:inPutView];
 	
@@ -261,6 +250,8 @@
 }
 -(void)replyAction//评论
 {
+    self.pid = @"";
+    self.puserid = @"";
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
     self.inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
@@ -278,11 +269,36 @@
 -(void)didInput
 {
     switch (assessOrPraise) {
-        case 1:{
-            
+        case 1:{//评论{"msg":"回复内容","pid":"被回复的回复ID","puserid":"被回复的回复人ID","stateid":"动态ID"}
+            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+            long long a = (long long)(cT*1000);
+            [params setObject:self.inputTF.text forKey:@"msg"];
+            [params setObject:self.pid forKey:@"pid"];
+            [params setObject:self.puserid forKey:@"puserid"];
+            [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
+            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+            [body setObject:@"service.uri.pet_states" forKey:@"service"];
+            [body setObject:@"1" forKey:@"channel"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+            [body setObject:@"iphone" forKey:@"imei"];
+            [body setObject:params forKey:@"params"];
+            [body setObject:@"addReply" forKey:@"method"];
+            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",responseObject);
+                
+                //未完待续
+                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
+                    [self.delegate dynamicListNeedReloadData:nil];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
         }break;
         case 2:{
-            //转发body={"method":"addUserState","token":"XXX","channel":"","mac":"","imei":"","params":{"msg":"","imgid":"","ifTransmitMsg":"","transmitUrl":"","transmitMsg":""}}
+            //转发
             NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
             long long a = (long long)(cT*1000);
@@ -325,10 +341,10 @@
 -(void)showActionShoot
 {
     if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
-        self.delAction = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+        self.delAction = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
         [_delAction showInView:self.view];
     }else{
-        self.reportAction = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"举报" otherButtonTitles: nil];
+        self.reportAction = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"举报" otherButtonTitles: nil];
         [_reportAction showInView:self.view];
     }
 }
@@ -360,10 +376,13 @@
     }else
     {
         static NSString *cellIdentifier = @"replyCell";
-        UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        ReplyCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell.delegate = self;
         }
+        cell.indexPath = indexPath;
+        cell.reply = self.resultArray[indexPath.row];
         return cell;
     }
     static NSString *cellIdentifier = @"replyCell";
@@ -378,18 +397,40 @@
     if (indexPath.section == 0) {
         return [DetailsDynamicCell heightForRowWithDynamic:self.dynamic];
     }else{
-        return 80;
+        return [ReplyCell heightForRowWithDynamic:self.resultArray[indexPath.row]];
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section != 0) {
-        [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        [_inputTF becomeFirstResponder];
-        assessOrPraise = 1;
-        _inputTF.text = [NSString stringWithFormat:@"回复:%@",self.resultArray[indexPath.row]];
+    if (_inputTF.isFirstResponder) {
+        [_inputTF resignFirstResponder];
+        return;
     }
+    if (indexPath.section == 0) {
+        return;
+    }
+    if ([((Reply*)self.resultArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        self.indexPath = indexPath;
+        self.delReplyAction = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+        [_delReplyAction showInView:self.view];
+        return;
+    }
+    if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]&&![((Reply*)self.resultArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        self.indexPath = indexPath;
+        self.delReplyOrReplyAction = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"回复" ,nil];
+        [_delReplyOrReplyAction showInView:self.view];
+        return;
+    }
+    [self replyOneReplyWithIndexPath:indexPath];
+}
+-(void)replyOneReplyWithIndexPath:(NSIndexPath *)indexPath
+{
+    [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    assessOrPraise = 1;
+    self.pid = ((Reply*)self.resultArray[indexPath.row]).replyID;
+    self.puserid = ((Reply*)self.resultArray[indexPath.row]).userID;
+    _inputTF.text = [NSString stringWithFormat:@"回复 %@:",((Reply*)self.resultArray[indexPath.row]).nickName];
+    [_inputTF becomeFirstResponder];
 }
 #pragma mark - ScrollDelegate
 
@@ -434,6 +475,7 @@
 #pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
     if (buttonIndex == 0) {
         if (actionSheet == _delAction) {
             self.delAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条动态?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
@@ -442,6 +484,10 @@
         if (actionSheet == _reportAction) {
             self.reportAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定举报这条动态?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
             [_reportAlert show];
+        }
+        if (actionSheet ==_delReplyAction||actionSheet == _delReplyOrReplyAction) {
+            self.delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条评论?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            [_delReplyAlert show];
         }
     }
 }
@@ -502,52 +548,87 @@
 #pragma mark - load data
 -(void)reloadData
 {
-//    self.lastReplyid = @"";
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    self.pageNo = 0;
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
-//    [params setObject:self.lastReplyid forKey:@"stateuserid"];
-    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getReply" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getRepliesByTimeIndex" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.resultArray removeAllObjects];
-        //未完待续
-        
+        NSArray* array = responseObject;
+        if (array.count>0) {
+            _pageNo++;
+            for (NSDictionary* dic in array) {
+                Reply* reply = [[Reply alloc]initWithDictionary:dic];
+                [self.resultArray addObject:reply];
+            }
+            [self.tableV reloadData];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
-}
--(void)loadMoreData
-{
-    //body={"service":"service.uri.pet_states","method":"getRepliesByTimeIndex","token":"XXX","channel":"","mac":"","imei":"","params":{"stateid":"","stateuserid":"lastReplyid"}}
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    
+/*    //获取回复总数
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
-//    [params setObject:self.lastReplyid forKey:@"stateuserid"];
-    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getTotalReply" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getRepliesByTimeIndex" forKey:@"method"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
         
-        //未完待续
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+    }];*/
+}
+-(void)loadMoreData
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getReply" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray* array = responseObject;
+        if (array.count>0) {
+            _pageNo++;
+            for (NSDictionary* dic in array) {
+                Reply* reply = [[Reply alloc]initWithDictionary:dic];
+                [self.resultArray addObject:reply];
+            }
+            [self.tableV reloadData];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -581,6 +662,15 @@
         [self didInput];
         expandingTextView.text = @"";
         [expandingTextView resignFirstResponder];
+    }
+    return YES;
+}
+-(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
+{
+    if (growingTextView.text.length>=1) {
+        [self didInput];
+        growingTextView.text = @"";
+        [growingTextView resignFirstResponder];
     }
     return YES;
 }
@@ -643,7 +733,7 @@
 	
 	// get a rect for the textView frame
 	CGRect containerFrame = inPutView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+    containerFrame.origin.y = self.view.bounds.size.height;
 	
 	// animations settings
 	[UIView beginAnimations:nil context:NULL];

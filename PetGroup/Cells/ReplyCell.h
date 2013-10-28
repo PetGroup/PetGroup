@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "OHAttributedLabel.h"
+#import "Reply.h"
+#import "DynamicCellDelegate.h"
 @interface ReplyCell : UITableViewCell
-@property (nonatomic,weak)UIViewController* viewC;
-@property (nonatomic,weak)id theID;
-@property (nonatomic,retain)OHAttributedLabel* ohaL;
+@property (nonatomic,weak)id<DynamicCellDelegate> delegate;
+@property (nonatomic,strong)NSIndexPath* indexPath;
+@property (nonatomic,assign)Reply* reply;
++(CGFloat)heightForRowWithDynamic:(Reply*)reply;
 @end

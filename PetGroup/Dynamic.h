@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HostInfo.h"
 #import "Reply.h"
 
 @interface Dynamic : NSObject

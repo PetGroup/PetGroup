@@ -7,22 +7,21 @@
 //
 
 #import "Reply.h"
-#import "ReplyComment.h"
+#import "NSAttributedString+Attributes.h"
+#import "OHASBasicHTMLParser.h"
 @implementation Reply
 - (id)initWithDictionary:(NSDictionary*)dic
 {
     self = [super init];
     if (self) {
         self.replyID = [dic objectForKey:@"id"];
-        self.msg = [dic objectForKey:@"msg"];
-        self.dynamicID = [dic objectForKey:@"userStateid"];
-        self.petUser =[[HostInfo alloc]initWithHostInfo:[dic objectForKey:@"petUserView"]];
-        self.replyComments = [[NSMutableArray alloc]init];
-       NSArray* array = [NSMutableArray arrayWithArray:[dic objectForKey:@"replyCommentViews"]];
-        for (NSDictionary*dic in array) {
-            ReplyComment* replyCom = [[ReplyComment alloc]initWithDictionary:dic];
-            [self.replyComments addObject:replyCom];
-        }
+        self.submitTime = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[dic objectForKey:@"ct"]];
+        self.msg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"msg"]];
+        [_msg setFont:[UIFont systemFontOfSize:15]];
+        [_msg setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
+        self.userHeadImage = [[dic objectForKey:@"userImage"] componentsSeparatedByString:@"_"][0];
+        self.nickName = [dic objectForKey:@"nickname"];
+        self.userID = [dic objectForKey:@"userid"];
     }
     return self;
 }

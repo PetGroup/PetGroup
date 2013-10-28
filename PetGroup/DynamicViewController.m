@@ -348,8 +348,8 @@
                     NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
                     Reply* rep = [[Reply alloc]initWithDictionary:dic];
 //                    [self.mycell.dynamic.replyViews addObject:rep];
-                    NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
-                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+//                    NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
+//                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
 //                    self.mycell.dynamic.rowHigh += (size.height+5);
                     [self.tableV reloadData];
                     self.mycell = nil;
@@ -404,9 +404,9 @@
                 [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"commentUserid"];
                 [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
                 if ([self.theID isKindOfClass:[Reply class]]) {
-                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
+//                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
                     [params setObject:((Reply*)self.theID).replyID forKey:@"replyId"];
-                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
+//                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
                 }
                 if ([self.theID isKindOfClass:[ReplyComment class]]) {
                     [params setObject:((ReplyComment*)self.theID).commentUserView.userId forKey:@"replyUserid"];
@@ -429,7 +429,7 @@
                     NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                     ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
                     if ([self.theID isKindOfClass:[Reply class]]) {
-                        [((Reply*)self.theID).replyComments addObject:repcom];
+//                        [((Reply*)self.theID).replyComments addObject:repcom];
                         NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
                         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
 //                        self.mycell.dynamic.rowHigh += (size.height+5);
@@ -446,7 +446,7 @@
 //                            }
 //                        }
                         if (theRep) {
-                            [theRep.replyComments addObject:repcom];
+//                            [theRep.replyComments addObject:repcom];
                         }
                         NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
                         CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
@@ -729,7 +729,7 @@
 -(void)recalledreply:(id)theID cell:(DynamicCell*)cell//回复评论
 {
     if ([theID isKindOfClass:[Reply class]]) {
-        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
+//        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
     }
     if ([theID isKindOfClass:[ReplyComment class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];

@@ -156,10 +156,10 @@
     }
     if (indexPath.section == 1) {
         if ([self.highArray[indexPath.row] isKindOfClass:[Reply class]]) {
-            Reply* rel = (Reply*)self.highArray[indexPath.row];
-            NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
-            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
-            return size.height+10;
+//            Reply* rel = (Reply*)self.highArray[indexPath.row];
+//            NSString* repS = [NSString stringWithFormat:@"%@:%@",rel.petUser.nickName,rel.msg];
+//            CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:240];
+//            return size.height+10;
         }else{
             ReplyComment* recom = (ReplyComment*)self.highArray[indexPath.row];
             NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",recom.commentUserView.nickName,recom.replyUserView.nickName,recom.commentsMsg];
@@ -197,8 +197,8 @@
         if (cell == nil) {
             cell = [[ReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ReplyCellIdentifier];
         }
-        cell.viewC = self;
-        cell.theID = self.highArray[indexPath.row];
+//        cell.viewC = self;
+//        cell.theID = self.highArray[indexPath.row];
         return cell;
     }
 
@@ -555,7 +555,7 @@
 -(void)recalledreply:(id)theID cell:(EasyDynamicCell*)cell//回复评论
 {
     if ([theID isKindOfClass:[Reply class]]) {
-        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
+//        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
     }
     if ([theID isKindOfClass:[ReplyComment class]]) {
         _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];

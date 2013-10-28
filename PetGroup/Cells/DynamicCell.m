@@ -102,18 +102,25 @@
         [self.contentView addSubview:_bottomIV];
         zanB = [UIButton buttonWithType:UIButtonTypeCustom];
         zanB.frame = CGRectMake(5, 5, 100, 23.5);
+        zanB.titleLabel.font = [UIFont systemFontOfSize:12];
+        [zanB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [zanB addTarget:self action:@selector(zanAction) forControlEvents:UIControlEventTouchUpInside];
         [zanB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
         [zanB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
         [_bottomIV addSubview:zanB];
         replyB = [UIButton buttonWithType:UIButtonTypeCustom];
         replyB.frame = CGRectMake(110, 5, 100, 23.5);
+        replyB.titleLabel.font = [UIFont systemFontOfSize:12];
+        [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
         [replyB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
         [_bottomIV addSubview:replyB];
         zhuanfaB = [UIButton buttonWithType:UIButtonTypeCustom];
         zhuanfaB.frame = CGRectMake(215, 5, 100, 23.5);
+        zhuanfaB.titleLabel.font = [UIFont systemFontOfSize:12];
+        [zhuanfaB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [zhuanfaB setTitle:@"转发" forState:UIControlStateNormal];
         [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
         [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
         [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
@@ -139,7 +146,7 @@
         a.frame = CGRectZero;
     }
     headB.frame = CGRectMake(10, 10, 40, 40);
-    headB.imageURL = [NSURL URLWithString:self.dynamic.userHeadImage];
+    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.userHeadImage]];
     CGSize nameSize = [self.dynamic.nickName sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(250, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, 20);
     [nameB setTitle:self.dynamic.nickName forState:UIControlStateNormal];
@@ -269,6 +276,11 @@
         _zanImageV.image = [UIImage imageNamed:@"zaned"];
     }else{
         _zanImageV.image = [UIImage imageNamed:@"zan"];
+    }
+    if (self.dynamic.countZan>0) {
+        [zanB setTitle:[NSString stringWithFormat:@"%d",self.dynamic.countZan] forState:UIControlStateNormal];
+    }else{
+        [zanB setTitle:@"赞" forState:UIControlStateNormal];
     }
     
     _bottomIV.frame = CGRectMake(0, origin, 320, 33.5);

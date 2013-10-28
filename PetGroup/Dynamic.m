@@ -8,8 +8,7 @@
 
 #import "Dynamic.h"
 #import "Common.h"
-#import "HeightCalculate.h"
-#import "ReplyComment.h"
+#import "NSAttributedString+Attributes.h"
 #import "OHASBasicHTMLParser.h"
 @implementation Dynamic
 - (id)initWithNSDictionary:(NSDictionary*)dic
@@ -37,7 +36,7 @@
         self.msg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"msg"]];
         [_msg setFont:[UIFont systemFontOfSize:15]];
         [_msg setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
-        self.userHeadImage = [[dic objectForKey:@"img"] componentsSeparatedByString:@"_"][0];
+        self.userHeadImage = [[dic objectForKey:@"userImage"] componentsSeparatedByString:@"_"][0];
         self.nickName = [dic objectForKey:@"nickname"];
         self.userID = [dic objectForKey:@"userid"];
         self.state = [dic objectForKey:@"state"];

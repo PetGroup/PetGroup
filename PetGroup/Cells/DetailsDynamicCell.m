@@ -100,7 +100,7 @@
         a.frame = CGRectZero;
     }
     headB.frame = CGRectMake(10, 10, 40, 40);
-    headB.imageURL = [NSURL URLWithString:self.dynamic.userHeadImage];
+    headB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.userHeadImage]];
     CGSize nameSize = [self.dynamic.nickName sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(250, 20) lineBreakMode:NSLineBreakByWordWrapping];
     nameB.frame = CGRectMake(60, 10, nameSize.width, 20);
     [nameB setTitle:self.dynamic.nickName forState:UIControlStateNormal];
