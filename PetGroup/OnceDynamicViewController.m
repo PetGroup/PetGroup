@@ -123,23 +123,26 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
+    
+    
+    [self reloadData];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
     switch (self.onceDynamicViewControllerStyle) {
         case OnceDynamicViewControllerStyleNome:{
             
         }break;
         case OnceDynamicViewControllerStyleReply:{
-            [self performSelector:@selector(replyAction) withObject:nil afterDelay:0.5];
+            [self replyAction];
         }break;
         case OnceDynamicViewControllerStyleZhuanfa:{
-            [self performSelector:@selector(zhuanfaAction) withObject:nil afterDelay:0.5];
+            [self zhuanfaAction];
         }break;
         default:
             break;
     }
-    
-    [self reloadData];
 }
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -211,7 +214,46 @@
 }
 -(void)didInput
 {
-    
+    switch (assessOrPraise) {
+        case 1:{
+            
+        }break;
+        case 2:{
+            //转发body={"method":"addUserState","token":"XXX","channel":"","mac":"","imei":"","params":{"msg":"","imgid":"","ifTransmitMsg":"","transmitUrl":"","transmitMsg":""}}
+            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+            long long a = (long long)(cT*1000);
+            [params setObject:@"" forKey:@"transmitUrl"];
+            [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+            [params setObject:@"1" forKey:@"ifTransmitMsg"];
+            [params setObject:self.dynamic.msg forKey:@"msg"];
+            [params setObject:self.dynamic.imageID forKey:@"imgid"];
+            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+            [body setObject:@"service.uri.pet_states" forKey:@"service"];
+            [body setObject:@"1" forKey:@"channel"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+            [body setObject:@"iphone" forKey:@"imei"];
+            [body setObject:params forKey:@"params"];
+            [body setObject:@"addUserState" forKey:@"method"];
+            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",responseObject);
+                
+                //未完待续
+                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
+//                    [self.delegate dynamicListNeedReloadData];
+                }
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+        }break;
+        case 3:{
+            
+        }break;
+        default:
+            break;
+    }
 }
 -(void)backButton
 {

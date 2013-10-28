@@ -947,6 +947,7 @@
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
+		9715A18C181E0054009891A6 /* TableViewNeedReloadData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewNeedReloadData.h; sourceTree = "<group>"; };
 		9718F46017E8668300BEC495 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
 		971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
 		971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying001@2x.png"; sourceTree = "<group>"; };
@@ -1777,6 +1778,7 @@
 				86993B72180CDC3500F61A3F /* OnceCircleViewController.m */,
 				86CC16A918166EE7008E1D1F /* ArticleViewController.h */,
 				86CC16AA18166EE7008E1D1F /* ArticleViewController.m */,
+				9715A18C181E0054009891A6 /* TableViewNeedReloadData.h */,
 			);
 			name = Circle;
 			sourceTree = "<group>";
