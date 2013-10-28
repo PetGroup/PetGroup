@@ -41,6 +41,7 @@
 @property (strong,nonatomic) HostInfo * hostInfo;
 @property (strong,nonatomic) NSArray * heightArray;
 @property (assign,nonatomic) BOOL needRequest;
+@property (assign,nonatomic) BOOL needRequestPet;
 @property (assign,nonatomic) BOOL myFriend;
 @property (strong,nonatomic) NSString * friendStatus;
 @end

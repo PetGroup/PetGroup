@@ -410,17 +410,18 @@
     NSMutableDictionary * petinfo = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [petinfo setObject:[[self.hostInfo.petsArray objectAtIndex:index] petID] forKey:@"id"];
-    [petinfo setObject:@"0" forKey:@"version"];
+//    [petinfo setObject:@"0" forKey:@"version"];
     [postDict setObject:petinfo forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"delPetInfo" forKey:@"method"];
+    [postDict setObject:@"delPetinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSLog(@"%@",dic);
+//        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSLog(@"%@",dic);
         [DataStoreManager deleteOnePetForPetID:[[self.hostInfo.petsArray objectAtIndex:index] petID]];
         NSMutableArray * temp = [NSMutableArray arrayWithArray:self.hostInfo.petsArray];
         [temp removeObjectAtIndex:index];

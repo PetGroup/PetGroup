@@ -454,9 +454,18 @@
             [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
             [cell.petLabel setText:@"用户暂时还没有宠物呢"];
         }
-        
-        
-        [cell.distLabel setText:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"]];
+        int dist = [[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"] intValue];
+        NSString *distf;
+        if (dist>1000) {
+            float dd = dist/1000;
+            distf = [NSString stringWithFormat:@"%.1fkm",dd];
+        }
+        else
+        {
+            dist = ((int)(dist/100)+1)*100;
+            distf = [NSString stringWithFormat:@"%dm",dist];
+        }
+        [cell.distLabel setText:distf];
 
         return cell;
     }else{
@@ -469,11 +478,23 @@
         }
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
-//        [cell.headImageV setImage:[UIImage imageNamed:@"cat.png"]];
+//        [cell.headImageV setImage:[UIImage imageNamed:@"placeholder.png"]];
         NSString * petImgStr = [self getFistHeadImg:[pet objectForKey:@"img"]];
         [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
-        [cell.distLabel setText:[self.petDistanceArray objectAtIndex:indexPath.row]];
+        int dist = [[self.petDistanceArray objectAtIndex:indexPath.row] intValue];
+        NSString *distf;
+        if (dist>1000) {
+            float dd = dist/1000;
+            distf = [NSString stringWithFormat:@"%.1fkm",dd];
+        }
+        else
+        {
+            dist = ((int)(dist/100)+1)*100;
+            distf = [NSString stringWithFormat:@"%dm",dist];
+        }
+
+        [cell.distLabel setText:distf];
         NSString* sigStr = [pet objectForKey:@"trait"];
         NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
         NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
@@ -578,7 +599,7 @@
     else if(personOrPet)
     {
         PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
-        HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[self.nearbyArray objectAtIndex:indexPath.row]];
+        HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] PetsArray:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"]];
         detailV.hostInfo = hostInfo;
         [self.navigationController pushViewController:detailV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -588,7 +609,7 @@
         petDetailV.petInfo = petInfo;
         NSDictionary * uDict = [self getUserInfoByUserId:[[self.appearPetArray objectAtIndex:indexPath.row] objectForKey:@"userid"]];
         if (uDict) {
-            HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:uDict];
+            HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:uDict PetsArray:nil];
             petDetailV.hostInfo = hostInfo;
         }
         [self.navigationController pushViewController:petDetailV animated:YES];

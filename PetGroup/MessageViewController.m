@@ -691,7 +691,8 @@
     [paramDict setObject:userName forKey:@"username"];
     [postDict setObject:paramDict forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:@"getUserinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict setObject:@"iphone" forKey:@"imei"];
@@ -700,8 +701,8 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = responseObject;
         if (type==0) {
             AudioServicesPlayAlertSound(1007);
             NSDictionary * uDict = [NSDictionary dictionaryWithObjectsAndKeys:[recDict objectForKey:@"username"],@"fromUser",[recDict objectForKey:@"nickname"],@"fromNickname",msg,@"addtionMsg",[recDict objectForKey:@"img"],@"headID", nil];
