@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */; };
+		8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */; };
+		8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */; };
+		8623874C181F99CD000A8DC3 /* ReceiverVoiceNodePlaying002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF331180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png */; };
+		8623874D181F99CD000A8DC3 /* ReceiverVoiceNodePlaying003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF332180FB1C600650409 /* ReceiverVoiceNodePlaying003@2x.png */; };
+		8623874E181F99CD000A8DC3 /* SenderVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF333180FB1C600650409 /* SenderVoiceNodePlaying@2x.png */; };
+		8623874F181F99CD000A8DC3 /* SenderVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF334180FB1C600650409 /* SenderVoiceNodePlaying001@2x.png */; };
+		86238750181F99CD000A8DC3 /* SenderVoiceNodePlaying002@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF335180FB1C600650409 /* SenderVoiceNodePlaying002@2x.png */; };
+		86238751181F99CD000A8DC3 /* SenderVoiceNodePlaying003@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF336180FB1C600650409 /* SenderVoiceNodePlaying003@2x.png */; };
 		8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */; };
 		8629654017DAFCBC00236F3E /* UserTreaty.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8629653F17DAFCBC00236F3E /* UserTreaty.txt */; };
 		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
@@ -3900,6 +3909,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */,
+				8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
+				8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */,
+				8623874C181F99CD000A8DC3 /* ReceiverVoiceNodePlaying002@2x.png in Resources */,
+				8623874D181F99CD000A8DC3 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,
+				8623874E181F99CD000A8DC3 /* SenderVoiceNodePlaying@2x.png in Resources */,
+				8623874F181F99CD000A8DC3 /* SenderVoiceNodePlaying001@2x.png in Resources */,
+				86238750181F99CD000A8DC3 /* SenderVoiceNodePlaying002@2x.png in Resources */,
+				86238751181F99CD000A8DC3 /* SenderVoiceNodePlaying003@2x.png in Resources */,
 				9765D778181B9B400021B36F /* topBar3.png in Resources */,
 				86A56A76180F81D6000FD684 /* third_xiemessage_record_icon.png in Resources */,
 				86A56A77180F81D6000FD684 /* third_xiemessage_record_ani1.png in Resources */,
