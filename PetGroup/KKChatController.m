@@ -565,8 +565,8 @@
     [paramDict setObject:userNameit forKey:@"username"];
     [postDict2 setObject:paramDict forKey:@"params"];
     [postDict2 setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"getUserinfo" forKey:@"method"];
-    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
+    [postDict2 setObject:@"getUserinfo" forKey:@"method"];
+    [postDict2 setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict2 setObject:@"iphone" forKey:@"imei"];
