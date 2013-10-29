@@ -14,7 +14,7 @@
 #import "OnceDynamicViewController.h"
 #import "PhotoViewController.h"
 
-@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewNeedReloadData>
+@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange>
 {
     BOOL request;
 }
@@ -309,11 +309,18 @@
     [self presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - dynamic list reload data
--(void)dynamicListNeedReloadData:(Dynamic *)dynamic
+-(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic
 {
-    if (dynamic) {
-        [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
-    }
+    [self.friendCircleDS.dataSourceArray removeObject:dynamic];
+    [self.tableV reloadData];
+}
+-(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
+{
+    [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
+    [self.tableV reloadData];
+}
+-(void)dynamicListJustReload
+{
     [self.tableV reloadData];
 }
 #pragma mark - load data

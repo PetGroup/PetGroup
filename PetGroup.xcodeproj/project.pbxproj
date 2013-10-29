@@ -871,6 +871,7 @@
 		86BDFC6E181E24CA0089C889 /* DynamicCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicCellDelegate.h; sourceTree = "<group>"; };
 		86BDFC6F181E2A9A0089C889 /* bottom_zaned_click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zaned_click.png; sourceTree = "<group>"; };
 		86BDFC70181E2A9A0089C889 /* bottom_zaned_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zaned_normal.png; sourceTree = "<group>"; };
+		86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewDatasourceDidChange.h; sourceTree = "<group>"; };
 		86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = third_common_selected_clicked.png; sourceTree = "<group>"; };
 		86C799421803EAEE00DF89C5 /* third_common_selected_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = third_common_selected_no.png; sourceTree = "<group>"; };
 		86CC16A718164953008E1D1F /* shurukuang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shurukuang.png; sourceTree = "<group>"; };
@@ -954,7 +955,6 @@
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
-		9715A18C181E0054009891A6 /* TableViewNeedReloadData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewNeedReloadData.h; sourceTree = "<group>"; };
 		9715A18D181E1890009891A6 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		9715A18E181E1890009891A6 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		9715A18F181E1890009891A6 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -1789,7 +1789,7 @@
 				86993B72180CDC3500F61A3F /* OnceCircleViewController.m */,
 				86CC16A918166EE7008E1D1F /* ArticleViewController.h */,
 				86CC16AA18166EE7008E1D1F /* ArticleViewController.m */,
-				9715A18C181E0054009891A6 /* TableViewNeedReloadData.h */,
+				86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */,
 			);
 			name = Circle;
 			sourceTree = "<group>";

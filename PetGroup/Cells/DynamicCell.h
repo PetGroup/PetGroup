@@ -10,7 +10,7 @@
 #import "Dynamic.h"
 #import "DynamicCellDelegate.h"
 @interface DynamicCell : UITableViewCell
-
+@property (nonatomic,strong)UIButton* replyB;
 @property (nonatomic,weak)Dynamic*dynamic;
 @property (nonatomic,weak)id<DynamicCellDelegate> delegate;
 @property (nonatomic,strong)NSIndexPath* indexPath;

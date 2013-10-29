@@ -199,7 +199,9 @@
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
     }
-    [self.delegate dynamicListNeedReloadData:nil];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListJustReload)]) {
+        [self.delegate dynamicListJustReload];
+    }
     if (request) {
         return;
     }
@@ -252,6 +254,7 @@
 {
     self.pid = @"";
     self.puserid = @"";
+    self.inputTF.text = @"";
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
     self.inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
@@ -260,6 +263,7 @@
 }
 -(void)zhuanfaAction//转发
 {
+    self.inputTF.text = @"";
     [_inputTF becomeFirstResponder];
     assessOrPraise = 2;
     self.inputTF.placeholder = @"转发至我的动态";
@@ -288,11 +292,25 @@
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"%@",responseObject);
-                
-                //未完待续
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
-                    [self.delegate dynamicListNeedReloadData:nil];
-                }
+                NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+                dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                NSString*dateS = [dateF stringFromDate:[NSDate date]];
+                NSDictionary* d = [DataStoreManager queryMyInfo];
+                NSString* replyid = responseObject;
+                NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+                [dic setObject:replyid forKey:@"id"];
+                [dic setObject:[d objectForKey:@"nickname"] forKey:@"nickname"];
+                [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
+                [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
+                [dic setObject:[params objectForKey:@"msg"] forKey:@"msg"];
+                [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+                [dic setObject:dateS forKey:@"ct"];
+                [dic setObject:self.dynamic.dynamicID forKey:@"stateid"];
+                [dic setObject:self.pid forKey:@"pid"];
+                [dic setObject:self.puserid forKey:@"puserid"];
+                Reply* reply = [[Reply alloc]initWithDictionary:dic];
+                [self.resultArray addObject:reply];
+                [self.tableV reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
             }];
@@ -304,8 +322,8 @@
             long long a = (long long)(cT*1000);
             [params setObject:@"" forKey:@"transmitUrl"];
             [params setObject:self.inputTF.text forKey:@"transmitMsg"];
-            [params setObject:@"1" forKey:@"ifTransmitMsg"];
-            [params setObject:self.dynamic.msg forKey:@"msg"];
+            [params setObject:@"true" forKey:@"ifTransmitMsg"];
+            [params setObject:self.dynamic.msg.string forKey:@"msg"];
             [params setObject:self.dynamic.imageID forKey:@"imgid"];
             NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
             [body setObject:@"service.uri.pet_states" forKey:@"service"];
@@ -317,11 +335,30 @@
             [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"%@",responseObject);
-                
-                //未完待续
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
-                    [self.delegate dynamicListNeedReloadData:nil];
+                NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+                dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                NSString*dateS = [dateF stringFromDate:[NSDate date]];
+                NSDictionary* d = [DataStoreManager queryMyInfo];
+                NSString* dynamicid = responseObject;
+                NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+                [dic setObject:dynamicid forKey:@"id"];
+                [dic setObject:[d objectForKey:@"nickname"] forKey:@"nickname"];
+                [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
+                [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
+                [dic setObject:@"1" forKey:@"ifTransmitMsg"];
+                [dic setObject:self.dynamic.imageID forKey:@"imgid"];
+                [dic setObject:self.dynamic.msg.string forKey:@"msg"];
+                [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+                [dic setObject:dateS forKey:@"ct"];
+                [dic setObject:@"" forKey:@"transmitUrl"];
+                [dic setObject:@"3" forKey:@"state"];
+                [dic setObject:@"0" forKey:@"reportTimes"];
+                [dic setObject:[params objectForKey:@"transmitMsg"] forKey:@"transmitMsg"];
+                [dic setObject:@"0" forKey:@"totalPat"];
+                [dic setObject:@"0" forKey:@"didIpat"];
+                Dynamic* dynamic = [[Dynamic alloc]initWithNSDictionary:dic];
+                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListAddOneDynamic:)]) {
+                    [self.delegate dynamicListAddOneDynamic:dynamic];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -467,9 +504,7 @@
 
 - (NSDate *)pullingTableViewRefreshingFinishedDate
 {
-    NSDateFormatter *df = [[NSDateFormatter alloc] init ];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSDate *date = [df dateFromString:@"2012-05-03 10:10"];
+    NSDate *date = [NSDate date];
     return date;
 }
 #pragma mark - actionSheet delegate
@@ -489,14 +524,39 @@
             self.delReplyAlert = [[UIAlertView alloc]initWithTitle:nil message:@"确定删除这条评论?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
             [_delReplyAlert show];
         }
+    }else{
+        if (actionSheet == _delReplyOrReplyAction&&buttonIndex == 1) {
+            [self replyOneReplyWithIndexPath:self.indexPath];
+        }
     }
 }
 #pragma mark - alertView delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (!buttonIndex == 0) {
+        if (alertView == _delReplyAlert) {
+            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+            long long a = (long long)(cT*1000);
+            [params setObject:((Reply*)self.resultArray[self.indexPath.row]).replyID forKey:@"replyid"];
+            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+            [body setObject:@"service.uri.pet_states" forKey:@"service"];
+            [body setObject:@"1" forKey:@"channel"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+            [body setObject:@"iphone" forKey:@"imei"];
+            [body setObject:params forKey:@"params"];
+            [body setObject:@"delReply" forKey:@"method"];
+            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"%@",responseObject);
+                [self.resultArray removeObjectAtIndex:self.indexPath.row];
+                [self.tableV reloadData];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+        }
         if (alertView == _delAlert) {
-            //body={"service":"service.uri.pet_states","method":"delUserState","token":"XXX","channel":"","mac":"","imei":"","params":{"stateid":""}}
             NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
             long long a = (long long)(cT*1000);
@@ -511,16 +571,15 @@
             [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSLog(@"%@",responseObject);
-                
-                //未完待续
-                
+                if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListDeleteOneDynamic:)]) {
+                    [self.delegate dynamicListDeleteOneDynamic:self.dynamic];
+                }
+                [self backButton];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
             }];
         }
         if (alertView == _reportAlert) {
-            //body={"service":"service.uri.pet_states","method":"reportContent","token":"XXX","channel":"","mac":"","imei":"","params":{"stateid":""}}
             NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
             long long a = (long long)(cT*1000);
@@ -531,14 +590,11 @@
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
             [body setObject:@"iphone" forKey:@"imei"];
             [body setObject:params forKey:@"params"];
-            [body setObject:@"reportContent" forKey:@"method"];
+            [body setObject:@"addReport" forKey:@"method"];
             [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
             [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSLog(@"%@",responseObject);
-                
-                //未完待续
-                
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
             }];
@@ -574,32 +630,12 @@
                 Reply* reply = [[Reply alloc]initWithDictionary:dic];
                 [self.resultArray addObject:reply];
             }
-            [self.tableV reloadData];
         }
+        [self.tableV reloadData];
+        [self.tableV tableViewDidFinishedLoading];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [self.tableV tableViewDidFinishedLoading];
     }];
-    
-/*    //获取回复总数
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:@"service.uri.pet_states" forKey:@"service"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getTotalReply" forKey:@"method"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];*/
 }
 -(void)loadMoreData
 {
@@ -627,10 +663,11 @@
                 Reply* reply = [[Reply alloc]initWithDictionary:dic];
                 [self.resultArray addObject:reply];
             }
-            [self.tableV reloadData];
         }
+        [self.tableV reloadData];
+        [self.tableV tableViewDidFinishedLoading];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [self.tableV tableViewDidFinishedLoading];
     }];
 }
 #pragma mark - Responding to keyboard events
@@ -655,15 +692,6 @@
     r.size.height -= diff;
     r.origin.y += diff;
 	inPutView.frame = r;
-}
-- (BOOL)expandingTextViewShouldReturn:(BHExpandingTextView *)expandingTextView
-{
-    if (expandingTextView.text.length>=1) {
-        [self didInput];
-        expandingTextView.text = @"";
-        [expandingTextView resignFirstResponder];
-    }
-    return YES;
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
 {

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TableViewNeedReloadData.h"
+#import "TableViewDatasourceDidChange.h"
 @interface EditDynamicViewController : UIViewController
-@property (nonatomic,weak)id<TableViewNeedReloadData>delegate;
+@property (nonatomic,weak)id<TableViewDatasourceDidChange>delegate;
 @end
