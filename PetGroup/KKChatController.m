@@ -583,6 +583,8 @@
         titleLabel.text=self.nickName;
         [self.tView reloadData];
   
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
     }];
     
 }
