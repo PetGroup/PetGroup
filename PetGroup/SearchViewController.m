@@ -208,9 +208,7 @@
 
 - (NSDate *)pullingTableViewRefreshingFinishedDate
 {
-    NSDateFormatter *df = [[NSDateFormatter alloc] init ];
-    df.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSDate *date = [df dateFromString:@"2012-05-03 10:10"];
+    NSDate *date = [NSDate date];
     return date;
 }
 

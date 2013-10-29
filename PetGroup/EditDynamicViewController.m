@@ -9,6 +9,7 @@
 #import "EditDynamicViewController.h"
 #import "MBProgressHUD.h"
 #import "TempData.h"
+#import "Dynamic.h"
 @interface EditDynamicViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
@@ -54,7 +55,7 @@
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
-    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -130,7 +131,7 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
--(void)backButton:(UIButton*)button
+-(void)backButton
 {
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
@@ -188,12 +189,32 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-        //未完待续
-        if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListNeedReloadData:)]) {
-            [self.delegate dynamicListNeedReloadData:nil];
+        NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+        dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        NSString*dateS = [dateF stringFromDate:[NSDate date]];
+        NSDictionary* d = [DataStoreManager queryMyInfo];
+        NSString* dynamicid = responseObject;
+        NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+        [dic setObject:dynamicid forKey:@"id"];
+        [dic setObject:[d objectForKey:@"nickname"] forKey:@"nickname"];
+        [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
+        [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
+        [dic setObject:@"false" forKey:@"ifTransmitMsg"];
+        [dic setObject:imageID forKey:@"imgid"];
+        [dic setObject:self.dynamicTV.text forKey:@"msg"];
+        [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+        [dic setObject:dateS forKey:@"ct"];
+        [dic setObject:@"" forKey:@"transmitUrl"];
+        [dic setObject:@"3" forKey:@"state"];
+        [dic setObject:@"0" forKey:@"reportTimes"];
+        [dic setObject:@"" forKey:@"transmitMsg"];
+        [dic setObject:@"0" forKey:@"totalPat"];
+        [dic setObject:@"0" forKey:@"didIpat"];
+        Dynamic* dynamic = [[Dynamic alloc]initWithNSDictionary:dic];
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListAddOneDynamic:)]) {
+            [self.delegate dynamicListAddOneDynamic:dynamic];
         }
+        [self backButton];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];

@@ -16,7 +16,6 @@
     UIButton* nameB;
     EGOImageButton* headB;
     UIButton* zanB;
-    UIButton* replyB;
     UIButton* zhuanfaB;
 }
 @property (nonatomic,retain)UIView* backView;
@@ -108,14 +107,14 @@
         [zanB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
         [zanB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
         [_bottomIV addSubview:zanB];
-        replyB = [UIButton buttonWithType:UIButtonTypeCustom];
-        replyB.frame = CGRectMake(110, 5, 100, 23.5);
-        replyB.titleLabel.font = [UIFont systemFontOfSize:12];
-        [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
-        [replyB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
-        [replyB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
-        [_bottomIV addSubview:replyB];
+        self.replyB = [UIButton buttonWithType:UIButtonTypeCustom];
+        _replyB.frame = CGRectMake(110, 5, 100, 23.5);
+        _replyB.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
+        [_replyB setBackgroundImage:[UIImage imageNamed:@"normal"] forState:UIControlStateNormal];
+        [_replyB setBackgroundImage:[UIImage imageNamed:@"click"] forState:UIControlStateHighlighted];
+        [_bottomIV addSubview:_replyB];
         zhuanfaB = [UIButton buttonWithType:UIButtonTypeCustom];
         zhuanfaB.frame = CGRectMake(215, 5, 100, 23.5);
         zhuanfaB.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -131,7 +130,7 @@
         
         UIImageView* replyIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 5, 17, 14.5)];
         replyIV.image = [UIImage imageNamed:@"pinglun"];
-        [replyB addSubview:replyIV];
+        [_replyB addSubview:replyIV];
         
         UIImageView * zhuanfaIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 3.5, 14, 16.5)];
         zhuanfaIV.image = [UIImage imageNamed:@"zhuanfa"];
@@ -270,7 +269,7 @@
             origin+=309.9;
         }
        
-        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y, 300, origin-_msgL.frame.origin.y);
+        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y-3, 300, origin-_msgL.frame.origin.y);
     }
     if (self.dynamic.ifIZaned) {
         _zanImageV.image = [UIImage imageNamed:@"zaned"];

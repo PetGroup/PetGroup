@@ -223,7 +223,7 @@
             }
             origin+=309.9;
         }
-        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y, 300, origin-_msgL.frame.origin.y);
+        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y-3, 300, origin-_msgL.frame.origin.y);
     }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

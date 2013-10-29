@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Dynamic.h"
-#import "TableViewNeedReloadData.h"
+#import "TableViewDatasourceDidChange.h"
 #import "HPGrowingTextView.h"
 typedef enum {
     OnceDynamicViewControllerStyleNome,
@@ -21,5 +21,5 @@ typedef enum {
 }
 @property (nonatomic,retain)Dynamic* dynamic;
 @property (nonatomic,assign)OnceDynamicViewControllerStyle onceDynamicViewControllerStyle;
-@property (nonatomic,weak)id<TableViewNeedReloadData>delegate;
+@property (nonatomic,weak)id<TableViewDatasourceDidChange>delegate;
 @end
