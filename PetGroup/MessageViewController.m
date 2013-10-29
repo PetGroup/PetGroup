@@ -41,10 +41,11 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     
     [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
-
+    
+    
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -58,21 +59,33 @@
     [self.view addSubview:titleLabel];
     [titleLabel setText:@"消息"];
     
-    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(88+diffH)) style:UITableViewStylePlain];
+    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, diffH+44, 320, self.view.frame.size.height-(49+44+diffH)) style:UITableViewStylePlain];
     [self.view addSubview:self.messageTable];
+//    UIView * iuiu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//    [iuiu setBackgroundColor:[UIColor redColor]];
+//    self.messageTable.tableHeaderView = iuiu;
+    //    UIView *backgroundView = [[UIView alloc] initWithFrame:self.messageTable.bounds];
+    //    backgroundView.backgroundColor = [UIColor clearColor];
+    //    self.messageTable.backgroundView = backgroundView;
     self.messageTable.dataSource = self;
     self.messageTable.delegate = self;
     self.messageTable.contentOffset = CGPointMake(0, 44);
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, 44)];
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
     searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
     self.messageTable.tableHeaderView = searchBar;
+//    [self.view addSubview:searchBar];
     searchBar.delegate = self;
+
+
     
     searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplay.delegate = self;
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
+//    searchDisplay.displaysSearchBarInNavigationBar = YES;
     
     _slimeView = [[SRRefreshView alloc] init];
     _slimeView.delegate = self;
@@ -89,12 +102,17 @@
     self.appDel = [[UIApplication sharedApplication] delegate];
 
 }
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     [self.mlNavigationController setGestureEnableYES];
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    if (diffH==20.0f) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
     if ([[TempData sharedInstance] needChat]) {
         NSDictionary * theDict = (NSDictionary *)[DataStoreManager queryOneFriendInfoWithUserName:[[TempData sharedInstance] getNeedChatUser]];
         KKChatController * kkchat = [[KKChatController alloc] init];
@@ -684,6 +702,49 @@
     [DataStoreManager saveUserInfo:dict];
 }
 
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    if (diffH==20.0f) {
+        searchBar.backgroundImage = [UIImage imageNamed:@"topBar2.png"];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.messageTable setFrame:CGRectMake(0, 20, 320, self.view.frame.size.height-(49+44+diffH))];
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+
+
+}
+
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    if (diffH==20.0f) {
+        
+    }
+    
+}
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+    if (diffH==20.0f) {
+        [UIView animateWithDuration:0.2 animations:^{
+            [self.messageTable setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(49+44+diffH))];
+        } completion:^(BOOL finished) {
+            searchBar.backgroundImage = nil;
+        }];
+    }
+
+    
+}
+-(void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+
+    if (diffH==20.0f) {
+        [tableView setFrame:CGRectMake(0, 20, 320, self.view.frame.size.height-(49+diffH))];
+        [tableView setContentOffset:CGPointMake(0, 20)];
+    }
+
+
+}
 -(void)requestPeopleInfoWithName:(NSString *)userName ForType:(int)type Msg:(NSString *)msg
 {
     NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
