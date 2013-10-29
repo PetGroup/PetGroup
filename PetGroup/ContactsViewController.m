@@ -39,7 +39,7 @@
     
     self.appDel = [[UIApplication sharedApplication] delegate];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
@@ -62,25 +62,77 @@
     [self.view addSubview:addButton];
     [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
  
-    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-88-diffH) style:UITableViewStylePlain];
+    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH+44, 320, self.view.frame.size.height-49-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.contactsTable];
     self.contactsTable.dataSource = self;
     self.contactsTable.delegate = self;
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44, 320, 44)];
+//    self.contactsTable.contentOffset = CGPointMake(0, 44);
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, 44)];
     searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
-    self.contactsTable.tableHeaderView = searchBar;
+//    self.contactsTable.tableHeaderView = searchBar;
+    [self.view addSubview:searchBar];
     searchBar.delegate = self;
     
     searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplay.delegate = self;
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
 
-    
+
+
  //   [self getFriendsList];
 	// Do any additional setup after loading the view.
 }
+-(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
+{
+    
+    if (diffH==20.0f) {
+        [searchBar setFrame:CGRectMake(0, 20, 320, 64)];
+        searchBar.backgroundImage = [UIImage imageNamed:@"topBar2.png"];
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.contactsTable setFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-(49+64))];
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+    
+}
+
+-(void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    if (diffH==20.0f) {
+        
+    }
+    
+}
+-(void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
+{
+    if (diffH==20.0f) {
+        [UIView animateWithDuration:0.2 animations:^{
+            [searchBar setFrame:CGRectMake(0, 64, 320, 44)];
+            [self.contactsTable setFrame:CGRectMake(0, 44+44+diffH, 320, self.view.frame.size.height-(49+44+diffH))];
+        } completion:^(BOOL finished) {
+            searchBar.backgroundImage = nil;
+        }];
+    }
+    
+    
+}
+-(void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
+{
+    
+    if (diffH==20.0f) {
+//        [tableView setFrame:CGRectMake(0, 20, 320, self.view.frame.size.height-(49+diffH))];
+//        [tableView setContentOffset:CGPointMake(0, 20)];
+    }
+    
+    
+}
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     if ([[TempData sharedInstance] needChat]) {
@@ -100,7 +152,7 @@
 {
     
 //    [self refreshFriendList];
-//    [self getFriendByHttp];
+    [self getFriendByHttp];
  //   [self getFriendInfo:@"england"];
 }
 -(void)getFriendByHttp
@@ -123,10 +175,23 @@
 //        NSDictionary * recDict = [receiveStr JSONValue];
 //        [DataStoreManager saveUserInfo:responseObject];
 //        [self refreshFriendList];
+        [self parseFriendsList:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 
+}
+-(void)parseFriendsList:(NSArray *)friendsList
+{
+    for (NSDictionary * dict in friendsList) {
+        dispatch_queue_t queue = dispatch_queue_create("com.pet.StoreFriends", NULL);
+        dispatch_async(queue, ^{
+            [DataStoreManager saveUserInfo:dict];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshFriendList];
+            });
+        });
+    }
 }
 -(void)refreshFriendList
 {
@@ -140,15 +205,15 @@
     friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
     [friendsArray sortUsingSelector:@selector(compare:)];
     [self.contactsTable reloadData];
-    NSMutableArray * tempF = [DataStoreManager queryAllFriendsNickname];
-    for (int i = 0; i<tempF.count; i++) {
-//        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
-//            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
+//    NSMutableArray * tempF = [DataStoreManager queryAllFriendsNickname];
+//    for (int i = 0; i<tempF.count; i++) {
+////        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
+////            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
+////        }
+//        if ([[[tempF objectAtIndex:i] objectAtIndex:0] length]<=1) {
+//            [self getFriendInfo:[[tempF objectAtIndex:i] objectAtIndex:1] withIndex:i];
 //        }
-        if ([[[tempF objectAtIndex:i] objectAtIndex:0] length]<=1) {
-            [self getFriendInfo:[[tempF objectAtIndex:i] objectAtIndex:1] withIndex:i];
-        }
-    }
+//    }
 }
 -(void)getFriendInfo:(NSString *)userName withIndex:(int)index
 {
@@ -287,6 +352,9 @@
 }
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return nil;
+    }
     return sectionIndexArray;
 }
 - (void)didReceiveMemoryWarning

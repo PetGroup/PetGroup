@@ -565,7 +565,8 @@
     [paramDict setObject:userNameit forKey:@"username"];
     [postDict2 setObject:paramDict forKey:@"params"];
     [postDict2 setObject:@"1" forKey:@"channel"];
-    [postDict2 setObject:@"selectUserViewByUserName" forKey:@"method"];
+    [postDict setObject:@"getUserinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict2 setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict2 setObject:@"iphone" forKey:@"imei"];
@@ -574,8 +575,8 @@
     [postDict2 setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict2 TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = responseObject;
         [DataStoreManager saveUserInfo:recDict];
         self.chatUserImg = [self getHead:[recDict objectForKey:@"img"]];
         self.nickName = [recDict objectForKey:@"nickname"];
@@ -613,7 +614,7 @@
 -(void)toContactProfile
 {
     PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
-    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.nickName,@"nickname",self.chatWithUser,@"username", nil]];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.nickName?self.nickName:self.chatWithUser,@"nickname",self.chatWithUser,@"username", nil] PetsArray:nil];
     detailV.hostInfo = hostInfo;
     detailV.needRequest = YES;
     detailV.friendStatus = self.friendStatus;

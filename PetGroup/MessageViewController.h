@@ -22,7 +22,7 @@
 #import "FriendsReqsViewController.h"
 
 @class XMPPHelper;
-@interface MessageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,NotConnectDelegate,UISearchBarDelegate,SRRefreshDelegate,StoreMsgDelegate>
+@interface MessageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,NotConnectDelegate,UISearchBarDelegate,SRRefreshDelegate,StoreMsgDelegate,UISearchDisplayDelegate>
 {
     UISearchBar * searchBar;
     UISearchDisplayController * searchDisplay;
@@ -73,6 +73,8 @@
     NSMutableArray * allNickNameArray;
     NSMutableArray * allHeadImgArray;
     NSString * appStoreURL;
+    
+    float diffH;
 }
 
 
