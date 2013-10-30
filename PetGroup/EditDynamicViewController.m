@@ -221,7 +221,7 @@
 }
 -(void)getAnActionSheet
 {
-    if (_pictureArray.count<=9) {
+    if (_pictureArray.count<9) {
         self.addActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
         [_addActionSheet showInView:self.view];
     }

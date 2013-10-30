@@ -32,19 +32,19 @@
     CGFloat height = 60;
     if (!dynamic.ifTransmitMsg) {
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        height += msgSize.height;
+        height += (msgSize.height+10);
     }else{
         CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
         height+=(size.height+5);
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        height+=(msgSize.height+5);
+        height+=(msgSize.height+10);
     }
     if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
-        height+=103.3;
+        height+=85;
     }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
-        height+=206.6;
+        height+=165;
     }else if(dynamic.smallImage.count>6){
-        height+=309.9;
+        height+=245;
     }
 
     return height+=33.5;
@@ -57,7 +57,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleGray;
     
         self.backView = [[UIView alloc]init];
-        _backView.backgroundColor = [UIColor grayColor];
+        _backView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_backView];
         
         nameB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -151,125 +151,125 @@
     [nameB setTitle:self.dynamic.nickName forState:UIControlStateNormal];
     
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(250, 12) lineBreakMode:NSLineBreakByWordWrapping];
-    _timeL.frame = CGRectMake(60, 30, timeSize.width, timeSize.height);
+    _timeL.frame = CGRectMake(60, 40, timeSize.width, timeSize.height);
     _timeL.text = self.dynamic.submitTime;
     
-    CGFloat origin = 55;
+    CGFloat origin = 60;
     
     if (!self.dynamic.ifTransmitMsg) {
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        _msgL.frame = CGRectMake(10, origin, 300, size.height);
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        _msgL.frame = CGRectMake(60, origin, 250, size.height);
         _msgL.attributedText = self.dynamic.msg;
-        origin = origin + size.height + 5;
+        origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            origin+=103.3;
+            origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
+                originX+=80;
             }
-            origin+=206.6;
+            origin+=165;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+206.6, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+160, 75, 75);
+                originX+=80;
             }
-            origin+=309.9;
+            origin+=245;
         }
     }else{
         CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        self.transmitMsgL.frame =CGRectMake (10, 55, 300, transmitMsgSize.height);
+        self.transmitMsgL.frame =CGRectMake (60, origin, 300, transmitMsgSize.height);
          _transmitMsgL.attributedText = self.dynamic.transmitMsg;
-        origin = origin + transmitMsgSize.height + 5;
+        origin = origin + transmitMsgSize.height +5;
         CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        _msgL.frame = CGRectMake(10, origin, 300, size.height);
+        _msgL.frame = CGRectMake(60, origin, 300, size.height);
         _msgL.attributedText = self.dynamic.msg;
-        origin = origin + size.height + 5;
+        origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            origin+=103.3;
+            origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
+                originX+=80;
             }
-            origin+=206.6;
+            origin+=165;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 10;
+            int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+80, 75, 75);
+                originX+=80;
             }
-            originX = 10;
+            originX = 60;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+206.6, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+160, 75, 75);
+                originX+=80;
             }
-            origin+=309.9;
+            origin+=245;
         }
        
-        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y-3, 300, origin-_msgL.frame.origin.y);
+        self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 250, origin-_msgL.frame.origin.y);
     }
     if (self.dynamic.ifIZaned) {
         _zanImageV.image = [UIImage imageNamed:@"zaned"];

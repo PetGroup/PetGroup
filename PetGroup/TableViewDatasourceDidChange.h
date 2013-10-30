@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 @class Dynamic;
 @protocol TableViewDatasourceDidChange <NSObject>
+@optional
 -(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic;
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic;
 -(void)dynamicListJustReload;

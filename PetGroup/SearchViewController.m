@@ -7,17 +7,18 @@
 //
 
 #import "SearchViewController.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "TempData.h"
 #import "Article.h"
 #import "articleCell.h"
 
-@interface SearchViewController ()<PullingRefreshTableViewDelegate>
+@interface SearchViewController ()<MJRefreshBaseViewDelegate>
 {
     UISearchBar * asearchBar;
     UISearchDisplayController * searchDisplay;
 }
-@property (strong,nonatomic) PullingRefreshTableView * resultTable;
+@property (strong,nonatomic) UITableView * resultTable;
+@property (strong,nonatomic) MJRefreshFooterView *footer;
 @property (strong,nonatomic) NSMutableArray * resultArray;
 @property (strong,nonatomic) NSString* notename;
 @property (assign,nonatomic) int pageNo;
@@ -62,17 +63,18 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    self.resultTable = [[PullingRefreshTableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
+    self.resultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.resultTable];
-    self.resultTable.footerOnly = YES;
-    self.resultTable.pullingDelegate = self;
     self.resultTable.dataSource = self;
     self.resultTable.delegate = self;
     self.resultTable.rowHeight = 100;
+    self.footer = [[MJRefreshFooterView alloc] init];
+    _footer.delegate = self;
+    _footer.scrollView = self.resultTable;
     asearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44, 320, 44)];
     asearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     asearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    asearchBar.placeholder = @"用户名或昵称";
+    asearchBar.placeholder = @"输入关键字搜索帖子";
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
     self.resultTable.tableHeaderView = asearchBar;
     // asearchBar.barStyle = UIBarStyleBlackTranslucent;
@@ -90,8 +92,12 @@
 }
 -(void)loadMoreData
 {
-    self.pageNo++;
-    [self searchBarData];
+    if (self.notename.length>0) {
+        self.pageNo++;
+        [self searchBarData];
+        return;
+    }
+    [_footer endRefreshing];
 }
 -(void)searchBarData
 {
@@ -124,9 +130,9 @@
             }
         }
         [self.resultTable reloadData];
-        [self.resultTable tableViewDidFinishedLoading];
+        [_footer endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.resultTable tableViewDidFinishedLoading];
+        [_footer endRefreshing];
     }];
 }
 #pragma mark - button action
@@ -173,44 +179,12 @@
     }
     
 }
-#pragma mark - ScrollDelegate
-
-//刷新必须调用ScrollViewDelegate方法（从写的方法）
-
-- (void)scrollViewDidScroll:(UIScrollView*)scrollView{
-    if (self.resultArray.count>0) {
-        [self.resultTable tableViewDidScroll:scrollView];
+#pragma mark MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        [self loadMoreData];
+        return;
     }
 }
-
-
-- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate{
-    
-    if (self.resultArray.count>0) {
-        [self.resultTable tableViewDidEndDragging:scrollView];
-    }
-}
-
-
-
-
-#pragma mark -
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
-{
-    
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
-{
-    [self loadMoreData];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate
-{
-    NSDate *date = [NSDate date];
-    return date;
-}
-
-
 @end

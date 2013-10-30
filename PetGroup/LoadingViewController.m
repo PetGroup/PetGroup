@@ -9,7 +9,6 @@
 #import "LoadingViewController.h"
 #import "CustomTabBar.h"
 #import "MessageViewController.h"
-#import "DynamicViewController.h"
 #import "NearByViewController.h"
 #import "ContactsViewController.h"
 #import "PersonalCenterViewController.h"

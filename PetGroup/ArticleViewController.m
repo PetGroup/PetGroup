@@ -7,11 +7,11 @@
 //
 
 #import "ArticleViewController.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "TempData.h"
-@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate>
+@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
-@property (nonatomic,retain)PullingRefreshTableView*tableV;
+@property (nonatomic,retain)UITableView*tableV;
 @end
 
 @implementation ArticleViewController
@@ -51,8 +51,7 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
-    _tableV.pullingDelegate = self;
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
@@ -142,40 +141,7 @@
     }
     return cell;
 }
-#pragma mark - ScrollDelegate
 
-//刷新必须调用ScrollViewDelegate方法（从写的方法）
-
-- (void)scrollViewDidScroll:(UIScrollView*)scrollView{
-    [self.tableV tableViewDidScroll:scrollView];
-}
-
-
-- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [self.tableV tableViewDidEndDragging:scrollView];
-}
-
-
-
-
-#pragma mark -
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
-{
-    [self reloadData];
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
-{
-    [self loadMoreData];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate
-{
-    NSDate* date = [NSDate date];
-    return date;
-}
 #pragma mark - load data
 -(void)reloadData
 {

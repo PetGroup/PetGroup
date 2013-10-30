@@ -11,11 +11,8 @@
 #import "XMPPHelper.h"
 #import "CustomTabBar.h"
 #import "JSON.h"
-#import "NarrowDynamicCell.h"
 #import "UIExpandingTextView.h"
 #import "ReplyComment.h"
-#import "PersonalDynamicViewController.h"
-#import "PersonDynamicDelegateAndDataSouce.h"
 #import "HeightCalculate.h"
 #import "Common.h"
 
@@ -31,7 +28,6 @@
 }
 @property (nonatomic,strong)NSMutableArray* dynamicArray;
 @property (nonatomic,strong)UIImageView*  actionIV;
-@property (nonatomic,weak)NarrowDynamicCell* mycell;
 @property (nonatomic,weak)id theID;
 @property (nonatomic,strong)UIExpandingTextView* inputTF;
 @end
@@ -390,9 +386,8 @@
     else if (indexPath.section==3){
         if (indexPath.row==0) {
             return 40;
-        }
-        else
-            return ((PersonalDynamic*)self.dynamicArray[indexPath.row-1]).rowHigh;
+        }else
+            return 40;
     }
     else
         return 40;
@@ -539,12 +534,10 @@
             {
                 static NSString *Cell = @"Celldds";
                 
-                NarrowDynamicCell *cell = (NarrowDynamicCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Cell];
                 if (cell == nil) {
-                    cell = [[NarrowDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
-                    cell.viewC = self;
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
                 }
-                cell.dynamic = self.dynamicArray[indexPath.row-1];
                 if (self.myFriend) {
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 }
@@ -558,33 +551,6 @@
             return nil;
             break;
     }
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 3&&self.myFriend) {
-        PersonalDynamicViewController * pdvc = [[PersonalDynamicViewController alloc]init];
-        PersonDynamicDelegateAndDataSouce * pddds = [[PersonDynamicDelegateAndDataSouce alloc]init];
-        pddds.userID = self.hostInfo.userId;
-        pddds.viewC = pdvc;
-        pdvc.dataSource = pddds;
-        pdvc.userName = self.hostInfo.nickName;
-        if (self.hostInfo.headImgArray.count>0) {
-            pdvc.HeadImageID = self.hostInfo.headImgArray[0];
-        }
-        [self.navigationController pushViewController:pdvc animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
-    }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self removeActionImageView];
-    self.mycell = nil;
-    [self keyBoardResign];
-    
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self removeActionImageView];
-    self.mycell = nil;
-    [self keyBoardResign];
 }
 -(void)getUserInfoWithUserName:(NSString *)userName
 {
@@ -816,315 +782,11 @@
         NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         [self.dynamicArray removeAllObjects];
         for (NSDictionary*a in array) {
-            PersonalDynamic* b = [[PersonalDynamic alloc]initWithNSDictionary:a];
-            [self.dynamicArray addObject:b];
+            
             [self.profileTableV reloadData];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
-}
-#pragma mark - cell button action
--(void)showButton:(NarrowDynamicCell*)cell
-{
-    CGRect cellRect=[self.view convertRect:cell.frame fromView:_profileTableV];
-    if (_actionIV == nil) {
-        self.actionIV = [[UIImageView alloc]init];
-        _actionIV.userInteractionEnabled = YES;
-        _actionIV.image = [UIImage imageNamed:@"tanchuanniu_bg"];
-        [self.view addSubview:_actionIV];
-        
-        assessB = [UIButton buttonWithType:UIButtonTypeCustom];
-        assessB.frame = CGRectMake(0, 6, 0,31);
-        [assessB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
-        [assessB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
-        [assessB setTitle:@"评论" forState:UIControlStateNormal];
-        [assessB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [assessB addTarget:self action:@selector(assess) forControlEvents:UIControlEventTouchUpInside];
-        [_actionIV addSubview:assessB];
-        
-        reprintB = [UIButton buttonWithType:UIButtonTypeCustom];
-        reprintB.frame = CGRectMake(0, 6, 0, 31);
-        [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-normal"] forState:UIControlStateNormal];
-        [reprintB setBackgroundImage:[UIImage imageNamed:@"tanchuanniu-click"] forState:UIControlStateHighlighted];
-        [reprintB setTitle:@"转载" forState:UIControlStateNormal];
-        [reprintB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [reprintB addTarget:self action:@selector(reprint) forControlEvents:UIControlEventTouchUpInside];
-        [_actionIV addSubview:reprintB];
-    }
-    if (cell != _mycell) {
-        [self removeActionImageView];
-        self.mycell = nil;
-        _actionIV.frame = CGRectMake(250, cellRect.origin.y+cell.moveB.frame.origin.y, 0, 44);
-        [self.view addSubview:_actionIV];
-        self.mycell = cell;
-        [UIView animateWithDuration:0.3 animations:^{
-            _actionIV.frame = CGRectMake( 128, cellRect.origin.y+cell.moveB.frame.origin.y, 127, 44);
-            assessB.frame = CGRectMake(6, 6, 53, 31);
-            reprintB.frame = CGRectMake(65, 6, 53, 31);
-        }];
-    }else{
-        self.mycell = nil;
-        [self removeActionImageView];
-    }
-}
--(void)removeActionImageView
-{
-    assessB.frame = CGRectMake(0, 6, 0,31);
-    reprintB.frame = CGRectMake(0, 6, 0, 31);
-    [_actionIV removeFromSuperview];
-    
-}
--(void)recalledreply:(id)theID cell:(NarrowDynamicCell*)cell//回复评论
-{
-    if ([theID isKindOfClass:[Reply class]]) {
-//        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((Reply*)theID).petUser.nickName];
-    }
-    if ([theID isKindOfClass:[ReplyComment class]]) {
-        _inputTF.placeholder = [NSString stringWithFormat:@"回复:%@",((ReplyComment*)theID).commentUserView.nickName];
-    }
-    self.mycell = cell;
-    self.theID = theID;
-    [_inputTF becomeFirstResponder];
-    assessOrPraise = 3;
-    
-}
--(void)assess//评论
-{
-    [self removeActionImageView];
-    [_inputTF becomeFirstResponder];
-    assessOrPraise = 1;
-    _inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.mycell.dynamic.petUser.nickName];
-}
--(void)reprint//转发
-{
-    [self removeActionImageView];
-    [_inputTF becomeFirstResponder];
-    assessOrPraise = 2;
-    _inputTF.placeholder = @"转发至我的动态";
-}
--(void)didInput
-{
-    if (_inputTF.text.length>0) {
-        switch (assessOrPraise) {
-            case 1:
-            {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"petuserId"];
-                [params setObject:self.mycell.dynamic.dynamicID forKey:@"userstateId"];
-                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"replyTime"];
-                [params setObject:self.inputTF.text forKey:@"msg"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"addReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                    Reply* rep = [[Reply alloc]initWithDictionary:dic];
-                    [self.mycell.dynamic.replyViews addObject:rep];
-//                    NSString* repS = [NSString stringWithFormat:@"%@:%@",rep.petUser.nickName,rep.msg];
-//                    CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-//                    self.mycell.dynamic.rowHigh += (size.height+5);
-                    [self.profileTableV reloadData];
-                    self.mycell = nil;
-                }];
-            }break;
-            case 2:
-            {
-                if (_inputTF.text.length<=80) {
-                    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                    long long a = (long long)(cT*1000);
-                    [params setObject:@"" forKey:@"transmitUrl"];
-                    [params setObject:self.inputTF.text forKey:@"transmitMsg"];
-                    [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"submitTime"];
-                    [params setObject:@"1" forKey:@"ifTransmitMsg"];
-                    [params setObject:self.mycell.dynamic.msg forKey:@"msg"];
-                    [params setObject:self.mycell.dynamic.imageID forKey:@"imgid"];
-                    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
-                    [params setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
-                    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                    [body setObject:@"1" forKey:@"channel"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                    [body setObject:@"iphone" forKey:@"imei"];
-                    [body setObject:params forKey:@"params"];
-                    [body setObject:@"addUserState" forKey:@"method"];
-                    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        
-                    }];
-                }else{
-                    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"转发内容不得超过80个字" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-                    [alert show];
-                }
-                
-            }break;
-            case 3:
-            {
-                NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-                NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-                long long a = (long long)(cT*1000);
-                [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"commentUserid"];
-                [params setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"commentTime"];
-                if ([self.theID isKindOfClass:[Reply class]]) {
-//                    [params setObject:((Reply*)self.theID).petUser.userId forKey:@"replyUserid"];
-                    [params setObject:((Reply*)self.theID).replyID forKey:@"replyId"];
-//                    [params setObject:((Reply*)self.theID).dynamicID forKey:@"userStateid"];
-                }
-                if ([self.theID isKindOfClass:[ReplyComment class]]) {
-                    [params setObject:((ReplyComment*)self.theID).commentUserView.userId forKey:@"replyUserid"];
-                    [params setObject:((ReplyComment*)self.theID).replyID forKey:@"replyId"];
-                    [params setObject:((ReplyComment*)self.theID).userStateid forKey:@"userStateid"];
-                }
-                
-                [params setObject:_inputTF.text forKey:@"msg"];
-                NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-                [body setObject:@"1" forKey:@"channel"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-                [body setObject:@"iphone" forKey:@"imei"];
-                [body setObject:params forKey:@"params"];
-                [body setObject:@"addCommentReply" forKey:@"method"];
-                [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-                [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-                [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-                    ReplyComment* repcom = [[ReplyComment alloc]initWithDictionary:dic];
-                    if ([self.theID isKindOfClass:[Reply class]]) {
-//                        [((Reply*)self.theID).replyComments addObject:repcom];
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
-                        [self.profileTableV reloadData];
-                    }
-                    if ([self.theID isKindOfClass:[ReplyComment class]]) {
-                        Reply* theRep = nil;
-                        for (Reply* re  in self.mycell.dynamic.replyViews) {
-//                            for (ReplyComment* rec in re.replyComments) {
-//                                if ([rec isEqual:self.theID]) {
-//                                    theRep = re;
-//                                    break;
-//                                }
-//                            }
-                        }
-                        if (theRep) {
-//                            [theRep.replyComments addObject:repcom];
-                        }
-                        NSString* repS = [NSString stringWithFormat:@"%@回复%@:%@",repcom.commentUserView.nickName,repcom.replyUserView.nickName,repcom.commentsMsg];
-                        CGSize size = [HeightCalculate calSizeWithString:repS WithMaxWidth:210];
-                        self.mycell.dynamic.rowHigh += (size.height+5);
-                        [self.profileTableV reloadData];
-                    }
-                    NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-                    self.mycell = nil;
-                }];
-            }break;
-                
-            default:
-                break;
-        }
-        [self keyBoardResign];
-    }
-}
--(void)keyBoardResign
-{
-    [_inputTF resignFirstResponder];
-}
-#pragma mark - Responding to keyboard events
--(void)expandingTextView:(UIExpandingTextView *)expandingTextView willChangeHeight:(float)height
-{
-    /* Adjust the height of the toolbar when the input component expands */
-    float diff = (expandingTextView.frame.size.height - height);
-    CGRect r = inPutView.frame;
-    CGRect r2 = inputbg.frame;
-    r.origin.y += diff;
-    r.size.height -= diff;
-    r2.size.height-=diff;
-    inPutView.frame = r;
-    inputbg.frame = r2;
-    
-}
-- (BOOL)expandingTextViewShouldReturn:(UIExpandingTextView *)expandingTextView
-{
-    [self didInput];
-    expandingTextView.text = @"";
-    return YES;
-}
-#pragma mark - Responding to keyboard events
-- (void)keyboardWillShow:(NSNotification *)notification {
-    /*
-     Reduce the size of the text view so that it's not obscured by the keyboard.
-     Animate the resize so that it's in sync with the appearance of the keyboard.
-     */
-    
-    NSDictionary *userInfo = [notification userInfo];
-    
-    // Get the origin of the keyboard when it's displayed.
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    // Get the top of the keyboard as the y coordinate of its origin in self's view's coordinate system. The bottom of the text view's frame should align with the top of the keyboard's final position.
-    CGRect keyboardRect = [aValue CGRectValue];
-    
-    // Get the duration of the animation.
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
-    [self autoMovekeyBoard:keyboardRect.size.height];
-}
-
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    
-    NSDictionary* userInfo = [notification userInfo];
-    
-    /*
-     Restore the size of the text view (fill self's view).
-     Animate the resize so that it's in sync with the disappearance of the keyboard.
-     */
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    
-    [self autoMovekeyBoard:0];
-}
--(void) autoMovekeyBoard: (float) h{
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-    if (typeMsgView.frame.origin.y<0) {
-        if (iPhone5) {
-            if (self.view.frame.size.height == 499.0+diffH) {
-                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
-            }else{
-                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
-            }
-        }
-        else
-        {
-            if (self.view.frame.size.height == 411.0+diffH) {
-                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height+49), 320.0f, inPutView.frame.size.height);
-            }else{
-                inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height-h-inPutView.frame.size.height), 320.0f, inPutView.frame.size.height);
-            }
-        }
-        if (h==0) {
-            inPutView.frame = CGRectMake(0.0f, (float)(self.view.frame.size.height), 320.0f, inPutView.frame.size.height);
-        }
-
-    }
-    
-    [UIView commitAnimations];
-    NSLog(@"%f",self.view.frame.size.height);
 }
 @end

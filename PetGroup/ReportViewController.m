@@ -193,13 +193,15 @@
 -(void)submitReport
 {
     [hud show:YES];
+    
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [params setObject:self.inputTextF.text forKey:@"feedback"];
-    [params setObject:self.emailField.text?self.emailField.text:@"" forKey:@"email"];
+    [params setObject:self.emailField.text.length>0?self.emailField.text:@"" forKey:@"Email"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"1" forKey:@"channel"];
+    [body setObject:@"service.uri.pet_feedback" forKey:@"service"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:params forKey:@"params"];

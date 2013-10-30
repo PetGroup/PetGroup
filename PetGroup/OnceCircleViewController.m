@@ -12,7 +12,7 @@
 #import "BHExpandingTextView.h"
 #import "EGOImageView.h"
 #import "EditArticleViewController.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "SearchViewController.h"
 #import "hotPintsDataSource.h"
 #import "AllArticleDataSource.h"
@@ -21,13 +21,13 @@
 #import "NewPublishArticleDataSource.h"
 #import "ArticleViewController.h"
 
-@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,PullingRefreshTableViewDelegate,BHExpandingTextViewDelegate>
+@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,BHExpandingTextViewDelegate>
 {
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
 @property (nonatomic,retain)UIImageView* screenV;
-@property (nonatomic,retain)PullingRefreshTableView* tableV;
+@property (nonatomic,retain)UITableView* tableV;
 
 @property (nonatomic,retain)AllArticleDataSource* allArticleDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
@@ -138,9 +138,8 @@
     [joinB addTarget:self action:@selector(joinOnceCircle) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:joinB];
     
-    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     _tableV.delegate = self;
-    _tableV.pullingDelegate = self;
     _tableV.rowHeight = 100;
     _tableV.tableHeaderView = headView;
     [self.view addSubview:_tableV];
@@ -382,57 +381,21 @@
     }
     return cell;
 }
-#pragma mark - ScrollDelegate
-
-//刷新必须调用ScrollViewDelegate方法（从写的方法）
-
-- (void)scrollViewDidScroll:(UIScrollView*)scrollView{
-    [self.tableV tableViewDidScroll:scrollView];
-}
-
-
-- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [self.tableV tableViewDidEndDragging:scrollView];
-}
-
-
-
-
-#pragma mark -
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
-{
-    [self reloadData];
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
-{
-    [self loadMoreData];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate
-{
-    NSDate* date = [NSDate date];
-    return date;
-}
 #pragma mark - load data
 -(void)reloadData
 {
     [hotPintsDS reloadDataSuccess:^{
         [self.tableV reloadData];
-        [self.tableV tableViewDidFinishedLoading];
     } failure:^{
-        [self.tableV tableViewDidFinishedLoading];
+        
     }];
 }
 -(void)loadMoreData
 {
     [hotPintsDS loadMoreDataSuccess:^{
         [self.tableV reloadData];
-        [self.tableV tableViewDidFinishedLoading];
     } failure:^{
-        [self.tableV tableViewDidFinishedLoading];
+        
     }];
 }
 @end

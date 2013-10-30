@@ -1,48 +1,44 @@
 //
-//  FriendCircleViewController.m
+//  SomeOneDynamicViewController.m
 //  PetGroup
 //
-//  Created by 阿铛 on 13-10-14.
+//  Created by 阿铛 on 13-10-30.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "FriendCircleViewController.h"
+#import "SomeOneDynamicViewController.h"
 #import "TempData.h"
-#import "EditDynamicViewController.h"
 #import "EGOImageView.h"
-#import "EGOImageButton.h"
 #import "OnceDynamicViewController.h"
 #import "PhotoViewController.h"
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
-#import "SomeOneDynamicViewController.h"
-@interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
+#import "HostInfo.h"
+@interface SomeOneDynamicViewController ()<UITableViewDelegate,UITableViewDataSource,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     
 }
+@property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)EGOImageView* imageV;
 @property (nonatomic,retain)UITableView* tableV;
-@property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
+@property (nonatomic,assign)int pageNo;
 @end
 
-@implementation FriendCircleViewController
+@implementation SomeOneDynamicViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.friendCircleDS = [[FriendCircleDataSource alloc]init];
-        _friendCircleDS.myController = self;
+        self.dataSourceArray = [[NSMutableArray alloc]init];
     }
     return self;
 }
--(UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -75,29 +71,27 @@
     
     self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 320)];
     _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
-    _imageV.imageURL = [NSURL URLWithString:@""];
     [self.view addSubview:_imageV];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
-    _tableV.dataSource = self.friendCircleDS;
+    _tableV.dataSource = self;
     _tableV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableV];
     
     self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 220)];
     _headV.backgroundColor = [UIColor clearColor];
     self.tableV.tableHeaderView = _headV;
-    
-    UIButton* changeB = [UIButton buttonWithType:UIButtonTypeCustom];
-    [changeB addTarget:self action:@selector(changeCoverImage) forControlEvents:UIControlEventTouchUpInside];
-    changeB.frame =CGRectMake(0, 0, 320, 180);
-    [_headV addSubview:changeB];
+    if ([[[TempData sharedInstance] getMyUserID] isEqualToString:self.userID]) {
+        UIButton* changeB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [changeB addTarget:self action:@selector(changeCoverImage) forControlEvents:UIControlEventTouchUpInside];
+        changeB.frame =CGRectMake(0, 0, 320, 180);
+        [_headV addSubview:changeB];
+    }
     
     UIView* whiteV = [[UIView alloc]initWithFrame:CGRectMake(0, 180, 320, 40)];
     whiteV.backgroundColor = [UIColor whiteColor];
     [_headV addSubview:whiteV];
-    
-    NSDictionary* dic = [DataStoreManager queryMyInfo];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -110,22 +104,14 @@
     [_headV addSubview:photoIV];
     photoIV.userInteractionEnabled = YES;
     
-    EGOImageButton*headIV = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
+    EGOImageView*headIV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"moren_people.png"]];
     headIV.frame = CGRectMake(5, 5, 70, 70);
     [photoIV addSubview:headIV];
-    [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
-    
-    nameL.text = [dic objectForKey:@"nickname"];
-    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameL.frame = CGRectMake(220-size.width, 140, size.width, 20);
-    NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
-    headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     
     UILabel*signatureL  = [[UILabel alloc]initWithFrame:CGRectMake(0, 180, 320, 20)];
     signatureL.font = [UIFont systemFontOfSize:16];
     signatureL.backgroundColor = [UIColor clearColor];
     signatureL.textColor = [UIColor blackColor];
-    signatureL.text = [dic objectForKey:@"signature"];
     [_headV addSubview:signatureL];
     
     self.refreshView = [[SRRefreshView alloc] init];
@@ -144,6 +130,36 @@
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
     
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [paramDict setObject:self.userID forKey:@"userid"];
+    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getUserinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = responseObject;
+        HostInfo*hostInfo = [[HostInfo alloc] initWithNewHostInfo:recDict PetsArray:nil];
+        nameL.text = hostInfo.nickName;
+        CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
+        nameL.frame = CGRectMake(220-size.width, 140, size.width, 20);
+        NSString * imageID = hostInfo.headImgArray[0];
+        headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
+        signatureL.text = hostInfo.signature;
+        _imageV.imageURL = [NSURL URLWithString:@""];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
     [self reloadData];
 }
 
@@ -153,12 +169,6 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
--(void)headAct
-{
-    SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
-    sodVC.userID = [[TempData sharedInstance] getMyUserID];
-    [self.navigationController pushViewController:sodVC animated:YES];
-}
 -(void)changeCoverImage
 {
     UIActionSheet* addActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
@@ -168,12 +178,6 @@
 {
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
-}
--(void)updateSelfMassage
-{
-    EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
-    editVC.delegate = self;
-    [self.navigationController pushViewController:editVC animated:YES];
 }
 #pragma mark - action sheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -230,33 +234,33 @@
 {
     [picker dismissViewControllerAnimated:YES completion:^{}];
     UIImage*selectImage = [info objectForKey:UIImagePickerControllerEditedImage];
-    selectImage = [FriendCircleViewController compressImageDownToPhoneScreenSize:selectImage targetSizeX:320 targetSizeY:320];
-    selectImage = [FriendCircleViewController image:selectImage centerInSize:CGSizeMake(320, 320)];
+    selectImage = [SomeOneDynamicViewController compressImageDownToPhoneScreenSize:selectImage targetSizeX:320 targetSizeY:320];
+    selectImage = [SomeOneDynamicViewController image:selectImage centerInSize:CGSizeMake(320, 320)];
     _imageV.image = selectImage;
-  //修改相册封面，未完待续
-//    [NetManager uploadImage:selectImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString*imageID = responseObject;
-//        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-//        long long a = (long long)(cT*1000);
-//        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-//        [params setObject:imageID forKey:@"backgroundImg"];
-//        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-//        [body setObject:params forKey:@"params"];
-//        [body setObject:@"updateUser" forKey:@"method"];
-//        [body setObject:@"service.uri.pet_user" forKey:@"service"];
-//        [body setObject:@"1" forKey:@"channel"];
-//        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-//        [body setObject:@"iphone" forKey:@"imei"];
-//        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-//        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-//        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            
-//        }];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
+    //修改相册封面，未完待续
+    //    [NetManager uploadImage:selectImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    //        NSString*imageID = responseObject;
+    //        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    //        long long a = (long long)(cT*1000);
+    //        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    //        [params setObject:imageID forKey:@"backgroundImg"];
+    //        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    //        [body setObject:params forKey:@"params"];
+    //        [body setObject:@"updateUser" forKey:@"method"];
+    //        [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    //        [body setObject:@"1" forKey:@"channel"];
+    //        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    //        [body setObject:@"iphone" forKey:@"imei"];
+    //        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    //        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    //        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    //
+    //        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    //
+    //        }];
+    //    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    //
+    //    }];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -293,93 +297,37 @@
 #pragma mark - tableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [DynamicCell heightForRowWithDynamic:self.friendCircleDS.dataSourceArray[indexPath.row]];
+    return 100;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
-    odVC.delegate = self;
+    odVC.dynamic = self.dataSourceArray[indexPath.row];
+    if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userID]) {
+        odVC.delegate = self;
+    }
     [self.navigationController pushViewController:odVC animated:YES];
+}
+#pragma mark - table view data source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataSourceArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"cell";
+    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+//        cell.delegate = self.myController;
+    }
+//    cell.indexPath = indexPath;
+//    cell.dynamic = self.dataSourceArray[indexPath.row];
+//    [cell.replyB setTitle:[self replyCountWithDynamicID:((Dynamic*)self.dataSourceArray[indexPath.row]).dynamicID] forState:UIControlStateNormal];
+    return cell;
 }
 #pragma mark - dynamic cell delegate
--(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
--(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"indext= %d= %d",indexPath.section,indexPath.row);
-    Dynamic* dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
-    if (!dynamic.ifIZaned) {
-        dynamic.ifIZaned = !dynamic.ifIZaned;
-        dynamic.countZan++;
-    }else{
-        dynamic.ifIZaned = !dynamic.ifIZaned;
-        dynamic.countZan--;
-    }
-    [self.tableV reloadData];
-    if (dynamic.ifIZaned) {
-        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-        long long a = (long long)(cT*1000);
-        [params setObject:dynamic.dynamicID forKey:@"srcid"];
-        [params setObject:@"赞动态" forKey:@"type"];
-        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-        [body setObject:@"service.uri.pet_pat" forKey:@"service"];
-        [body setObject:@"1" forKey:@"channel"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-        [body setObject:@"iphone" forKey:@"imei"];
-        [body setObject:params forKey:@"params"];
-        [body setObject:@"addPat" forKey:@"method"];
-        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
-            
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-    }else{
-        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-        long long a = (long long)(cT*1000);
-        [params setObject:dynamic.dynamicID forKey:@"srcid"];
-        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-        [body setObject:@"service.uri.pet_pat" forKey:@"service"];
-        [body setObject:@"1" forKey:@"channel"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-        [body setObject:@"iphone" forKey:@"imei"];
-        [body setObject:params forKey:@"params"];
-        [body setObject:@"delPat" forKey:@"method"];
-        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-    }
-}
--(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
-{
-    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
-    odVC.delegate = self;
-    odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleReply;
-    [self.navigationController pushViewController:odVC animated:YES];
-}
--(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath
-{
-    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-    odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
-    odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleZhuanfa;
-    odVC.delegate = self;
-    [self.navigationController pushViewController:odVC animated:YES];
-}
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
@@ -388,35 +336,79 @@
 #pragma mark - dynamic list reload data
 -(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic
 {
-    [self.friendCircleDS.dataSourceArray removeObject:dynamic];
+    [self.dataSourceArray removeObject:dynamic];
     [self.tableV reloadData];
 }
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
 {
-    [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
-    [self.tableV reloadData];
-}
--(void)dynamicListJustReload
-{
+    [self.dataSourceArray insertObject:dynamic atIndex:0];
     [self.tableV reloadData];
 }
 #pragma mark - load data
 -(void)reloadData
 {
-    [_friendCircleDS reloadDataSuccess:^{
+    self.pageNo = 0;
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
+        [self.dataSourceArray removeAllObjects];
+        if (array.count>0) {
+            self.pageNo++;
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+        }
         [self.tableV reloadData];
-        [_refreshView endRefresh];
-    } failure:^{
-        [_refreshView endRefresh];
+        [self.refreshView endRefresh];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.refreshView endRefresh];
     }];
 }
 -(void)loadMoreData
 {
-    [_friendCircleDS loadMoreDataSuccess:^{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getAllFriendStates" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
+        if (array.count>0) {
+            self.pageNo++;
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dataSourceArray addObject:b];
+            }
+        }
         [self.tableV reloadData];
-        [_footer endRefreshing];
-    } failure:^{
-        [_footer endRefreshing];
+        [self.footer endRefreshing];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.footer endRefreshing];
     }];
 }
 #pragma mark - 压缩图片

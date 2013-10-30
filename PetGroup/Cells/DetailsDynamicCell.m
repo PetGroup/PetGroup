@@ -52,7 +52,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         self.backView = [[UIView alloc]init];
-        _backView.backgroundColor = [UIColor grayColor];
+        _backView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_backView];
         
         nameB = [UIButton buttonWithType:UIButtonTypeCustom];

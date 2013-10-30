@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PersonalDynamic.h"
+#import "Dynamic.h"
+#import "DynamicCellDelegate.h"
 @interface PersonalDynamicCell : UITableViewCell
 
-@property (nonatomic,weak)UIButton* moveB;
-@property (nonatomic,weak)PersonalDynamic*dynamic;
-@property (nonatomic,weak)UIViewController* viewC;
+@property (nonatomic,weak)Dynamic*dynamic;
+@property (nonatomic,weak)id<DynamicCellDelegate> delegate;
+@property (nonatomic,strong)NSIndexPath* indexPath;
 
++(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
 @end

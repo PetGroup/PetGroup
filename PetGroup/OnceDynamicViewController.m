@@ -7,21 +7,22 @@
 //
 
 #import "OnceDynamicViewController.h"
-#import "PullingRefreshTableView.h"
+#import "MJRefresh.h"
 #import "TempData.h"
 #import "DetailsDynamicCell.h"
 #import "UIExpandingTextView.h"
 #import "BHExpandingTextView.h"
 #import "Reply.h"
 #import "ReplyCell.h"
-@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,PullingRefreshTableViewDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate>
+@interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate,MJRefreshBaseViewDelegate>
 {
     int assessOrPraise;
     UIImageView * inputbg;
     UIView * inPutView;
     BOOL request;
 }
-@property (strong,nonatomic) PullingRefreshTableView * tableV;
+@property (strong,nonatomic) UITableView * tableV;
+@property (strong,nonatomic) MJRefreshFooterView * footer;
 @property (strong,nonatomic) NSMutableArray * resultArray;
 @property (strong,nonatomic) UIActionSheet* delAction;
 @property (strong,nonatomic) UIActionSheet* reportAction;
@@ -82,11 +83,14 @@
     [moveButton addTarget:self action:@selector(showActionShoot) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moveButton];
     
-    self.tableV = [[PullingRefreshTableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self;
-    _tableV.pullingDelegate = self;
     [self.view addSubview:_tableV];
+    
+    self.footer = [[MJRefreshFooterView alloc]init];
+    _footer.delegate = self;
+    _footer.scrollView = self.tableV;
     
     UIImageView* bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
     bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
@@ -385,6 +389,13 @@
         [_reportAction showInView:self.view];
     }
 }
+#pragma mark MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        [self loadMoreData];
+    }
+}
 #pragma mark -
 #pragma mark TableView
 
@@ -462,50 +473,12 @@
 }
 -(void)replyOneReplyWithIndexPath:(NSIndexPath *)indexPath
 {
-    [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     assessOrPraise = 1;
     self.pid = ((Reply*)self.resultArray[indexPath.row]).replyID;
     self.puserid = ((Reply*)self.resultArray[indexPath.row]).userID;
     _inputTF.text = [NSString stringWithFormat:@"回复 %@:",((Reply*)self.resultArray[indexPath.row]).nickName];
     [_inputTF becomeFirstResponder];
-}
-#pragma mark - ScrollDelegate
-
-//刷新必须调用ScrollViewDelegate方法（从写的方法）
-
-- (void)scrollViewDidScroll:(UIScrollView*)scrollView{
-    if (self.resultArray.count>0) {
-        [self.tableV tableViewDidScroll:scrollView];
-    }
-}
-
-
-- (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate{
-    
-    if (self.resultArray.count>0) {
-        [self.tableV tableViewDidEndDragging:scrollView];
-    }
-}
-
-
-
-
-#pragma mark -
-#pragma mark - PullingRefreshTableViewDelegate
-- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView
-{
-    [self reloadData];
-}
-
-- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView
-{
-    [self loadMoreData];
-}
-
-- (NSDate *)pullingTableViewRefreshingFinishedDate
-{
-    NSDate *date = [NSDate date];
-    return date;
 }
 #pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -632,9 +605,8 @@
             }
         }
         [self.tableV reloadData];
-        [self.tableV tableViewDidFinishedLoading];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.tableV tableViewDidFinishedLoading];
+        
     }];
 }
 -(void)loadMoreData
@@ -665,9 +637,9 @@
             }
         }
         [self.tableV reloadData];
-        [self.tableV tableViewDidFinishedLoading];
+        [_footer endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.tableV tableViewDidFinishedLoading];
+        [_footer endRefreshing];
     }];
 }
 #pragma mark - Responding to keyboard events

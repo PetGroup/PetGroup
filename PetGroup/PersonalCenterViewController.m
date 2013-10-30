@@ -8,8 +8,6 @@
 
 #import "PersonalCenterViewController.h"
 #import "CustomTabBar.h"
-#import "PersonalDynamicViewController.h"
-#import "MyDynamicDelegateAndDataSource.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "JSON.h"
@@ -285,14 +283,8 @@
         [self.navigationController pushViewController:myV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else if (indexPath.section==2) {
-        PersonalDynamicViewController * PDVC = [[PersonalDynamicViewController alloc] init];
-        MyDynamicDelegateAndDataSource* MDDDS = [[MyDynamicDelegateAndDataSource alloc]init];
-        MDDDS.viewC = PDVC;
-        PDVC.dataSource = MDDDS;
-        PDVC.userName = [DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
-        PDVC.HeadImageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
-        [self.navigationController pushViewController:PDVC animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
+        
+        
     }
     else if (indexPath.section==3){
         SettingViewController * setV = [[SettingViewController alloc] init];
