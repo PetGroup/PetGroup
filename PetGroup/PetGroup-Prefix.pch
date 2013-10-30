@@ -21,6 +21,7 @@
     #import "NetManager.h"
     #import "MakeDict.h"
     #import "Common.h"
+    #import "DTCoreText.h"
 #endif
 
 #define BaseClientUrl @"http://123.178.27.74/pet-hub/request"
@@ -82,5 +83,8 @@
 #else
 #define NSLog(...) {}
 #endif
+
+#define DEFAULT_thumbImageWidth 200.0f
+#define DEFAULT_thumbImageHeight 300.0f
 
 //#define NotUseSimulator  @"YES"

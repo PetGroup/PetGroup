@@ -26,6 +26,7 @@
 #import "OnceCircleViewController.h"
 #import "CircleClassify.h"
 #import "ArticleViewController.h"
+#import "EditArticleViewController.h"
 
 @interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate>
 {
@@ -225,7 +226,10 @@
 #pragma mark - button action
 -(void)next
 {
-    
+    EditArticleViewController * editV = [[EditArticleViewController alloc] init];
+    [self presentViewController:editV animated:YES completion:^{
+        
+    }];
 }
 -(void)showSearchView
 {

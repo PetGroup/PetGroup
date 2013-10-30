@@ -5,18 +5,36 @@
 //  Created by 阿铛 on 13-10-17.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
-
+#import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "EditArticleViewController.h"
 #import "MBProgressHUD.h"
 #import "TempData.h"
+#import "FastTextView.h"
+
+//#import "ImageAttachmentCell.h"
+#import "SlideAttachmentCell.h"
+#import "EmotionAttachmentCell.h"
+#import <CoreText/CoreText.h>
+#import "UIImage-Extensions.h"
+#import "NSAttributedString+TextUtil.h"
+#import "TextConfig.h"
 @interface EditArticleViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
     UIImageView* deleteIV;
     MBProgressHUD * hud;
+    
+    BOOL isAddSlide;
+
+    CGFloat origin_y;
+    NSMutableString * stringToPublish;
+    NSMutableArray * tagArray;
+    NSMutableArray * tagPositionArray;
+//    FastTextView *_dynamicTV;
 }
 @property (nonatomic,strong)UITextField* titleTF;
-@property (nonatomic,strong)UITextView* dynamicTV;
+@property (nonatomic,strong)FastTextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
 @property (nonatomic,strong)NSMutableArray* pictureArray;
 @property (nonatomic,strong)UIActionSheet* addActionSheet;
@@ -35,7 +53,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -43,17 +63,20 @@
     UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
     [self.view addSubview:bgimgV];
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    
+    diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:@"新话题"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -62,25 +85,40 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5, 70, 34);
+    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    if (diffH==0.0f) {
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75, 292.5, 128)];
-    editIV.image = [UIImage imageNamed:@"shurukuang"] ;
+    UIImage * bgImage = [[UIImage imageNamed:@"shurukuang.png"]
+               stretchableImageWithLeftCapWidth:0 topCapHeight:65];
+    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, self.view.frame.size.height-(diffH+55.57+253+44))];
+    editIV.image = bgImage ;
     [self.view addSubview:editIV];
     
-    self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(18.75, 61.75, 292.5, 20)];
+    self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(22.75, 63.75+diffH, 272.5, 20)];
     _titleTF.placeholder = @"标题";
+    _titleTF.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_titleTF];
     
-    self.dynamicTV = [[UITextView alloc]initWithFrame:CGRectMake(13.75, 81.75, 292.5,103)];
+    self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
     _dynamicTV.backgroundColor = [UIColor clearColor];
-    _dynamicTV.font = [UIFont systemFontOfSize:17];
-    _dynamicTV.delegate = self;
+    _dynamicTV.font = [UIFont systemFontOfSize:16];
+//    _dynamicTV.delegate = self;
+    
+    _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
+    _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
+    _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
+    _dynamicTV.placeHolder=@"好好写点^_^";
+    [_dynamicTV setFont:[UIFont systemFontOfSize:16]];
+    _dynamicTV.pragraghSpaceHeight=10;
+    _dynamicTV.backgroundColor=[UIColor clearColor];
+
     [self.view addSubview:_dynamicTV];
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -89,24 +127,25 @@
     _dynamicTV.inputAccessoryView = tool;
     
     UIButton* imageB = [UIButton buttonWithType:UIButtonTypeCustom];
-    imageB.frame = CGRectMake(270, 2, 40, 40);
+    imageB.frame = CGRectMake(270, 4, 32, 32);
     [imageB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
     
-    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 89.75, 200, 20)];
-    _placeholderL.backgroundColor = [UIColor clearColor];
-    _placeholderL.textColor = [UIColor grayColor];
-    _placeholderL.text = @"今天想跟别人说点什么……";
-    [self.view addSubview:_placeholderL];
+//    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 95.75+diffH, 200, 20)];
+//    self.placeholderL.font = [UIFont systemFontOfSize:16];
+//    _placeholderL.backgroundColor = [UIColor clearColor];
+//    _placeholderL.textColor = [UIColor grayColor];
+//    _placeholderL.text = @"今天想跟别人说点什么……";
+//    [self.view addSubview:_placeholderL];
     
     
     PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
-    PhotoB.frame = CGRectMake(13, 195, 48.5, 48.5);
+    PhotoB.frame = CGRectMake(13, 195+diffH, 48.5, 48.5);
     [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
     [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     PhotoB.hidden = YES;
-    [self.view addSubview:PhotoB];
+ //   [self.view addSubview:PhotoB];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -223,7 +262,10 @@
                 }
                 if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                     imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
-                    [self presentModalViewController:imagePicker animated:YES];
+                    isAddSlide=true;
+                    [self presentViewController:imagePicker animated:YES completion:^{
+                        
+                    }];
                 }
                 else {
                     UIAlertView *cameraAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相机" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil];
@@ -239,6 +281,7 @@
                 }
                 if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                     imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+                    isAddSlide=true;
 //                    [self presentModalViewController:imagePicker animated:YES];
                     [self presentViewController:imagePicker animated:YES completion:^{
                         
@@ -272,32 +315,212 @@
 #pragma mark - imagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if (self.pictureArray == nil) {
-        self.pictureArray = [[NSMutableArray alloc]init];
-    }
-    PhotoB.hidden = NO;
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init] ;
+    [library assetForURL:[info objectForKey:UIImagePickerControllerReferenceURL]
+             resultBlock:^(ALAsset *asset){
+                 // This get called asynchronously (possibly after a permissions question to the user).
+                 [self _addAttachmentFromAsset:asset];
+             }
+            failureBlock:^(NSError *error){
+                NSLog(@"error finding asset %@", [error debugDescription]);
+            }];
+//    if (self.pictureArray == nil) {
+//        self.pictureArray = [[NSMutableArray alloc]init];
+//    }
+//    PhotoB.hidden = NO;
     [picker dismissViewControllerAnimated:YES completion:^{}];
-    UIImage*selectImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    UIImageView* imageV = [[UIImageView alloc]initWithFrame:PhotoB.frame];
-    imageV.userInteractionEnabled = YES;
-    imageV.image = selectImage;
-    [self.view addSubview:imageV];
-    if (PhotoB.frame.origin.x < 250) {
-        PhotoB.frame = CGRectMake(PhotoB.frame.origin.x+ PhotoB.frame.size.width +12.875, PhotoB.frame.origin.y, PhotoB.frame.size.width, PhotoB.frame.size.height);
-    }else{
-        PhotoB.frame = CGRectMake(13, 250.5, PhotoB.frame.size.width, PhotoB.frame.size.height);
-    }
-    [_pictureArray addObject:imageV];
-    if (_pictureArray.count == 8) {
-        PhotoB.hidden = YES;
-    }
-    UITapGestureRecognizer*tapGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapImage:)];
-    [imageV addGestureRecognizer:tapGR];
+//    UIImage*selectImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+//    UIImageView* imageV = [[UIImageView alloc]initWithFrame:PhotoB.frame];
+//    imageV.userInteractionEnabled = YES;
+//    imageV.image = selectImage;
+//    [self.view addSubview:imageV];
+//    if (PhotoB.frame.origin.x < 250) {
+//        PhotoB.frame = CGRectMake(PhotoB.frame.origin.x+ PhotoB.frame.size.width +12.875, PhotoB.frame.origin.y, PhotoB.frame.size.width, PhotoB.frame.size.height);
+//    }else{
+//        PhotoB.frame = CGRectMake(13, 250.5, PhotoB.frame.size.width, PhotoB.frame.size.height);
+//    }
+//    [_pictureArray addObject:imageV];
+//    if (_pictureArray.count == 8) {
+//        PhotoB.hidden = YES;
+//    }
+//    UITapGestureRecognizer*tapGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapImage:)];
+//    [imageV addGestureRecognizer:tapGR];
     
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:^{}];
+}
+#pragma mark -
+#pragma mark fastTextViewDelegate
+
+- (BOOL)fastTextViewShouldBeginEditing:(FastTextView *)textView {
+    return YES;
+}
+
+- (BOOL)fastTextViewShouldEndEditing:(FastTextView *)textView {
+    return YES;
+}
+
+- (void)fastTextViewDidBeginEditing:(FastTextView *)textView {
+}
+
+- (void)fastTextViewDidEndEditing:(FastTextView *)textView {
+}
+
+- (void)fastTextViewDidChange:(FastTextView *)textView {
+    UITextRange *selectedTextRange = [_dynamicTV selectedTextRange];
+    if (!selectedTextRange) {
+        UITextPosition *endOfDocument = [_dynamicTV endOfDocument];
+        selectedTextRange = [_dynamicTV textRangeFromPosition:endOfDocument toPosition:endOfDocument];
+    }
+    UITextPosition *startPosition = [selectedTextRange start] ; // hold onto this since the edit will drop
+    
+    startPosition=[_dynamicTV positionFromPosition:startPosition inDirection:UITextLayoutDirectionRight offset:1];
+    UITextPosition *endPosition = [_dynamicTV positionFromPosition:startPosition offset:1];
+    selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
+    
+    
+    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+    
+}
+
+- (void)fastTextView:(FastTextView*)textView didSelectURL:(NSURL *)URL {
+    
+}
+
+
+
+- (void)attachSlide:(id)sender;
+{
+    //    [self _logScrollInfo:@"fsfsdfsd"];
+    //    NSLog(@"editor frame %@",NSStringFromCGRect(_editor.frame));
+    //    return;
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    
+    [self presentModalViewController:picker animated:YES];
+    
+    //    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+    //    [picker release];
+    //
+    //       [[OUIAppController controller] presentPopover:popover fromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    //[picker release];
+}
+
+#pragma mark -
+#pragma mark UIImagePickerControllerDelegate
+
+- (void)_addAttachmentFromAsset:(ALAsset *)asset;
+{
+    ALAssetRepresentation *rep = [asset defaultRepresentation];
+    NSMutableData *data = [NSMutableData dataWithLength:[rep size]];
+    
+    
+    
+    NSError *error = nil;
+    if ([rep getBytes:[data mutableBytes] fromOffset:0 length:[rep size] error:&error] == 0) {
+        NSLog(@"error getting asset data %@", [error debugDescription]);
+    } else {
+        //        NSFileWrapper *wrapper = [[NSFileWrapper alloc] initRegularFileWithContents:data];
+        //        wrapper.filename = [[rep url] lastPathComponent];
+        UIImage *img=[UIImage imageWithData:data];
+        
+        NSString *newfilename=[NSAttributedString scanAttachmentsForNewFileName:_dynamicTV.attributedString];
+        
+        
+        
+        NSArray *_paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString * _documentDirectory = [[NSString alloc] initWithString:[_paths objectAtIndex:0]];
+        
+        
+        UIImage *thumbimg=[img imageByScalingProportionallyToSize:CGSizeMake(320,640)];
+        
+        NSString *pngPath=[_documentDirectory stringByAppendingPathComponent:newfilename];
+        
+        //[[AppDelegate documentDirectory] stringByAppendingPathComponent:@"tmp.jpg"];
+        
+        
+        [UIImageJPEGRepresentation(thumbimg,0.7)writeToFile:pngPath atomically:YES];
+        
+        UITextRange *selectedTextRange = [_dynamicTV selectedTextRange];
+        if (!selectedTextRange) {
+            UITextPosition *endOfDocument = [_dynamicTV endOfDocument];
+            selectedTextRange = [_dynamicTV textRangeFromPosition:endOfDocument toPosition:endOfDocument];
+        }
+        UITextPosition *startPosition = [selectedTextRange start] ; // hold onto this since the edit will drop
+        
+        unichar attachmentCharacter = FastTextAttachmentCharacter;
+        [_dynamicTV replaceRange:selectedTextRange withText:[NSString stringWithFormat:@"\n%@\n",[NSString stringWithCharacters:&attachmentCharacter length:1]]];
+        
+        startPosition=[_dynamicTV positionFromPosition:startPosition inDirection:UITextLayoutDirectionRight offset:1];
+        UITextPosition *endPosition = [_dynamicTV positionFromPosition:startPosition offset:1];
+        selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
+        
+        
+        NSMutableAttributedString *mutableAttributedString=[_dynamicTV.attributedString mutableCopy];
+        
+        NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+        NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+        
+        if (en < st) {
+            return;
+        }
+        
+        //        [stringToPublish insertString:@"</p><img src=\"565656\">" atIndex:st];
+        
+        NSUInteger contentLength = [[_dynamicTV.attributedString string] length];
+        if (en > contentLength) {
+            en = contentLength; // but let's not crash
+        }
+        if (st > en)
+            st = en;
+        NSRange cr = [[_dynamicTV.attributedString string] rangeOfComposedCharacterSequencesForRange:(NSRange){ st, en - st }];
+        if (cr.location + cr.length > contentLength) {
+            cr.length = ( contentLength - cr.location ); // but let's not crash
+        }
+        
+        if(isAddSlide){
+            
+            FileWrapperObject *fileWp = [[FileWrapperObject alloc] init];
+            [fileWp setFileName:newfilename];
+            [fileWp setFilePath:pngPath];
+            
+            SlideAttachmentCell *cell = [[SlideAttachmentCell alloc] initWithFileWrapperObject:fileWp] ;
+            //ImageAttachmentCell *cell = [[ImageAttachmentCell alloc] init];
+            cell.isNeedThumb=TRUE;
+            cell.thumbImageWidth=200.0f;
+            cell.thumbImageHeight=200.0f;
+//            cell.txtdesc=@"幻灯片测试";
+            
+            [mutableAttributedString addAttribute: FastTextAttachmentAttributeName value:cell  range:cr];
+            
+            //[mutableAttributedString addAttribute:fastTextAttachmentAttributeName value:cell  range:selectedTextRange];
+            
+            
+        }else{
+            //            ImageAttachmentCell *cell = [[ImageAttachmentCell alloc] initWithFileWrapper:wrapper] ;
+            //            //ImageAttachmentCell *cell = [[ImageAttachmentCell alloc] init];
+            //            cell.isNeedThumb=TRUE;
+            //            cell.thumbImageWidth=200.0f;
+            //            cell.thumbImageHeight=200.0f;
+            //
+            //            [mutableAttributedString addAttribute: fastTextAttachmentAttributeName value:cell  range:cr];
+        }
+        
+        
+        
+        [tagPositionArray addObject:[NSNumber numberWithInteger:st]];
+        [tagArray addObject:@"</p><img src=\"big pic\"><p>"];
+        if (mutableAttributedString) {
+            _dynamicTV.attributedString = mutableAttributedString;
+        }
+        
+        //[_editor setValue:attachment forAttribute:OAAttachmentAttributeName inRange:selectedTextRange];
+        
+        
+    }
 }
 
 @end
