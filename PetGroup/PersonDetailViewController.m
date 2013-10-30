@@ -12,7 +12,6 @@
 #import "CustomTabBar.h"
 #import "JSON.h"
 #import "UIExpandingTextView.h"
-#import "ReplyComment.h"
 #import "HeightCalculate.h"
 #import "Common.h"
 

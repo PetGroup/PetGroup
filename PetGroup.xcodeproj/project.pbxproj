@@ -22,7 +22,6 @@
 		862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D20A3317D05AAB001C8162 /* DSNameIndex.m */; };
 		863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */; };
 		863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D0309217C5EB3900055EF6 /* DSFriends.m */; };
-		8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8641ACE017DED0DF0020C34B /* ReplyComment.m */; };
 		8645D74117F00922002DBD5A /* ReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8645D74017F00922002DBD5A /* ReplyCell.m */; };
 		8657D8A118162C0700A21587 /* tianjiazhaopian.png in Resources */ = {isa = PBXBuildFile; fileRef = 8657D8A018162C0700A21587 /* tianjiazhaopian.png */; };
 		865FDD2618079D4F005BB088 /* table_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 865FDD2418079D4F005BB088 /* table_bg.png */; };
@@ -236,7 +235,6 @@
 		86F324D418112AB6004BC4EF /* search_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F324D218112AB6004BC4EF /* search_bg.png */; };
 		86F324D518112AB6004BC4EF /* xiala_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 86F324D318112AB6004BC4EF /* xiala_bg.png */; };
 		86F690CF17E01F33002C5DBB /* PersonalDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */; };
-		86F690D617E03EA5002C5DBB /* PersonalDynamic.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F690D517E03EA5002C5DBB /* PersonalDynamic.m */; };
 		86FC764A18209F290025686B /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC764518209F290025686B /* MJRefreshBaseView.m */; };
 		86FC764B18209F290025686B /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC764718209F290025686B /* MJRefreshFooterView.m */; };
 		86FC764C18209F290025686B /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC764918209F290025686B /* MJRefreshHeaderView.m */; };
@@ -713,8 +711,6 @@
 		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
 		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
 		8629653F17DAFCBC00236F3E /* UserTreaty.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserTreaty.txt; sourceTree = "<group>"; };
-		8641ACDF17DED0DF0020C34B /* ReplyComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyComment.h; sourceTree = "<group>"; };
-		8641ACE017DED0DF0020C34B /* ReplyComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyComment.m; sourceTree = "<group>"; };
 		8642967B17D6CF1300B1B1C9 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		8642967E17D70E7500B1B1C9 /* Reply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reply.h; sourceTree = "<group>"; };
@@ -933,8 +929,6 @@
 		86F324D318112AB6004BC4EF /* xiala_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiala_bg.png; sourceTree = "<group>"; };
 		86F690CD17E01F33002C5DBB /* PersonalDynamicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDynamicCell.h; sourceTree = "<group>"; };
 		86F690CE17E01F33002C5DBB /* PersonalDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDynamicCell.m; sourceTree = "<group>"; };
-		86F690D417E03EA5002C5DBB /* PersonalDynamic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalDynamic.h; sourceTree = "<group>"; };
-		86F690D517E03EA5002C5DBB /* PersonalDynamic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalDynamic.m; sourceTree = "<group>"; };
 		86FC764318209F290025686B /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
 		86FC764418209F290025686B /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
 		86FC764518209F290025686B /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
@@ -1831,9 +1825,9 @@
 				86993B72180CDC3500F61A3F /* OnceCircleViewController.m */,
 				86CC16A918166EE7008E1D1F /* ArticleViewController.h */,
 				86CC16AA18166EE7008E1D1F /* ArticleViewController.m */,
-				86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */,
 				86FC76511820D9C10025686B /* SomeOneDynamicViewController.h */,
 				86FC76521820D9C10025686B /* SomeOneDynamicViewController.m */,
+				86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */,
 			);
 			name = Circle;
 			sourceTree = "<group>";
@@ -3739,10 +3733,6 @@
 				9736BACA17C472A1007DFE36 /* HostInfo.m */,
 				9736BACC17C472B2007DFE36 /* PetInfo.h */,
 				9736BACD17C472B2007DFE36 /* PetInfo.m */,
-				86F690D417E03EA5002C5DBB /* PersonalDynamic.h */,
-				86F690D517E03EA5002C5DBB /* PersonalDynamic.m */,
-				8641ACDF17DED0DF0020C34B /* ReplyComment.h */,
-				8641ACE017DED0DF0020C34B /* ReplyComment.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -4651,11 +4641,9 @@
 				97D4B2B417D6D83600B331A4 /* ButtonCell.m in Sources */,
 				9727937517D9C8380001E863 /* HeightCalculate.m in Sources */,
 				8629653E17DAF4FA00236F3E /* ResetPassOneViewController.m in Sources */,
-				8641ACE117DED0DF0020C34B /* ReplyComment.m in Sources */,
 				97FB035117E00432002086D9 /* SettingViewController.m in Sources */,
 				97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */,
 				86F690CF17E01F33002C5DBB /* PersonalDynamicCell.m in Sources */,
-				86F690D617E03EA5002C5DBB /* PersonalDynamic.m in Sources */,
 				97DD8CA617E19D09002E36BE /* selectContactPage.m in Sources */,
 				97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */,
 				9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */,
