@@ -94,18 +94,20 @@
 {
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
-    [locationDict setObject:asearchBar.text forKey:@"unname"];
-    [locationDict setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
+    [locationDict setObject:asearchBar.text forKey:@"condition"];
+    [locationDict setObject:@"nickname" forKey:@"conditionType"];
+//    [locationDict setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"getUesr" forKey:@"method"];
+    [postDict setObject:@"searchUser" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [postDict setObject:locationDict forKey:@"params"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        self.resultArray =[NSMutableArray arrayWithArray:[receiveStr JSONValue]];
+//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        self.resultArray =responseObject;
         NSMutableArray * tempArray = [self.resultArray mutableCopy];
         for (NSDictionary* dic in tempArray) {
             if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {

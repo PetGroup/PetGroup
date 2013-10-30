@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface EditArticleViewController : UIViewController
+{
+    float diffH;
+    
+}
 @property (nonatomic,retain)NSString* forumId;
 @end
