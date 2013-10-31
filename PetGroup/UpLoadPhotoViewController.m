@@ -253,6 +253,7 @@
     [params setObject:[self.hostDic objectForKey:@"gender"] forKey:@"gender"];
     [params setObject:[self.hostDic objectForKey:@"birthdate"] forKey:@"birthdate"];
     [params setObject:[self.hostDic objectForKey:@"city"] forKey:@"city"];
+    [params setObject:@"" forKey:@"backgroundImg"];
     [params setObject:self.hostIMG forKey:@"img"];
     switch (self.petType) {
         case 1:

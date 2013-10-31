@@ -110,11 +110,13 @@
     [params setObject:[self.dic objectForKey:@"gender"] forKey:@"gender"];
     [params setObject:[self.dic objectForKey:@"birthdate"] forKey:@"birthdate"];
     [params setObject:[self.dic objectForKey:@"city"] forKey:@"city"];
+    [params setObject:@"" forKey:@"backgroundImg"];
     [params setObject:@"" forKey:@"img"];
     [params setObject:@"默认签名" forKey:@"signature"];
     [params setObject:@"默认爱好" forKey:@"hobby"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"saveUserinfo2" forKey:@"method"];
+    [body setObject:@"updateUser" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [DataStoreManager saveUserInfo:[NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil]];
         [hud hide:YES];

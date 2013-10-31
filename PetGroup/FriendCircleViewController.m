@@ -16,6 +16,7 @@
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
 #import "SomeOneDynamicViewController.h"
+#import "HostInfo.h"
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     
@@ -46,6 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
     
@@ -73,11 +75,6 @@
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
     
-    self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 320)];
-    _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
-    _imageV.imageURL = [NSURL URLWithString:@""];
-    [self.view addSubview:_imageV];
-    
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self.friendCircleDS;
@@ -98,6 +95,12 @@
     [_headV addSubview:whiteV];
     
     NSDictionary* dic = [DataStoreManager queryMyInfo];
+    
+    self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, -6, 320, 320)];
+    _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
+    _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[dic objectForKey:@"backgroundImg"]]];
+    [self.view addSubview:_imageV];
+    [self.view sendSubviewToBack:_imageV];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -121,8 +124,9 @@
     NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     
-    UILabel*signatureL  = [[UILabel alloc]initWithFrame:CGRectMake(0, 180, 320, 20)];
+    UILabel*signatureL  = [[UILabel alloc]initWithFrame:CGRectMake(10, 200, 300, 20)];
     signatureL.font = [UIFont systemFontOfSize:16];
+    signatureL. textAlignment = NSTextAlignmentRight;
     signatureL.backgroundColor = [UIColor clearColor];
     signatureL.textColor = [UIColor blackColor];
     signatureL.text = [dic objectForKey:@"signature"];
@@ -156,7 +160,7 @@
 -(void)headAct
 {
     SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
-    sodVC.userID = [[TempData sharedInstance] getMyUserID];
+    sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
     [self.navigationController pushViewController:sodVC animated:YES];
 }
 -(void)changeCoverImage
@@ -234,29 +238,29 @@
     selectImage = [FriendCircleViewController image:selectImage centerInSize:CGSizeMake(320, 320)];
     _imageV.image = selectImage;
   //修改相册封面，未完待续
-//    [NetManager uploadImage:selectImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString*imageID = responseObject;
-//        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-//        long long a = (long long)(cT*1000);
-//        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-//        [params setObject:imageID forKey:@"backgroundImg"];
-//        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-//        [body setObject:params forKey:@"params"];
-//        [body setObject:@"updateUser" forKey:@"method"];
-//        [body setObject:@"service.uri.pet_user" forKey:@"service"];
-//        [body setObject:@"1" forKey:@"channel"];
-//        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-//        [body setObject:@"iphone" forKey:@"imei"];
-//        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-//        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-//        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            
-//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//            
-//        }];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
+    [NetManager uploadImage:selectImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString*imageID = responseObject;
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        [params setObject:imageID forKey:@"backgroundImg"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"updateUser" forKey:@"method"];
+        [body setObject:@"service.uri.pet_user" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [DataStoreManager saveMyBackgroungImg:imageID];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
@@ -276,6 +280,7 @@
     if(scrollView == _tableV){
         [_refreshView scrollViewDidScroll];
     }
+    _imageV.frame = CGRectMake(0, -scrollView.contentOffset.y/2, 320, 320);
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {

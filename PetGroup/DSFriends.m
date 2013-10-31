@@ -26,5 +26,6 @@
 @dynamic nameIndex;
 @dynamic nameKey;
 @dynamic theCity;
+@dynamic backgroundImg;
 
 @end

@@ -202,7 +202,7 @@
         [dic setObject:@"false" forKey:@"ifTransmitMsg"];
         [dic setObject:imageID forKey:@"imgid"];
         [dic setObject:self.dynamicTV.text forKey:@"msg"];
-        [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+        [dic setObject:[d objectForKey:@"id"] forKey:@"userid"];
         [dic setObject:dateS forKey:@"ct"];
         [dic setObject:@"" forKey:@"transmitUrl"];
         [dic setObject:@"3" forKey:@"state"];

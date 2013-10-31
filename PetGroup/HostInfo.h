@@ -25,6 +25,7 @@
 @property (strong,nonatomic) NSArray * headBigImgArray;
 @property (strong,nonatomic) NSArray * petsArray;
 @property (strong,nonatomic) NSArray * petsHeadArray;
+@property (strong,nonatomic) NSString* backgroundImg;
 - (id)initWithHostInfo:(NSDictionary*)info;
 - (id)initWithNewHostInfo:(NSDictionary*)info PetsArray:(NSArray *)petsArray;
 @end

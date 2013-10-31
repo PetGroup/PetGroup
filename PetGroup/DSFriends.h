@@ -27,5 +27,6 @@
 @property (nonatomic, retain) NSString * nameIndex;
 @property (nonatomic, retain) NSString * nameKey;
 @property (nonatomic, retain) NSString * theCity;
+@property (nonatomic, retain) NSString * backgroundImg;
 
 @end

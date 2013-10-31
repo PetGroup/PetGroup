@@ -307,7 +307,7 @@
                 [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
                 [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
                 [dic setObject:[params objectForKey:@"msg"] forKey:@"msg"];
-                [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+                [dic setObject:[d objectForKey:@"id"] forKey:@"userid"];
                 [dic setObject:dateS forKey:@"ct"];
                 [dic setObject:self.dynamic.dynamicID forKey:@"stateid"];
                 [dic setObject:self.pid forKey:@"pid"];
@@ -352,7 +352,7 @@
                 [dic setObject:@"1" forKey:@"ifTransmitMsg"];
                 [dic setObject:self.dynamic.imageID forKey:@"imgid"];
                 [dic setObject:self.dynamic.msg.string forKey:@"msg"];
-                [dic setObject:[d objectForKey:@"userid"] forKey:@"userid"];
+                [dic setObject:[d objectForKey:@"id"] forKey:@"userid"];
                 [dic setObject:dateS forKey:@"ct"];
                 [dic setObject:@"" forKey:@"transmitUrl"];
                 [dic setObject:@"3" forKey:@"state"];

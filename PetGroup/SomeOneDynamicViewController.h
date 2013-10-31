@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class HostInfo;
 @interface SomeOneDynamicViewController : UIViewController
-@property (nonatomic,retain)NSString* userID;
+@property (nonatomic,retain)HostInfo* userInfo;
 @end

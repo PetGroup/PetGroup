@@ -39,6 +39,7 @@
     
     hotPintsDataSource* hotPintsDS;
 }
+@property (nonatomic,retain)NSString* myUserID;
 @property (nonatomic,retain)UICollectionView* attentionV;
 @property (nonatomic,retain)UITableView* hotPintsV;
 @property (nonatomic,retain)SRRefreshView* slimeView;
@@ -202,8 +203,6 @@
     
     [self.hotPintsV addSubview:_refreshView];
     
-    [self reloadAttentionData];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -213,6 +212,10 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    if (![self.myUserID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        [self reloadAttentionData];
+        self.myUserID =[[TempData sharedInstance] getMyUserID];
+    }
     if ([[TempData sharedInstance] ifPanned]) {
         [self.customTabBarController hidesTabBar:NO animated:NO];
     }
