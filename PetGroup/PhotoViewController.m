@@ -169,5 +169,9 @@
 - (void)imageViewFailedToLoadImage:(EGOImageView*)imageView error:(NSError*)error
 {
     //未完待续
+    [self dismissViewControllerAnimated:NO completion:^{
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"图片加载失败" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+    }];
 }
 @end

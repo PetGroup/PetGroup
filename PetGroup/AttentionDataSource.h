@@ -16,4 +16,5 @@
 @property (nonatomic,retain)NSMutableArray* dynamicArray;
 @property (nonatomic,assign)UIViewController<FooterViewDelegate,FriendHeaderViewDelegate>* myController;
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
+-(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

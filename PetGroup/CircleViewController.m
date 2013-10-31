@@ -203,6 +203,12 @@
     
     [self.hotPintsV addSubview:_refreshView];
     
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSArray* array = [defaults objectForKey:MyCircle];
+    if (array.count>0) {
+        [self loadHistory];
+        self.myUserID =[[TempData sharedInstance] getMyUserID];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -430,5 +436,13 @@
         [_slimeView endRefresh];
     }];
 }
-
+-(void)loadHistory
+{
+    [_attentionDS loadHistorySuccess:^{
+        [self.attentionV reloadData];
+        [_slimeView endRefresh];
+    } failure:^{
+        [_slimeView endRefresh];
+    }];
+}
 @end
