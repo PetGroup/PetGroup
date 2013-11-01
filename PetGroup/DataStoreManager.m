@@ -518,6 +518,7 @@
 +(void)saveUserInfo:(NSDictionary *)myInfo
 {
     NSString * myUserName = [myInfo objectForKey:@"username"];
+    NSString * background = [self toString: [myInfo objectForKey:@"backgroundImg"]];
     NSString * nickName = [self toString:[myInfo objectForKey:@"nickname"]];
     NSString * gender = [self toString:[myInfo objectForKey:@"gender"]];
     NSString * headImgID = [self toString:[myInfo objectForKey:@"img"]];
@@ -542,6 +543,7 @@
             dFriend.signature = signature?signature:@"";
             dFriend.age = age?age:@"";
             dFriend.theCity = theCity?theCity:@"未知";
+            dFriend.backgroundImg = background;
             NSString * nameIndex;
             NSString * nameKey;
             if (nickName.length>=1) {
@@ -572,7 +574,16 @@
       //  [self storePetInfo:myInfo];
       } 
 }
-
++(void)saveMyBackgroungImg:(NSString*)backgroundImg
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
+        if (!dFriend)
+            dFriend = [DSFriends MR_createInContext:localContext];
+        dFriend.backgroundImg = backgroundImg;
+    }];
+}
 +(void)storePetInfo:(NSDictionary *)myInfo
 {
     NSArray * petArray = [myInfo objectForKey:@"petInfoViews"];
@@ -689,7 +700,7 @@
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
     if (dFriend) {
         [dict setObject:dFriend.userName forKey:@"username"];
-        [dict setObject:dFriend.userId forKey:@"userid"];
+        [dict setObject:dFriend.userId forKey:@"id"];
         [dict setObject:dFriend.nickName forKey:@"nickname"];
         [dict setObject:dFriend.gender forKey:@"gender"];
         [dict setObject:dFriend.signature forKey:@"signature"];
@@ -714,6 +725,7 @@
             [petArray addObject:petDict];
         }
         [dict setObject:petArray forKey:@"petInfoViews"];
+        [dict setObject:dFriend.backgroundImg forKey:@"backgroundImg"];
         
     }
     return dict;

@@ -31,12 +31,12 @@
 {
     CGFloat height = 60;
     if (!dynamic.ifTransmitMsg) {
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height += (msgSize.height+10);
     }else{
-        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
+        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height+=(size.height+5);
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height+=(msgSize.height+10);
     }
     if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
@@ -54,8 +54,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
-    
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.contentView.backgroundColor = [UIColor whiteColor];
         self.backView = [[UIView alloc]init];
         _backView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_backView];

@@ -50,18 +50,19 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"topBG.png"]];
-    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44)];
+    float diffH = [Common diffHeight:self];
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0, 80, 44);
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
     CGSize size = [self.circleEntity.name sizeWithFont:[UIFont systemFontOfSize:18]];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width-15)/2, (44-size.height)/2, size.width, size.height)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:self.circleEntity.name];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -70,16 +71,16 @@
     [self.view addSubview:titleLabel];
     
     UIImageView* xialaIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xiala_bg"]];
-    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0, 15, 44);
+    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
     [self.view addSubview:xialaIV];
     
     UIButton* xialaB = [UIButton buttonWithType:UIButtonTypeCustom];
-    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, 0, titleLabel.frame.origin.x+size.width+15, 44);
+    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, titleLabel.frame.origin.x+size.width+15, 44);
     [xialaB addTarget:self action:@selector(screen) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:xialaB];
     
     UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 3, 35, 33);
+    publishButton.frame=CGRectMake(278, 3+diffH, 35, 33);
     [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
@@ -138,7 +139,7 @@
     [joinB addTarget:self action:@selector(joinOnceCircle) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:joinB];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
     _tableV.delegate = self;
     _tableV.rowHeight = 100;
     _tableV.tableHeaderView = headView;
@@ -152,7 +153,7 @@
     [self reloadData];
     
     self.screenV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shaixuan_bg"]];
-    _screenV.frame = CGRectMake(0, 32, 320, 152);
+    _screenV.frame = CGRectMake(0, 32+diffH, 320, 152);
     _screenV.userInteractionEnabled = YES;
     _screenV.hidden = YES;
     _screenV.alpha = 0;
@@ -160,7 +161,7 @@
     
     UIButton *allB = [UIButton buttonWithType:UIButtonTypeCustom];
     [allB setTitle:@"全部" forState:UIControlStateNormal];
-    [allB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [allB setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     [allB setBackgroundImage:[UIImage imageNamed:@"shaixuan_normal"] forState:UIControlStateNormal];
     [allB setBackgroundImage:[UIImage imageNamed:@"shaixuan_click"] forState:UIControlStateHighlighted];
     allB.frame = CGRectMake(19, 20, 131.5, 32);
@@ -290,6 +291,12 @@
 }
 -(void)changeDataSource:(UIButton*)button
 {
+    for (UIButton* b in _screenV.subviews) {
+        if (button.tag==b.tag) {
+            [b setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        }else
+            [b setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
     switch (button.tag) {
         case 1:{
             if (self.allArticleDS == nil) {

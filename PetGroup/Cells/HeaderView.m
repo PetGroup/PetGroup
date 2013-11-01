@@ -20,7 +20,7 @@
         UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
         bg.image = [UIImage imageNamed:@"biaoti"];
         [self addSubview:bg];
-        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 100, 20)];
+        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 200, 20)];
         _titleL.backgroundColor = [UIColor clearColor];
         _titleL.font = [UIFont boldSystemFontOfSize:16];
         [self addSubview:_titleL];

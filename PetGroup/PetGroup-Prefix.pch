@@ -63,6 +63,8 @@
 #define NewComment @"newCommentOfMyDynamic"
 #define MyDynamic  @"localMyDynamic"
 
+#define MyCircle @"52PetMyClrcle"
+
 #define PushDeviceToken @"pushDeviceToken"
 
 #define PlaceHolder @"petGroup_thisisplaceholder..."

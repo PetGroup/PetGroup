@@ -55,6 +55,7 @@
 
 +(NSString *)getMyUserID;
 +(void)saveUserInfo:(NSDictionary *)myInfo;
++(void)saveMyBackgroungImg:(NSString*)backgroundImg;
 +(void)storeOnePetInfo:(NSDictionary *)petInfo;
 +(void)deleteOnePetForPetID:(NSString *)petID;
 +(NSDictionary *)queryMyInfo;

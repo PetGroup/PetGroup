@@ -23,7 +23,7 @@
         UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 36.5, 320, 26)];
         bg.image = [UIImage imageNamed:@"biaoti"];
         [self addSubview:bg];
-        UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 39.5, 100, 20)];
+        UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 39.5, 200, 20)];
         titleL.backgroundColor = [UIColor clearColor];
         titleL.text = @"朋友圈";
         titleL.font = [UIFont boldSystemFontOfSize:16];

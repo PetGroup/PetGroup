@@ -37,7 +37,7 @@
         }
         self.petsArray = tempArray;
         self.petsHeadArray = petH;
-        
+        self.backgroundImg = [[info objectForKey:@"backgroundImg"] isKindOfClass:[NSNull class]]?@"":[info objectForKey:@"backgroundImg"];
     }
     return self;
 }
@@ -69,7 +69,7 @@
         }
         self.petsArray = tempArray;
         self.petsHeadArray = petH;
-        
+        self.backgroundImg = [[info objectForKey:@"backgroundImg"] isKindOfClass:[NSNull class]]?@"":[info objectForKey:@"backgroundImg"];
     }
     return self;
 }
