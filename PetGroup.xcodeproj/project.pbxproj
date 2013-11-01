@@ -265,6 +265,7 @@
 		86FCCC85181B63230077A409 /* dibuanniu_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FCCC7E181B63230077A409 /* dibuanniu_bg.png */; };
 		86FCCC88181B6B490077A409 /* DetailsDynamicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FCCC87181B6B490077A409 /* DetailsDynamicCell.m */; };
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
+		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		9707FDF3181CFCEE00795C00 /* topBar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9707FDF2181CFCEE00795C00 /* topBar1.png */; };
 		9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A18E181E1890009891A6 /* HPGrowingTextView.m */; };
 		9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A190181E1890009891A6 /* HPTextViewInternal.m */; };
@@ -981,6 +982,8 @@
 		86FCCC87181B6B490077A409 /* DetailsDynamicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsDynamicCell.m; sourceTree = "<group>"; };
 		86FF42B117CC66D7007F8DE2 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		86FF42B217CC66D7007F8DE2 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
+		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
 		9715A18D181E1890009891A6 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		9715A18E181E1890009891A6 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
@@ -1825,6 +1828,8 @@
 				86993B72180CDC3500F61A3F /* OnceCircleViewController.m */,
 				86CC16A918166EE7008E1D1F /* ArticleViewController.h */,
 				86CC16AA18166EE7008E1D1F /* ArticleViewController.m */,
+				97031FE01823905700F769E0 /* WebViewViewController.h */,
+				97031FE11823905700F769E0 /* WebViewViewController.m */,
 				86FC76511820D9C10025686B /* SomeOneDynamicViewController.h */,
 				86FC76521820D9C10025686B /* SomeOneDynamicViewController.m */,
 				86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */,
@@ -4466,6 +4471,7 @@
 				9736BB3817C489BD007DFE36 /* XMPPPlainAuthentication.m in Sources */,
 				9736BB3917C489BD007DFE36 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
 				9736BB4117C489C6007DFE36 /* NSData+XMPP.m in Sources */,
+				97031FE21823905700F769E0 /* WebViewViewController.m in Sources */,
 				9736BB4217C489C6007DFE36 /* NSNumber+XMPP.m in Sources */,
 				9736BB4317C489C6007DFE36 /* NSXMLElement+XMPP.m in Sources */,
 				9736BB5817C489CE007DFE36 /* XMPPElement.m in Sources */,

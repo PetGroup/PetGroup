@@ -19,6 +19,7 @@
     UISearchDisplayController * searchDisplay;
     MBProgressHUD * hud;
     UILabel * noResultLabel;
+    NSString * searchCondition;
 }
 @property (strong,nonatomic) UITableView * resultTable;
 @property (strong,nonatomic) NSMutableArray * resultArray;

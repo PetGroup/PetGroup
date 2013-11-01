@@ -197,4 +197,36 @@
         
     }];
 }
+-(NSAttributedString *)getAttributedString:(NSString *)theStr
+{
+    NSAttributedString *uu =[self _attributedStringForSnippetUsingiOS6Attributes:NO String:theStr];
+    return uu;
+    
+}
+-(NSNumber *)getRequiredHeightForTextView:(NSAttributedString *)attributeStr
+{
+    DTAttributedTextContentView * atextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+    atextView.attributedString = attributeStr;
+    atextView.shouldDrawImages = YES;
+    atextView.edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    atextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    CGSize gg = [atextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:320];
+    return [NSNumber numberWithFloat:gg.height];
+}
+- (NSAttributedString *)_attributedStringForSnippetUsingiOS6Attributes:(BOOL)useiOS6Attributes String:(NSString *)contentStr
+{
+    NSData *data = [contentStr dataUsingEncoding:NSUTF8StringEncoding];
+	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data documentAttributes:NULL];
+	return attributedString;
+}
+
+-(void)presentUIWebViewWithURL:(NSURL *)addressURL
+{
+    WebViewViewController * webV = [[WebViewViewController alloc] init];
+    webV.addressURL = addressURL;
+    [self presentViewController:webV animated:YES completion:^{
+        
+    }];
+}
+
 @end

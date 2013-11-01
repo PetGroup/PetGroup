@@ -151,7 +151,8 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"正在发送，请稍后";}
+    hud.labelText = @"正在为您发布...";
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -194,21 +195,39 @@
 //    }else{
 //        [self publishWithImageString:nil];
 //    }
-    NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
-    NSMutableArray *uploadImageArray = [NSMutableArray array];
-    NSArray * filenameArray = [fileArray objectAtIndex:0];
-    NSArray * fileIndexArray = [fileArray objectAtIndex:1];
-    NSMutableArray *imgWidthArray = [NSMutableArray array];
-    NSMutableArray *imgHeightArray = [NSMutableArray array];
-    for (NSString * fileName in filenameArray) {
-        NSString *path = [RootDocPath stringByAppendingPathComponent:[NSString stringWithFormat:@"UploadTopicPics/%@",fileName]];
-        UIImage * tempImg = [UIImage imageWithContentsOfFile:path];
-        [imgWidthArray addObject:[NSString stringWithFormat:@"%f",tempImg.size.width]];
-        [imgHeightArray addObject:[NSString stringWithFormat:@"%f",tempImg.size.height]];
-        [uploadImageArray addObject:tempImg];
+    if (_titleTF.text.length<3) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"写个标题吧，最少3个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+        return;
     }
-    [self uploadForMixingTypePics:uploadImageArray PicsName:filenameArray PositionArray:fileIndexArray Width:imgWidthArray Height:imgHeightArray];
-    NSLog(@"theArray:%@",fileArray);
+    if (_dynamicTV.text.length<4) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不写点内容能行么，至少4个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    [hud show:YES];
+    NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
+    if (fileArray.count>0) {
+        NSMutableArray *uploadImageArray = [NSMutableArray array];
+        NSArray * filenameArray = [fileArray objectAtIndex:0];
+        NSArray * fileIndexArray = [fileArray objectAtIndex:1];
+        NSMutableArray *imgWidthArray = [NSMutableArray array];
+        NSMutableArray *imgHeightArray = [NSMutableArray array];
+        for (NSString * fileName in filenameArray) {
+            NSString *path = [RootDocPath stringByAppendingPathComponent:[NSString stringWithFormat:@"UploadTopicPics/%@",fileName]];
+            UIImage * tempImg = [UIImage imageWithContentsOfFile:path];
+            [imgWidthArray addObject:[NSString stringWithFormat:@"%f",280.0f]];
+            [imgHeightArray addObject:[NSString stringWithFormat:@"%f",tempImg.size.height*280/tempImg.size.width]];
+            [uploadImageArray addObject:tempImg];
+        }
+        [self uploadForMixingTypePics:uploadImageArray PicsName:filenameArray PositionArray:fileIndexArray Width:imgWidthArray Height:imgHeightArray];
+        NSLog(@"theArray:%@",fileArray);
+
+    }
+    else
+    {
+        [self publishWithImageString:_dynamicTV.text];
+    }
 }
 -(void)uploadForMixingTypePics:(NSArray *)imageArray PicsName:(NSArray *)picsNameArray PositionArray:(NSArray *)positionArray Width:(NSArray *)widthArray Height:(NSArray *)heightArray
 {
@@ -219,13 +238,14 @@
         for (NSString * name in picsNameArray) {
             [idArray addObject:[responseObject objectForKey:name]];
         }
-        [self publishFinalTextWithImageIDArray:idArray imageSizeWidthArray:widthArray imageSizeHeightArray:heightArray];
+        NSString * finalStr = [self publishFinalTextWithImageIDArray:idArray imageSizeWidthArray:widthArray imageSizeHeightArray:heightArray];
+        [self publishWithImageString:finalStr];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 
 }
--(void)publishFinalTextWithImageIDArray:(NSArray *)imageIDArray imageSizeWidthArray:(NSArray *)imgWidthArray imageSizeHeightArray:(NSArray *)imgHeightArray
+-(NSString *)publishFinalTextWithImageIDArray:(NSArray *)imageIDArray imageSizeWidthArray:(NSArray *)imgWidthArray imageSizeHeightArray:(NSArray *)imgHeightArray
 {
     NSMutableString * finalT = [[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"<p>%@</p>",_dynamicTV.text]];
     NSMutableArray * tagArraye = [NSMutableArray array];
@@ -248,6 +268,7 @@
         NSLog(@"ysysysy:%@",uu);
     }
     NSLog(@"finalString:%@",ddd);
+    return ddd;
 }
 -(void)publishWithImageString:(NSString*)imageString
 {//body={"method":"sendNote","token":"","params":{"userId":"33333","forumId":"DBEF25E53AA5401384CFC60603CC3FC7","name":"子集4的帖子","content":"子集4的帖子"}}
@@ -257,23 +278,25 @@
     [params setObject:[DataStoreManager getMyUserID] forKey:@"userId"];
     [params setObject:self.forumId forKey:@"forumId"];
     [params setObject:_titleTF.text forKey:@"name"];
-    if(imageString){
-        [params setObject:[NSString stringWithFormat:@"<p>%@</p>%@",_dynamicTV.text,imageString] forKey:@"content"];
-    }else{
-        [params setObject:[NSString stringWithFormat:@"<p>%@</p>",_dynamicTV.text] forKey:@"content"];
-    }
+    [params setObject:imageString forKey:@"content"];
+//    if(imageString){
+//        [params setObject:[NSString stringWithFormat:@"<p>%@</p>%@",_dynamicTV.text,imageString] forKey:@"content"];
+//    }else{
+//        [params setObject:[NSString stringWithFormat:@"<p>%@</p>",_dynamicTV.text] forKey:@"content"];
+//    }
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"sendNote" forKey:@"method"];
+    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray* array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
         
+        [hud hide:YES];
+        NSLog(@"stringuu = %@",[responseObject objectForKey:@"content"]);
         //未完待续
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

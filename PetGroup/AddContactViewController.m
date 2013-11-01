@@ -55,11 +55,20 @@
     
     UILabel * titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text=@"添加联系人";
+    titleLabel.text=@"搜索用户";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    UIButton * doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [doneBtn setFrame:CGRectMake(240, diffH, 80, 44)];
+    [doneBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [doneBtn setTitle:@"按昵称" forState:UIControlStateNormal];
+    [self.view addSubview:doneBtn];
+    [doneBtn addTarget:self action:@selector(doneBtnDo:) forControlEvents:UIControlEventTouchUpInside];
+    
+    searchCondition = @"nickname";
     
     self.resultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.resultTable];
@@ -69,7 +78,7 @@
     asearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 44, 320, 44)];
     asearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     asearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    asearchBar.placeholder = @"用户名或昵称";
+    asearchBar.placeholder = @"输入昵称查找用户";
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
     self.resultTable.tableHeaderView = asearchBar;
    // asearchBar.barStyle = UIBarStyleBlackTranslucent;
@@ -90,12 +99,27 @@
     // Do any additional setup after loading the view.
 }
 
+-(void)doneBtnDo:(UIButton *)sender
+{
+    if ([sender.currentTitle isEqualToString:@"按昵称"]) {
+        [sender setTitle:@"按手机号" forState:UIControlStateNormal];
+        asearchBar.placeholder = @"输入手机号查找用户";
+        searchCondition = @"username";
+    }
+    else
+    {
+        [sender setTitle:@"按昵称" forState:UIControlStateNormal];
+        asearchBar.placeholder = @"输入昵称查找用户";
+        searchCondition = @"nickname";
+    }
+}
+
 -(void)searchUser
 {
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:asearchBar.text forKey:@"condition"];
-    [locationDict setObject:@"nickname" forKey:@"conditionType"];
+    [locationDict setObject:searchCondition forKey:@"conditionType"];
 //    [locationDict setObject:[NSString stringWithFormat:@"%d",self.pageIndex] forKey:@"pageIndex"];
     [postDict setObject:@"1" forKey:@"channel"];
     [postDict setObject:@"searchUser" forKey:@"method"];

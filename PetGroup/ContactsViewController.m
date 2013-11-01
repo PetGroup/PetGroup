@@ -26,6 +26,7 @@
         sectionArray = [NSMutableArray array];
         rowsArray = [NSMutableArray array];
         sectionIndexArray = [NSMutableArray array];
+        ifRequested = NO;
     }
     return self;
 }
@@ -80,7 +81,7 @@
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
 
-
+    [self getFriendByHttp];
 
  //   [self getFriendsList];
 	// Do any additional setup after loading the view.
@@ -151,8 +152,8 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     
-//    [self refreshFriendList];
-    [self getFriendByHttp];
+    [self refreshFriendList];
+    
  //   [self getFriendInfo:@"england"];
 }
 -(void)getFriendByHttp

@@ -28,6 +28,7 @@
     
     float diffH;
     SRRefreshView   *_slimeView;
+    BOOL ifRequested;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic)UITableView *contactsTable;
