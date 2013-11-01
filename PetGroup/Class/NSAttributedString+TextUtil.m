@@ -121,7 +121,26 @@ static CGFloat AttachmentRunDelegateGetWidth(void *refCon) {
 //    return _attributedString;
 
 }
-
++(NSArray *)getAttachmentsForNewFileName:(NSAttributedString *)_attributedString
+{
+    __block NSMutableArray * imageNameArray = [NSMutableArray array];
+    __block NSMutableArray * imageIndexArray = [NSMutableArray array];
+    [_attributedString enumerateAttribute: FastTextAttachmentAttributeName inRange: NSMakeRange(0, [_attributedString length]) options: 0 usingBlock: ^(id value, NSRange range, BOOL *stop) {
+        if (value != nil) {
+            
+            id<FastTextAttachmentCell> cell=(id<FastTextAttachmentCell>)value;
+            
+            NSString *filename=[cell.fileWrapperObject.fileName lowercaseString];
+            [imageNameArray addObject:filename];
+            [imageIndexArray addObject:[NSString stringWithFormat:@"%d",range.location]];
+            
+            
+        }
+    }];
+    NSArray * theArray = [NSArray arrayWithObjects:imageNameArray,imageIndexArray, nil];
+    NSLog(@"theArray:%@",theArray);
+    return theArray;
+}
 
 +(NSString *)scanAttachmentsForNewFileName:(NSAttributedString *)_attributedString {
     __block NSString *newFilename=@"a1.jpg";

@@ -121,6 +121,7 @@
 
     [self.view addSubview:_dynamicTV];
     
+    
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
     tool.image = [UIImage imageNamed:@"table_bg"];
     tool.userInteractionEnabled = YES;
@@ -161,32 +162,92 @@
 -(void)backButton:(UIButton*)button
 {
     [[TempData sharedInstance] Panned:NO];
-    [self.navigationController popViewControllerAnimated:YES];
+
+  //  [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
 }
+
 -(void)next
 {
-    if (_dynamicTV.text.length<=0||_titleTF.text.length<=0) {
-        return;
+//    if (_dynamicTV.text.length<=0||_titleTF.text.length<=0) {
+//        return;
+//    }
+//    if (self.pictureArray.count>0) {
+//        NSMutableArray* imageArray = [[NSMutableArray alloc]init];
+//        NSMutableArray* nameArray = [[NSMutableArray alloc]init];
+//        self.imageId = [[NSMutableString alloc]init];
+//        for (int i = 0;i< self.pictureArray.count;i++) {
+//            [imageArray addObject:((UIImageView*)self.pictureArray[i]).image];
+//            [nameArray addObject:[NSString stringWithFormat:@"%d",i]];
+//        }
+//        [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//            for (NSString*a in responseObject) {
+//                [_imageId appendFormat:@"<img src=\""BaseImageUrl"%@"@"\">",[responseObject objectForKey:a]];
+//            }
+//         [self publishWithImageString:_imageId];
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            
+//        }];
+//    }else{
+//        [self publishWithImageString:nil];
+//    }
+    NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
+    NSMutableArray *uploadImageArray = [NSMutableArray array];
+    NSArray * filenameArray = [fileArray objectAtIndex:0];
+    NSArray * fileIndexArray = [fileArray objectAtIndex:1];
+    NSMutableArray *imgWidthArray = [NSMutableArray array];
+    NSMutableArray *imgHeightArray = [NSMutableArray array];
+    for (NSString * fileName in filenameArray) {
+        NSString *path = [RootDocPath stringByAppendingPathComponent:[NSString stringWithFormat:@"UploadTopicPics/%@",fileName]];
+        UIImage * tempImg = [UIImage imageWithContentsOfFile:path];
+        [imgWidthArray addObject:[NSString stringWithFormat:@"%f",tempImg.size.width]];
+        [imgHeightArray addObject:[NSString stringWithFormat:@"%f",tempImg.size.height]];
+        [uploadImageArray addObject:tempImg];
     }
-    if (self.pictureArray.count>0) {
-        NSMutableArray* imageArray = [[NSMutableArray alloc]init];
-        NSMutableArray* nameArray = [[NSMutableArray alloc]init];
-        self.imageId = [[NSMutableString alloc]init];
-        for (int i = 0;i< self.pictureArray.count;i++) {
-            [imageArray addObject:((UIImageView*)self.pictureArray[i]).image];
-            [nameArray addObject:[NSString stringWithFormat:@"%d",i]];
+    [self uploadForMixingTypePics:uploadImageArray PicsName:filenameArray PositionArray:fileIndexArray Width:imgWidthArray Height:imgHeightArray];
+    NSLog(@"theArray:%@",fileArray);
+}
+-(void)uploadForMixingTypePics:(NSArray *)imageArray PicsName:(NSArray *)picsNameArray PositionArray:(NSArray *)positionArray Width:(NSArray *)widthArray Height:(NSArray *)heightArray
+{
+    [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:picsNameArray TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        
+    } Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSMutableArray * idArray = [NSMutableArray array];
+        for (NSString * name in picsNameArray) {
+            [idArray addObject:[responseObject objectForKey:name]];
         }
-        [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:nameArray TheController:self Progress:nil Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-            for (NSString*a in responseObject) {
-                [_imageId appendFormat:@"<img src=\""BaseImageUrl"%@"@"\">",[responseObject objectForKey:a]];
-            }
-         [self publishWithImageString:_imageId];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-        }];
-    }else{
-        [self publishWithImageString:nil];
+        [self publishFinalTextWithImageIDArray:idArray imageSizeWidthArray:widthArray imageSizeHeightArray:heightArray];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
+}
+-(void)publishFinalTextWithImageIDArray:(NSArray *)imageIDArray imageSizeWidthArray:(NSArray *)imgWidthArray imageSizeHeightArray:(NSArray *)imgHeightArray
+{
+    NSMutableString * finalT = [[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"<p>%@</p>",_dynamicTV.text]];
+    NSMutableArray * tagArraye = [NSMutableArray array];
+    for (int i = 0; i<imageIDArray.count;i++) {
+        [tagArraye addObject:[NSString stringWithFormat:@"</p><a href=\"%@%@\"><img align=\"center\" width=\"%d\" height=\"%d\" src=\"%@%@\"></a><p>",BaseImageUrl,[imageIDArray objectAtIndex:i],[[imgWidthArray objectAtIndex:i]intValue],[[imgHeightArray objectAtIndex:i]intValue],BaseImageUrl,[imageIDArray objectAtIndex:i]]];
     }
+    unichar attachmentCharacter = FastTextAttachmentCharacter;
+    NSArray * rrr = [finalT componentsSeparatedByString:[NSString stringWithCharacters:&attachmentCharacter length:1]];
+    int tempCount = rrr.count;
+    NSLog(@"rrr:%@",rrr);
+    NSMutableArray * ggg = [NSMutableArray arrayWithArray:rrr];
+    for (int i = 0; i<tagArraye.count; i++) {
+        [ggg insertObject:tagArraye[tagArraye.count-i-1] atIndex:tempCount-i-1];
+        NSLog(@"ssss:%@",ggg);
+    }
+    NSMutableString * ddd = [[NSMutableString alloc] init];
+    for (NSString * uu in ggg) {
+        [ddd appendString:uu];
+//        [ddd stringByAppendingString:uu];
+        NSLog(@"ysysysy:%@",uu);
+    }
+    NSLog(@"finalString:%@",ddd);
 }
 -(void)publishWithImageString:(NSString*)imageString
 {//body={"method":"sendNote","token":"","params":{"userId":"33333","forumId":"DBEF25E53AA5401384CFC60603CC3FC7","name":"子集4的帖子","content":"子集4的帖子"}}
@@ -429,15 +490,21 @@
         
         NSString *newfilename=[NSAttributedString scanAttachmentsForNewFileName:_dynamicTV.attributedString];
         
+        NSString *path = [RootDocPath stringByAppendingPathComponent:@"UploadTopicPics"];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if([fm fileExistsAtPath:path] == NO)
+        {
+            [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+
         
-        
-        NSArray *_paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString * _documentDirectory = [[NSString alloc] initWithString:[_paths objectAtIndex:0]];
+//        NSArray *_paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString * _documentDirectory = [[NSString alloc] initWithString:[_paths objectAtIndex:0]];
         
         
         UIImage *thumbimg=[img imageByScalingProportionallyToSize:CGSizeMake(320,640)];
         
-        NSString *pngPath=[_documentDirectory stringByAppendingPathComponent:newfilename];
+        NSString *pngPath=[path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@",newfilename]];
         
         //[[AppDelegate documentDirectory] stringByAppendingPathComponent:@"tmp.jpg"];
         

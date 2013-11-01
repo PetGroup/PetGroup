@@ -11,6 +11,7 @@
 @interface EditArticleViewController : UIViewController
 {
     float diffH;
+    NSAttributedString * attributeStringHH;
     
 }
 @property (nonatomic,retain)NSString* forumId;

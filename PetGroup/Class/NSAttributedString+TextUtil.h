@@ -17,6 +17,7 @@
 
 
 - (void)printDesc;
++(NSArray *)getAttachmentsForNewFileName:(NSAttributedString *)_attributedString;
 
 + (NSMutableAttributedString *)scanAttachments:(NSMutableAttributedString *)_attributedString;
 
