@@ -68,7 +68,7 @@
                   int start =result.range.location - offset;
                   
                   NSRange offsetRange = NSMakeRange(start, result.range.length);
-//                  NSLog(@"1111-%@-%@",NSStringFromRange(offsetRange),repl);
+                  //                  NSLog(@"1111-%@-%@",NSStringFromRange(offsetRange),repl);
                   [mutAttrString replaceCharactersInRange:offsetRange withAttributedString:repl];
                   offset += result.range.length - repl.length;
               }
@@ -77,7 +77,7 @@
          [processedString release];
 #endif
      }];
-
+    
 }
 
 +(NSMutableAttributedString*)attributedStringByProcessingMarkupInAttributedString:(NSAttributedString*)attrString

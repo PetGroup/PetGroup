@@ -543,10 +543,10 @@
     //提示文字标签隐藏
 	//判断输入框是否有内容，追加转义字符
 	if (self.textView.text == nil) {
-		self.textView.text = [NSString stringWithFormat:@"[%@] ",i_transCharacter];
+		self.textView.text = [NSString stringWithFormat:@"[%@]",i_transCharacter];
 	}
 	else {
-		self.textView.text = [self.textView.text stringByAppendingString:[NSString stringWithFormat:@"[%@] ",i_transCharacter]];
+		self.textView.text = [self.textView.text stringByAppendingString:[NSString stringWithFormat:@"[%@]",i_transCharacter]];
 	}
     [self autoMovekeyBoard:253];
 }

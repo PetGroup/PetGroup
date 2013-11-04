@@ -687,6 +687,10 @@
 
     }
 }
+- (void)keyboardWillShow:(NSNotification *)notification {
+}
+- (void)keyboardWillHide:(NSNotification *)notification {
+}
 -(void)rejectBtnClicked:(UIButton *)sender
 {
     [self.appDel.xmppHelper addOrDenyFriend:NO user:self.hostInfo.userName];

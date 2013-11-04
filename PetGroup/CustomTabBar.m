@@ -229,7 +229,8 @@ static CustomTabBar *customTabBarController;
     }
     if (ifNumber) {
         UIImageView * notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(36, 0, 28, 22)];
-        [notiBgV setImage:[UIImage imageNamed:@"redCB.png"]];
+        float diffH = [Common diffHeight:nil];
+        [notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
         notiBgV.tag=999;
         [btn addSubview:notiBgV];
         UILabel * numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];

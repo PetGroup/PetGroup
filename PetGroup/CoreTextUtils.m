@@ -32,9 +32,9 @@
 /////////////////////////////////////////////////////////////////////////////////////
 
 
-CTTextAlignment CTTextAlignmentFromUITextAlignment(UITextAlignment alignment)
+CTTextAlignment CTTextAlignmentFromUITextAlignment(NSTextAlignment alignment)
 {
-    if (alignment == (UITextAlignment)kCTJustifiedTextAlignment)
+    if (alignment == (NSTextAlignment)kCTJustifiedTextAlignment)
     {
         /* special OOB value, so test it outside of the switch to avoid warning */
         return kCTJustifiedTextAlignment;
@@ -54,7 +54,7 @@ CTTextAlignment CTTextAlignmentFromUITextAlignment(UITextAlignment alignment)
 	}
 }
 
-CTLineBreakMode CTLineBreakModeFromUILineBreakMode(UILineBreakMode lineBreakMode)
+CTLineBreakMode CTLineBreakModeFromUILineBreakMode(NSLineBreakMode lineBreakMode)
 {
 	switch (lineBreakMode)
     {

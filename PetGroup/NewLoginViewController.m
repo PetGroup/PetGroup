@@ -115,7 +115,7 @@
     [self.view addSubview:passWordB];
     [passWordB addTarget:self action:@selector(resetPassWord) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView* anjiao = [[UIImageView alloc]initWithFrame:CGRectMake(240, 15+diffH, 5, 10)];
+    UIImageView* anjiao = [[UIImageView alloc]initWithFrame:CGRectMake(240, 15, 5, 10)];
     anjiao.image = [UIImage imageNamed:@"anjiao"];
     [passWordB addSubview:anjiao];
     

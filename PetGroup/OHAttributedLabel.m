@@ -171,17 +171,17 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 {
     self.images = nil;
 	[self resetTextFrame]; // CFRelease the text frame
-
+    
 #if ! __has_feature(objc_arc)
     [_linksDetector release]; _linksDetector = nil;
     [_linkColor release]; _linkColor = nil;
 	[_highlightedLinkColor release]; _highlightedLinkColor = nil;
 	[_activeLink release]; _activeLink = nil;
-
+    
 	[_attributedText release]; _attributedText = nil;
     [_attributedTextWithLinks release]; _attributedTextWithLinks = nil;
 	[_customLinks release]; _customLinks = nil;
-
+    
 	[super dealloc];
 #endif
 }
@@ -290,7 +290,6 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
                  applyLinkStyle(result);
              }
          }];
-
         // Automatically Detected Links
         if (plainText && (self.automaticallyAddLinksForType > 0))
         {
@@ -467,7 +466,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	NSTextCheckingResult *linkAtTouchesEnded = [self linkAtPoint:pt];
 	
 	BOOL closeToStart = (abs(_touchStartPoint.x - pt.x) < 10 && abs(_touchStartPoint.y - pt.y) < 10);
-
+    
 	// we can check on equality of the ranges themselfes since the data detectors create new results
 	if (_activeLink && (NSEqualRanges(_activeLink.range,linkAtTouchesEnded.range) || closeToStart))
     {
@@ -556,7 +555,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
                          
                      }
                  }];
-                self.images = [[self.images reverseObjectEnumerator] allObjects];
+                self.images = (NSMutableArray *)[[self.images reverseObjectEnumerator] allObjects];
             }
             
             [self recomputeLinksInTextIfNeeded];
@@ -654,7 +653,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	            runBounds.origin.x = origins[lineIndex].x  + xOffset;
 	            runBounds.origin.y = origins[lineIndex].y;
 	            runBounds.origin.y -= descent;
-
+                
                 UIImage *img = [UIImage imageNamed: [nextImage objectForKey:@"fileName"] ];
                 CGPathRef pathRef = CTFrameGetPath(f); //10
                 CGRect colRect = CGPathGetBoundingBox(pathRef);
@@ -674,20 +673,20 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
         lineIndex++;
     }
     
-//    if ([lines count]==0 && [imags count]>0) {
-//        int x = 0;
-//        for (NSDictionary *d in imags) {
-//            UIImage *img = [UIImage imageNamed: [d objectForKey:@"fileName"] ];
-//            int width = [[d objectForKey:@"width"] intValue];
-//            int height = [[d objectForKey:@"height"] intValue];
-//            
-//            [imgs addObject: //11
-//             [NSArray arrayWithObjects:img, NSStringFromCGRect(CGRectMake(x, 0, width, height)) , nil]
-//             ];
-//            x += width;
-//        }
-//        
-//    }
+    //    if ([lines count]==0 && [imags count]>0) {
+    //        int x = 0;
+    //        for (NSDictionary *d in imags) {
+    //            UIImage *img = [UIImage imageNamed: [d objectForKey:@"fileName"] ];
+    //            int width = [[d objectForKey:@"width"] intValue];
+    //            int height = [[d objectForKey:@"height"] intValue];
+    //
+    //            [imgs addObject: //11
+    //             [NSArray arrayWithObjects:img, NSStringFromCGRect(CGRectMake(x, 0, width, height)) , nil]
+    //             ];
+    //            x += width;
+    //        }
+    //
+    //    }
     
     for (NSArray* imageData in imgs)
     {
@@ -696,7 +695,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
             CGRect imgBounds = CGRectFromString([imageData objectAtIndex:1]);
             CGContextDrawImage(ctx, imgBounds, img.CGImage);
         }
-
+        
     }
     
 }
@@ -862,7 +861,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	[super setTextColor:color]; // will call setNeedsDisplay too
 }
 
--(void)setTextAlignment:(UITextAlignment)alignment
+-(void)setTextAlignment:(NSTextAlignment)alignment
 {
     if (_attributedText)
     {
@@ -876,7 +875,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	[super setTextAlignment:alignment]; // will call setNeedsDisplay too
 }
 
--(void)setLineBreakMode:(UILineBreakMode)lineBreakMode
+-(void)setLineBreakMode:(NSLineBreakMode)lineBreakMode
 {
     if (_attributedText)
     {
@@ -891,7 +890,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 	
 #if OHATTRIBUTEDLABEL_WARN_ABOUT_KNOWN_ISSUES
 	[self warnAboutKnownIssues_CheckLineBreakMode_FromXIB:NO];
-#endif	
+#endif
 }
 
 -(void)setCenterVertically:(BOOL)val
@@ -903,7 +902,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
 -(void)setAutomaticallyAddLinksForType:(NSTextCheckingTypes)types
 {
 	_automaticallyAddLinksForType = types;
-
+    
     NSDataDetector* dd = sharedReusableDataDetector(types);
     MRC_RELEASE(_linksDetector);
     _linksDetector = MRC_RETAIN(dd);
@@ -985,7 +984,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
         {
             NSLog(@"  (To avoid this warning, uncheck the 'Autoshrink' property in your XIB file)");
         }
-
+        
 	}
 }
 
@@ -1003,7 +1002,7 @@ NSDataDetector* sharedReusableDataDetector(NSTextCheckingTypes types)
               "It will be ignored by OHAttributedLabel. See https://github.com/AliSoftware/OHAttributedLabel/issues/34");
         NSLog(@"  (To avoid this warning, set the numberOfLines property to 0)");
     }
-
+    
 	[super setNumberOfLines:nbLines];
 }
 #endif

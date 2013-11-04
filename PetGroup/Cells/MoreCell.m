@@ -26,7 +26,8 @@
         [self.contentView addSubview:self.titleLabel];
         
         self.notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(90, 8.5, 28, 22)];
-        [self.notiBgV setImage:[UIImage imageNamed:@"redCB.png"]];
+        float diffH = [Common diffHeight:nil];
+        [self.notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
         self.notiBgV.tag=999;
         [self.contentView addSubview:self.notiBgV];
         self.unreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, -1, 30, 22)];

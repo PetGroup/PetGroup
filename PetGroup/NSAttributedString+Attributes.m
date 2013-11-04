@@ -83,6 +83,7 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
         CFRange fitCFRange = CFRangeMake(0,0);
         sz = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0,0),NULL,maxSize,&fitCFRange);
         sz = CGSizeMake( floorf(sz.width+1) , floorf(sz.height+1) ); // take 1pt of margin for security
+        NSLog(@"sz.width:%f,sz.height:%f",sz.width,sz.height);
         CFRelease(framesetter);
 
         if (fitRange)
@@ -294,6 +295,7 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 -(void)setEmoit:(NSString *)link
 {
 //    NSLog(@"%@-%@",self,link);
+    NSLog(@"sellllllllflength:%d",[self length]);
     [self removeAttribute:kOHEmoitAttributeName range:NSMakeRange(0,[self length])]; // Work around for Apple leak
     if (link)
     {
