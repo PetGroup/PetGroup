@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Article.h"
 #import "WebViewViewController.h"
 @interface ArticleViewController : UIViewController
-@property (nonatomic,retain)Article* article;
+@property (nonatomic,retain)NSString* articleID;
 @end

@@ -377,6 +377,7 @@
 }
 -(void)backButton
 {
+    [_footer free];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)showActionShoot

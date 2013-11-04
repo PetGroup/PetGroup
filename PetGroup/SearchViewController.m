@@ -105,13 +105,16 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.notename forKey:@"notename"];
-    [params setObject:self.forumPid forKey:@"forumid"];
+    [params setObject:self.notename forKey:@"condition"];
+    [params setObject:@"SEARCH" forKey:@"action"];
+    [params setObject:@"true" forKey:@"withTop"];
+    [params setObject:self.forumPid forKey:@"forumId"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"searchNote" forKey:@"method"];
+    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+    [body setObject:@"getNoteList" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
@@ -138,6 +141,7 @@
 #pragma mark - button action
 -(void)backButton
 {
+    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }

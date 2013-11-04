@@ -8,24 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "Article.h"
+#import "AriticleContent.h"
+#import "EGOImageView.h"
 typedef  enum
 {
     ButtonTypeImage = 1,
     ButtonTypeNormal
 }ButtonType;
 @protocol OwenrCellDelegate<NSObject>
--(void)owenrCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath;
--(void)owenrCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)owenrCellPressReplyButton;
+-(void)owenrCellPressReportButton;
+-(void)owenrCellPressImageWithID:(NSString*)imageID;
 @end
 @interface OwenrCell : UITableViewCell<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate>
 {
     NSMutableSet *mediaPlayers;
 }
-@property (strong,nonatomic)DTAttributedTextContentView * textView;
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
-@property (nonatomic,retain)NSIndexPath*indexPath;
 @property (nonatomic,assign)id<OwenrCellDelegate>delegate;
-@property (nonatomic,retain)Article*article;
-+(CGFloat)heightForRowWithArticle:(Article*)article;
+@property (nonatomic,retain)AriticleContent*article;
++(CGFloat)heightForRowWithArticle:(AriticleContent*)article;
 @end

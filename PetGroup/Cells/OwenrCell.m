@@ -7,17 +7,23 @@
 //
 
 #import "OwenrCell.h"
-#import "EGOImageView.h"
+
 @interface OwenrCell ()
 {
     UIButton *replyB;
     UIButton *reportB;
 }
+@property(nonatomic,retain)UIImageView* buttonIV;
+@property(nonatomic,retain)UILabel* titleL;
+@property(nonatomic,retain)UILabel* readL;
+@property(nonatomic,retain)UILabel* replyL;
+@property(nonatomic,retain)UIView* backV;
+@property(nonatomic,retain)UIView* lineV;
 @property(nonatomic,retain)EGOImageView* headPhote;
 @property(nonatomic,retain)UILabel* nameL;
 @property(nonatomic,retain)UILabel* timeL;
-@property(nonatomic,retain)UILabel* contentL;
 @property(nonatomic,retain)UILabel* locationL;
+@property (strong,nonatomic)DTAttributedTextContentView * textView;
 @end
 @implementation OwenrCell
 @synthesize mediaPlayers;
@@ -30,15 +36,44 @@
 	
 	return mediaPlayers;
 }
-+(CGFloat)heightForRowWithArticle:(Article*)article
++(CGFloat)heightForRowWithArticle:(AriticleContent*)article
 {
-    return 100;
+    CGFloat origin = 10;
+    CGSize size = [article.name sizeWithFont:[UIFont systemFontOfSize:18.0] constrainedToSize:CGSizeMake(300, 90) lineBreakMode:NSLineBreakByWordWrapping];
+    origin += (size.height+10);
+    origin += 79;
+    NSNumber *high = [OwenrCell getRequiredHeightForTextView:article.content];
+    origin += ([high floatValue]+50);
+    return origin;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backV = [[UIView alloc]init];
+        _backV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        [self.contentView addSubview:_backV];
+        self.lineV = [[UIView alloc]init];
+        _lineV.backgroundColor = [UIColor grayColor];
+        [self.contentView addSubview:_lineV];
+        
+        self.titleL = [[UILabel alloc]init];
+        _titleL.numberOfLines = 0;
+        _titleL.font = [UIFont systemFontOfSize:18.0];
+        [self.contentView addSubview:_titleL];
+        
+        self.readL = [[UILabel alloc]init];
+        _readL.font = [UIFont systemFontOfSize:14];
+        _readL.textColor = [UIColor grayColor];
+        [self.contentView addSubview:_readL];
+        
+        self.replyL = [[UILabel alloc]init];
+        _replyL.font = [UIFont systemFontOfSize:14];
+        _replyL.textColor = [UIColor grayColor];
+        [self.contentView addSubview:_replyL];
+        
         self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
@@ -68,21 +103,24 @@
         _locationL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_locationL];
         
-        self.contentL = [[UILabel alloc]initWithFrame:CGRectMake(260, 10, 50, 12)];
-        _contentL.font = [UIFont systemFontOfSize:14];
-        _contentL.textColor = [UIColor grayColor];
-        [self.contentView addSubview:_contentL];
+        self.buttonIV = [[UIImageView alloc]init];
+        self.buttonIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+        [self.contentView addSubview:_buttonIV];
         
         replyB = [UIButton buttonWithType:UIButtonTypeCustom];
+        replyB.frame = CGRectMake(210, 4.5, 97, 31);
         [replyB setTitle:@"回复" forState:UIControlStateNormal];
+        [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"huifu_normal"] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"huifu_click"] forState:UIControlStateHighlighted];
         [replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:replyB];
+        [_buttonIV addSubview:replyB];
         reportB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [reportB setTitle:@"举报" forState:UIControlStateNormal];
+        reportB.frame = CGRectMake(10, 4.5, 100, 31);
+        [reportB setTitle:@"举报本话题" forState:UIControlStateNormal];
+        [reportB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [reportB addTarget:self action:@selector(reportAction) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:reportB];
+        [_buttonIV addSubview:reportB];
     }
     return self;
 }
@@ -96,24 +134,68 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    CGFloat origin = 10;
+    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:18.0] constrainedToSize:CGSizeMake(300, 90) lineBreakMode:NSLineBreakByWordWrapping];
+    _titleL.frame = CGRectMake(10, origin, 300, size.height);
+    _titleL.text = self.article.name;
+    origin += (size.height+10);
+    _readL.frame = CGRectMake(170, origin, 70, 12);
+    _readL.text = [NSString stringWithFormat:@"浏览:%@",self.article.clientCount];
+    
+    _replyL.frame = CGRectMake(250, origin, 70, 12);
+    _replyL.text = [NSString stringWithFormat:@"回复:%@",self.article.replyCount];
+    origin += 22;
+    _backV.frame = CGRectMake(0, 0, 320, origin);
+    
+    _lineV.frame = CGRectMake(0, origin, 320, 1);
+    
+    origin += 10;
     _headPhote.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
+    _headPhote.frame = CGRectMake(10, origin, 40, 40);
+    
     _nameL.text = self.article.userName;
+    _nameL.frame = CGRectMake(60, origin, 160, 20);
+    
+    _locationL.frame =CGRectMake(240, origin, 60, 20);
+    origin += 25;
     _timeL.text = self.article.ct;
+    _timeL.frame = CGRectMake(60, origin, 240, 12);
+    origin += 22;
+    
+    NSNumber *high = [OwenrCell getRequiredHeightForTextView:self.article.content];
+    _textView.frame = CGRectMake(0, origin, 320, [high floatValue]);
+    _textView.attributedString = self.article.content;
+    
+    origin += ([high floatValue] + 10);
+    
+    _buttonIV.frame = CGRectMake(0, origin, 320, 40);
 }
 -(void)replyAction
 {
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressReplyButtonAtIndexPath:)]) {
-        [self.delegate owenrCellPressReplyButtonAtIndexPath:self.indexPath];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressReplyButton)]) {
+        [self.delegate owenrCellPressReplyButton];
     }
 }
 -(void)reportAction
 {
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressReportButtonAtIndexPath:)]) {
-        [self.delegate owenrCellPressReportButtonAtIndexPath:self.indexPath];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressReportButton)]) {
+        [self.delegate owenrCellPressReportButton];
     }
 }
 
+#pragma mark -
+#pragma mark - 哈哈哈
 
++(NSNumber *)getRequiredHeightForTextView:(NSAttributedString *)attributeStr
+{
+    DTAttributedTextContentView * atextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+    atextView.attributedString = attributeStr;
+    atextView.shouldDrawImages = YES;
+    atextView.edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    atextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    CGSize gg = [atextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:320];
+    return [NSNumber numberWithFloat:gg.height];
+}
 
 #pragma mark Custom Views on Text
 
@@ -253,8 +335,8 @@
 			[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
 			
 			// demonstrate combination with long press
-			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
-			[button addGestureRecognizer:longPress];
+//			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(linkLongPressed:)];
+//			[button addGestureRecognizer:longPress];
 			
 			[imageView addSubview:button];
 		}
@@ -310,7 +392,11 @@
 - (void)linkPushed:(DTLinkButton *)button
 {
     if (button.tag==ButtonTypeImage) {
-        
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressImageWithID:)]) {
+            NSString* imageID = [NSString stringWithFormat:@"%@",button.URL];
+            //未完待续
+            [self.delegate owenrCellPressImageWithID:imageID];
+        }
     }
     else
     {

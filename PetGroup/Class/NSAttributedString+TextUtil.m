@@ -137,7 +137,12 @@ static CGFloat AttachmentRunDelegateGetWidth(void *refCon) {
             
         }
     }];
-    NSArray * theArray = [NSArray arrayWithObjects:imageNameArray,imageIndexArray, nil];
+    NSArray * theArray;
+    if (imageIndexArray.count>0&&imageNameArray.count>0) {
+        theArray = [NSArray arrayWithObjects:imageNameArray,imageIndexArray, nil];
+    }
+    else
+        theArray = [NSArray array];
     NSLog(@"theArray:%@",theArray);
     return theArray;
 }

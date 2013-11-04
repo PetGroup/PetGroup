@@ -20,6 +20,7 @@
         self.totalReply = [info objectForKey:@"totalReply"];
         self.atte = [[info objectForKey:@"atte"] boolValue];
         self.imageID = [info objectForKey:@"logoImg"];
+        self.totalAtte = [info objectForKey:@"totalAtte"];
     }
     return self;
 }

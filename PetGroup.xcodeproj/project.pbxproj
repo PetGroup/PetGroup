@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		785C20548B42418D82CF7FFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D25B313ED94E54A59AB8E2 /* libPods.a */; };
 		86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */; };
 		8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */; };
@@ -710,6 +711,8 @@
 
 /* Begin PBXFileReference section */
 		4E86BCF917A44940AF695B2A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
+		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
 		78D25B313ED94E54A59AB8E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
 		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
@@ -2077,6 +2080,8 @@
 				86A56A98180FB6C2000FD684 /* CircleEntity.m */,
 				86F324B81810D43E004BC4EF /* Article.h */,
 				86F324B91810D43E004BC4EF /* Article.m */,
+				7224769318279418000E3D05 /* AriticleContent.h */,
+				7224769418279418000E3D05 /* AriticleContent.m */,
 			);
 			name = CircleDataModel;
 			sourceTree = "<group>";
@@ -3946,6 +3951,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Tolecen;
+				TargetAttributes = {
+					979546B317BA368F00D05874 = {
+						DevelopmentTeam = 68WLA6HLV2;
+					};
+				};
 			};
 			buildConfigurationList = 979546AF17BA368F00D05874 /* Build configuration list for PBXProject "PetGroup" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4417,6 +4427,7 @@
 				97FB47E717BC79F00071FA12 /* DSCommonMsgs.m in Sources */,
 				97FB47EA17BC79F00071FA12 /* DSPublicMsgs.m in Sources */,
 				97FB47ED17BC79F00071FA12 /* DSDynamicNearby.m in Sources */,
+				7224769518279418000E3D05 /* AriticleContent.m in Sources */,
 				97FB47F017BC79F00071FA12 /* DSComments.m in Sources */,
 				86FC7676182116BF0025686B /* ContentViewTiledLayer.m in Sources */,
 				97FB47F317BC79F00071FA12 /* DSThumbPublicMsgs.m in Sources */,
@@ -4748,8 +4759,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4776,8 +4787,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4799,8 +4810,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4821,8 +4832,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

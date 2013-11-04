@@ -181,7 +181,7 @@
 	
 	
 	// set the default font size
-	CGFloat defaultFontSize = 12.0f;
+	CGFloat defaultFontSize = 15.0f;
 	
 	NSNumber *defaultFontSizeNumber = [_options objectForKey:DTDefaultFontSize];
 	
@@ -200,7 +200,7 @@
 	}
 	else
 	{
-		_defaultFontDescriptor.fontFamily = @"Times New Roman";
+		_defaultFontDescriptor.fontFamily = @"Helvetica";
 	}
 	
 	_defaultLinkColor = [_options objectForKey:DTDefaultLinkColor];
