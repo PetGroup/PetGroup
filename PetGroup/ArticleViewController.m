@@ -12,6 +12,7 @@
 @interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)UITableView*tableV;
+@property (nonatomic,assign)int pageNo;
 @end
 
 @implementation ArticleViewController
@@ -91,6 +92,27 @@
     replyL.font = [UIFont systemFontOfSize:14];
     replyL.textColor = [UIColor grayColor];
     [headV addSubview:replyL];
+    
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.article.articleID forKey:@"noteid"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"detailNote" forKey:@"method"];
+    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        //未完待续
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,30 +167,8 @@
 #pragma mark - load data
 -(void)reloadData
 {
-    //body={"method":"getAllReplyNoteByNoteid","token":"","params":{"noteId":"816B9BA15E8B48E5ADF282BCB7FD640E","pageNo":"1","pageSize":"3"}}
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"1" forKey:@"pageNo"];
-    [params setObject:self.article.articleID forKey:@"noteId"];
-    [params setObject:@"20" forKey:@"pageSize"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getAllReplyNoteByNoteid" forKey:@"method"];
-    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray* array = responseObject;
-        //未完待续
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+    self.pageNo = 0;
+    [self loadMoreData];
 }
 -(void)loadMoreData
 {
@@ -176,7 +176,7 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:@"1" forKey:@"pageNo"];
+    [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.article.articleID forKey:@"noteId"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];

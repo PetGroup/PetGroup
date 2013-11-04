@@ -20,7 +20,7 @@
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getNewReplysByReplyct" forKey:@"method"];
+    [body setObject:@"getNoteOfNewReplys" forKey:@"method"];
     [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -53,7 +53,7 @@
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getNewReplysByReplyct" forKey:@"method"];
+    [body setObject:@"getNoteOfNewReplys" forKey:@"method"];
     [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

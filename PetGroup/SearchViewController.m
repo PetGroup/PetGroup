@@ -118,9 +118,9 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray* array =  [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        if (self.pageNo == 1) {
+        NSLog(@"%@",responseObject);
+        NSArray* array =  responseObject;
+        if (self.pageNo == 0) {
             [self.resultArray removeAllObjects];
         }
         if (array.count > 0) {
@@ -172,7 +172,7 @@
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     if (searchBar.text.length>0) {
-        self.pageNo = 1;
+        self.pageNo = 0;
         self.notename = searchBar.text;
         [self searchBarData];
         [asearchBar resignFirstResponder];

@@ -164,10 +164,10 @@
 {
     [[TempData sharedInstance] Panned:NO];
 
-  //  [self.navigationController popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    [self.navigationController popViewControllerAnimated:YES];
+//    [self dismissViewControllerAnimated:YES completion:^{
+//        
+//    }];
     
 }
 
