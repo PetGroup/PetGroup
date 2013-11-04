@@ -73,6 +73,7 @@
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
 //    self.contactsTable.tableHeaderView = searchBar;
+    searchBar.placeholder = @"搜索联系人";
     [self.view addSubview:searchBar];
     searchBar.delegate = self;
     

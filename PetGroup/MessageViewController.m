@@ -73,7 +73,7 @@
     searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
     searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-
+    searchBar.placeholder = @"搜索最近联系人";
     //searchBar.keyboardType = UIKeyboardTypeAlphabet;
     self.messageTable.tableHeaderView = searchBar;
 //    [self.view addSubview:searchBar];

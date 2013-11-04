@@ -134,7 +134,7 @@
         self.resultArray =responseObject;
         NSMutableArray * tempArray = [self.resultArray mutableCopy];
         for (NSDictionary* dic in tempArray) {
-            if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"userid"] integerValue]] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+            if ([[NSString stringWithFormat:@"%d",[[dic objectForKey:@"id"] integerValue]] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
                 [self.resultArray removeObject:dic];
             }
         }
@@ -193,20 +193,30 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
-    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:[self.resultArray objectAtIndex:indexPath.row]];
+    HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:[self.resultArray objectAtIndex:indexPath.row] PetsArray:nil];
     detailV.hostInfo = hostInfo;
+    detailV.needRequestPet = YES;
     [self.navigationController pushViewController:detailV animated:YES];
     
 }
 -(NSString *)getFistHeadImg:(NSString *)headImgStr
 {
-    NSRange range=[headImgStr rangeOfString:@","];
-    if (range.location!=NSNotFound) {
-        NSArray *imageArray = [headImgStr componentsSeparatedByString:@","];
-        return [imageArray objectAtIndex:0];
+    NSMutableArray * littleHeadArray = [NSMutableArray array];
+
+    NSArray* i = [headImgStr componentsSeparatedByString:@","];
+    if (i.count>1) {
+        for (NSString* a in i) {
+            NSArray *arr = [a componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                [littleHeadArray addObject:arr[0]];
+            }
+        }
+    }
+    if (littleHeadArray.count>0) {
+        return littleHeadArray[0];
     }
     else
-        return headImgStr;
+        return @"no";
 }
 
 #pragma mark -
