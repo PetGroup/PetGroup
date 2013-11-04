@@ -149,11 +149,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if (section == 0) {
-        if (self.dynamicArray.count>0) {
-            return 1;
-        }else{
-            return 0;
-        }
+        return 1;
     }else{
         CircleClassify* classify = self.dataSourceArray[section-1];
         if (classify.zhankai) {
@@ -181,6 +177,9 @@
         FriendCircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
         if (self.dynamicArray.count>0) {
             cell.dynamic = self.dynamicArray[0];
+        }else
+        {
+            
         }
         [cell layoutSubviews];
         return cell;

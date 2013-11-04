@@ -275,15 +275,10 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[DataStoreManager getMyUserID] forKey:@"userId"];
+    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
     [params setObject:self.forumId forKey:@"forumId"];
     [params setObject:_titleTF.text forKey:@"name"];
     [params setObject:imageString forKey:@"content"];
-//    if(imageString){
-//        [params setObject:[NSString stringWithFormat:@"<p>%@</p>%@",_dynamicTV.text,imageString] forKey:@"content"];
-//    }else{
-//        [params setObject:[NSString stringWithFormat:@"<p>%@</p>",_dynamicTV.text] forKey:@"content"];
-//    }
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"sendNote" forKey:@"method"];
@@ -296,7 +291,7 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         [hud hide:YES];
-        NSLog(@"stringuu = %@",[responseObject objectForKey:@"content"]);
+        NSLog(@"stringuu = %@",responseObject);
         //未完待续
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

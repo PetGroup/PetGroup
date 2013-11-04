@@ -20,15 +20,18 @@
 #import "NewReplyArticleDataSource.h"
 #import "NewPublishArticleDataSource.h"
 #import "ArticleViewController.h"
+#import "MJRefresh.h"
+#import "SRRefreshView.h"
 
-@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,BHExpandingTextViewDelegate>
+@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
 {
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
 @property (nonatomic,retain)UIImageView* screenV;
 @property (nonatomic,retain)UITableView* tableV;
-
+@property (nonatomic,retain)SRRefreshView* refreshView;
+@property (strong,nonatomic) MJRefreshFooterView *footer;
 @property (nonatomic,retain)AllArticleDataSource* allArticleDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
 @property (nonatomic,retain)NewReplyArticleDataSource* replyArticleDS;
@@ -128,7 +131,7 @@
     personL.backgroundColor = [UIColor clearColor];
     personL.font = [UIFont systemFontOfSize:10];
     personL.textColor = [UIColor grayColor];
-    personL.text = @"15544人";
+    personL.text = [NSString stringWithFormat:@"%@人",self.circleEntity.totalAtte];
     [headView addSubview:personL];
     
     joinB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -207,6 +210,22 @@
     [searchB addTarget:self action:@selector(showSearchView) forControlEvents:UIControlEventTouchUpInside];
     [_screenV addSubview:searchB];
     
+    self.footer = [[MJRefreshFooterView alloc] init];
+    _footer.delegate = self;
+    _footer.scrollView = self.tableV;
+    
+    self.refreshView = [[SRRefreshView alloc] init];
+    _refreshView.delegate = self;
+    _refreshView.upInset = 0;
+    _refreshView.slimeMissWhenGoingBack = YES;
+    _refreshView.slime.bodyColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    _refreshView.slime.skinColor = [UIColor whiteColor];
+    _refreshView.slime.lineWith = 1;
+    _refreshView.slime.shadowBlur = 4;
+    _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    
+    [self.tableV addSubview:_refreshView];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -217,6 +236,7 @@
 #pragma mark - button action
 -(void)backButton
 {
+    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -232,36 +252,36 @@
     self.circleEntity.atte = !self.circleEntity.atte;
     if (self.circleEntity.atte) {
         [joinB setBackgroundImage:[UIImage imageNamed:@"yijiaru"] forState:UIControlStateNormal];
-        //body={"method":"attentionForum","token":"","params":{"userId":"6","forumid":"2"}}
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
         NSMutableDictionary* params = [NSMutableDictionary dictionary];
-        [params setObject:self.circleEntity.circleID forKey:@"forumid"];
+        [params setObject:self.circleEntity.circleID forKey:@"forumId"];
         [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
         NSMutableDictionary* body = [NSMutableDictionary dictionary];
         [body setObject:params forKey:@"params"];
         [body setObject:@"attentionForum" forKey:@"method"];
+        [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
         [body setObject:@"1" forKey:@"channel"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
         [body setObject:@"iphone" forKey:@"imei"];
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+            NSLog(@"%@",responseObject);
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
     }else{
         [joinB setBackgroundImage:[UIImage imageNamed:@"jiaru"] forState:UIControlStateNormal];
-        //body={"method":"quitForum","token":"","params":{"userid":"6","forumid":"92DE9E82807142A293107DFFC4368177"}}
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
         NSMutableDictionary* params = [NSMutableDictionary dictionary];
-        [params setObject:self.circleEntity.circleID forKey:@"forumid"];
-        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
+        [params setObject:self.circleEntity.circleID forKey:@"forumId"];
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
         NSMutableDictionary* body = [NSMutableDictionary dictionary];
         [body setObject:params forKey:@"params"];
+        [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
         [body setObject:@"quitForum" forKey:@"method"];
         [body setObject:@"1" forKey:@"channel"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -269,7 +289,7 @@
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
+            NSLog(@"%@",responseObject);
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
@@ -373,7 +393,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-    articleVC.article = hotPintsDS.dataSourceArray[indexPath.row];
+    articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
 }
 #pragma mark - table view data source
@@ -390,21 +410,52 @@
     }
     return cell;
 }
+#pragma mark MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        [self loadMoreData];
+        return;
+    }
+}
+#pragma mark - slimeRefresh delegate
+
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    if (refreshView == _refreshView) {
+        [self reloadData];
+    }
+}
+#pragma mark - scroll view delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView == _tableV){
+        [_refreshView scrollViewDidScroll];
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (scrollView == _tableV) {
+        [_refreshView scrollViewDidEndDraging];
+    }
+}
 #pragma mark - load data
 -(void)reloadData
 {
     [hotPintsDS reloadDataSuccess:^{
         [self.tableV reloadData];
+        [_refreshView endRefresh];
     } failure:^{
-        
+        [_refreshView endRefresh];
     }];
 }
 -(void)loadMoreData
 {
     [hotPintsDS loadMoreDataSuccess:^{
         [self.tableV reloadData];
+        [_footer endRefreshing];
     } failure:^{
-        
+        [_footer endRefreshing];
     }];
 }
 @end

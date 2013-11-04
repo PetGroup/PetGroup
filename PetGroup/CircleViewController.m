@@ -335,7 +335,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-    articleVC.article = hotPintsDS.dataSourceArray[indexPath.row];
+    articleVC.articleID = hotPintsDS.dataSourceArray[indexPath.row];
     [self.navigationController pushViewController:articleVC animated:YES];
 }
 

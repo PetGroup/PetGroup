@@ -11,16 +11,18 @@
 @implementation NewReplyArticleDataSource
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {//body={"method":"getNewReplysByReplyct","token":"","params":{"pageNo":"1","pageSize":"3"}}
-    self.pageNo = 1;
+    self.pageNo = 0;
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.forumPid forKey:@"forumPid"];
+    [params setObject:@"NEW_ET" forKey:@"action"];
+    [params setObject:@"false" forKey:@"withTop"];
+    [params setObject:self.forumPid forKey:@"forumId"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getNoteOfNewReplys" forKey:@"method"];
+    [body setObject:@"getNoteList" forKey:@"method"];
     [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -48,12 +50,14 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.forumPid forKey:@"forumPid"];
+    [params setObject:@"NEW_ET" forKey:@"action"];
+    [params setObject:@"false" forKey:@"withTop"];
+    [params setObject:self.forumPid forKey:@"forumId"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getNoteOfNewReplys" forKey:@"method"];
+    [body setObject:@"getNoteList" forKey:@"method"];
     [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];

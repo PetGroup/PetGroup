@@ -8,11 +8,18 @@
 
 #import "ArticleViewController.h"
 #import "MJRefresh.h"
+#import "SRRefreshView.h"
 #import "TempData.h"
-@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate>
+#import "OwenrCell.h"
+#import "AriticleContent.h"
+@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
+@property (nonatomic,retain)AriticleContent* ariticle;
 @property (nonatomic,retain)UITableView*tableV;
+@property (nonatomic,retain)SRRefreshView* refreshView;
+@property (strong,nonatomic) MJRefreshFooterView *footer;
 @property (nonatomic,assign)int pageNo;
+@property (nonatomic,retain)NSAttributedString* content;
 @end
 
 @implementation ArticleViewController
@@ -72,34 +79,29 @@
     replyB.frame = CGRectMake(80, 4.5, 240, 40);
     [bottomIV addSubview:replyB];
     
-    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:18.0] constrainedToSize:CGSizeMake(300, 90) lineBreakMode:NSLineBreakByWordWrapping];
-    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 300, size.height)];
-    titleL.numberOfLines = 0;
-    titleL.text = self.article.name;
-    titleL.font = [UIFont systemFontOfSize:18.0];
-    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, size.height+50)];
-    _tableV.tableHeaderView = headV;
-    [headV addSubview:titleL];
+    self.footer = [[MJRefreshFooterView alloc] init];
+    _footer.delegate = self;
+    _footer.scrollView = self.tableV;
     
-    UILabel*readL = [[UILabel alloc]initWithFrame:CGRectMake(170, size.height+20, 70, 12)];
-    readL.text = [NSString stringWithFormat:@"浏览:%@",self.article.clientCount];
-    readL.font = [UIFont systemFontOfSize:14];
-    readL.textColor = [UIColor grayColor];
-    [headV addSubview:readL];
-
-    UILabel*replyL = [[UILabel alloc]initWithFrame:CGRectMake(250, size.height+20, 70, 12)];
-    replyL.text = [NSString stringWithFormat:@"回复:%@",self.article.replyCount];
-    replyL.font = [UIFont systemFontOfSize:14];
-    replyL.textColor = [UIColor grayColor];
-    [headV addSubview:replyL];
+    self.refreshView = [[SRRefreshView alloc] init];
+    _refreshView.delegate = self;
+    _refreshView.upInset = 0;
+    _refreshView.slimeMissWhenGoingBack = YES;
+    _refreshView.slime.bodyColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    _refreshView.slime.skinColor = [UIColor whiteColor];
+    _refreshView.slime.lineWith = 1;
+    _refreshView.slime.shadowBlur = 4;
+    _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    
+    [self.tableV addSubview:_refreshView];
     
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.article.articleID forKey:@"noteid"];
+    [params setObject:self.articleID forKey:@"noteId"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"detailNote" forKey:@"method"];
+    [body setObject:@"getNoteById" forKey:@"method"];
     [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
@@ -108,8 +110,8 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        //未完待续
-        
+        self.ariticle = [[AriticleContent alloc]initWithDictionnary:responseObject];
+        [self.tableV reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -127,6 +129,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [OwenrCell heightForRowWithArticle:self.ariticle];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -150,10 +156,11 @@
 {
     if (indexPath.section == 0) {
         static NSString *cellIdentifier = @"OwnerCell";
-        UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        OwenrCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell = [[OwenrCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         }
+        cell.article = self.ariticle;
         return cell;
     }
     static NSString *cellIdentifier = @"Cell";
@@ -163,7 +170,35 @@
     }
     return cell;
 }
+#pragma mark MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        [self loadMoreData];
+        return;
+    }
+}
+#pragma mark - slimeRefresh delegate
 
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    if (refreshView == _refreshView) {
+        [self reloadData];
+    }
+}
+#pragma mark - scroll view delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView == _tableV){
+        [_refreshView scrollViewDidScroll];
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (scrollView == _tableV) {
+        [_refreshView scrollViewDidEndDraging];
+    }
+}
 #pragma mark - load data
 -(void)reloadData
 {
@@ -177,7 +212,7 @@
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
-    [params setObject:self.article.articleID forKey:@"noteId"];
+//    [params setObject:self.article.articleID forKey:@"noteId"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
@@ -192,33 +227,14 @@
         NSLog(@"%@",responseObject);
         NSArray* array = responseObject;
         //未完待续
+        [_footer endRefreshing];
+        [_refreshView endRefresh];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 }
--(NSAttributedString *)getAttributedString:(NSString *)theStr
-{
-    NSAttributedString *uu =[self _attributedStringForSnippetUsingiOS6Attributes:NO String:theStr];
-    return uu;
-    
-}
--(NSNumber *)getRequiredHeightForTextView:(NSAttributedString *)attributeStr
-{
-    DTAttributedTextContentView * atextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-    atextView.attributedString = attributeStr;
-    atextView.shouldDrawImages = YES;
-    atextView.edgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
-    atextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    CGSize gg = [atextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:320];
-    return [NSNumber numberWithFloat:gg.height];
-}
-- (NSAttributedString *)_attributedStringForSnippetUsingiOS6Attributes:(BOOL)useiOS6Attributes String:(NSString *)contentStr
-{
-    NSData *data = [contentStr dataUsingEncoding:NSUTF8StringEncoding];
-	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data documentAttributes:NULL];
-	return attributedString;
-}
+
 
 -(void)presentUIWebViewWithURL:(NSURL *)addressURL
 {
