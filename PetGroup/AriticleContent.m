@@ -18,11 +18,12 @@
         self.content = [AriticleContent _attributedStringForSnippetUsingiOS6Attributes:NO String:[info objectForKey:@"content"]];
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
+        self.cTotalReply = [NSString stringWithFormat:@"%d",[[info objectForKey:@"cTotalReply"] integerValue]];
         self.userName = [info objectForKey:@"nickname"];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
         self.headImage = arr[0];
         self.ct =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
-        
+        self.userId = [info objectForKey:@"userId"];
     }
     return self;
 }

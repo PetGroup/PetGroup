@@ -19,6 +19,7 @@ typedef  enum
 -(void)owenrCellPressReplyButton;
 -(void)owenrCellPressReportButton;
 -(void)owenrCellPressImageWithID:(NSString*)imageID;
+-(void)owenrCellPressWithURL:(NSURL*)URL;
 @end
 @interface OwenrCell : UITableViewCell<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate>
 {

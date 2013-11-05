@@ -7,12 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NoteReply.h"
+#import <MediaPlayer/MediaPlayer.h>
 @class FollowerCell;
-@protocol OwenrCellDelegate<NSObject>
+@protocol followerCellDelegate<NSObject>
 -(void)followerCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)followerCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath;
+-(void)followerCellPressImageWithID:(NSString*)imageID;
+-(void)followerCellPressWithURL:(NSURL*)URL;
 @end
-@interface FollowerCell : UITableViewCell
+@interface FollowerCell : UITableViewCell<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate>
+{
+    NSMutableSet *mediaPlayers;
+}
+@property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic,retain)NSIndexPath*indexPath;
-@property (nonatomic,assign)id<OwenrCellDelegate>delegate;
+@property (nonatomic,assign)id<followerCellDelegate>delegate;
+@property (nonatomic,assign)NoteReply* reply;
++(CGFloat)heightForRowWithArticle:(NoteReply*)reply;
 @end

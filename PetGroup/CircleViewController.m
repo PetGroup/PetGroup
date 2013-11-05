@@ -433,7 +433,7 @@
         [self.hotPintsV reloadData];
         [_refreshView endRefresh];
     } failure:^{
-        [_slimeView endRefresh];
+        [_refreshView endRefresh];
     }];
 }
 -(void)loadHistory

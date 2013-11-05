@@ -268,9 +268,11 @@
 		86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FF42B217CC66D7007F8DE2 /* MessageViewController.m */; };
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		9707FDF3181CFCEE00795C00 /* topBar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9707FDF2181CFCEE00795C00 /* topBar1.png */; };
+		970D0A121828911D00C7473E /* EditReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 970D0A111828911D00C7473E /* EditReplyViewController.m */; };
 		9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A18E181E1890009891A6 /* HPGrowingTextView.m */; };
 		9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A190181E1890009891A6 /* HPTextViewInternal.m */; };
 		9718F46117E8668300BEC495 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9718F46017E8668300BEC495 /* dyn.png */; };
+		971C69D518289DEF00832157 /* NoteReply.m in Sources */ = {isa = PBXBuildFile; fileRef = 971C69D418289DEF00832157 /* NoteReply.m */; };
 		97233B9C1820F42C00A8015D /* drag-dot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97233B941820F42C00A8015D /* drag-dot@2x.png */; };
 		97233B9D1820F42C00A8015D /* loupe-hi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97233B951820F42C00A8015D /* loupe-hi@2x.png */; };
 		97233B9E1820F42C00A8015D /* loupe-lo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97233B961820F42C00A8015D /* loupe-lo@2x.png */; };
@@ -990,11 +992,15 @@
 		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
+		970D0A101828911D00C7473E /* EditReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReplyViewController.h; sourceTree = "<group>"; };
+		970D0A111828911D00C7473E /* EditReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditReplyViewController.m; sourceTree = "<group>"; };
 		9715A18D181E1890009891A6 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		9715A18E181E1890009891A6 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		9715A18F181E1890009891A6 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
 		9715A190181E1890009891A6 /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		9718F46017E8668300BEC495 /* dyn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dyn.png; sourceTree = "<group>"; };
+		971C69D318289DEF00832157 /* NoteReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteReply.h; sourceTree = "<group>"; };
+		971C69D418289DEF00832157 /* NoteReply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteReply.m; sourceTree = "<group>"; };
 		971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
 		971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying001@2x.png"; sourceTree = "<group>"; };
 		971CF331180FB1C600650409 /* ReceiverVoiceNodePlaying002@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying002@2x.png"; sourceTree = "<group>"; };
@@ -1825,6 +1831,8 @@
 				86D69D0B17C7265300FFFBDD /* EditDynamicViewController.m */,
 				86A56A8F180F83E4000FD684 /* EditArticleViewController.h */,
 				86A56A90180F83E4000FD684 /* EditArticleViewController.m */,
+				970D0A101828911D00C7473E /* EditReplyViewController.h */,
+				970D0A111828911D00C7473E /* EditReplyViewController.m */,
 				86993B69180BDDDE00F61A3F /* FriendCircleViewController.h */,
 				86993B6A180BDDDE00F61A3F /* FriendCircleViewController.m */,
 				8672575F181A626400624A04 /* OnceDynamicViewController.h */,
@@ -2082,6 +2090,8 @@
 				86F324B91810D43E004BC4EF /* Article.m */,
 				7224769318279418000E3D05 /* AriticleContent.h */,
 				7224769418279418000E3D05 /* AriticleContent.m */,
+				971C69D318289DEF00832157 /* NoteReply.h */,
+				971C69D418289DEF00832157 /* NoteReply.m */,
 			);
 			name = CircleDataModel;
 			sourceTree = "<group>";
@@ -4465,6 +4475,7 @@
 				9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */,
 				9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */,
 				9736BAFD17C4892A007DFE36 /* GCDAsyncSocket.m in Sources */,
+				971C69D518289DEF00832157 /* NoteReply.m in Sources */,
 				9736BAFE17C4892A007DFE36 /* DDAbstractDatabaseLogger.m in Sources */,
 				9736BAFF17C4892A007DFE36 /* DDASLLogger.m in Sources */,
 				9736BB0017C4892A007DFE36 /* DDFileLogger.m in Sources */,
@@ -4566,6 +4577,7 @@
 				9736BC7317C489F2007DFE36 /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
 				9736BC7417C489F2007DFE36 /* XMPPCapsCoreDataStorageObject.m in Sources */,
 				9736BC7517C489F2007DFE36 /* XMPPCapsResourceCoreDataStorageObject.m in Sources */,
+				970D0A121828911D00C7473E /* EditReplyViewController.m in Sources */,
 				9736BC7617C489F2007DFE36 /* XMPPCapabilities.m in Sources */,
 				9736BC7717C489F2007DFE36 /* XMPPMessageArchiving.xcdatamodeld in Sources */,
 				9736BC7817C489F2007DFE36 /* XMPPMessageArchiving_Contact_CoreDataObject.m in Sources */,
@@ -4759,8 +4771,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4787,8 +4799,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4810,8 +4822,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4832,8 +4844,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

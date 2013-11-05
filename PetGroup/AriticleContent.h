@@ -13,9 +13,11 @@
 @property (nonatomic,retain) NSString* name;
 @property (nonatomic,retain) NSAttributedString* content;
 @property (nonatomic,retain) NSString* clientCount;
-@property (nonatomic,retain) NSString* replyCount;
+@property (nonatomic,retain) NSString* replyCount;//回复数
+@property (nonatomic,retain) NSString* cTotalReply;//创建人回帖数
 @property (nonatomic,retain) NSString* userName;
 @property (nonatomic,retain) NSString* headImage;
+@property (nonatomic,retain) NSString* userId;
 @property (nonatomic,retain) NSString* ct;
 - (id)initWithDictionnary:(NSDictionary*)info;
 @end

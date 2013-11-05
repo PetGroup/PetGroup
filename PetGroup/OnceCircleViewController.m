@@ -144,7 +144,7 @@
     [joinB addTarget:self action:@selector(joinOnceCircle) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:joinB];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
     _tableV.rowHeight = 100;
     _tableV.tableHeaderView = headView;

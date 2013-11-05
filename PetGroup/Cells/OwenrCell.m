@@ -60,6 +60,7 @@
         [self.contentView addSubview:_lineV];
         
         self.titleL = [[UILabel alloc]init];
+        _titleL.backgroundColor = [UIColor clearColor];
         _titleL.numberOfLines = 0;
         _titleL.font = [UIFont systemFontOfSize:18.0];
         [self.contentView addSubview:_titleL];
@@ -67,9 +68,11 @@
         self.readL = [[UILabel alloc]init];
         _readL.font = [UIFont systemFontOfSize:14];
         _readL.textColor = [UIColor grayColor];
+        _readL.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_readL];
         
         self.replyL = [[UILabel alloc]init];
+        _replyL.backgroundColor = [UIColor clearColor];
         _replyL.font = [UIFont systemFontOfSize:14];
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
@@ -105,6 +108,7 @@
         
         self.buttonIV = [[UIImageView alloc]init];
         self.buttonIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+        _buttonIV.userInteractionEnabled = YES;
         [self.contentView addSubview:_buttonIV];
         
         replyB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -393,8 +397,8 @@
 {
     if (button.tag==ButtonTypeImage) {
         if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressImageWithID:)]) {
-            NSString* imageID = [NSString stringWithFormat:@"%@",button.URL];
-            //未完待续
+            NSMutableString* imageID = [NSMutableString  stringWithFormat:@"%@",button.URL];
+            [imageID deleteCharactersInRange:[imageID rangeOfString:BaseImageUrl]];
             [self.delegate owenrCellPressImageWithID:imageID];
         }
     }
@@ -416,6 +420,9 @@
                 
                 if (fragment)
                 {
+                    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressWithURL:)]) {
+                        [self.delegate owenrCellPressWithURL:button.URL];
+                    }
                     //				[self.textView scrollToAnchorNamed:fragment animated:NO];
                 }
             }
