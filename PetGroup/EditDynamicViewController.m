@@ -170,7 +170,6 @@
 }
 -(void)publishWithImageString:(NSString*)imageID
 {
-//    body={"method":"addUserState","token":"XXX","channel":"","mac":"","imei":"","params":{"msg":"","imgid":"","ifTransmitMsg":"","transmitUrl":"","transmitMsg":""}}
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);

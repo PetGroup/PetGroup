@@ -111,12 +111,12 @@ typedef  enum
     _nameL.frame = CGRectMake(60, origin, 160, 20);
     
     _locationL.frame =CGRectMake(240, origin, 60, 20);
-    if (self.indexPath.row == 0) {
+    if ([self.reply.seq intValue]== 1) {
          _locationL.text = @"沙发";
-    }else if (self.indexPath.row == 1) {
+    }else if ([self.reply.seq intValue] == 2) {
         _locationL.text = @"板凳";
     }else
-        _locationL.text = [NSString stringWithFormat:@"第%d楼",self.indexPath.row+2];
+        _locationL.text = [NSString stringWithFormat:@"第%d楼",[self.reply.seq intValue]+1];
     origin += 25;
     _timeL.text = self.reply.ct;
     _timeL.frame = CGRectMake(60, origin, 240, 12);

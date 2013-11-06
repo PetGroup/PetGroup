@@ -23,6 +23,7 @@
         self.ct = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];
         self.content = [NoteReply _attributedStringForSnippetUsingiOS6Attributes:NO String:[info objectForKey:@"content"]];
         self.state = [info objectForKey:@"state"];
+        self.seq = [info objectForKey:@"seq"];
     }
     return self;
 }

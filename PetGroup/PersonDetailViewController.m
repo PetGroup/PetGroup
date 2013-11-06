@@ -14,21 +14,13 @@
 #import "UIExpandingTextView.h"
 #import "HeightCalculate.h"
 #import "Common.h"
+#import "Dynamic.h"
+#import "PersonalDynamicCell.h"
+#import "SomeOneDynamicViewController.h"
 
 @interface PersonDetailViewController ()<UIExpandingTextViewDelegate>
-{
-    UIButton * assessB;
-    UIButton * reprintB;
-    
-    int assessOrPraise;
-    
-    UIImageView * inputbg;
-    UIView * inPutView;
-}
+
 @property (nonatomic,strong)NSMutableArray* dynamicArray;
-@property (nonatomic,strong)UIImageView*  actionIV;
-@property (nonatomic,weak)id theID;
-@property (nonatomic,strong)UIExpandingTextView* inputTF;
 @end
 
 @implementation PersonDetailViewController
@@ -208,28 +200,6 @@
     [blackV addSubview:sureBtn];
     [sureBtn addTarget:self action:@selector(sureBtnDo) forControlEvents:UIControlEventTouchUpInside];
 	// Do any additional setup after loading the view.
-    inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
-    [inPutView setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:inPutView];
-    inputbg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-    [inputbg setImage:[UIImage imageNamed:@"inputbg.png"]];
-    [inPutView addSubview:inputbg];
-    
-    self.inputTF = [[UIExpandingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-    self.inputTF.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(4.0f, 0.0f, 10.0f, 0.0f);
-    [self.inputTF.internalTextView setReturnKeyType:UIReturnKeySend];
-    self.inputTF.delegate = self;
-    self.inputTF.maximumNumberOfLines=5;
-    [inPutView addSubview:self.inputTF];
-    
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (version >= 5.0) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    }
-    else{
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     if (!self.needRequest) {
         [self reloadDynamicData];
     }
@@ -332,6 +302,14 @@
     
     return temp;
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_myFriend) {
+        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+        sodVC.userInfo = self.hostInfo;
+        [self.navigationController pushViewController:sodVC animated:YES];
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section==1){
@@ -386,7 +364,7 @@
         if (indexPath.row==0) {
             return 40;
         }else
-            return 40;
+            return [PersonalDynamicCell heightForRowWithDynamic:self.dynamicArray[indexPath.row-1]];
     }
     else
         return 40;
@@ -411,17 +389,6 @@
             break;
         case 3:
         {
-            if (self.myFriend) {
-                if (self.dynamicArray.count>0) {
-                    return 2;
-                }
-                else
-                    return 1;
-            
-            }
-            if (self.dynamicArray.count>5) {
-                return 6;
-            }
             return self.dynamicArray.count+1;
         }
             break;
@@ -533,13 +500,11 @@
             {
                 static NSString *Cell = @"Celldds";
                 
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:Cell];
+                PersonalDynamicCell *cell = [tableView dequeueReusableCellWithIdentifier:Cell];
                 if (cell == nil) {
-                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+                    cell = [[PersonalDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
                 }
-                if (self.myFriend) {
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                }
+                cell.dynamic = self.dynamicArray[indexPath.row-1];
                 return cell;
             }
 
@@ -769,27 +734,33 @@
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:self.hostInfo.userId forKey:@"userid"];
-    [params setObject:[NSString stringWithFormat:@"%d",0] forKey:@"pageIndex"];
-    [params setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"lastStateid"];
+    [params setObject:@"0" forKey:@"pageNo"];
+    if (_myFriend) {
+        [params setObject:@"1" forKey:@"pageSize"];
+    }else{
+        [params setObject:@"5" forKey:@"pageSize"];
+    }
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"findFriendStates" forKey:@"method"];
+    [body setObject:@"getUserState" forKey:@"method"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",[[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        NSArray*array = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        [self.dynamicArray removeAllObjects];
-        for (NSDictionary*a in array) {
-            
-            [self.profileTableV reloadData];
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
+        if (array.count>0) {
+            for (NSDictionary*a in array) {
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                [self.dynamicArray addObject:b];
+            }
         }
+        [self.profileTableV reloadData];//未完待续
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+       
     }];
 }
 @end

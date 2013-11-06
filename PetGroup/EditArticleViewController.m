@@ -292,7 +292,34 @@
         
         [hud hide:YES];
         NSLog(@"stringuu = %@",responseObject);
-        //未完待续
+        [self upOneDymicWithNoteID:responseObject];
+        [self backButton:nil];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+-(void)upOneDymicWithNoteID:(NSString*)noteID
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:[NSString stringWithFormat:@"bbsNoteId_%@",noteID] forKey:@"transmitUrl"];
+    [params setObject:@"" forKey:@"transmitMsg"];
+    [params setObject:@"0" forKey:@"ifTransmitMsg"];
+    [params setObject:[NSString stringWithFormat:@"我在%@发布了一篇帖子:\"%@\"",self.forumName,self.titleTF.text] forKey:@"msg"];
+    [params setObject:@"" forKey:@"imgid"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"addUserState" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"dynamicID = %@",responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

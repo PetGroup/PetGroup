@@ -244,6 +244,7 @@
 {
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
     editAVC.forumId = self.circleEntity.circleID;
+    editAVC.forumName = self.circleEntity.name;
     [self.navigationController pushViewController:editAVC animated:YES];
 
 }

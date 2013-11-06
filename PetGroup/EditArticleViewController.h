@@ -16,4 +16,5 @@
     
 }
 @property (nonatomic,retain)NSString* forumId;
+@property (nonatomic,retain)NSString* forumName;
 @end

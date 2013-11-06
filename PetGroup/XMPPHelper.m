@@ -285,11 +285,14 @@
 // 3.关于通信的
 //收到消息后调用
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message{
-    
-    NSString *msg = [[message elementForName:@"body"] stringValue];
+    NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
+     NSString *msg = @"";
+    if (![msgtype isEqualToString:@"msgtype"]) {
+         msg=[[message elementForName:@"body"] stringValue];
+    }
     NSString *from = [[message attributeForName:@"from"] stringValue];
     NSString *type = [[message attributeForName:@"type"] stringValue];
-    NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
+   
     NSString *msgTime = [[message attributeForName:@"msgTime"] stringValue];
     NSString *receiver = [[message attributeForName:@"to"] stringValue];
    // NSString * fromNickName = [[message attributeForName:@"nickname"] stringValue];

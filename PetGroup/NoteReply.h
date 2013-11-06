@@ -18,5 +18,6 @@
 @property (nonatomic,retain) NSString* ct;
 @property (nonatomic,retain) NSAttributedString* content;
 @property (nonatomic,retain) NSString* state;
+@property (nonatomic,retain) NSString* seq;//楼数
 - (id)initWithDictionnary:(NSDictionary*)info;
 @end

@@ -15,7 +15,7 @@
 #import "MyPetProfileViewController.h"
 #import "MyProfileViewController.h"
 #import "SettingViewController.h"
-@class CustomTabBar,AppDelegate;
+@class CustomTabBar;
 @interface PersonalCenterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
 {
     int unreadComment;
@@ -23,5 +23,4 @@
 @property (strong,nonatomic) UITableView * profileTableV;
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong,nonatomic) HostInfo * hostInfo;
-@property (strong,nonatomic) AppDelegate * appDel;
 @end

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol EditReplyViewDelegate<NSObject>
+-(void)editReplyViewDidEdit;
+@end
 @interface EditReplyViewController : UIViewController
 {
     float diffH;
@@ -15,6 +17,7 @@
     
     
 }
+@property (nonatomic,assign)id<EditReplyViewDelegate>delegate;
 @property (nonatomic,assign)int row;
 @property (nonatomic,retain)NSString* articleID;
 @property (nonatomic,retain)NSString* replyID;

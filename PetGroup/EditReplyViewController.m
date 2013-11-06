@@ -247,7 +247,10 @@
         
         [hud hide:YES];
         NSLog(@"stringuu = %@",responseObject);
-        //未完待续
+        if (self.delegate&&[self.delegate respondsToSelector:@selector(editReplyViewDidEdit)]) {
+            [self.delegate editReplyViewDidEdit];
+        }
+        [self backButton:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
@@ -561,4 +564,5 @@
         
     }
 }
+
 @end

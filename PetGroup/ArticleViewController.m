@@ -15,9 +15,10 @@
 #import "EditReplyViewController.h"
 #import "NoteReply.h"
 #import "FollowerCell.h"
-@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,OwenrCellDelegate,followerCellDelegate>
+@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,OwenrCellDelegate,followerCellDelegate,EditReplyViewDelegate>
 {
     UIButton * nextB;
+    UIButton* showB ;
 }
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)NSMutableArray* replyHighArray;
@@ -90,11 +91,12 @@
     bottomIV.userInteractionEnabled = YES;
     [self.view addSubview:bottomIV];
     
-    UIButton* showB = [UIButton buttonWithType:UIButtonTypeCustom];
+    showB = [UIButton buttonWithType:UIButtonTypeCustom];
     [showB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [showB setTitle:@"分页" forState:UIControlStateNormal];
     showB.frame = CGRectMake(10, 4.5, 60, 40);
     [showB addTarget:self action:@selector(changePageView) forControlEvents:UIControlEventTouchUpInside];
+    showB.userInteractionEnabled = NO;
     [bottomIV addSubview:showB];
     
     UIButton* replyB = [UIButton  buttonWithType:UIButtonTypeCustom];
@@ -122,13 +124,17 @@
         self.ariticle = [[AriticleContent alloc]initWithDictionnary:responseObject];
         self.owenrCellHigh = [NSString stringWithFormat:@"%f",[OwenrCell heightForRowWithArticle:self.ariticle]];
         [self.tableV reloadData];
+        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>1) {
+            showB.userInteractionEnabled = YES;
+        }
+        else{
+            showB.userInteractionEnabled = NO;
+        }
+        self.pageNo = 0;
+        [self loadMoreData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
-}
--(void)viewWillAppear:(BOOL)animated
-{
-    [self reloadData];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -140,8 +146,24 @@
 {
     if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
         [nextB setTitle:@"查看全部" forState:UIControlStateNormal];
+        self.pageNo = 0;
+        [self loadMoreData];
+        if ([self.ariticle.cTotalReply integerValue]%20?[self.ariticle.cTotalReply integerValue]/20+1:[self.ariticle.cTotalReply integerValue]/20>1) {
+            showB.userInteractionEnabled = YES;
+        }
+        else{
+            showB.userInteractionEnabled = NO;
+        }
     }else{
         [nextB setTitle:@"只看楼主" forState:UIControlStateNormal];
+        self.pageNo = 0;
+        [self loadMoreData];
+        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>1) {
+            showB.userInteractionEnabled = YES;
+        }
+        else{
+            showB.userInteractionEnabled = NO;
+        }
     }
 }
 -(void)backButton
@@ -162,14 +184,6 @@
     self.pageV = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 44)];
     [self.view addSubview:_pageV];
     _pageV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
-    UIButton * liftB = [UIButton buttonWithType:UIButtonTypeCustom];
-    liftB.frame = CGRectMake(0, 0, 60, 44);
-    [liftB setTitle:@"左" forState:UIControlStateNormal];
-    [_pageV addSubview:liftB];
-    UIButton * rightB = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightB.frame = CGRectMake(260, 0, 60, 44);
-    [rightB setTitle:@"右" forState:UIControlStateNormal];
-    [_pageV addSubview:rightB];
     UIScrollView* scV = [[UIScrollView alloc]initWithFrame:CGRectMake(60, 0, 200, 44)];
     [_pageV addSubview:scV];
     int a = 0;
@@ -178,6 +192,7 @@
     }else{
         a =[self.ariticle.cTotalReply intValue]%20?[self.ariticle.cTotalReply intValue]/20+1:[self.ariticle.cTotalReply intValue]/20;
     }
+    scV.contentSize = CGSizeMake(a*40, 44);
     float x = 0;
     for (int i = 1; i<=a; i++) {
         UIButton * pageB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -186,7 +201,23 @@
         pageB.frame = CGRectMake(x, 0, 40, 44);
         x+=40;
         [scV addSubview:pageB];
-        [pageB addTarget:self action:@selector(pageSelect:) forControlEvents:UIControlEventTouchUpInside];
+        if (i != self.pageNo+1) {
+            [pageB addTarget:self action:@selector(pageSelect:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    UIButton * liftB = [UIButton buttonWithType:UIButtonTypeCustom];
+    liftB.frame = CGRectMake(0, 0, 60, 44);
+    [liftB setTitle:@"左" forState:UIControlStateNormal];
+    [_pageV addSubview:liftB];
+    if (self.pageNo > 0) {
+        [liftB addTarget:self action:@selector(pageUp) forControlEvents:UIControlEventTouchUpInside];
+    }
+    UIButton * rightB = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightB.frame = CGRectMake(260, 0, 60, 44);
+    [rightB setTitle:@"右" forState:UIControlStateNormal];
+    [_pageV addSubview:rightB];
+    if (self.pageNo < a-1) {
+        [rightB addTarget:self action:@selector(pageDown) forControlEvents:UIControlEventTouchUpInside];
     }
     [self.view insertSubview:_pageV aboveSubview:_tableV];
     [UIView animateWithDuration:0.3 animations:^{
@@ -275,6 +306,7 @@
 {
     EditReplyViewController* replyVC = [[EditReplyViewController alloc]init];
     replyVC.articleID = self.articleID;
+    replyVC.delegate = self;
     [self presentViewController:replyVC animated:YES completion:nil];
 }
 -(void)owenrCellPressReportButton//举报
@@ -316,7 +348,8 @@
 {
     EditReplyViewController* replyVC = [[EditReplyViewController alloc]init];
     replyVC.articleID = self.articleID;
-    replyVC.row = indexPath.row+2;
+    replyVC.delegate = self;
+    replyVC.row = [((NoteReply*)self.dataSourceArray[indexPath.row]).seq intValue]+1;
     replyVC.replyID = ((NoteReply*)self.dataSourceArray[indexPath.row]).replyID;
     [self presentViewController:replyVC animated:YES completion:nil];
 }
@@ -355,49 +388,14 @@
     [self.navigationController pushViewController:webVC animated:YES];
 }
 #pragma mark - load data
--(void)reloadData
-{
-    self.pageNo = 0;
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
-    [params setObject:self.articleID forKey:@"noteId"];
-    [params setObject:@"20" forKey:@"pageSize"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getReplyList" forKey:@"method"];
-    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.dataSourceArray removeAllObjects];
-        NSArray* array = [responseObject objectForKey:@"data"];
-        if (array.count>0) {
-            for (NSDictionary* dic in array) {
-                NoteReply* rep = [[NoteReply alloc]initWithDictionnary:dic];
-                [self.dataSourceArray addObject:rep];
-            }
-            [self.replyHighArray removeAllObjects];
-            for (NoteReply* rep in self.dataSourceArray) {
-                float high = [FollowerCell heightForRowWithArticle:rep];
-                [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
-            }
-            [self.tableV reloadData];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-}
 -(void)loadMoreData
 {
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    if (![nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+        [params setObject:self.ariticle.userId forKey:@"userId"];
+    }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.articleID forKey:@"noteId"];
     [params setObject:@"20" forKey:@"pageSize"];
@@ -424,10 +422,22 @@
                 float high = [FollowerCell heightForRowWithArticle:rep];
                 [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
             }
-            [self.tableV reloadData];
+        }
+        [self.tableV reloadData];
+        if (array.count>0) {
+            if (self.pageNo == 0) {
+                [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            }else{
+                [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+}
+-(void)editReplyViewDidEdit
+{
+    self.pageNo = 0;
+    [self loadMoreData];
 }
 @end

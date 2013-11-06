@@ -40,7 +40,14 @@
         self.nickName = [dic objectForKey:@"nickname"];
         self.userID = [dic objectForKey:@"userid"];
         self.state = [dic objectForKey:@"state"];
-        self.transmitMsg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"transmitMsg"]];
+        NSString * transmitMsg = [dic objectForKey:@"transmitMsg"];
+        if (!transmitMsg) {
+            transmitMsg = @" ";
+        }
+
+        self.transmitMsg =[OHASBasicHTMLParser attributedStringByProcessingMarkupInString:transmitMsg];
+  
+        
         [_transmitMsg setFont:[UIFont systemFontOfSize:15]];
         [_transmitMsg setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
         self.transmitUrl = [dic objectForKey:@"transmitUrl"];
