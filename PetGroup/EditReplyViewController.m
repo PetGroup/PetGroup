@@ -417,8 +417,8 @@
     selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
     
     
-    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
-    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+//    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+//    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
     
 }
 
@@ -436,7 +436,9 @@
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     
-    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:^{
+        
+    }];
     
     //    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:picker];
     //    [picker release];

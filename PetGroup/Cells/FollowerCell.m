@@ -55,10 +55,10 @@ typedef  enum
         [self.contentView addSubview:_headPhote];
         
         self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 50, 12)];
-        _nameL.font = [UIFont systemFontOfSize:14];
+        _nameL.font = [UIFont systemFontOfSize:16];
         [self.contentView addSubview:_nameL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 12)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
         _timeL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_timeL];
@@ -79,7 +79,9 @@ typedef  enum
         [self.contentView addSubview:self.textView];
         
         replyB = [UIButton buttonWithType:UIButtonTypeCustom];
+        replyB.frame = CGRectMake(220, 5.5, 75, 25);
         [replyB setTitle:@"回复" forState:UIControlStateNormal];
+        [replyB.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"huifu_normal"] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"huifu_click"] forState:UIControlStateHighlighted];
@@ -87,6 +89,7 @@ typedef  enum
         [self.contentView addSubview:replyB];
         reportB = [UIButton buttonWithType:UIButtonTypeCustom];
         [reportB setTitle:@"举报" forState:UIControlStateNormal];
+        [reportB.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [reportB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [reportB addTarget:self action:@selector(reportAction) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:reportB];
@@ -110,16 +113,17 @@ typedef  enum
     _nameL.text = self.reply.userName;
     _nameL.frame = CGRectMake(60, origin, 160, 20);
     
-    _locationL.frame =CGRectMake(240, origin, 60, 20);
+    _locationL.frame =CGRectMake(250, origin, 60, 20);
+    _locationL.textAlignment = NSTextAlignmentRight;
     if ([self.reply.seq intValue]== 1) {
          _locationL.text = @"沙发";
     }else if ([self.reply.seq intValue] == 2) {
         _locationL.text = @"板凳";
     }else
-        _locationL.text = [NSString stringWithFormat:@"第%d楼",[self.reply.seq intValue]+1];
+        _locationL.text = [NSString stringWithFormat:@"%d楼",[self.reply.seq intValue]+1];
     origin += 25;
     _timeL.text = self.reply.ct;
-    _timeL.frame = CGRectMake(60, origin, 240, 12);
+    _timeL.frame = CGRectMake(60, origin, 240, 20);
     origin += 22;
     
     NSNumber *high = [FollowerCell getRequiredHeightForTextView:self.reply.content];
@@ -128,7 +132,8 @@ typedef  enum
     
     origin += ([high floatValue]);
     
-    replyB.frame = CGRectMake(210, origin, 97, 31);
+//    replyB.frame = CGRectMake(210, origin, 97, 31);
+    replyB.frame = CGRectMake(220, origin, 85, 28);
     reportB.frame = CGRectMake(10, origin, 100, 31);
 }
 -(void)replyAction

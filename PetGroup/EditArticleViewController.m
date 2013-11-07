@@ -56,6 +56,10 @@
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_dynamicTV becomeFirstResponder];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -123,7 +127,15 @@
     
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    tool.image = [UIImage imageNamed:@"table_bg"];
+    if (diffH==0.0f) {
+        tool.image = [UIImage imageNamed:@"table_bg"];
+    }
+    else
+    {
+        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        tool.layer.borderColor = [[UIColor grayColor] CGColor];
+        tool.layer.borderWidth = 1;
+    }
     tool.userInteractionEnabled = YES;
     _dynamicTV.inputAccessoryView = tool;
     
@@ -435,6 +447,7 @@
 //    }
 //    PhotoB.hidden = NO;
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    [_dynamicTV becomeFirstResponder];
 //    UIImage*selectImage = [info objectForKey:UIImagePickerControllerOriginalImage];
 //    UIImageView* imageV = [[UIImageView alloc]initWithFrame:PhotoB.frame];
 //    imageV.userInteractionEnabled = YES;
@@ -456,6 +469,7 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    [_dynamicTV becomeFirstResponder];
 }
 #pragma mark -
 #pragma mark fastTextViewDelegate
@@ -487,8 +501,8 @@
     selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
     
     
-    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
-    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+//    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+//    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
     
 }
 
@@ -506,7 +520,9 @@
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     
-    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:^{
+        
+    }];
     
     //    UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:picker];
     //    [picker release];

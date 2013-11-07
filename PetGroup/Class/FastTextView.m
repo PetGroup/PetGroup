@@ -797,7 +797,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 //wq ADD for 坐标变换 增加 ctx:(CGContextRef)ctx 参数
 - (void)drawContentInRect:(CGRect)rect ctx:(CGContextRef)ctx {
 
-    double starttime=[[NSDate date]timeIntervalSince1970];
+//    double starttime=[[NSDate date]timeIntervalSince1970];
     
     [self.attributedString clearDeleteParagraphs]; //clear attributedString deleted paragraphs // 清理已删除的章节
     
