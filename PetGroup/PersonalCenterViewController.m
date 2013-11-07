@@ -9,7 +9,7 @@
 #import "PersonalCenterViewController.h"
 #import "CustomTabBar.h"
 #import "AppDelegate.h"
-#import "SomeOneDynamicViewController.h"
+#import "MyMessageViewController.h"
 @interface PersonalCenterViewController ()
 
 @end
@@ -280,9 +280,8 @@
         [self.navigationController pushViewController:myV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else if (indexPath.section==2) {
-        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
-        sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
-        [self.navigationController pushViewController:sodVC animated:YES];
+        MyMessageViewController* myMessageVC = [[MyMessageViewController alloc]init];
+        [self.navigationController pushViewController:myMessageVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
     else if (indexPath.section==3){

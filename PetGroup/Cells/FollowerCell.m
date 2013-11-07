@@ -7,7 +7,7 @@
 //
 
 #import "FollowerCell.h"
-#import "EGOImageView.h"
+#import "EGOImageButton.h"
 typedef  enum
 {
     ButtonTypeImage = 1,
@@ -18,8 +18,8 @@ typedef  enum
     UIButton *replyB;
     UIButton *reportB;
 }
-@property(nonatomic,retain)EGOImageView* headPhote;
-@property(nonatomic,retain)UILabel* nameL;
+@property(nonatomic,retain)EGOImageButton* headPhote;
+@property(nonatomic,retain)UIButton* nameB;
 @property(nonatomic,retain)UILabel* timeL;
 @property (strong,nonatomic)DTAttributedTextContentView * textView;
 @property(nonatomic,retain)UILabel* locationL;
@@ -50,13 +50,16 @@ typedef  enum
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+        self.headPhote = [[EGOImageButton alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+        [_headPhote addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 50, 12)];
-        _nameL.font = [UIFont systemFontOfSize:16];
-        [self.contentView addSubview:_nameL];
+        self.nameB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_nameB setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [_nameB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
+        _nameB.titleLabel.font = [UIFont systemFontOfSize:15];
+        [self.contentView addSubview:_nameB];
         
         self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
@@ -110,8 +113,9 @@ typedef  enum
     _headPhote.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.reply.headImage]];
     _headPhote.frame = CGRectMake(10, origin, 40, 40);
     
-    _nameL.text = self.reply.userName;
-    _nameL.frame = CGRectMake(60, origin, 160, 20);
+    CGSize nameSize = [self.reply.userName sizeWithFont:[UIFont systemFontOfSize:15.0] constrainedToSize:CGSizeMake(160, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    [_nameB setTitle:self.reply.userName forState:UIControlStateNormal] ;
+    _nameB.frame = CGRectMake(60, origin, nameSize.width, 20);
     
     _locationL.frame =CGRectMake(250, origin, 60, 20);
     _locationL.textAlignment = NSTextAlignmentRight;
@@ -146,6 +150,12 @@ typedef  enum
 {
     if (self.delegate&&[self.delegate respondsToSelector:@selector(followerCellPressReportButtonAtIndexPath:)]) {
         [self.delegate followerCellPressReportButtonAtIndexPath:self.indexPath];
+    }
+}
+-(void)PersonDetail
+{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(followerCellPressNameButtonOrHeadButtonAtIndexPath:)]) {
+        [self.delegate followerCellPressNameButtonOrHeadButtonAtIndexPath:self.indexPath];
     }
 }
 #pragma mark -

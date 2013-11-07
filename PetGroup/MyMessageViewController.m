@@ -15,14 +15,24 @@
 #import "SRRefreshView.h"
 #import "PersonalDynamicCell.h"
 #import "HostInfo.h"
-@interface MyMessageViewController ()<UITableViewDelegate,UITableViewDataSource,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
+#import "MyDynamicDataSource.h"
+#import "MyReplyNoteDataSource.h"
+#import "ArticleViewController.h"
+#import "Article.h"
+@interface MyMessageViewController ()<UITableViewDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
+{
+    UIButton* attentionB;
+    UIButton* hotPintsB;
+}
+@property (nonatomic,retain)MyDynamicDataSource* myDynamicDS;
+@property (nonatomic,retain)MyReplyNoteDataSource* myReplNOteDS;
+@property (nonatomic,retain)DataSource* presentDS;
 @property (nonatomic,retain)HostInfo* userInfo;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
 @property (nonatomic,retain)UIView* headV;
 @property (nonatomic,retain)EGOImageView* imageV;
 @property (nonatomic,retain)UITableView* tableV;
-@property (nonatomic,assign)int pageNo;
 @end
 
 @implementation MyMessageViewController
@@ -32,6 +42,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
     }
     return self;
 }
@@ -59,7 +70,7 @@
     
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"个人动态"];
+    [titleLabel setText:@"我的圈子"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -72,23 +83,40 @@
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
-    _tableV.dataSource = self;
     _tableV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableV];
     
-    self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 220)];
+    self.headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 251.5)];
     _headV.backgroundColor = [UIColor clearColor];
     self.tableV.tableHeaderView = _headV;
-    if ([[[TempData sharedInstance] getMyUserID] isEqualToString:self.userInfo.userId]) {
-        UIButton* changeB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [changeB addTarget:self action:@selector(changeCoverImage) forControlEvents:UIControlEventTouchUpInside];
-        changeB.frame =CGRectMake(0, 0, 320, 180);
-        [_headV addSubview:changeB];
-    }
+    UIButton* changeB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [changeB addTarget:self action:@selector(changeCoverImage) forControlEvents:UIControlEventTouchUpInside];
+    changeB.frame =CGRectMake(0, 0, 320, 180);
+    [_headV addSubview:changeB];
     
     UIView* whiteV = [[UIView alloc]initWithFrame:CGRectMake(0, 180, 320, 40)];
-    whiteV.backgroundColor = [UIColor whiteColor];
+    whiteV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     [_headV addSubview:whiteV];
+    
+    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 220, 320, 31.5)];
+    tabIV.image = [UIImage imageNamed:@"table_bg"];
+    tabIV.userInteractionEnabled = YES;
+    [_headV addSubview:tabIV];
+    
+    attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
+    attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
+    [attentionB setTitle:@"我的动态" forState:UIControlStateNormal];
+    [attentionB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+    [tabIV addSubview:attentionB];
+    [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
+    
+    hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
+    [hotPintsB setTitle:@"我的回复" forState:UIControlStateNormal];
+    [tabIV addSubview:hotPintsB];
+    [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -136,7 +164,13 @@
     signatureL.text = _userInfo.signature;
     _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",_userInfo.backgroundImg]];
     
-//    [self reloadData];
+    self.myDynamicDS = [[MyDynamicDataSource alloc]init];
+    _myDynamicDS.myController = self;
+    self.presentDS = _myDynamicDS;
+    _tableV.dataSource = _myDynamicDS;
+    
+    [self reloadData];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,6 +180,38 @@
 }
 
 #pragma mark - button action
+-(void)attentionAct
+{
+    if (_presentDS != _myDynamicDS) {
+        [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+        [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
+        self.presentDS = _myDynamicDS;
+        _tableV.dataSource = _myDynamicDS;
+        [self.tableV reloadData];
+    }
+    
+}
+-(void)hotPintsAct
+{
+    if (!_myReplNOteDS) {
+        self.myReplNOteDS = [[MyReplyNoteDataSource alloc]init];
+        _myReplNOteDS.myController = self;
+        [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
+        [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+        self.presentDS = _myReplNOteDS;
+        _tableV.dataSource = _myReplNOteDS;
+        [self reloadData];
+        return;
+    }
+    if (_presentDS != _myReplNOteDS) {
+        [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
+        [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+        self.presentDS = _myReplNOteDS;
+        _tableV.dataSource = _myReplNOteDS;
+        [self.tableV reloadData];
+    }
+    
+}
 -(void)changeCoverImage
 {
     UIActionSheet* addActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
@@ -276,36 +342,27 @@
 #pragma mark - tableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return [PersonalDynamicCell heightForRowWithDynamic:self.dataSourceArray[indexPath.row]];
-    //    return 100;
+    if (self.presentDS == _myDynamicDS) {
+       return [PersonalDynamicCell heightForRowWithDynamic:self.presentDS.dataSourceArray[indexPath.row]];
+    }
+    return 100;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-//    odVC.dynamic = self.dataSourceArray[indexPath.row];
-    if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
-        odVC.delegate = self;
+    if (_presentDS == _myDynamicDS) {
+        OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+        odVC.dynamic = self.myDynamicDS.dataSourceArray[indexPath.row];
+        if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
+               odVC.delegate = self;
+           }
+        [self.navigationController pushViewController:odVC animated:YES];
     }
-    [self.navigationController pushViewController:odVC animated:YES];
-}
-#pragma mark - table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-//    return self.dataSourceArray.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellIdentifier = @"cell";
-    PersonalDynamicCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
-    if (cell == nil) {
-        cell = [[PersonalDynamicCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        cell.delegate = self;
+    if (_presentDS == _myReplNOteDS) {
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = ((Article*)_myReplNOteDS.dataSourceArray[indexPath.row]).articleID;
+        [self.navigationController pushViewController:articleVC animated:YES];
     }
-    cell.indexPath = indexPath;
-//    cell.dynamic = self.dataSourceArray[indexPath.row];
-    //    [cell.replyB setTitle:[self replyCountWithDynamicID:((Dynamic*)self.dataSourceArray[indexPath.row]).dynamicID] forState:UIControlStateNormal];
-    return cell;
 }
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
@@ -316,80 +373,31 @@
 #pragma mark - dynamic list reload data
 -(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic
 {
-//    [self.dataSourceArray removeObject:dynamic];
+    [self.myDynamicDS.dataSourceArray removeObject:dynamic];
     [self.tableV reloadData];
 }
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
 {
-//    [self.dataSourceArray insertObject:dynamic atIndex:0];
+    [self.myDynamicDS.dataSourceArray insertObject:dynamic atIndex:0];
     [self.tableV reloadData];
 }
 #pragma mark - load data
 -(void)reloadData
 {
-    self.pageNo = 0;
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.userInfo.userId forKey:@"userid"];
-    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
-    [params setObject:@"20" forKey:@"pageSize"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:@"service.uri.pet_states" forKey:@"service"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getUserState" forKey:@"method"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray*array = responseObject;
-//        [self.dataSourceArray removeAllObjects];
-        if (array.count>0) {
-            self.pageNo++;
-            for (NSDictionary*a in array) {
-                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
-//                [self.dataSourceArray addObject:b];
-            }
-        }
+    [_presentDS reloadDataSuccess:^{
         [self.tableV reloadData];
-        [self.refreshView endRefresh];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.refreshView endRefresh];
+        [_refreshView endRefresh];
+    } failure:^{
+        [_refreshView endRefresh];
     }];
 }
 -(void)loadMoreData
 {
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
-    [params setObject:@"20" forKey:@"pageSize"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:@"service.uri.pet_states" forKey:@"service"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getUserState" forKey:@"method"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray*array = responseObject;
-        if (array.count>0) {
-            self.pageNo++;
-            for (NSDictionary*a in array) {
-                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
-//                [self.dataSourceArray addObject:b];
-            }
-        }
+    [_presentDS reloadDataSuccess:^{
         [self.tableV reloadData];
-        [self.footer endRefreshing];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self.footer endRefreshing];
+        [_footer endRefreshing];
+    } failure:^{
+        [_footer endRefreshing];
     }];
 }
 #pragma mark - 压缩图片

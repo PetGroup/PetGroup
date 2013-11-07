@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		785C20548B42418D82CF7FFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D25B313ED94E54A59AB8E2 /* libPods.a */; };
+		849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */; };
+		849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */; };
 		86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */; };
 		8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */; };
 		8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */; };
@@ -718,6 +720,10 @@
 		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
 		78D25B313ED94E54A59AB8E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		849D345E182B7DE2009376C0 /* MyDynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDynamicDataSource.h; sourceTree = "<group>"; };
+		849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDynamicDataSource.m; sourceTree = "<group>"; };
+		849D3461182B7FBA009376C0 /* MyReplyNoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReplyNoteDataSource.h; sourceTree = "<group>"; };
+		849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyNoteDataSource.m; sourceTree = "<group>"; };
 		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
 		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
 		8629653F17DAFCBC00236F3E /* UserTreaty.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserTreaty.txt; sourceTree = "<group>"; };
@@ -1933,6 +1939,10 @@
 				86993B5C180B953500F61A3F /* NewReplyArticleDataSource.m */,
 				86993B5E180B956800F61A3F /* NewPublishArticleDataSource.h */,
 				86993B5F180B956900F61A3F /* NewPublishArticleDataSource.m */,
+				849D3461182B7FBA009376C0 /* MyReplyNoteDataSource.h */,
+				849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */,
+				849D345E182B7DE2009376C0 /* MyDynamicDataSource.h */,
+				849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */,
 				8672575C181A10BE00624A04 /* DynamicDataSource.h */,
 				8672575D181A10BF00624A04 /* DynamicDataSource.m */,
 				86993B6C180BDFCC00F61A3F /* FriendCircleDataSource.h */,
@@ -4466,6 +4476,7 @@
 				97E25C0117C34418007E187D /* AFImageRequestOperation.m in Sources */,
 				97E25C0217C34418007E187D /* AFJSONRequestOperation.m in Sources */,
 				97E25C0317C34418007E187D /* AFNetworkActivityIndicatorManager.m in Sources */,
+				849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */,
 				86FC7677182116BF0025686B /* EmotionAttachmentCell.m in Sources */,
 				97E25C0417C34418007E187D /* AFPropertyListRequestOperation.m in Sources */,
 				97E25C0517C34418007E187D /* AFURLConnectionOperation.m in Sources */,
@@ -4645,6 +4656,7 @@
 				97DB098417C5A95C000EC195 /* MoreCell.m in Sources */,
 				97DB098517C5A95C000EC195 /* MyProfileACell.m in Sources */,
 				86FC7680182116BF0025686B /* TextParagraph.m in Sources */,
+				849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */,
 				97DB098617C5A95C000EC195 /* MyProfileBCell.m in Sources */,
 				97DB098717C5A95C000EC195 /* MyProfileBtnCell.m in Sources */,
 				86FC767A182116BF0025686B /* FileWrapperObject.m in Sources */,

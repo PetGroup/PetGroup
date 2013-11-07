@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "AriticleContent.h"
-#import "EGOImageView.h"
+#import "EGOImageButton.h"
 typedef  enum
 {
     ButtonTypeImage = 1,
@@ -20,6 +20,7 @@ typedef  enum
 -(void)owenrCellPressReportButton;
 -(void)owenrCellPressImageWithID:(NSString*)imageID;
 -(void)owenrCellPressWithURL:(NSURL*)URL;
+-(void)owenrCellPressNameButtonOrHeadButton;
 @end
 @interface OwenrCell : UITableViewCell<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate>
 {

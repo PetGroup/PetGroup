@@ -19,8 +19,8 @@
 @property(nonatomic,retain)UILabel* replyL;
 @property(nonatomic,retain)UIView* backV;
 @property(nonatomic,retain)UIView* lineV;
-@property(nonatomic,retain)EGOImageView* headPhote;
-@property(nonatomic,retain)UILabel* nameL;
+@property(nonatomic,retain)EGOImageButton* headPhote;
+@property(nonatomic,retain)UIButton* nameB;
 @property(nonatomic,retain)UILabel* timeL;
 @property(nonatomic,retain)UILabel* locationL;
 @property (strong,nonatomic)DTAttributedTextContentView * textView;
@@ -77,7 +77,8 @@
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
         
-        self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+        self.headPhote = [[EGOImageButton alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+        [_headPhote addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
         
@@ -90,9 +91,11 @@
         self.textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.contentView addSubview:self.textView];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 50, 12)];
-        _nameL.font = [UIFont systemFontOfSize:15];
-        [self.contentView addSubview:_nameL];
+        self.nameB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_nameB setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [_nameB addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
+        _nameB.titleLabel.font = [UIFont systemFontOfSize:15];
+        [self.contentView addSubview:_nameB];
         
         self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
@@ -165,8 +168,9 @@
     _headPhote.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
     _headPhote.frame = CGRectMake(10, origin, 40, 40);
     
-    _nameL.text = self.article.userName;
-    _nameL.frame = CGRectMake(60, origin, 160, 20);
+    CGSize nameSize = [self.article.userName sizeWithFont:[UIFont systemFontOfSize:15.0] constrainedToSize:CGSizeMake(160, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    [_nameB setTitle:self.article.userName forState:UIControlStateNormal] ;
+    _nameB.frame = CGRectMake(60, origin, nameSize.width, 20);
     
     _locationL.frame =CGRectMake(250, origin, 60, 20);
     _locationL.textAlignment = NSTextAlignmentRight;
@@ -195,7 +199,12 @@
         [self.delegate owenrCellPressReportButton];
     }
 }
-
+-(void)PersonDetail
+{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressNameButtonOrHeadButton)]) {
+        [self.delegate owenrCellPressNameButtonOrHeadButton];
+    }
+}
 #pragma mark -
 #pragma mark - 哈哈哈
 

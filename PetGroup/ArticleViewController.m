@@ -15,6 +15,9 @@
 #import "EditReplyViewController.h"
 #import "NoteReply.h"
 #import "FollowerCell.h"
+#import "SomeOneDynamicViewController.h"
+#import "HostInfo.h"
+#import "PersonDetailViewController.h"
 @interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,OwenrCellDelegate,followerCellDelegate,EditReplyViewDelegate>
 {
     UIButton * nextB;
@@ -343,7 +346,37 @@
     [self.navigationController pushViewController:webVC animated:YES];
     
 }
+-(void)owenrCellPressNameButtonOrHeadButton
+{
+    if ([self.ariticle.userId isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+        sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
+        [self.navigationController pushViewController:sodVC animated:YES];
+        return;
+    }
+    PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
+    personDVC.hostInfo = [[HostInfo alloc]init];
+    personDVC.hostInfo.userId = self.ariticle.userId;
+    personDVC.needRequest = YES;
+    personDVC.needRequestPet = YES;
+    [self.navigationController pushViewController:personDVC animated:YES];
+}
 #pragma mark -  followerCellDelegate
+-(void)followerCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([((NoteReply*)self.dataSourceArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+        sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
+        [self.navigationController pushViewController:sodVC animated:YES];
+        return;
+    }
+    PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
+    personDVC.hostInfo = [[HostInfo alloc]init];
+    personDVC.hostInfo.userId = ((NoteReply*)self.dataSourceArray[indexPath.row]).userID;
+    personDVC.needRequest = YES;
+    personDVC.needRequestPet = YES;
+    [self.navigationController pushViewController:personDVC animated:YES];
+}
 -(void)followerCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
     EditReplyViewController* replyVC = [[EditReplyViewController alloc]init];
