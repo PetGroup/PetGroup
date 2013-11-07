@@ -283,7 +283,7 @@
         SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
         sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
         [self.navigationController pushViewController:sodVC animated:YES];
-        
+        [self.customTabBarController hidesTabBar:YES animated:YES];
     }
     else if (indexPath.section==3){
         SettingViewController * setV = [[SettingViewController alloc] init];

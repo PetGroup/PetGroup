@@ -533,6 +533,8 @@
 		9765D7AB181BD46E0021B36F /* BHExpandingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9765D7AA181BD46E0021B36F /* BHExpandingTextView.m */; };
 		9765D7AD181BEABC0021B36F /* mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 9765D7AC181BEABC0021B36F /* mail.png */; };
 		9765D7AF181BEBFA0021B36F /* biaoti2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9765D7AE181BEBFA0021B36F /* biaoti2.png */; };
+		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
+		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
 		979546B817BA368F00D05874 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B717BA368F00D05874 /* UIKit.framework */; };
 		979546BA17BA368F00D05874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B917BA368F00D05874 /* Foundation.framework */; };
 		979546BC17BA368F00D05874 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546BB17BA368F00D05874 /* CoreGraphics.framework */; };
@@ -1422,6 +1424,10 @@
 		9765D7AA181BD46E0021B36F /* BHExpandingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BHExpandingTextView.m; sourceTree = "<group>"; };
 		9765D7AC181BEABC0021B36F /* mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail.png; sourceTree = "<group>"; };
 		9765D7AE181BEBFA0021B36F /* biaoti2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaoti2.png; sourceTree = "<group>"; };
+		97703070182B4504005E3018 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		97703071182B4504005E3018 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		97703073182B6E34005E3018 /* MyMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMessageViewController.h; sourceTree = "<group>"; };
+		97703074182B6E34005E3018 /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
 		979546B417BA368F00D05874 /* PetGroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979546B717BA368F00D05874 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		979546B917BA368F00D05874 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1847,6 +1853,8 @@
 				97031FE11823905700F769E0 /* WebViewViewController.m */,
 				86FC76511820D9C10025686B /* SomeOneDynamicViewController.h */,
 				86FC76521820D9C10025686B /* SomeOneDynamicViewController.m */,
+				97703073182B6E34005E3018 /* MyMessageViewController.h */,
+				97703074182B6E34005E3018 /* MyMessageViewController.m */,
 				86BDFC73181E77AE0089C889 /* TableViewDatasourceDidChange.h */,
 			);
 			name = Circle;
@@ -3569,6 +3577,8 @@
 				97D4B2B217D6D83600B331A4 /* ButtonCell.h */,
 				97D4B2B317D6D83600B331A4 /* ButtonCell.m */,
 				97DB097C17C5A95C000EC195 /* ProfileHeadCell.h */,
+				97703070182B4504005E3018 /* NotificationCell.h */,
+				97703071182B4504005E3018 /* NotificationCell.m */,
 				97DB097D17C5A95C000EC195 /* ProfileHeadCell.m */,
 				97DB097E17C5A95C000EC195 /* ProfileImageCell.h */,
 				97DB097F17C5A95C000EC195 /* ProfileImageCell.m */,
@@ -4575,6 +4585,7 @@
 				9736BC7117C489F2007DFE36 /* XMPPTransports.m in Sources */,
 				9736BC7217C489F2007DFE36 /* XMPPCapabilities.xcdatamodel in Sources */,
 				9736BC7317C489F2007DFE36 /* XMPPCapabilitiesCoreDataStorage.m in Sources */,
+				97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */,
 				9736BC7417C489F2007DFE36 /* XMPPCapsCoreDataStorageObject.m in Sources */,
 				9736BC7517C489F2007DFE36 /* XMPPCapsResourceCoreDataStorageObject.m in Sources */,
 				970D0A121828911D00C7473E /* EditReplyViewController.m in Sources */,
@@ -4672,6 +4683,7 @@
 				97DA1C0D17D4321F00F7B507 /* PhotoWallCell.m in Sources */,
 				97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */,
 				86FC7674182116BF0025686B /* AttributeConfig.m in Sources */,
+				97703072182B4504005E3018 /* NotificationCell.m in Sources */,
 				97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */,
 				97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */,
 				97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */,

@@ -287,7 +287,7 @@
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message{
     NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
      NSString *msg = @"";
-    if (![msgtype isEqualToString:@"msgtype"]) {
+    if (![msgtype isEqualToString:@"zanDynamic"]) {
          msg=[[message elementForName:@"body"] stringValue];
     }
     NSString *from = [[message attributeForName:@"from"] stringValue];
@@ -317,9 +317,17 @@
                 //此处时间应该message里携带，暂时没有，使用当前时间
                 [dict setObject:msgtype forKey:@"msgType"];
                 if (![from isEqualToString:receiver]&&([msgtype isEqualToString:@"reply"]||[msgtype isEqualToString:@"zanDynamic"])) {
-                    [dict setObject:[[message attributeForName:@"Dynamicid"] stringValue] forKey:@"dynamicID"];
+                    [dict setObject:[[message attributeForName:@"contentType"] stringValue] forKey:@"contentType"];
+                    [dict setObject:[[message attributeForName:@"content"] stringValue] forKey:@"content"];
+                    [dict setObject:[[message attributeForName:@"picID"] stringValue] forKey:@"picID"];
+                    [dict setObject:[[message attributeForName:@"contentID"] stringValue] forKey:@"contentID"];
                     [dict setObject:[[message attributeForName:@"fromNickname"] stringValue] forKey:@"fromNickname"];
                     [dict setObject:[[message attributeForName:@"fromHeadImg"] stringValue] forKey:@"fromHeadImg"];
+                    if ([msgtype isEqualToString:@"reply"]) {
+                        [dict setObject:msg forKey:@"replyContent"];
+                    }
+                    else
+                        [dict setObject:@"iszan" forKey:@"replyContent"];
                     [self.commentDelegate newCommentReceived:dict];
                 }
                 else if ([msgtype isEqualToString:@"zanPeople"]){

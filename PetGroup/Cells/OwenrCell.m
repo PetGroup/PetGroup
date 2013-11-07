@@ -91,10 +91,10 @@
         [self.contentView addSubview:self.textView];
         
         self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 50, 12)];
-        _nameL.font = [UIFont systemFontOfSize:14];
+        _nameL.font = [UIFont systemFontOfSize:15];
         [self.contentView addSubview:_nameL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 12)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
         _timeL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_timeL];
@@ -107,12 +107,19 @@
         [self.contentView addSubview:_locationL];
         
         self.buttonIV = [[UIImageView alloc]init];
-        self.buttonIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+        float diffH = [Common diffHeight:nil];
+        if (diffH==0.0f) {
+            self.buttonIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+        }
+        else
+            self.buttonIV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        
         _buttonIV.userInteractionEnabled = YES;
         [self.contentView addSubview:_buttonIV];
         
         replyB = [UIButton buttonWithType:UIButtonTypeCustom];
-        replyB.frame = CGRectMake(210, 4.5, 97, 31);
+        replyB.frame = CGRectMake(220, 5.5, 85, 28);
+        [replyB.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [replyB setTitle:@"回复" forState:UIControlStateNormal];
         [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [replyB setBackgroundImage:[UIImage imageNamed:@"huifu_normal"] forState:UIControlStateNormal];
@@ -122,6 +129,7 @@
         reportB = [UIButton buttonWithType:UIButtonTypeCustom];
         reportB.frame = CGRectMake(10, 4.5, 100, 31);
         [reportB setTitle:@"举报本话题" forState:UIControlStateNormal];
+        [reportB.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [reportB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [reportB addTarget:self action:@selector(reportAction) forControlEvents:UIControlEventTouchUpInside];
         [_buttonIV addSubview:reportB];
@@ -160,10 +168,11 @@
     _nameL.text = self.article.userName;
     _nameL.frame = CGRectMake(60, origin, 160, 20);
     
-    _locationL.frame =CGRectMake(240, origin, 60, 20);
+    _locationL.frame =CGRectMake(250, origin, 60, 20);
+    _locationL.textAlignment = NSTextAlignmentRight;
     origin += 25;
     _timeL.text = self.article.ct;
-    _timeL.frame = CGRectMake(60, origin, 240, 12);
+    _timeL.frame = CGRectMake(60, origin, 240, 20);
     origin += 22;
     
     NSNumber *high = [OwenrCell getRequiredHeightForTextView:self.article.content];
