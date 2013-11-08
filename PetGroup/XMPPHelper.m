@@ -327,10 +327,17 @@
                     [dict setObject:[[message attributeForName:@"fromNickname"] stringValue] forKey:@"fromNickname"];
                     [dict setObject:[[message attributeForName:@"fromHeadImg"] stringValue] forKey:@"fromHeadImg"];
                     if ([msgtype isEqualToString:@"reply"]) {
-                        [dict setObject:msg forKey:@"replyContent"];
+                        if ([[[message attributeForName:@"contentType"] stringValue] isEqualToString:@"dynamic"]) {
+                            [dict setObject:[NSString stringWithFormat:@"在动态中评论了你:%@",msg] forKey:@"replyContent"];
+                        }
+                        else
+                        {
+                            [dict setObject:[NSString stringWithFormat:@"在帖子《%@》中评论了你",[[message attributeForName:@"content"] stringValue]] forKey:@"replyContent"];
+                        }
+                        
                     }
                     else
-                        [dict setObject:@"iszan" forKey:@"replyContent"];
+                        [dict setObject:@"赞了你的动态" forKey:@"replyContent"];
                     [self.commentDelegate newCommentReceived:dict];
                 }
                 else if ([msgtype isEqualToString:@"zanPeople"]){

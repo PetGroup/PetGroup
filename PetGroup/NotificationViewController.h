@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NotificationCell.h"
 #import "TempData.h"
+#import "ArticleViewController.h"
+#import "OnceDynamicViewController.h"
 @interface NotificationViewController : UIViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     

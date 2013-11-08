@@ -107,7 +107,11 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==1) {
-        
+        NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+        NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        [defaultUserD removeObjectForKey:notiKey];
+        [defaultUserD synchronize];
+        [self readNewNoti];
     }
 }
 - (void)didReceiveMemoryWarning
@@ -127,7 +131,20 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    NSDictionary * cDict = self.notiArray[indexPath.row];
+    CGSize size;
+    CGSize labelsize;
+    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"topic"]) {
+        size = CGSizeMake(250,80);
+        labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+    }
+    else
+    {
+        size = CGSizeMake(150,80);
+        labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+    }
+    
+    return 100+((labelsize.height-20)>0?(labelsize.height-20):0);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -151,17 +168,87 @@
     // Configure the cell...
     cell.nameLabel.text = [cDict objectForKey:@"fromNickname"];
     cell.timeLabel.text = cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[cDict objectForKey:@"time"]];
-    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"dynamic"]) {
-        cell.contentLabel.text = [cDict objectForKey:@"content"];
-        if ([[cDict objectForKey:@"replyContent"] isEqualToString:@"iszan"]) {
-            cell.replyLabel.text = @"赞了你的动态";
-        }
-        else
-            cell.replyLabel.text = [cDict objectForKey:@"replyContent"];
+//    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"dynamic"]) {
+//        cell.contentLabel.text = [cDict objectForKey:@"content"];
+//        if ([[cDict objectForKey:@"replyContent"] isEqualToString:@"iszan"]) {
+//            cell.replyLabel.text = @"赞了你的动态";
+//        }
+//        else
+//            cell.replyLabel.text = [cDict objectForKey:@"replyContent"];
+//    }
+//    else
+//        cell.replyLabel.text = [NSString stringWithFormat:@"评论了你的帖子：\n%@",[cDict objectForKey:@"content"]];
+    cell.replyLabel.text = [cDict objectForKey:@"replyContent"];
+    CGSize size;
+    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"topic"]) {
+        size = CGSizeMake(250,80);
+        cell.replyLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        CGSize labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+        cell.replyLabel.frame = CGRectMake(cell.replyLabel.frame.origin.x, cell.replyLabel.frame.origin.y, 250, labelsize.height);
+        cell.contentLabel.hidden = YES;
+        cell.contentImageV.hidden = YES;
     }
     else
-        cell.replyLabel.text = [NSString stringWithFormat:@"评论了你的帖子：%@",[cDict objectForKey:@"content"]];
+    {
+        size = CGSizeMake(150,80);
+        cell.replyLabel.backgroundColor = [UIColor redColor];
+        CGSize labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+        cell.replyLabel.frame = CGRectMake(cell.replyLabel.frame.origin.x, cell.replyLabel.frame.origin.y, 150, labelsize.height);
+        
+        if ([[cDict objectForKey:@"picID"] length]>1) {
+            cell.contentImageV.hidden = NO;
+            cell.contentLabel.hidden = YES;
+            [cell.contentImageV setImageWithURL:[NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[self getHead:[cDict objectForKey:@"picID"]]]]];
+        }
+        else
+        {
+            cell.contentImageV.hidden = YES;
+            cell.contentLabel.hidden = NO;
+            cell.contentLabel.text = [cDict objectForKey:@"content"];
+        }
+    }
+    //计算实际frame大小，并将label的frame变成实际大小
+    
+    
     return cell;
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle==UITableViewCellEditingStyleDelete)
+    {
+        // [DataStoreManager deleteMsgsWithSender:[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] Type:COMMONUSER];
+        [self.notiArray removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        
+        
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString * tempID = [self.notiArray[indexPath.row] objectForKey:@"contentID"];
+    if ([[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"topic"]) {
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = tempID;
+        [self.navigationController pushViewController:articleVC animated:YES];
+
+    }
+    else
+    {
+        OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+        odVC.dynamic = [[Dynamic alloc] init];
+        odVC.dynamic.dynamicID = tempID;
+        [self.navigationController pushViewController:odVC animated:YES];
+    }
+    [self.notiArray removeObjectAtIndex:indexPath.row];
+    [self.notiTableV reloadData];
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    [defaultUserD setObject:self.notiArray forKey:notiKey];
+    [defaultUserD synchronize];
 }
 -(NSString *)getHead:(NSString *)headImgStr
 {
