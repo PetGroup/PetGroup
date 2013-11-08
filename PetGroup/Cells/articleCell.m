@@ -36,7 +36,7 @@
         _nameL.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_nameL];
         
-        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 140, 20)];
+        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 228, 20)];
         _titleL.numberOfLines = 0;
         _titleL.font = [UIFont systemFontOfSize:14];
         _titleL.textColor = [UIColor grayColor];
@@ -89,6 +89,8 @@
     [super layoutSubviews];
     _headPhote.imageURL = [NSURL URLWithString: [NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
     _nameL.text = self.article.userName;
+    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(228, 60) lineBreakMode:NSLineBreakByWordWrapping];
+    _titleL.frame = CGRectMake(70, 10, 228, size.height);
     _titleL.text = self.article.name;
     _timeL.text = self.article.ct;
     _readL.text = self.article.clientCount;

@@ -14,6 +14,7 @@
 #import "BHExpandingTextView.h"
 #import "Reply.h"
 #import "ReplyCell.h"
+#import "ArticleViewController.h"
 @interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate,MJRefreshBaseViewDelegate>
 {
     int assessOrPraise;
@@ -439,6 +440,8 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             cell.textLabel.numberOfLines = 0;
             cell.textLabel.font = [UIFont systemFontOfSize:16];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.contentView.backgroundColor = [UIColor colorWithRed:238.0/255 green:238.0/255 blue:238.0/255 alpha:1];
         }
         CGSize size = [self.zanPonsen sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(300, 100) lineBreakMode:NSLineBreakByWordWrapping];
         cell.textLabel.frame = CGRectMake(10, 10, 300, size.height);
@@ -455,12 +458,6 @@
         cell.reply = self.resultArray[indexPath.row];
         return cell;
     }
-    static NSString *cellIdentifier = @"replyCell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-    return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -480,6 +477,14 @@
         return;
     }
     if (indexPath.section == 0) {
+        if (self.dynamic.transmitUrl) {
+            NSMutableString* noteId = [NSMutableString  stringWithString:self.dynamic.transmitUrl];
+            [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
+            NSLog(@"%@",noteId);
+            ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+            articleVC.articleID = noteId;
+            [self.navigationController pushViewController:articleVC animated:YES];
+        }
         return;
     }
     if (indexPath.section == 1) {
