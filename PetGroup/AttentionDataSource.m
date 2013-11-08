@@ -28,7 +28,7 @@
 {
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSArray* dynamicArray = [defaults objectForKey:MyDynamic];
+    NSArray* dynamicArray = [defaults objectForKey:MyFriendDynamic];
     NSArray* array = [defaults objectForKey:MyCircle];
     for (NSDictionary*a in dynamicArray) {
         Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
@@ -60,7 +60,7 @@
         NSLog(@"%@",responseObject);
         NSArray*array = responseObject;
         NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:array forKey:MyDynamic];
+        [defaults setObject:array forKey:MyFriendDynamic];
         [defaults synchronize];
         [self.dynamicArray removeAllObjects];
         if (array.count>0) {

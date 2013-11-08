@@ -21,6 +21,7 @@
     UIView * inPutView;
     BOOL request;
 }
+@property (strong,nonatomic) NSMutableString* zanPonsen;
 @property (strong,nonatomic) UITableView * tableV;
 @property (strong,nonatomic) MJRefreshFooterView * footer;
 @property (strong,nonatomic) NSMutableArray * resultArray;
@@ -164,7 +165,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    
+    if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        [self loadZanList];
+    }
     
     [self reloadData];
 }
@@ -401,12 +404,19 @@
 #pragma mark TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
+    }else if(section == 1){
+        if (self.zanPonsen) {
+            return 1;
+        }else{
+            return 0;
+        }
+        
     }else{
         return self.resultArray.count;
     }
@@ -422,8 +432,19 @@
         }
         cell.dynamic  = self.dynamic;
         return cell;
-    }else
-    {
+    }else if(indexPath.section == 1){
+        static NSString *cellIdentifier = @"zanCell";
+        UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+            cell.textLabel.numberOfLines = 0;
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+        }
+        CGSize size = [self.zanPonsen sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(300, 100) lineBreakMode:NSLineBreakByWordWrapping];
+        cell.textLabel.frame = CGRectMake(10, 10, 300, size.height);
+        cell.textLabel.text = self.zanPonsen;
+        return cell;
+    }else {
         static NSString *cellIdentifier = @"replyCell";
         ReplyCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
         if (cell == nil) {
@@ -445,6 +466,9 @@
 {
     if (indexPath.section == 0) {
         return [DetailsDynamicCell heightForRowWithDynamic:self.dynamic];
+    }else if(indexPath.section == 1){
+        CGSize size = [self.zanPonsen sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(300, 100) lineBreakMode:NSLineBreakByWordWrapping];
+        return size.height+20;
     }else{
         return [ReplyCell heightForRowWithDynamic:self.resultArray[indexPath.row]];
     }
@@ -456,6 +480,9 @@
         return;
     }
     if (indexPath.section == 0) {
+        return;
+    }
+    if (indexPath.section == 1) {
         return;
     }
     if ([((Reply*)self.resultArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
@@ -576,6 +603,50 @@
     }
 }
 #pragma mark - load data
+-(void)loadZanList
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.dynamic.dynamicID forKey:@"srcid"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_pat" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getPat" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray*array = responseObject;
+        if (array.count>0&&array.count<5) {
+            self.zanPonsen = [[NSMutableString alloc]init];
+            for (NSDictionary* dic in array) {
+                [self.zanPonsen appendFormat:@"%@",[dic objectForKey:@"nickname"]];
+                if (![dic isEqualToDictionary:[array lastObject]]) {
+                    [self.zanPonsen appendFormat:@","];
+                }
+            }
+            [self.zanPonsen appendFormat:@"\t赞过这条动态"];
+            [self.tableV reloadData];
+        }
+        if (array.count>=5) {
+            self.zanPonsen = [[NSMutableString alloc]init];
+            for (int i = 0; i<5 ;i++) {
+                [self.zanPonsen appendFormat:@"%@",[array[i] objectForKey:@"nickname"]];
+                if (i!=4) {
+                    [self.zanPonsen appendFormat:@","];
+                }
+            }
+            [self.zanPonsen appendFormat:@"\t等%d位好友赞过这条动态",array.count];
+            [self.tableV reloadData];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
 -(void)reloadData
 {
     self.pageNo = 0;
