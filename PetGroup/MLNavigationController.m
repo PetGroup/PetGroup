@@ -218,7 +218,6 @@ static MLNavigationController *mlNavigationController;
          
         //End paning, always check that if it should move right or move left automatically
     }else if (recoginzer.state == UIGestureRecognizerStateEnded){
-        
         if (touchPoint.x - startTouch.x > 50)
         {
             [UIView animateWithDuration:0.3 animations:^{
@@ -247,7 +246,6 @@ static MLNavigationController *mlNavigationController;
         
         // cancal panning, alway move to left side automatically
     }else if (recoginzer.state == UIGestureRecognizerStateCancelled){
-        
         [UIView animateWithDuration:0.3 animations:^{
             [self moveViewWithX:0];
         } completion:^(BOOL finished) {

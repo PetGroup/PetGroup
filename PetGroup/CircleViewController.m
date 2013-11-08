@@ -482,6 +482,10 @@
             notiBgV.hidden = YES;
         }
     }
+    else{
+        [self.customTabBarController removeNotificatonOfIndex:1];
+        notiBgV.hidden = YES;
+    }
 
 }
 #pragma mark - xmpp delegate
