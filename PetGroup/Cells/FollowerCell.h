@@ -15,6 +15,7 @@
 -(void)followerCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)followerCellPressImageWithID:(NSString*)imageID;
 -(void)followerCellPressWithURL:(NSURL*)URL;
+-(void)followerCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath;
 @end
 @interface FollowerCell : UITableViewCell<DTAttributedTextContentViewDelegate, DTLazyImageViewDelegate>
 {

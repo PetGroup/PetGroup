@@ -23,7 +23,7 @@
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
 
-@interface OnceCircleViewController ()<UITableViewDataSource,UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
+@interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
 {
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
@@ -396,20 +396,6 @@
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
-}
-#pragma mark - table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return hotPintsDS.dataSourceArray.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellIdentifier = @"Cell";
-    articleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
-    if (cell == nil) {
-        cell = [[articleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-    return cell;
 }
 #pragma mark MJRefreshBaseView delegate
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView

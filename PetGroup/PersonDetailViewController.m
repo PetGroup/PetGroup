@@ -161,7 +161,11 @@
     [self.view addSubview:self.helloBtn];
     [self.view addSubview:self.rejectBtn];
     if (self.needRequest) {
-        [self getUserInfoWithUserName:self.hostInfo.userName];
+        if (self.hostInfo.userName) {
+            [self getUserInfoWithUserName:self.hostInfo.userName];
+        }else{
+            [self getUserInfoWithUserID:self.hostInfo.userId];
+        }
     }
     if (self.needRequestPet) {
         [self getUserPetListByUserID:self.hostInfo.userId];
@@ -548,6 +552,38 @@
         
     }];
 
+}
+-(void)getUserInfoWithUserID:(NSString*)userID
+{
+    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [paramDict setObject:userID forKey:@"userid"];
+    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getUserinfo" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSDictionary * recDict = responseObject;
+        infoDict = [recDict mutableCopy];
+        self.hostInfo = [[HostInfo alloc] initWithNewHostInfo:recDict PetsArray:nil];
+        [self reloadTheViews];
+        [self getUserPetListByUserID:self.hostInfo.userId];
+        if (self.myFriend) {
+            [DataStoreManager saveUserInfo:recDict];
+        }
+        [self reloadDynamicData];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 -(void)getUserPetListByUserID:(NSString *)userID
 {

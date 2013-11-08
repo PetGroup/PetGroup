@@ -17,6 +17,7 @@
 #import "SRRefreshView.h"
 #import "SomeOneDynamicViewController.h"
 #import "HostInfo.h"
+#import "PersonDetailViewController.h"
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     
@@ -312,7 +313,16 @@
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if ([((Dynamic*)self.friendCircleDS.dataSourceArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        [self headAct];
+        return;
+    }
+    PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
+    personDVC.hostInfo = [[HostInfo alloc]init];
+    personDVC.hostInfo.userId = ((Dynamic*)self.friendCircleDS.dataSourceArray[indexPath.row]).userID;
+    personDVC.needRequest = YES;
+    personDVC.needRequestPet = YES;
+    [self.navigationController pushViewController:personDVC animated:YES];
 }
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath
 {

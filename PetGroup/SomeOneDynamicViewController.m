@@ -366,6 +366,7 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:self.userInfo.userId forKey:@"userid"];
     [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];

@@ -10,4 +10,6 @@
 
 @interface DataSource : NSObject
 @property(nonatomic,retain)NSMutableArray* dataSourceArray;
+-(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
+-(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end
