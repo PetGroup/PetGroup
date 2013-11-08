@@ -15,15 +15,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization
-        UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
-        searchB.frame = CGRectMake(0, 0, 320, 45);
-        [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
-        [searchB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:searchB];
-        UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 36.5, 320, 26)];
+//        UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
+//        searchB.frame = CGRectMake(0, 0, 320, 45);
+//        [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
+//        [searchB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:searchB];
+        UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
         bg.image = [UIImage imageNamed:@"biaoti"];
         [self addSubview:bg];
-        UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 39.5, 200, 20)];
+        UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 200, 20)];
         titleL.backgroundColor = [UIColor clearColor];
         titleL.text = @"朋友圈";
         titleL.font = [UIFont boldSystemFontOfSize:16];

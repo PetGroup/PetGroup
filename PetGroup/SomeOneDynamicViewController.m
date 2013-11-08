@@ -19,6 +19,7 @@
 {
     
 }
+@property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -71,6 +72,11 @@
     _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
     [self.view addSubview:_imageV];
     [self.view sendSubviewToBack:_imageV];
+    
+    self.backV = [[UIView alloc]initWithFrame:CGRectMake(0, 245, 320, 300)];
+    _backV.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_backV];
+    [self.view insertSubview:_backV aboveSubview:_imageV];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
@@ -259,6 +265,7 @@
     if(scrollView == _tableV){
         [_refreshView scrollViewDidScroll];
     }
+    _backV.frame = CGRectMake(0, -scrollView.contentOffset.y+245, 320, 300);
     _imageV.frame = CGRectMake(0, -scrollView.contentOffset.y/2, 320, 320);
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
