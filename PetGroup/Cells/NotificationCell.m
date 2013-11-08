@@ -20,10 +20,33 @@
         [self.contentView addSubview:self.headImageV];
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 100, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];
+        [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:17]];
         [self.contentView addSubview:self.nameLabel];
         [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+        
+        self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 30, 100, 20)];
+        [self.timeLabel setTextAlignment:NSTextAlignmentLeft];
+        [self.timeLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.timeLabel setTextColor:[UIColor grayColor]];
+        [self.contentView addSubview:self.timeLabel];
+        [self.timeLabel setBackgroundColor:[UIColor clearColor]];
+        
+        self.contentImageV = [[UIImageView alloc] initWithFrame:CGRectMake(220, 10, 80, 80)];
+        [self.contentImageV setBackgroundColor:[UIColor redColor]];
+        [self.contentView addSubview:self.contentImageV];
+        
+        self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(220, 10, 80, 80)];
+        self.contentLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        [self.contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [self.contentLabel setNumberOfLines:0];
+        [self.contentView addSubview:self.contentLabel];
+        
+        self.replyLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 60, 150, 20)];
+        self.replyLabel.backgroundColor = [UIColor clearColor];
+        [self.replyLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [self.replyLabel setNumberOfLines:0];
+        [self.contentView addSubview:self.replyLabel];
 
     }
     return self;

@@ -10,5 +10,9 @@
 #import "EGOImageButton.h"
 @interface NotificationCell : UITableViewCell
 @property (strong,nonatomic) EGOImageButton * headImageV;
+@property (strong,nonatomic) UIImageView * contentImageV;
+@property (strong,nonatomic) UILabel * contentLabel;
+@property (strong,nonatomic) UILabel * replyLabel;
 @property (strong,nonatomic) UILabel * nameLabel;
+@property (strong,nonatomic) UILabel * timeLabel;
 @end

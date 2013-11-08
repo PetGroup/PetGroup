@@ -39,6 +39,9 @@
     UIButton* newPublishB;
     
     hotPintsDataSource* hotPintsDS;
+    
+    UIImageView * notiBgV;
+    UILabel * numberLabel;
 }
 @property (nonatomic,retain)NSString* myUserID;
 @property (nonatomic,retain)UICollectionView* attentionV;
@@ -92,6 +95,19 @@
     [nextB setBackgroundImage:[UIImage imageNamed:@"mail"] forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
+    
+    notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(287, 2+diffH, 28, 22)];
+    [notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
+    notiBgV.hidden = YES;
+    [self.view addSubview:notiBgV];
+    numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];
+    [numberLabel setBackgroundColor:[UIColor clearColor]];
+    [numberLabel setTextColor:[UIColor whiteColor]];
+    [numberLabel setFont:[UIFont systemFontOfSize:14]];
+    [numberLabel setTextAlignment:NSTextAlignmentCenter];
+    [notiBgV addSubview:numberLabel];
+    [numberLabel setText:[NSString stringWithFormat:@"%d",0]];
+
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
     tabIV.image = [UIImage imageNamed:@"table_bg"];
@@ -234,17 +250,15 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
-    
-    self.appDel.xmppHelper.commentDelegate = self;
+    [self readNewNoti];
 }
 
 #pragma mark - button action
 -(void)next
 {
-    EditArticleViewController * editV = [[EditArticleViewController alloc] init];
-    [self presentViewController:editV animated:YES completion:^{
-        
-    }];
+    NotificationViewController * notiV = [[NotificationViewController alloc] init];
+    [self.navigationController pushViewController:notiV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 -(void)showSearchView
 {
@@ -450,6 +464,25 @@
     } failure:^{
         [_slimeView endRefresh];
     }];
+}
+
+-(void)readNewNoti
+{
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
+    if (tempNewNotiArray) {
+        if (tempNewNotiArray.count>0) {
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:1];
+            notiBgV.hidden = NO;
+            numberLabel.text = [NSString stringWithFormat:@"%d",tempNewNotiArray.count];
+        }
+        else{
+            [self.customTabBarController removeNotificatonOfIndex:1];
+            notiBgV.hidden = YES;
+        }
+    }
+
 }
 #pragma mark - xmpp delegate
 -(void)newCommentReceived:(NSDictionary *)theDict

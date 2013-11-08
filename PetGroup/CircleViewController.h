@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NotificationViewController.h"
 @interface CircleViewController : UIViewController
 
 @end

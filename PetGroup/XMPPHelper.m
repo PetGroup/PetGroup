@@ -289,6 +289,7 @@
      NSString *msg = @"";
     if (![msgtype isEqualToString:@"zanDynamic"]) {
          msg=[[message elementForName:@"body"] stringValue];
+        NSLog(@"body:=====%@",msg);
     }
     NSString *from = [[message attributeForName:@"from"] stringValue];
     NSString *type = [[message attributeForName:@"type"] stringValue];
@@ -316,6 +317,8 @@
             else {
                 //此处时间应该message里携带，暂时没有，使用当前时间
                 [dict setObject:msgtype forKey:@"msgType"];
+//                msgTime = [NSString stringWithFormat:@"%.0f",[msgTime doubleValue]/1000];
+//                [dict setObject:msgTime forKey:@"time"];
                 if (![from isEqualToString:receiver]&&([msgtype isEqualToString:@"reply"]||[msgtype isEqualToString:@"zanDynamic"])) {
                     [dict setObject:[[message attributeForName:@"contentType"] stringValue] forKey:@"contentType"];
                     [dict setObject:[[message attributeForName:@"content"] stringValue] forKey:@"content"];
