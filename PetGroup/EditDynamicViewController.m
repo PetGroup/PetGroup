@@ -118,7 +118,7 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"正在为您发布...";
     
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -142,6 +142,7 @@
         return;
     }
     if (self.pictureArray.count>0) {
+        [hud show:YES];
         NSMutableArray* imageArray = [[NSMutableArray alloc]init];
         NSMutableArray* nameArray = [[NSMutableArray alloc]init];
         for (int i = 0;i< self.pictureArray.count;i++) {
@@ -215,7 +216,7 @@
         }
         [self backButton];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [hud hide:YES];
     }];
 }
 -(void)getAnActionSheet

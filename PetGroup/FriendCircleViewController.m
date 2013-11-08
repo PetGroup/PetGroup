@@ -22,6 +22,7 @@
 {
     
 }
+@property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
 @property (nonatomic,retain)UIView* headV;
@@ -76,6 +77,18 @@
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
     
+    NSDictionary* dic = [DataStoreManager queryMyInfo];
+    self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, -6, 320, 320)];
+    _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
+    _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[dic objectForKey:@"backgroundImg"]]];
+    [self.view addSubview:_imageV];
+    [self.view sendSubviewToBack:_imageV];
+    
+    self.backV = [[UIView alloc]initWithFrame:CGRectMake(0, 245, 320, 300)];
+    _backV.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_backV];
+    [self.view insertSubview:_backV aboveSubview:_imageV];
+    
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self.friendCircleDS;
@@ -94,14 +107,6 @@
     UIView* whiteV = [[UIView alloc]initWithFrame:CGRectMake(0, 180, 320, 40)];
     whiteV.backgroundColor = [UIColor whiteColor];
     [_headV addSubview:whiteV];
-    
-    NSDictionary* dic = [DataStoreManager queryMyInfo];
-    
-    self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(0, -6, 320, 320)];
-    _imageV.placeholderImage = [UIImage imageNamed:@"morenbeijing"];
-    _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[dic objectForKey:@"backgroundImg"]]];
-    [self.view addSubview:_imageV];
-    [self.view sendSubviewToBack:_imageV];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 60, 20)];
     nameL.font = [UIFont systemFontOfSize:16];
@@ -282,6 +287,7 @@
     if(scrollView == _tableV){
         [_refreshView scrollViewDidScroll];
     }
+    _backV.frame = CGRectMake(0, -scrollView.contentOffset.y+245, 320, 300);
     _imageV.frame = CGRectMake(0, -scrollView.contentOffset.y/2, 320, 320);
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate

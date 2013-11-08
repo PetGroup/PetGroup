@@ -11,6 +11,7 @@
 		785C20548B42418D82CF7FFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D25B313ED94E54A59AB8E2 /* libPods.a */; };
 		849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */; };
 		849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */; };
+		84C399B3182C918A0004C288 /* PlaceHolderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C399B2182C918A0004C288 /* PlaceHolderCell.m */; };
 		86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */; };
 		8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */; };
 		8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */; };
@@ -724,6 +725,8 @@
 		849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDynamicDataSource.m; sourceTree = "<group>"; };
 		849D3461182B7FBA009376C0 /* MyReplyNoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReplyNoteDataSource.h; sourceTree = "<group>"; };
 		849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyNoteDataSource.m; sourceTree = "<group>"; };
+		84C399B1182C918A0004C288 /* PlaceHolderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderCell.h; sourceTree = "<group>"; };
+		84C399B2182C918A0004C288 /* PlaceHolderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderCell.m; sourceTree = "<group>"; };
 		8629653C17DAF4FA00236F3E /* ResetPassOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPassOneViewController.h; sourceTree = "<group>"; };
 		8629653D17DAF4FA00236F3E /* ResetPassOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPassOneViewController.m; sourceTree = "<group>"; };
 		8629653F17DAFCBC00236F3E /* UserTreaty.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserTreaty.txt; sourceTree = "<group>"; };
@@ -1904,6 +1907,8 @@
 			children = (
 				865FDD291807D946005BB088 /* CircleCell.h */,
 				865FDD2A1807D946005BB088 /* CircleCell.m */,
+				84C399B1182C918A0004C288 /* PlaceHolderCell.h */,
+				84C399B2182C918A0004C288 /* PlaceHolderCell.m */,
 				865FDD2C1807EB48005BB088 /* FriendCircleCell.h */,
 				865FDD2D1807EB48005BB088 /* FriendCircleCell.m */,
 				865FDD38180804D3005BB088 /* HeaderView.h */,
@@ -4541,6 +4546,7 @@
 				9736BC3B17C489F2007DFE36 /* XMPPReconnect.m in Sources */,
 				9736BC3C17C489F2007DFE36 /* XMPPGroupCoreDataStorageObject.m in Sources */,
 				9736BC3D17C489F2007DFE36 /* XMPPResourceCoreDataStorageObject.m in Sources */,
+				84C399B3182C918A0004C288 /* PlaceHolderCell.m in Sources */,
 				9736BC3E17C489F2007DFE36 /* XMPPRoster.xcdatamodel in Sources */,
 				9736BC3F17C489F2007DFE36 /* XMPPRosterCoreDataStorage.m in Sources */,
 				9736BC4017C489F2007DFE36 /* XMPPUserCoreDataStorageObject.m in Sources */,

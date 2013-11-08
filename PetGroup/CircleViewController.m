@@ -27,6 +27,7 @@
 #import "CircleClassify.h"
 #import "ArticleViewController.h"
 #import "EditArticleViewController.h"
+#import "Article.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 @interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate>
@@ -119,14 +120,14 @@
     _hotPintsV.delegate = self;
     [self.view addSubview:_hotPintsV];
     
-    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 62.5)];
-    UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchB.frame = CGRectMake(0, 0, 320, 45);
-    [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
-    [searchB addTarget:self action:@selector(showSearchView) forControlEvents:UIControlEventTouchUpInside];
-    [headV addSubview:searchB];
+    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
+//    UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    searchB.frame = CGRectMake(0, 0, 320, 45);
+//    [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
+//    [searchB addTarget:self action:@selector(showSearchView) forControlEvents:UIControlEventTouchUpInside];
+//    [headV addSubview:searchB];
     
-    UIImageView* tableHeadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 36.5, 320, 26)];
+    UIImageView* tableHeadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
     tableHeadView.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
     tableHeadView.userInteractionEnabled = YES;
     
@@ -170,6 +171,7 @@
     self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
     _attentionV.delegate = self;
     _attentionV.backgroundColor = [UIColor whiteColor];
+    [_attentionV registerClass:[PlaceHolderCell class] forCellWithReuseIdentifier:@"place"];
     [_attentionV registerClass:[CircleCell class] forCellWithReuseIdentifier:@"cell"];
     [_attentionV registerClass:[FriendCircleCell class] forCellWithReuseIdentifier:@"friend"];
     [_attentionV registerClass:[FriendHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"friendHeader"];
@@ -341,7 +343,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-    articleVC.articleID = hotPintsDS.dataSourceArray[indexPath.row];
+    articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
 }
 
@@ -350,7 +352,10 @@
 {
     if (indexPath.section == 0) {
         return CGSizeMake(310, 70);
-    }else return CGSizeMake(152.5, 100);
+    }else if(indexPath.section == 1 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
+        return CGSizeMake(310, 70);
+    }else
+        return CGSizeMake(152.5, 100);
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
@@ -361,9 +366,9 @@
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return CGSizeMake(320, 62.5);
-    }
+//    if (section == 0) {
+//        return CGSizeMake(320, 62.5);
+//    }
     return CGSizeMake(320, 26);
 }
 #pragma mark - collection view delegate
@@ -373,6 +378,8 @@
         FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
         [self.navigationController pushViewController:friendCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
+    }else if(indexPath.section == 1&&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
+        return;
     }else{
         OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
         onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section-1]).circleArray[indexPath.row];
@@ -446,9 +453,9 @@
 {
     [_attentionDS loadHistorySuccess:^{
         [self.attentionV reloadData];
-        [_slimeView endRefresh];
+        [self reloadAttentionData];
     } failure:^{
-        [_slimeView endRefresh];
+        
     }];
 }
 #pragma mark - xmpp delegate

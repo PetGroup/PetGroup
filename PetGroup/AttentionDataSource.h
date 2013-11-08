@@ -12,6 +12,7 @@
 #import "FriendHeaderView.h"
 #import "HeaderView.h"
 #import "FooterView.h"
+#import "PlaceHolderCell.h"
 @interface AttentionDataSource : DataSource<UICollectionViewDataSource>
 @property (nonatomic,retain)NSMutableArray* dynamicArray;
 @property (nonatomic,assign)UIViewController<FooterViewDelegate,FriendHeaderViewDelegate>* myController;

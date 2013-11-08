@@ -64,7 +64,7 @@
 #define MyDynamic  @"localMyDynamic"
 
 #define MyCircle @"52PetMyClrcle"
-
+#define MyDynamic @"52PetMyDynamic"
 #define PushDeviceToken @"pushDeviceToken"
 
 #define PlaceHolder @"petGroup_thisisplaceholder..."
