@@ -119,8 +119,8 @@
     _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.placeHolder=@"好好写点^_^";
-    [_dynamicTV setFont:[UIFont systemFontOfSize:16]];
-    _dynamicTV.pragraghSpaceHeight=10;
+    [_dynamicTV setFont:[UIFont systemFontOfSize:17]];
+    _dynamicTV.pragraghSpaceHeight=15;
     _dynamicTV.backgroundColor=[UIColor clearColor];
 
     [self.view addSubview:_dynamicTV];
@@ -645,8 +645,6 @@
             _dynamicTV.attributedString = mutableAttributedString;
         }
         [self performSelector:@selector(scrollToBottomw) withObject:nil afterDelay:0.5];
-        _dynamicTV.selectedTextRange = selectedTextRange;
-        
         //[_editor setValue:attachment forAttribute:OAAttachmentAttributeName inRange:selectedTextRange];
         
         

@@ -63,7 +63,7 @@
     [self.view addSubview:addButton];
     [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
  
-    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH+44, 320, self.view.frame.size.height-49-44-diffH) style:UITableViewStylePlain];
+    self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH+44, 320, self.view.frame.size.height-49-44-diffH-44) style:UITableViewStylePlain];
     [self.view addSubview:self.contactsTable];
     self.contactsTable.dataSource = self;
     self.contactsTable.delegate = self;
