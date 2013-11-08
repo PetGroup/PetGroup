@@ -143,22 +143,39 @@
 //        [self performSelector:@selector(displayMsgsForDefaultView) withObject:nil afterDelay:4];
         [self displayMsgsForDefaultView];
         
-        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
-        int unreadComment = 0;
-        if (replyArray) {
-            unreadComment = replyArray.count;
-        }
-        else
-            unreadComment = 0;
-        if (unreadComment>0) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
-        }
-        else
-            [self.customTabBarController removeNotificatonOfIndex:4];
+//        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+//        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+//        int unreadComment = 0;
+//        if (replyArray) {
+//            unreadComment = replyArray.count;
+//        }
+//        else
+//            unreadComment = 0;
+//        if (unreadComment>0) {
+//            [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
+//        }
+//        else
+//            [self.customTabBarController removeNotificatonOfIndex:4];
         
+        [self readNewNoti];
     }
 }
+-(void)readNewNoti
+{
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
+    if (tempNewNotiArray) {
+        if (tempNewNotiArray.count>0) {
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:1];
+        }
+        else{
+            [self.customTabBarController removeNotificatonOfIndex:1];
+        }
+    }
+    
+}
+
 //-(void)tempMakeSomeData
 //{
 //    for (int i = 0; i<100; i++) {
@@ -245,8 +262,31 @@
 -(void)newCommentReceived:(NSDictionary *)theDict
 {
     
-    [self requestOneStateByStateID:[theDict objectForKey:@"dynamicID"] WithDict:theDict];
-    
+ //   [self requestOneStateByStateID:[theDict objectForKey:@"dynamicID"] WithDict:theDict];
+    [self storeReceivedNotification:theDict];
+}
+
+-(void)storeReceivedNotification:(NSDictionary *)theDict
+{
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
+    NSMutableArray * newNotiArray;
+    if (tempNewNotiArray) {
+        newNotiArray = [NSMutableArray arrayWithArray:tempNewNotiArray];
+        [newNotiArray insertObject:theDict atIndex:0];
+    }
+    else
+        newNotiArray = [NSMutableArray arrayWithObject:theDict];
+    AudioServicesPlayAlertSound(1003);
+    [defaultUserD setObject:newNotiArray forKey:notiKey];
+    [defaultUserD synchronize];
+    if (newNotiArray.count>0) {
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:1];
+    }
+    else{
+        [self.customTabBarController removeNotificatonOfIndex:1];
+    }
 }
 
 -(void)requestOneStateByStateID:(NSString *)theID WithDict:(NSDictionary *)theDict

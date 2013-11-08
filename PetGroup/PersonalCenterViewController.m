@@ -72,18 +72,18 @@
     [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
     [self.photoWall setEditModel:YES];
     
-    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-    NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
-    if (replyArray) {
-        unreadComment = replyArray.count;
-    }
-    else
-        unreadComment = 0;
-    if (unreadComment>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
-    }
-    else
-        [self.customTabBarController removeNotificatonOfIndex:4];
+//    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
+//    NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
+//    if (replyArray) {
+//        unreadComment = replyArray.count;
+//    }
+//    else
+//        unreadComment = 0;
+//    if (unreadComment>0) {
+//        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
+//    }
+//    else
+//        [self.customTabBarController removeNotificatonOfIndex:4];
 
     [self.profileTableV reloadData];
     

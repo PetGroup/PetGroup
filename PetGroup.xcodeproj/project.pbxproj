@@ -538,6 +538,7 @@
 		9765D7AF181BEBFA0021B36F /* biaoti2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9765D7AE181BEBFA0021B36F /* biaoti2.png */; };
 		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
 		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
+		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
 		979546B817BA368F00D05874 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B717BA368F00D05874 /* UIKit.framework */; };
 		979546BA17BA368F00D05874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B917BA368F00D05874 /* Foundation.framework */; };
 		979546BC17BA368F00D05874 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546BB17BA368F00D05874 /* CoreGraphics.framework */; };
@@ -1437,6 +1438,8 @@
 		97703071182B4504005E3018 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		97703073182B6E34005E3018 /* MyMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMessageViewController.h; sourceTree = "<group>"; };
 		97703074182B6E34005E3018 /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
+		97703076182B7D69005E3018 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		97703077182B7D69005E3018 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		979546B417BA368F00D05874 /* PetGroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979546B717BA368F00D05874 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		979546B917BA368F00D05874 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1842,6 +1845,8 @@
 				8642967C17D6CF1300B1B1C9 /* PhotoViewController.m */,
 				865FDD1E180795FE005BB088 /* CircleViewController.h */,
 				86993B6F180CD4FC00F61A3F /* CircleViewController.m */,
+				97703076182B7D69005E3018 /* NotificationViewController.h */,
+				97703077182B7D69005E3018 /* NotificationViewController.m */,
 				86D69D0A17C7265300FFFBDD /* EditDynamicViewController.h */,
 				86D69D0B17C7265300FFFBDD /* EditDynamicViewController.m */,
 				86A56A8F180F83E4000FD684 /* EditArticleViewController.h */,
@@ -4597,6 +4602,7 @@
 				9736BC6C17C489F2007DFE36 /* XMPPIQ+XEP_0066.m in Sources */,
 				9736BC6D17C489F2007DFE36 /* XMPPMessage+XEP_0066.m in Sources */,
 				9736BC6E17C489F2007DFE36 /* NSDate+XMPPDateTimeProfiles.m in Sources */,
+				97703078182B7D69005E3018 /* NotificationViewController.m in Sources */,
 				9736BC6F17C489F2007DFE36 /* XMPPDateTimeProfiles.m in Sources */,
 				9736BC7017C489F2007DFE36 /* XMPPMessage+XEP_0085.m in Sources */,
 				9736BC7117C489F2007DFE36 /* XMPPTransports.m in Sources */,
