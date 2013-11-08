@@ -644,11 +644,17 @@
         if (mutableAttributedString) {
             _dynamicTV.attributedString = mutableAttributedString;
         }
+        [self performSelector:@selector(scrollToBottomw) withObject:nil afterDelay:0.5];
+        _dynamicTV.selectedTextRange = selectedTextRange;
         
         //[_editor setValue:attachment forAttribute:OAAttachmentAttributeName inRange:selectedTextRange];
         
         
     }
 }
-
+-(void)scrollToBottomw
+{
+    CGPoint bottomOffset = CGPointMake(0, _dynamicTV.contentSize.height - _dynamicTV.bounds.size.height);
+    [_dynamicTV setContentOffset:bottomOffset animated:YES];
+}
 @end

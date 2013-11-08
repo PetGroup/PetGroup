@@ -245,21 +245,6 @@
 		86FC764F1820A08B0025686B /* arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC764D1820A08B0025686B /* arrow.png */; };
 		86FC76501820A08B0025686B /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FC764E1820A08B0025686B /* arrow@2x.png */; };
 		86FC76531820D9C10025686B /* SomeOneDynamicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC76521820D9C10025686B /* SomeOneDynamicViewController.m */; };
-		86FC7674182116BF0025686B /* AttributeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7657182116BF0025686B /* AttributeConfig.m */; };
-		86FC7675182116BF0025686B /* CAParagraphLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7659182116BF0025686B /* CAParagraphLayer.m */; };
-		86FC7676182116BF0025686B /* ContentViewTiledLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC765B182116BF0025686B /* ContentViewTiledLayer.m */; };
-		86FC7677182116BF0025686B /* EmotionAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC765D182116BF0025686B /* EmotionAttachmentCell.m */; };
-		86FC7678182116BF0025686B /* FastTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC765F182116BF0025686B /* FastTextStorage.m */; };
-		86FC7679182116BF0025686B /* FastTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7661182116BF0025686B /* FastTextView.m */; };
-		86FC767A182116BF0025686B /* FileWrapperObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7663182116BF0025686B /* FileWrapperObject.m */; };
-		86FC767B182116BF0025686B /* NSAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7665182116BF0025686B /* NSAttributedString+TextUtil.m */; };
-		86FC767C182116BF0025686B /* NSMutableAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7667182116BF0025686B /* NSMutableAttributedString+TextUtil.m */; };
-		86FC767D182116BF0025686B /* SlideAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7669182116BF0025686B /* SlideAttachmentCell.m */; };
-		86FC767E182116BF0025686B /* TextAttchment.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC766B182116BF0025686B /* TextAttchment.m */; };
-		86FC767F182116BF0025686B /* TextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC766D182116BF0025686B /* TextConfig.m */; };
-		86FC7680182116BF0025686B /* TextParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC766F182116BF0025686B /* TextParagraph.m */; };
-		86FC7681182116BF0025686B /* UIFont+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7671182116BF0025686B /* UIFont+TextUtil.m */; };
-		86FC7682182116BF0025686B /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 86FC7673182116BF0025686B /* UIImage-Extensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86FCCC7F181B63230077A409 /* bottom_pl_click.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FCCC78181B63230077A409 /* bottom_pl_click.png */; };
 		86FCCC80181B63230077A409 /* bottom_pl_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FCCC79181B63230077A409 /* bottom_pl_normal.png */; };
 		86FCCC81181B63230077A409 /* bottom_zan_click.png in Resources */ = {isa = PBXBuildFile; fileRef = 86FCCC7A181B63230077A409 /* bottom_zan_click.png */; };
@@ -576,6 +561,22 @@
 		9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 9795471317BA36AE00D05874 /* MagicalRecord.m */; };
 		9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */; };
 		9795473417BA370C00D05874 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9795473317BA370C00D05874 /* CoreData.framework */; };
+		97A93DC7182CBC1D00D571A5 /* AttributeConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DAC182CBC1D00D571A5 /* AttributeConfig.m */; };
+		97A93DC8182CBC1D00D571A5 /* CAParagraphLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DAE182CBC1D00D571A5 /* CAParagraphLayer.m */; };
+		97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DB0182CBC1D00D571A5 /* ContentViewTiledLayer.m */; };
+		97A93DCA182CBC1D00D571A5 /* EmotionAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DB2182CBC1D00D571A5 /* EmotionAttachmentCell.m */; };
+		97A93DCB182CBC1D00D571A5 /* FastTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DB4182CBC1D00D571A5 /* FastTextStorage.m */; };
+		97A93DCC182CBC1D00D571A5 /* FastTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DB6182CBC1D00D571A5 /* FastTextView.m */; };
+		97A93DCD182CBC1D00D571A5 /* FileWrapperObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DB8182CBC1D00D571A5 /* FileWrapperObject.m */; };
+		97A93DCE182CBC1D00D571A5 /* NSAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DBA182CBC1D00D571A5 /* NSAttributedString+TextUtil.m */; };
+		97A93DCF182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DBC182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m */; };
+		97A93DD0182CBC1D00D571A5 /* SlideAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DBE182CBC1D00D571A5 /* SlideAttachmentCell.m */; };
+		97A93DD1182CBC1D00D571A5 /* TextAttchment.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC0182CBC1D00D571A5 /* TextAttchment.m */; };
+		97A93DD2182CBC1D00D571A5 /* TextParagraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC2182CBC1D00D571A5 /* TextParagraph.m */; };
+		97A93DD3182CBC1D00D571A5 /* UIFont+TextUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC4182CBC1D00D571A5 /* UIFont+TextUtil.m */; };
+		97A93DD4182CBC1D00D571A5 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC6182CBC1D00D571A5 /* UIImage-Extensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		97A93DD7182CBC3900D571A5 /* TextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DD5182CBC3900D571A5 /* TextConfig.m */; };
+		97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97CCB6121807889D000BD1BE /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 86BDA5CE17F6E98B00613866 /* shezhi22.png */; };
@@ -960,36 +961,6 @@
 		86FC764E1820A08B0025686B /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
 		86FC76511820D9C10025686B /* SomeOneDynamicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeOneDynamicViewController.h; sourceTree = "<group>"; };
 		86FC76521820D9C10025686B /* SomeOneDynamicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SomeOneDynamicViewController.m; sourceTree = "<group>"; };
-		86FC7656182116BF0025686B /* AttributeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeConfig.h; sourceTree = "<group>"; };
-		86FC7657182116BF0025686B /* AttributeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeConfig.m; sourceTree = "<group>"; };
-		86FC7658182116BF0025686B /* CAParagraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAParagraphLayer.h; sourceTree = "<group>"; };
-		86FC7659182116BF0025686B /* CAParagraphLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAParagraphLayer.m; sourceTree = "<group>"; };
-		86FC765A182116BF0025686B /* ContentViewTiledLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewTiledLayer.h; sourceTree = "<group>"; };
-		86FC765B182116BF0025686B /* ContentViewTiledLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewTiledLayer.m; sourceTree = "<group>"; };
-		86FC765C182116BF0025686B /* EmotionAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionAttachmentCell.h; sourceTree = "<group>"; };
-		86FC765D182116BF0025686B /* EmotionAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmotionAttachmentCell.m; sourceTree = "<group>"; };
-		86FC765E182116BF0025686B /* FastTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTextStorage.h; sourceTree = "<group>"; };
-		86FC765F182116BF0025686B /* FastTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTextStorage.m; sourceTree = "<group>"; };
-		86FC7660182116BF0025686B /* FastTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTextView.h; sourceTree = "<group>"; };
-		86FC7661182116BF0025686B /* FastTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTextView.m; sourceTree = "<group>"; };
-		86FC7662182116BF0025686B /* FileWrapperObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWrapperObject.h; sourceTree = "<group>"; };
-		86FC7663182116BF0025686B /* FileWrapperObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileWrapperObject.m; sourceTree = "<group>"; };
-		86FC7664182116BF0025686B /* NSAttributedString+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+TextUtil.h"; sourceTree = "<group>"; };
-		86FC7665182116BF0025686B /* NSAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+TextUtil.m"; sourceTree = "<group>"; };
-		86FC7666182116BF0025686B /* NSMutableAttributedString+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TextUtil.h"; sourceTree = "<group>"; };
-		86FC7667182116BF0025686B /* NSMutableAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TextUtil.m"; sourceTree = "<group>"; };
-		86FC7668182116BF0025686B /* SlideAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideAttachmentCell.h; sourceTree = "<group>"; };
-		86FC7669182116BF0025686B /* SlideAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideAttachmentCell.m; sourceTree = "<group>"; };
-		86FC766A182116BF0025686B /* TextAttchment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextAttchment.h; sourceTree = "<group>"; };
-		86FC766B182116BF0025686B /* TextAttchment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextAttchment.m; sourceTree = "<group>"; };
-		86FC766C182116BF0025686B /* TextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextConfig.h; sourceTree = "<group>"; };
-		86FC766D182116BF0025686B /* TextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextConfig.m; sourceTree = "<group>"; };
-		86FC766E182116BF0025686B /* TextParagraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextParagraph.h; sourceTree = "<group>"; };
-		86FC766F182116BF0025686B /* TextParagraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextParagraph.m; sourceTree = "<group>"; };
-		86FC7670182116BF0025686B /* UIFont+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+TextUtil.h"; sourceTree = "<group>"; };
-		86FC7671182116BF0025686B /* UIFont+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+TextUtil.m"; sourceTree = "<group>"; };
-		86FC7672182116BF0025686B /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
-		86FC7673182116BF0025686B /* UIImage-Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extensions.m"; sourceTree = "<group>"; };
 		86FCCC78181B63230077A409 /* bottom_pl_click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_pl_click.png; sourceTree = "<group>"; };
 		86FCCC79181B63230077A409 /* bottom_pl_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_pl_normal.png; sourceTree = "<group>"; };
 		86FCCC7A181B63230077A409 /* bottom_zan_click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zan_click.png; sourceTree = "<group>"; };
@@ -1509,6 +1480,37 @@
 		9795471517BA36AE00D05874 /* CoreData+MagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreData+MagicalRecord.h"; sourceTree = "<group>"; };
 		9795473117BA36DA00D05874 /* LocalStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LocalStore.xcdatamodel; sourceTree = "<group>"; };
 		9795473317BA370C00D05874 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		97A93DAB182CBC1D00D571A5 /* AttributeConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttributeConfig.h; sourceTree = "<group>"; };
+		97A93DAC182CBC1D00D571A5 /* AttributeConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttributeConfig.m; sourceTree = "<group>"; };
+		97A93DAD182CBC1D00D571A5 /* CAParagraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAParagraphLayer.h; sourceTree = "<group>"; };
+		97A93DAE182CBC1D00D571A5 /* CAParagraphLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAParagraphLayer.m; sourceTree = "<group>"; };
+		97A93DAF182CBC1D00D571A5 /* ContentViewTiledLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewTiledLayer.h; sourceTree = "<group>"; };
+		97A93DB0182CBC1D00D571A5 /* ContentViewTiledLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewTiledLayer.m; sourceTree = "<group>"; };
+		97A93DB1182CBC1D00D571A5 /* EmotionAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmotionAttachmentCell.h; sourceTree = "<group>"; };
+		97A93DB2182CBC1D00D571A5 /* EmotionAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmotionAttachmentCell.m; sourceTree = "<group>"; };
+		97A93DB3182CBC1D00D571A5 /* FastTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTextStorage.h; sourceTree = "<group>"; };
+		97A93DB4182CBC1D00D571A5 /* FastTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTextStorage.m; sourceTree = "<group>"; };
+		97A93DB5182CBC1D00D571A5 /* FastTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTextView.h; sourceTree = "<group>"; };
+		97A93DB6182CBC1D00D571A5 /* FastTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTextView.m; sourceTree = "<group>"; };
+		97A93DB7182CBC1D00D571A5 /* FileWrapperObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWrapperObject.h; sourceTree = "<group>"; };
+		97A93DB8182CBC1D00D571A5 /* FileWrapperObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileWrapperObject.m; sourceTree = "<group>"; };
+		97A93DB9182CBC1D00D571A5 /* NSAttributedString+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+TextUtil.h"; sourceTree = "<group>"; };
+		97A93DBA182CBC1D00D571A5 /* NSAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+TextUtil.m"; sourceTree = "<group>"; };
+		97A93DBB182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TextUtil.h"; sourceTree = "<group>"; };
+		97A93DBC182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TextUtil.m"; sourceTree = "<group>"; };
+		97A93DBD182CBC1D00D571A5 /* SlideAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideAttachmentCell.h; sourceTree = "<group>"; };
+		97A93DBE182CBC1D00D571A5 /* SlideAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideAttachmentCell.m; sourceTree = "<group>"; };
+		97A93DBF182CBC1D00D571A5 /* TextAttchment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextAttchment.h; sourceTree = "<group>"; };
+		97A93DC0182CBC1D00D571A5 /* TextAttchment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextAttchment.m; sourceTree = "<group>"; };
+		97A93DC1182CBC1D00D571A5 /* TextParagraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextParagraph.h; sourceTree = "<group>"; };
+		97A93DC2182CBC1D00D571A5 /* TextParagraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextParagraph.m; sourceTree = "<group>"; };
+		97A93DC3182CBC1D00D571A5 /* UIFont+TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+TextUtil.h"; sourceTree = "<group>"; };
+		97A93DC4182CBC1D00D571A5 /* UIFont+TextUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+TextUtil.m"; sourceTree = "<group>"; };
+		97A93DC5182CBC1D00D571A5 /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
+		97A93DC6182CBC1D00D571A5 /* UIImage-Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extensions.m"; sourceTree = "<group>"; };
+		97A93DD5182CBC3900D571A5 /* TextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextConfig.m; sourceTree = "<group>"; };
+		97A93DD6182CBC3900D571A5 /* TextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextConfig.h; sourceTree = "<group>"; };
+		97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = writing_picbox_bg.png; sourceTree = "<group>"; };
 		97B73F6A1827944300064447 /* redCB2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCB2.png; sourceTree = "<group>"; };
 		97B73F6B1827944300064447 /* redpot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redpot2.png; sourceTree = "<group>"; };
 		97D0309117C5EB3900055EF6 /* DSFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSFriends.h; sourceTree = "<group>"; };
@@ -1877,6 +1879,7 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */,
 				867257521818CE1600624A04 /* huifu_click.png */,
 				867257531818CE1800624A04 /* huifu_normal.png */,
 				86CC16A718164953008E1D1F /* shurukuang.png */,
@@ -2205,36 +2208,36 @@
 		86FC7655182116BF0025686B /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				86FC7656182116BF0025686B /* AttributeConfig.h */,
-				86FC7657182116BF0025686B /* AttributeConfig.m */,
-				86FC7658182116BF0025686B /* CAParagraphLayer.h */,
-				86FC7659182116BF0025686B /* CAParagraphLayer.m */,
-				86FC765A182116BF0025686B /* ContentViewTiledLayer.h */,
-				86FC765B182116BF0025686B /* ContentViewTiledLayer.m */,
-				86FC765C182116BF0025686B /* EmotionAttachmentCell.h */,
-				86FC765D182116BF0025686B /* EmotionAttachmentCell.m */,
-				86FC765E182116BF0025686B /* FastTextStorage.h */,
-				86FC765F182116BF0025686B /* FastTextStorage.m */,
-				86FC7660182116BF0025686B /* FastTextView.h */,
-				86FC7661182116BF0025686B /* FastTextView.m */,
-				86FC7662182116BF0025686B /* FileWrapperObject.h */,
-				86FC7663182116BF0025686B /* FileWrapperObject.m */,
-				86FC7664182116BF0025686B /* NSAttributedString+TextUtil.h */,
-				86FC7665182116BF0025686B /* NSAttributedString+TextUtil.m */,
-				86FC7666182116BF0025686B /* NSMutableAttributedString+TextUtil.h */,
-				86FC7667182116BF0025686B /* NSMutableAttributedString+TextUtil.m */,
-				86FC7668182116BF0025686B /* SlideAttachmentCell.h */,
-				86FC7669182116BF0025686B /* SlideAttachmentCell.m */,
-				86FC766A182116BF0025686B /* TextAttchment.h */,
-				86FC766B182116BF0025686B /* TextAttchment.m */,
-				86FC766C182116BF0025686B /* TextConfig.h */,
-				86FC766D182116BF0025686B /* TextConfig.m */,
-				86FC766E182116BF0025686B /* TextParagraph.h */,
-				86FC766F182116BF0025686B /* TextParagraph.m */,
-				86FC7670182116BF0025686B /* UIFont+TextUtil.h */,
-				86FC7671182116BF0025686B /* UIFont+TextUtil.m */,
-				86FC7672182116BF0025686B /* UIImage-Extensions.h */,
-				86FC7673182116BF0025686B /* UIImage-Extensions.m */,
+				97A93DD5182CBC3900D571A5 /* TextConfig.m */,
+				97A93DD6182CBC3900D571A5 /* TextConfig.h */,
+				97A93DAB182CBC1D00D571A5 /* AttributeConfig.h */,
+				97A93DAC182CBC1D00D571A5 /* AttributeConfig.m */,
+				97A93DAD182CBC1D00D571A5 /* CAParagraphLayer.h */,
+				97A93DAE182CBC1D00D571A5 /* CAParagraphLayer.m */,
+				97A93DAF182CBC1D00D571A5 /* ContentViewTiledLayer.h */,
+				97A93DB0182CBC1D00D571A5 /* ContentViewTiledLayer.m */,
+				97A93DB1182CBC1D00D571A5 /* EmotionAttachmentCell.h */,
+				97A93DB2182CBC1D00D571A5 /* EmotionAttachmentCell.m */,
+				97A93DB3182CBC1D00D571A5 /* FastTextStorage.h */,
+				97A93DB4182CBC1D00D571A5 /* FastTextStorage.m */,
+				97A93DB5182CBC1D00D571A5 /* FastTextView.h */,
+				97A93DB6182CBC1D00D571A5 /* FastTextView.m */,
+				97A93DB7182CBC1D00D571A5 /* FileWrapperObject.h */,
+				97A93DB8182CBC1D00D571A5 /* FileWrapperObject.m */,
+				97A93DB9182CBC1D00D571A5 /* NSAttributedString+TextUtil.h */,
+				97A93DBA182CBC1D00D571A5 /* NSAttributedString+TextUtil.m */,
+				97A93DBB182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.h */,
+				97A93DBC182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m */,
+				97A93DBD182CBC1D00D571A5 /* SlideAttachmentCell.h */,
+				97A93DBE182CBC1D00D571A5 /* SlideAttachmentCell.m */,
+				97A93DBF182CBC1D00D571A5 /* TextAttchment.h */,
+				97A93DC0182CBC1D00D571A5 /* TextAttchment.m */,
+				97A93DC1182CBC1D00D571A5 /* TextParagraph.h */,
+				97A93DC2182CBC1D00D571A5 /* TextParagraph.m */,
+				97A93DC3182CBC1D00D571A5 /* UIFont+TextUtil.h */,
+				97A93DC4182CBC1D00D571A5 /* UIFont+TextUtil.m */,
+				97A93DC5182CBC1D00D571A5 /* UIImage-Extensions.h */,
+				97A93DC6182CBC1D00D571A5 /* UIImage-Extensions.m */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -4344,6 +4347,7 @@
 				86A56A69180F8191000FD684 /* biaoqing081.png in Resources */,
 				86A56A6A180F8191000FD684 /* biaoqing082.png in Resources */,
 				97233B9E1820F42C00A8015D /* loupe-lo@2x.png in Resources */,
+				97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */,
 				86A56A6B180F8191000FD684 /* biaoqing083.png in Resources */,
 				86A56A6C180F8191000FD684 /* biaoqing084.png in Resources */,
 				86A56A6D180F8191000FD684 /* emotionImageThird.plist in Resources */,
@@ -4420,7 +4424,6 @@
 				86A569BB180F7D3D000FD684 /* CoreTextUtils.m in Sources */,
 				86A569BC180F7D3D000FD684 /* NSAttributedString+Attributes.m in Sources */,
 				86A569BD180F7D3D000FD684 /* NSTextCheckingResult+ExtendedURL.m in Sources */,
-				86FC767F182116BF0025686B /* TextConfig.m in Sources */,
 				86A569BE180F7D3D000FD684 /* OHAttributedLabel.m in Sources */,
 				86A569BF180F7D3D000FD684 /* OHASBasicHTMLParser.m in Sources */,
 				86A569C0180F7D3D000FD684 /* OHASBasicMarkupParser.m in Sources */,
@@ -4433,6 +4436,7 @@
 				863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */,
 				863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */,
 				979546C417BA368F00D05874 /* main.m in Sources */,
+				97A93DCF182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m in Sources */,
 				979546C817BA368F00D05874 /* AppDelegate.m in Sources */,
 				9795471617BA36AE00D05874 /* MagicalImportFunctions.m in Sources */,
 				9795471717BA36AE00D05874 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
@@ -4446,6 +4450,7 @@
 				9795471F17BA36AE00D05874 /* NSManagedObject+MagicalFinders.m in Sources */,
 				9795472017BA36AE00D05874 /* NSManagedObject+MagicalRecord.m in Sources */,
 				9795472117BA36AE00D05874 /* NSManagedObject+MagicalRequests.m in Sources */,
+				97A93DCD182CBC1D00D571A5 /* FileWrapperObject.m in Sources */,
 				9795472217BA36AE00D05874 /* NSManagedObjectContext+MagicalObserving.m in Sources */,
 				9795472317BA36AE00D05874 /* NSManagedObjectContext+MagicalRecord.m in Sources */,
 				9795472417BA36AE00D05874 /* NSManagedObjectContext+MagicalSaves.m in Sources */,
@@ -4469,11 +4474,9 @@
 				97FB47ED17BC79F00071FA12 /* DSDynamicNearby.m in Sources */,
 				7224769518279418000E3D05 /* AriticleContent.m in Sources */,
 				97FB47F017BC79F00071FA12 /* DSComments.m in Sources */,
-				86FC7676182116BF0025686B /* ContentViewTiledLayer.m in Sources */,
 				97FB47F317BC79F00071FA12 /* DSThumbPublicMsgs.m in Sources */,
 				97FB47F617BC79F00071FA12 /* DSThumbMsgs.m in Sources */,
 				97FB47F917BC79F00071FA12 /* DSDynamicFriends.m in Sources */,
-				86FC767C182116BF0025686B /* NSMutableAttributedString+TextUtil.m in Sources */,
 				97FB47FC17BC79F00071FA12 /* DSArticles.m in Sources */,
 				97FB47FF17BC79F10071FA12 /* DSSayHellos.m in Sources */,
 				97FB480217BC79F10071FA12 /* DSMyDynamic.m in Sources */,
@@ -4487,17 +4490,13 @@
 				97E25C0217C34418007E187D /* AFJSONRequestOperation.m in Sources */,
 				97E25C0317C34418007E187D /* AFNetworkActivityIndicatorManager.m in Sources */,
 				849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */,
-				86FC7677182116BF0025686B /* EmotionAttachmentCell.m in Sources */,
 				97E25C0417C34418007E187D /* AFPropertyListRequestOperation.m in Sources */,
 				97E25C0517C34418007E187D /* AFURLConnectionOperation.m in Sources */,
-				86FC7681182116BF0025686B /* UIFont+TextUtil.m in Sources */,
 				97E25C0617C34418007E187D /* AFXMLRequestOperation.m in Sources */,
 				97E25C0717C34418007E187D /* UIImageView+AFNetworking.m in Sources */,
 				97E25C2617C34B38007E187D /* NSObject+SBJSON.m in Sources */,
 				97E25C2717C34B38007E187D /* NSString+SBJSON.m in Sources */,
-				86FC7679182116BF0025686B /* FastTextView.m in Sources */,
 				97E25C2817C34B38007E187D /* SBJSON.m in Sources */,
-				86FC767E182116BF0025686B /* TextAttchment.m in Sources */,
 				97E25C2917C34B38007E187D /* SBJsonBase.m in Sources */,
 				97E25C2A17C34B38007E187D /* SBJsonParser.m in Sources */,
 				97E25C2B17C34B38007E187D /* SBJsonWriter.m in Sources */,
@@ -4515,8 +4514,8 @@
 				9736BB0317C4892A007DFE36 /* ContextFilterLogFormatter.m in Sources */,
 				9736BB0417C4892A007DFE36 /* DispatchQueueLogFormatter.m in Sources */,
 				9736BB0617C4892A007DFE36 /* NSString+DDXML.m in Sources */,
-				86FC7682182116BF0025686B /* UIImage-Extensions.m in Sources */,
 				9736BB0717C4892A007DFE36 /* DDXMLDocument.m in Sources */,
+				97A93DC7182CBC1D00D571A5 /* AttributeConfig.m in Sources */,
 				9736BB0817C4892A007DFE36 /* DDXMLElement.m in Sources */,
 				9736BB0917C4892A007DFE36 /* DDXMLNode.m in Sources */,
 				9736BB1917C489A1007DFE36 /* DDList.m in Sources */,
@@ -4531,11 +4530,13 @@
 				9736BB3717C489BD007DFE36 /* XMPPDigestMD5Authentication.m in Sources */,
 				9736BB3817C489BD007DFE36 /* XMPPPlainAuthentication.m in Sources */,
 				9736BB3917C489BD007DFE36 /* XMPPXFacebookPlatformAuthentication.m in Sources */,
+				97A93DD4182CBC1D00D571A5 /* UIImage-Extensions.m in Sources */,
 				9736BB4117C489C6007DFE36 /* NSData+XMPP.m in Sources */,
 				97031FE21823905700F769E0 /* WebViewViewController.m in Sources */,
 				9736BB4217C489C6007DFE36 /* NSNumber+XMPP.m in Sources */,
 				9736BB4317C489C6007DFE36 /* NSXMLElement+XMPP.m in Sources */,
 				9736BB5817C489CE007DFE36 /* XMPPElement.m in Sources */,
+				97A93DCC182CBC1D00D571A5 /* FastTextView.m in Sources */,
 				9765D7A8181BC8E70021B36F /* BHExpandingTextViewInternal.m in Sources */,
 				9736BB5917C489CE007DFE36 /* XMPPIQ.m in Sources */,
 				9736BB5A17C489CE007DFE36 /* XMPPJID.m in Sources */,
@@ -4568,6 +4569,7 @@
 				9736BC4B17C489F2007DFE36 /* XMPPPrivacy.m in Sources */,
 				9736BC4C17C489F2007DFE36 /* XMPPRoom.xcdatamodeld in Sources */,
 				9736BC4D17C489F2007DFE36 /* XMPPRoomCoreDataStorage.m in Sources */,
+				97A93DD3182CBC1D00D571A5 /* UIFont+TextUtil.m in Sources */,
 				9736BC4E17C489F2007DFE36 /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
 				9736BC4F17C489F2007DFE36 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				9736BC5017C489F2007DFE36 /* XMPPRoomHybrid.xcdatamodeld in Sources */,
@@ -4580,6 +4582,7 @@
 				9736BC5717C489F2007DFE36 /* XMPPMessage+XEP0045.m in Sources */,
 				9736BC5817C489F2007DFE36 /* XMPPMUC.m in Sources */,
 				9736BC5917C489F2007DFE36 /* XMPPRoom.m in Sources */,
+				97A93DCA182CBC1D00D571A5 /* EmotionAttachmentCell.m in Sources */,
 				9736BC5A17C489F2007DFE36 /* XMPPvCard.xcdatamodeld in Sources */,
 				9736BC5B17C489F2007DFE36 /* XMPPvCardAvatarCoreDataStorageObject.m in Sources */,
 				9736BC5C17C489F2007DFE36 /* XMPPvCardCoreDataStorage.m in Sources */,
@@ -4592,7 +4595,6 @@
 				9736BC6317C489F2007DFE36 /* XMPPvCardTempEmail.m in Sources */,
 				9736BC6417C489F2007DFE36 /* XMPPvCardTempLabel.m in Sources */,
 				9736BC6517C489F2007DFE36 /* XMPPvCardTempModule.m in Sources */,
-				86FC7678182116BF0025686B /* FastTextStorage.m in Sources */,
 				9736BC6617C489F2007DFE36 /* XMPPvCardTempTel.m in Sources */,
 				9736BC6717C489F2007DFE36 /* NSXMLElement+XEP_0059.m in Sources */,
 				9736BC6817C489F2007DFE36 /* XMPPResultSet.m in Sources */,
@@ -4600,6 +4602,7 @@
 				9736BC6A17C489F2007DFE36 /* XMPPPubSub.m in Sources */,
 				9736BC6B17C489F2007DFE36 /* TURNSocket.m in Sources */,
 				9736BC6C17C489F2007DFE36 /* XMPPIQ+XEP_0066.m in Sources */,
+				97A93DCE182CBC1D00D571A5 /* NSAttributedString+TextUtil.m in Sources */,
 				9736BC6D17C489F2007DFE36 /* XMPPMessage+XEP_0066.m in Sources */,
 				9736BC6E17C489F2007DFE36 /* NSDate+XMPPDateTimeProfiles.m in Sources */,
 				97703078182B7D69005E3018 /* NotificationViewController.m in Sources */,
@@ -4619,16 +4622,19 @@
 				9736BC7A17C489F2007DFE36 /* XMPPMessageArchivingCoreDataStorage.m in Sources */,
 				9736BC7B17C489F2007DFE36 /* XMPPMessageArchiving.m in Sources */,
 				9765D7AB181BD46E0021B36F /* BHExpandingTextView.m in Sources */,
+				97A93DC8182CBC1D00D571A5 /* CAParagraphLayer.m in Sources */,
 				9736BC7C17C489F2007DFE36 /* XMPPvCardAvatarModule.m in Sources */,
 				9736BC7D17C489F2007DFE36 /* XMPPMessage+XEP_0172.m in Sources */,
 				9736BC7E17C489F2007DFE36 /* XMPPPresence+XEP_0172.m in Sources */,
 				9736BC7F17C489F2007DFE36 /* XMPPMessage+XEP_0184.m in Sources */,
 				9736BC8017C489F2007DFE36 /* XMPPMessageDeliveryReceipts.m in Sources */,
 				9736BC8117C489F2007DFE36 /* XMPPAutoPing.m in Sources */,
+				97A93DD7182CBC3900D571A5 /* TextConfig.m in Sources */,
 				9736BC8217C489F2007DFE36 /* XMPPPing.m in Sources */,
 				9736BC8317C489F2007DFE36 /* XMPPAutoTime.m in Sources */,
 				9736BC8417C489F2007DFE36 /* XMPPTime.m in Sources */,
 				9736BC8517C489F2007DFE36 /* NSXMLElement+XEP_0203.m in Sources */,
+				97A93DD2182CBC1D00D571A5 /* TextParagraph.m in Sources */,
 				9736BC8617C489F2007DFE36 /* XEP_0223.m in Sources */,
 				9736BC8717C489F2007DFE36 /* XMPPAttentionModule.m in Sources */,
 				9736BC8817C489F2007DFE36 /* XMPPMessage+XEP_0224.m in Sources */,
@@ -4642,6 +4648,7 @@
 				9736BCC417C48B7B007DFE36 /* MLNavigationController.m in Sources */,
 				9736BCC717C48B7B007DFE36 /* Reachability.m in Sources */,
 				9736BCCA17C48B7B007DFE36 /* SRRefreshView.m in Sources */,
+				97A93DD0182CBC1D00D571A5 /* SlideAttachmentCell.m in Sources */,
 				9736BCCB17C48B7B007DFE36 /* SRSlimeView.m in Sources */,
 				9736BCCC17C48B7B007DFE36 /* TempData.m in Sources */,
 				9736BCCD17C48B7B007DFE36 /* UIExpandingTextView.m in Sources */,
@@ -4661,17 +4668,17 @@
 				97DB08F717C5A1CB000EC195 /* PetDetailViewController.m in Sources */,
 				97DB08FA17C5A1EE000EC195 /* MyProfileViewController.m in Sources */,
 				97DB08FD17C5A1FF000EC195 /* MyPetProfileViewController.m in Sources */,
+				97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */,
 				97DB098017C5A95C000EC195 /* addFriendCell.m in Sources */,
 				97DB098117C5A95C000EC195 /* ContactsCell.m in Sources */,
 				97DB098217C5A95C000EC195 /* KKMessageCell.m in Sources */,
 				97DB098317C5A95C000EC195 /* MessageCell.m in Sources */,
 				97DB098417C5A95C000EC195 /* MoreCell.m in Sources */,
 				97DB098517C5A95C000EC195 /* MyProfileACell.m in Sources */,
-				86FC7680182116BF0025686B /* TextParagraph.m in Sources */,
 				849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */,
 				97DB098617C5A95C000EC195 /* MyProfileBCell.m in Sources */,
 				97DB098717C5A95C000EC195 /* MyProfileBtnCell.m in Sources */,
-				86FC767A182116BF0025686B /* FileWrapperObject.m in Sources */,
+				97A93DD1182CBC1D00D571A5 /* TextAttchment.m in Sources */,
 				97DB098817C5A95C000EC195 /* MyProfileCCell.m in Sources */,
 				97DB098917C5A95C000EC195 /* NearByCell.m in Sources */,
 				97DB098A17C5A95C000EC195 /* ProfileCell.m in Sources */,
@@ -4695,7 +4702,6 @@
 				86D69D0C17C7265300FFFBDD /* EditDynamicViewController.m in Sources */,
 				86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */,
 				973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */,
-				86FC767B182116BF0025686B /* NSAttributedString+TextUtil.m in Sources */,
 				86EEB14517CF0F36000162E8 /* EGOCache.m in Sources */,
 				86EEB14617CF0F36000162E8 /* EGOImageButton.m in Sources */,
 				86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */,
@@ -4706,8 +4712,8 @@
 				97DA1C0817D42A5A00F7B507 /* HGPhoto.m in Sources */,
 				97DA1C0D17D4321F00F7B507 /* PhotoWallCell.m in Sources */,
 				97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */,
-				86FC7674182116BF0025686B /* AttributeConfig.m in Sources */,
 				97703072182B4504005E3018 /* NotificationCell.m in Sources */,
+				97A93DCB182CBC1D00D571A5 /* FastTextStorage.m in Sources */,
 				97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */,
 				97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */,
 				97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */,
@@ -4732,7 +4738,6 @@
 				86993B5A180B950C00F61A3F /* GoodArticleDataSource.m in Sources */,
 				86993B5D180B953600F61A3F /* NewReplyArticleDataSource.m in Sources */,
 				86993B60180B956900F61A3F /* NewPublishArticleDataSource.m in Sources */,
-				86FC7675182116BF0025686B /* CAParagraphLayer.m in Sources */,
 				86993B63180BCB4600F61A3F /* FriendHeaderView.m in Sources */,
 				86993B68180BD7D000F61A3F /* SearchViewController.m in Sources */,
 				86993B6B180BDDDF00F61A3F /* FriendCircleViewController.m in Sources */,
@@ -4743,7 +4748,6 @@
 				86A56A96180FB5FB000FD684 /* CircleClassify.m in Sources */,
 				86A56A99180FB6C2000FD684 /* CircleEntity.m in Sources */,
 				86F324BA1810D43E004BC4EF /* Article.m in Sources */,
-				86FC767D182116BF0025686B /* SlideAttachmentCell.m in Sources */,
 				86F324D118111E9C004BC4EF /* AllArticleDataSource.m in Sources */,
 				86CC16AB18166EE7008E1D1F /* ArticleViewController.m in Sources */,
 				867257511818C91400624A04 /* OwenrCell.m in Sources */,
