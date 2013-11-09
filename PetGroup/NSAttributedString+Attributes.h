@@ -29,6 +29,7 @@
 #import <CoreText/CoreText.h>
 #import <UIKit/UIKit.h>
 
+#import "OHParagraphStyle.h"
 extern NSString* kOHLinkAttributeName;
 extern NSString* kOHEmoitAttributeName;
 /////////////////////////////////////////////////////////////////////////////////////
@@ -52,6 +53,7 @@ extern NSString* kOHEmoitAttributeName;
 -(BOOL)textIsBoldAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange;
 -(CTTextAlignment)textAlignmentAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange;
 -(CTLineBreakMode)lineBreakModeAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange;
+-(OHParagraphStyle*)paragraphStyleAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange;
 
 -(NSURL*)linkAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange;
 @end
@@ -74,9 +76,23 @@ extern NSString* kOHEmoitAttributeName;
 //! @param style is a combination of CTUnderlineStyle & CTUnderlineStyleModifiers
 -(void)setTextUnderlineStyle:(int32_t)style range:(NSRange)range;
 -(void)setTextBold:(BOOL)isBold range:(NSRange)range;
+-(void)setTextItalics:(BOOL)isItalics range:(NSRange)range;
 
 -(void)setTextAlignment:(CTTextAlignment)alignment lineBreakMode:(CTLineBreakMode)lineBreakMode;
 -(void)setTextAlignment:(CTTextAlignment)alignment lineBreakMode:(CTLineBreakMode)lineBreakMode range:(NSRange)range;
+
+/* The characterSpacing attribute indicate how many points the following character should be shifted from its default offset as defined by the current character's font in points; a positive characterSpacing indicates a shift farther along and a negative characterSpacing indicates a shift closer to the current character. If this attribute is not present, standard character spacing will be used. If this attribute is set to 0.0, no characterSpacing will be done at all.  */
+-(void)setCharacterSpacing:(CGFloat)chracterSpacing;
+-(void)setCharacterSpacing:(CGFloat)chracterSpacing range:(NSRange)range;
+
+
+/* Allows you to modify only certain Paragraph Styles without changing the others (for example changing the firstLineHeadIndent without overriding the textAlignment) */
+-(void)modifyParagraphStylesWithBlock:(void(^)(OHParagraphStyle* paragraphStyle))block;
+-(void)modifyParagraphStylesInRange:(NSRange)range withBlock:(void(^)(OHParagraphStyle* paragraphStyle))block;
+/* Override the Paragraph Styles, dropping the ones previously set if any.
+ Be aware that this will override the text alignment, linebreakmode, and all other paragraph styles with the new values */
+-(void)setParagraphStyle:(OHParagraphStyle *)style;
+-(void)setParagraphStyle:(OHParagraphStyle*)style range:(NSRange)range;
 
 -(void)setLink:(NSURL*)link range:(NSRange)range;
 -(void)setEmoit:(NSString *)link;

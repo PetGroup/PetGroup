@@ -157,7 +157,7 @@
     
     inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, 320, 50)];
     
-	self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
+	self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 7, 270, 35)];
     self.textView.isScrollable = NO;
     self.textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
@@ -180,7 +180,7 @@
     UIImage *rawEntryBackground = [UIImage imageNamed:@"chat_input.png"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(40, 7, 200, 35);
+    entryImageView.frame = CGRectMake(10, 7, 270, 35);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIImage *rawBackground = [UIImage imageNamed:@"inputbg.png"];
@@ -197,7 +197,13 @@
     [inPutView addSubview:entryImageView];
     [inPutView addSubview:self.textView];
     
+    emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emojiBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    [inPutView addSubview:emojiBtn];
+    [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
+  /**************   语音图片等
     
     audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
@@ -228,6 +234,8 @@
     [picBtn setImage:[UIImage imageNamed:@"picBtn.png"] forState:UIControlStateNormal];
     [inPutView addSubview:picBtn];
     [picBtn addTarget:self action:@selector(picBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+   
+   ********/
     
 //    senBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
@@ -256,10 +264,17 @@
     if ([self.chatUserImg isEqualToString:@"no"]) {
         [self getUserInfoWithUserName:self.chatWithUser];
     }
+//  语音初始化
+//    rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
+//    self.session = [AVAudioSession sharedInstance];
+//    
+//    [self initTwoAudioPlayFrame];
     
-    rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
-    self.session = [AVAudioSession sharedInstance];
-    [self initTwoAudioPlayFrame];
+    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制"action:@selector(copyMsg)];
+    UIMenuItem *copyItem2 = [[UIMenuItem alloc] initWithTitle:@"转发"action:@selector(transferMsg)];
+    UIMenuItem *copyItem3 = [[UIMenuItem alloc] initWithTitle:@"删除"action:@selector(deleteMsg)];
+    menu = [UIMenuController sharedMenuController];
+    [menu setMenuItems:[NSArray arrayWithObjects:copyItem,copyItem2,copyItem3, nil]];
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
@@ -268,16 +283,30 @@
 -(void)normalMsgToFinalMsg 
 {
     NSMutableArray* formattedEntries = [NSMutableArray arrayWithCapacity:messages.count];
+    NSMutableArray* heightArray = [NSMutableArray array];
     for(NSDictionary* plainEntry in messages)
     {
         NSString *message = [plainEntry objectForKey:@"msg"];
         NSMutableAttributedString* mas = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:message];
+        
+        OHParagraphStyle* paragraphStyle = [OHParagraphStyle defaultParagraphStyle];
+        paragraphStyle.textAlignment = kCTJustifiedTextAlignment;
+        paragraphStyle.lineBreakMode = kCTLineBreakByWordWrapping;
+        paragraphStyle.firstLineHeadIndent = 0.f; // indentation for first line
+        paragraphStyle.lineSpacing = 5.f; // increase space between lines by 3 points
+        [mas setParagraphStyle:paragraphStyle];
         [mas setFont:[UIFont systemFontOfSize:15]];
         //            [mas setTextColor:[randomColors objectAtIndex:(idx%5)]];
         [mas setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
+        CGSize size = [mas sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
+        NSNumber * width = [NSNumber numberWithFloat:size.width];
+        NSNumber * height = [NSNumber numberWithFloat:size.height];
         [formattedEntries addObject:mas];
+        NSArray * hh = [NSArray arrayWithObjects:width,height, nil];
+        [heightArray addObject:hh];
     }
     self.finalMessageArray = formattedEntries;
+    self.HeightArray = heightArray;
 }
 
 -(void)audioBtnClicked:(UIButton *)sender
@@ -543,10 +572,10 @@
     //提示文字标签隐藏
 	//判断输入框是否有内容，追加转义字符
 	if (self.textView.text == nil) {
-		self.textView.text = [NSString stringWithFormat:@"[%@]",i_transCharacter];
+		self.textView.text = [NSString stringWithFormat:@"[%@] ",i_transCharacter];
 	}
 	else {
-		self.textView.text = [self.textView.text stringByAppendingString:[NSString stringWithFormat:@"[%@]",i_transCharacter]];
+		self.textView.text = [self.textView.text stringByAppendingString:[NSString stringWithFormat:@"[%@] ",i_transCharacter]];
 	}
     [self autoMovekeyBoard:253];
 }
@@ -742,7 +771,7 @@
     }
     //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
     [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
-    [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
+    [emojiBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
     [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
 }
 
@@ -841,7 +870,8 @@
     
     cell.messageContentView.attributedText = [self.finalMessageArray objectAtIndex:indexPath.row];
 
-    CGSize size = [cell.messageContentView sizeThatFits:CGSizeMake(220, CGFLOAT_MAX)];
+//    CGSize size = [cell.messageContentView sizeThatFits:CGSizeMake(220, CGFLOAT_MAX)];
+    CGSize size = CGSizeMake([[[self.HeightArray objectAtIndex:indexPath.row] objectAtIndex:0] floatValue], [[[self.HeightArray objectAtIndex:indexPath.row] objectAtIndex:1] floatValue]);
    // CGSize size = [cell.messageContentView.attributedText sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
     size.width = size.width<20?20:size.width;
     size.height = size.height<20?20:size.height;
@@ -937,6 +967,20 @@
     }
     NSLog(@"end");
 }
+- (BOOL)canBecomeFirstResponder{
+    return YES;
+}
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
+//    return (action == @selector(copyMsg));
+//    return (action == @selector(transferMsg));
+//    return (action == @selector(deleteMsg));
+    if (action == @selector(copyMsg) || action == @selector(transferMsg) || action == @selector(deleteMsg))
+    {
+        return YES;
+    }
+    else
+        return NO;
+}
 -(void)endIt:(UIButton *)sender
 {
     if (tempBtn.highlighted == YES) {
@@ -948,7 +992,12 @@
         NSLog(@"ssasasasasa%@",NSStringFromCGRect(rect));
         readyIndex = tempBtn.tag-1;
 
-        [self displayPopLittleViewWithRectX:(rect.origin.x+(rect.size.width-182)/2) RectY:rect.origin.y-54 TheRect:rect];
+//        [self displayPopLittleViewWithRectX:(rect.origin.x+(rect.size.width-182)/2) RectY:rect.origin.y-54 TheRect:rect];
+        
+        [self canBecomeFirstResponder];
+        [self becomeFirstResponder];
+        [menu setTargetRect:CGRectMake(rect.origin.x, rect.origin.y, 60, 90) inView:self.view];
+        [menu setMenuVisible:YES animated:YES];
     }
 
     //[yy setBackgroundImage:nil forState:UIControlStateNormal];
@@ -1129,12 +1178,12 @@
     
 //    CGSize textSize = {260.0-10-30 , 10000.0};
 //    CGSize size = [msg sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
-    NSAttributedString* attrStr = [self.finalMessageArray objectAtIndex:indexPath.row];
-    CGSize size = [attrStr sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
+ //   NSAttributedString* attrStr = [self.finalMessageArray objectAtIndex:indexPath.row];
+//    CGSize size = [attrStr sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
+    float theH = [[[self.HeightArray objectAtIndex:indexPath.row] objectAtIndex:1] floatValue];
+    theH += padding*2;
     
-    size.height += padding*2;
-    
-    CGFloat height = size.height < 65 ? 65 : size.height;
+    CGFloat height = theH < 65 ? 65 : theH;
     
     return height;
     

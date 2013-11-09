@@ -27,25 +27,14 @@
 
 #import "NSAttributedString+Attributes.h"
 
-#ifndef OHATTRIBUTEDLABEL_DEDICATED_PROJECT
+#if ! defined(COCOAPODS) && ! defined(OHATTRIBUTEDLABEL_DEDICATED_PROJECT)
 // Copying files in your project and thus compiling OHAttributedLabel under different build settings
-// than the one provided is not recommended abd increase risks of leaks (ARC vs. MRC) or unwanted behaviors
-//#warning [OHAttributedLabel integration] You should include OHAttributedLabel project in your workspace instead of copying the files in your own app project. See README for instructions.
-#endif
-
-#if __has_feature(objc_arc)
-#define BRIDGE_CAST __bridge
-#define BRIDGE_TRANSFER_CAST __bridge_transfer
-#define MRC_AUTORELEASE(x) (x)
-#else
-#define BRIDGE_CAST
-#define BRIDGE_TRANSFER_CAST
-#define MRC_AUTORELEASE(x) [(x) autorelease]
+// than the one provided is not recommended and increase risks of leaks (mixing ARC vs. MRC) or unwanted behaviors
+#warning [OHAttributedLabel integration] You should include OHAttributedLabel project in your workspace instead of copying the files in your own app project. Or better, use CocoaPods to integrate your 3rd party libs. See README for instructions.
 #endif
 
 NSString* kOHLinkAttributeName = @"NSLinkAttributeName"; // Use the same value as OSX, to be compatible in case Apple port this to iOS one day too
 NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
-
 /////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - NSAttributedString Additions
 
@@ -54,7 +43,7 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 {
     if (string)
     {
-        return MRC_AUTORELEASE([[self alloc] initWithString:string]);
+        return [[self alloc] initWithString:string];
     } else {
         return nil;
     }
@@ -63,7 +52,7 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 {
     if (attrStr)
     {
-        return MRC_AUTORELEASE([[self alloc] initWithAttributedString:attrStr]);
+        return [[self alloc] initWithAttributedString:attrStr];
     } else {
         return nil;
     }
@@ -76,19 +65,18 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 
 -(CGSize)sizeConstrainedToSize:(CGSize)maxSize fitRange:(NSRange*)fitRange
 {
-	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((BRIDGE_CAST CFAttributedStringRef)self);
+	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self);
     CGSize sz = CGSizeMake(0.f, 0.f);
     if (framesetter)
     {
         CFRange fitCFRange = CFRangeMake(0,0);
         sz = CTFramesetterSuggestFrameSizeWithConstraints(framesetter,CFRangeMake(0,0),NULL,maxSize,&fitCFRange);
         sz = CGSizeMake( floorf(sz.width+1) , floorf(sz.height+1) ); // take 1pt of margin for security
-        NSLog(@"sz.width:%f,sz.height:%f",sz.width,sz.height);
         CFRelease(framesetter);
 
         if (fitRange)
         {
-            *fitRange = NSMakeRange(fitCFRange.location, fitCFRange.length);
+            *fitRange = NSMakeRange((NSUInteger)fitCFRange.location, (NSUInteger)fitCFRange.length);
         }
     }
     return sz;
@@ -96,14 +84,14 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 
 -(CTFontRef)fontAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
 {
-    id attr = [self attribute:(BRIDGE_CAST NSString*)kCTFontAttributeName atIndex:index effectiveRange:aRange];
-    return (BRIDGE_CAST CTFontRef)attr;
+    id attr = [self attribute:(__bridge NSString*)kCTFontAttributeName atIndex:index effectiveRange:aRange];
+    return (__bridge CTFontRef)attr;
 }
 
 -(UIColor*)textColorAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
 {
-    id attr = [self attribute:(BRIDGE_CAST NSString*)kCTForegroundColorAttributeName atIndex:index effectiveRange:aRange];
-    return [UIColor colorWithCGColor:(BRIDGE_CAST CGColorRef)attr];
+    id attr = [self attribute:(__bridge NSString*)kCTForegroundColorAttributeName atIndex:index effectiveRange:aRange];
+    return [UIColor colorWithCGColor:(__bridge CGColorRef)attr];
 }
 
 -(BOOL)textIsUnderlinedAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
@@ -114,7 +102,7 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 
 -(int32_t)textUnderlineStyleAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
 {
-    id attr = [self attribute:(BRIDGE_CAST NSString*)kCTUnderlineStyleAttributeName atIndex:index effectiveRange:aRange];
+    id attr = [self attribute:(__bridge NSString*)kCTUnderlineStyleAttributeName atIndex:index effectiveRange:aRange];
     return [(NSNumber*)attr intValue];
 }
 
@@ -127,8 +115,8 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 
 -(CTTextAlignment)textAlignmentAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
 {
-    id attr = [self attribute:(BRIDGE_CAST NSString*)kCTParagraphStyleAttributeName atIndex:index effectiveRange:aRange];
-    CTParagraphStyleRef style = (BRIDGE_CAST CTParagraphStyleRef)attr;
+    id attr = [self attribute:(__bridge NSString*)kCTParagraphStyleAttributeName atIndex:index effectiveRange:aRange];
+    CTParagraphStyleRef style = (__bridge CTParagraphStyleRef)attr;
     CTTextAlignment textAlign = kCTNaturalTextAlignment;
     CTParagraphStyleGetValueForSpecifier(style, kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &textAlign);
     return textAlign;
@@ -136,11 +124,18 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 
 -(CTLineBreakMode)lineBreakModeAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
 {
-    id attr = [self attribute:(BRIDGE_CAST NSString*)kCTParagraphStyleAttributeName atIndex:index effectiveRange:aRange];
-    CTParagraphStyleRef style = (BRIDGE_CAST CTParagraphStyleRef)attr;
+    id attr = [self attribute:(__bridge NSString*)kCTParagraphStyleAttributeName atIndex:index effectiveRange:aRange];
+    CTParagraphStyleRef style = (__bridge CTParagraphStyleRef)attr;
     CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
     CTParagraphStyleGetValueForSpecifier(style, kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &lineBreakMode);
     return lineBreakMode;
+}
+
+-(OHParagraphStyle*)paragraphStyleAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
+{
+    id attr = [self attribute:(__bridge NSString*)kCTParagraphStyleAttributeName atIndex:index effectiveRange:aRange];
+    CTParagraphStyleRef style = (__bridge CTParagraphStyleRef)attr;
+    return [OHParagraphStyle paragraphStyleWithCTParagraphStyle:style];
 }
 
 -(NSURL*)linkAtIndex:(NSUInteger)index effectiveRange:(NSRangePointer)aRange
@@ -176,11 +171,11 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 -(void)setFontName:(NSString*)fontName size:(CGFloat)size range:(NSRange)range
 {
 	// kCTFontAttributeName
-	CTFontRef aFont = CTFontCreateWithName((BRIDGE_CAST CFStringRef)fontName, size, NULL);
+	CTFontRef aFont = CTFontCreateWithName((__bridge CFStringRef)fontName, size, NULL);
 	if (aFont)
     {
-        [self removeAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName range:range]; // Work around for Apple leak
-        [self addAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName value:(BRIDGE_CAST id)aFont range:range];
+        [self removeAttribute:(__bridge NSString*)kCTFontAttributeName range:range]; // Work around for Apple leak
+        [self addAttribute:(__bridge NSString*)kCTFontAttributeName value:(__bridge id)aFont range:range];
         CFRelease(aFont);
     }
 }
@@ -188,20 +183,20 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 {
 	// kCTFontFamilyNameAttribute + kCTFontTraitsAttribute
 	CTFontSymbolicTraits symTrait = (isBold?kCTFontBoldTrait:0) | (isItalic?kCTFontItalicTrait:0);
-	NSDictionary* trait = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:symTrait]
-                                                      forKey:(BRIDGE_CAST NSString*)kCTFontSymbolicTrait];
+	NSDictionary* trait = [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedLong:symTrait]
+                                                      forKey:(__bridge NSString*)kCTFontSymbolicTrait];
 	NSDictionary* attr = [NSDictionary dictionaryWithObjectsAndKeys:
 						  fontFamily,kCTFontFamilyNameAttribute,
 						  trait,kCTFontTraitsAttribute,nil];
 	
-	CTFontDescriptorRef desc = CTFontDescriptorCreateWithAttributes((BRIDGE_CAST CFDictionaryRef)attr);
+	CTFontDescriptorRef desc = CTFontDescriptorCreateWithAttributes((__bridge CFDictionaryRef)attr);
 	if (!desc) return;
 	CTFontRef aFont = CTFontCreateWithFontDescriptor(desc, size, NULL);
 	CFRelease(desc);
 	if (!aFont) return;
 
-	[self removeAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName range:range]; // Work around for Apple leak
-	[self addAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName value:(BRIDGE_CAST id)aFont range:range];
+	[self removeAttribute:(__bridge NSString*)kCTFontAttributeName range:range]; // Work around for Apple leak
+	[self addAttribute:(__bridge NSString*)kCTFontAttributeName value:(__bridge id)aFont range:range];
 	CFRelease(aFont);
 }
 
@@ -212,8 +207,8 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 -(void)setTextColor:(UIColor*)color range:(NSRange)range
 {
 	// kCTForegroundColorAttributeName
-	[self removeAttribute:(BRIDGE_CAST NSString*)kCTForegroundColorAttributeName range:range]; // Work around for Apple leak
-	[self addAttribute:(BRIDGE_CAST NSString*)kCTForegroundColorAttributeName value:(BRIDGE_CAST id)color.CGColor range:range];
+	[self removeAttribute:(__bridge NSString*)kCTForegroundColorAttributeName range:range]; // Work around for Apple leak
+	[self addAttribute:(__bridge NSString*)kCTForegroundColorAttributeName value:(__bridge id)color.CGColor range:range];
 }
 
 -(void)setTextIsUnderlined:(BOOL)underlined
@@ -227,43 +222,112 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 }
 -(void)setTextUnderlineStyle:(int32_t)style range:(NSRange)range
 {
-	[self removeAttribute:(BRIDGE_CAST NSString*)kCTUnderlineStyleAttributeName range:range]; // Work around for Apple leak
-	[self addAttribute:(BRIDGE_CAST NSString*)kCTUnderlineStyleAttributeName value:[NSNumber numberWithInt:style] range:range];
+	[self removeAttribute:(__bridge NSString*)kCTUnderlineStyleAttributeName range:range]; // Work around for Apple leak
+	[self addAttribute:(__bridge NSString*)kCTUnderlineStyleAttributeName value:[NSNumber numberWithInt:style] range:range];
 }
 
--(void)setTextBold:(BOOL)isBold range:(NSRange)range
+-(void)changeFontWithTraits:(CTFontSymbolicTraits)traits
+                       mask:(CTFontSymbolicTraits)traitsMask
+                      range:(NSRange)range
+              newFontFinder:( NSString*(^)(NSString* currentFontPostscriptName) )fontFinderBlock
 {
-	NSUInteger startPoint = range.location;
+    NSUInteger startPoint = range.location;
 	NSRange effectiveRange;
+    [self beginEditing];
 	do {
 		// Get font at startPoint
-		CTFontRef currentFont = (BRIDGE_CAST CTFontRef)[self attribute:(BRIDGE_CAST NSString*)kCTFontAttributeName atIndex:startPoint effectiveRange:&effectiveRange];
+		CTFontRef currentFont = (__bridge CTFontRef)[self attribute:(__bridge NSString*)kCTFontAttributeName atIndex:startPoint effectiveRange:&effectiveRange];
         if (!currentFont)
         {
             currentFont = CTFontCreateUIFontForLanguage(kCTFontLabelFontType, 0.0, NULL);
-            (void)MRC_AUTORELEASE((BRIDGE_TRANSFER_CAST id)currentFont);
         }
 		// The range for which this font is effective
 		NSRange fontRange = NSIntersectionRange(range, effectiveRange);
-		// Create bold/unbold font variant for this font and apply
-		CTFontRef newFont = CTFontCreateCopyWithSymbolicTraits(currentFont, 0.0, NULL, (isBold?kCTFontBoldTrait:0), kCTFontBoldTrait);
+		// Create the font variant for this font according to new traits
+		CTFontRef newFont = CTFontCreateCopyWithSymbolicTraits(currentFont, 0.0, NULL, traits, traitsMask);
+        if (!newFont)
+        {
+            CFStringRef fontNameRef = CTFontCopyPostScriptName(currentFont);
+            // Give a chance to try a hack for the private ".HelveticaNeueUI" font family, which is the default
+            // font for labels in XIB, but fail to detect its italic variant correctly prior to iOS 6.1
+            if (fontFinderBlock)
+            {
+                NSString* newFontName = fontFinderBlock((__bridge NSString*)fontNameRef);
+                if (newFontName)
+                {
+                    CTFontDescriptorRef fontDesc = CTFontCopyFontDescriptor(currentFont);
+                    NSDictionary* nameAttr = [NSDictionary dictionaryWithObject:newFontName forKey:@"NSFontNameAttribute"];
+                    CTFontDescriptorRef newFontDesc = CTFontDescriptorCreateCopyWithAttributes(fontDesc, (__bridge CFDictionaryRef)nameAttr);
+                    newFont = CTFontCreateWithFontDescriptor(newFontDesc, CTFontGetSize(currentFont), NULL);
+                    CFRelease(fontDesc);
+                    CFRelease(newFontDesc);
+                }
+            }
+            // If still no luck, display a warning message in console
+            if (!newFont)
+            {
+                NSLog(@"[OHAttributedLabel] Warning: can't find an italic font variant for font family %@. "
+                      @"Try another font family (like Helvetica) instead.", (__bridge NSString*)fontNameRef);
+            }
+            if (fontNameRef) CFRelease(fontNameRef);
+        }
+        
+        // Apply the new font with new traits
 		if (newFont)
         {
-			[self removeAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName range:fontRange]; // Work around for Apple leak
-			[self addAttribute:(BRIDGE_CAST NSString*)kCTFontAttributeName value:(BRIDGE_CAST id)newFont range:fontRange];
+			[self removeAttribute:(__bridge NSString*)kCTFontAttributeName range:fontRange]; // Work around for Apple leak
+			[self addAttribute:(__bridge NSString*)kCTFontAttributeName value:(__bridge id)newFont range:fontRange];
 			CFRelease(newFont);
-		} else {
-			CFStringRef fontName = CTFontCopyFullName(currentFont);
-			NSLog(@"[OHAttributedLabel] Warning: can't find a bold font variant for font %@. Try another font family (like Helvetica) instead.",
-                  (BRIDGE_CAST NSString*)fontName);
-            if (fontName) CFRelease(fontName);
 		}
-		////[self removeAttribute:(NSString*)kCTFontWeightTrait range:fontRange]; // Work around for Apple leak
-		////[self addAttribute:(NSString*)kCTFontWeightTrait value:(id)[NSNumber numberWithInt:1.0f] range:fontRange];
 		
 		// If the fontRange was not covering the whole range, continue with next run
 		startPoint = NSMaxRange(effectiveRange);
 	} while(startPoint<NSMaxRange(range));
+    [self endEditing];
+}
+
+static NSString* const kHelveticaNeueUI             = @".HelveticaNeueUI";
+static NSString* const kHelveticaNeueUI_Bold        = @".HelveticaNeueUI-Bold";
+static NSString* const kHelveticaNeueUI_Italic      = @".HelveticaNeueUI-Italic";
+static NSString* const kHelveticaNeueUI_Bold_Italic = @".HelveticaNeueUI-BoldItalic";
+
+-(void)setTextBold:(BOOL)isBold range:(NSRange)range
+{
+	[self changeFontWithTraits:(isBold?kCTFontTraitBold:0)
+                          mask:kCTFontTraitBold
+                         range:range newFontFinder:^NSString *(NSString *currentFontName)
+    {
+        if ([currentFontName isEqualToString:kHelveticaNeueUI_Italic] || [currentFontName isEqualToString:kHelveticaNeueUI_Bold_Italic])
+        {
+            // Italic private font
+            return isBold ? kHelveticaNeueUI_Bold_Italic : kHelveticaNeueUI_Italic;
+        } else if ([currentFontName isEqualToString:kHelveticaNeueUI] || [currentFontName isEqualToString:kHelveticaNeueUI_Bold]) {
+            // Non-Italic private font
+            return isBold ? kHelveticaNeueUI_Bold : kHelveticaNeueUI;
+        } else {
+            return nil;
+        }
+    }];
+}
+
+-(void)setTextItalics:(BOOL)isItalics range:(NSRange)range
+{
+    [self changeFontWithTraits:(isItalics?kCTFontTraitItalic:0)
+                          mask:kCTFontTraitItalic
+                         range:range
+                 newFontFinder:^NSString *(NSString *currentFontName)
+     {
+         if ([currentFontName isEqualToString:kHelveticaNeueUI_Bold] || [currentFontName isEqualToString:kHelveticaNeueUI_Bold_Italic])
+         {
+             // Bold private font
+             return isItalics ? kHelveticaNeueUI_Bold_Italic : kHelveticaNeueUI_Bold;
+         } else if ([currentFontName isEqualToString:kHelveticaNeueUI] || [currentFontName isEqualToString:kHelveticaNeueUI_Italic]) {
+             // Non-Bold private font
+             return isItalics ? kHelveticaNeueUI_Italic : kHelveticaNeueUI;
+         } else {
+             return nil;
+         }
+     }];
 }
 
 -(void)setTextAlignment:(CTTextAlignment)alignment lineBreakMode:(CTLineBreakMode)lineBreakMode
@@ -272,15 +336,57 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
 }
 -(void)setTextAlignment:(CTTextAlignment)alignment lineBreakMode:(CTLineBreakMode)lineBreakMode range:(NSRange)range
 {
-	// kCTParagraphStyleAttributeName > kCTParagraphStyleSpecifierAlignment
-	CTParagraphStyleSetting paraStyles[2] = {
-		{.spec = kCTParagraphStyleSpecifierAlignment, .valueSize = sizeof(CTTextAlignment), .value = (const void*)&alignment},
-		{.spec = kCTParagraphStyleSpecifierLineBreakMode, .valueSize = sizeof(CTLineBreakMode), .value = (const void*)&lineBreakMode},
-	};
-	CTParagraphStyleRef aStyle = CTParagraphStyleCreate(paraStyles, 2);
-	[self removeAttribute:(BRIDGE_CAST NSString*)kCTParagraphStyleAttributeName range:range]; // Work around for Apple leak
-	[self addAttribute:(BRIDGE_CAST NSString*)kCTParagraphStyleAttributeName value:(BRIDGE_CAST id)aStyle range:range];
-	CFRelease(aStyle);
+    [self modifyParagraphStylesInRange:range withBlock:^(OHParagraphStyle *paragraphStyle) {
+        paragraphStyle.textAlignment = alignment;
+        paragraphStyle.lineBreakMode = lineBreakMode;
+    }];
+}
+
+-(void)setCharacterSpacing:(CGFloat)chracterSpacing
+{
+	[self setCharacterSpacing:chracterSpacing range:NSMakeRange(0,[self length])];
+}
+-(void)setCharacterSpacing:(CGFloat)chracterSpacing range:(NSRange)range
+{
+    [self addAttribute:(NSString *)kCTKernAttributeName value:[NSNumber numberWithFloat:chracterSpacing] range:range];
+}
+
+-(void)modifyParagraphStylesWithBlock:(void(^)(OHParagraphStyle* paragraphStyle))block
+{
+    [self modifyParagraphStylesInRange:NSMakeRange(0,[self length]) withBlock:block];
+}
+
+-(void)modifyParagraphStylesInRange:(NSRange)range withBlock:(void(^)(OHParagraphStyle* paragraphStyle))block
+{
+    NSParameterAssert(block != nil);
+    
+    NSRangePointer rangePtr = &range;
+    NSUInteger loc = range.location;
+    [self beginEditing];
+    while (NSLocationInRange(loc, range))
+    {
+        CTParagraphStyleRef currentCTStyle = (__bridge CTParagraphStyleRef)[self attribute:(__bridge NSString*)kCTParagraphStyleAttributeName
+                                                     atIndex:loc longestEffectiveRange:rangePtr inRange:range];
+        __block OHParagraphStyle* paraStyle = [OHParagraphStyle paragraphStyleWithCTParagraphStyle:currentCTStyle];
+        block(paraStyle);        
+        [self setParagraphStyle:paraStyle range:*rangePtr];
+        
+        loc = NSMaxRange(*rangePtr);
+    }
+    [self endEditing];
+}
+
+-(void)setParagraphStyle:(OHParagraphStyle *)style
+{
+    [self setParagraphStyle:style range:NSMakeRange(0,[self length])];
+}
+
+-(void)setParagraphStyle:(OHParagraphStyle*)style range:(NSRange)range
+{
+    CTParagraphStyleRef newParaStyle = [style createCTParagraphStyle];
+    [self removeAttribute:(__bridge NSString*)kCTParagraphStyleAttributeName range:range]; // Work around for Apple leak
+    [self addAttribute:(__bridge NSString*)kCTParagraphStyleAttributeName value:(__bridge id)newParaStyle range:range];
+    CFRelease(newParaStyle);
 }
 
 -(void)setLink:(NSURL*)link range:(NSRange)range
@@ -288,13 +394,12 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
     [self removeAttribute:kOHLinkAttributeName range:range]; // Work around for Apple leak
     if (link)
     {
-        [self addAttribute:kOHLinkAttributeName value:link range:range];
+        [self addAttribute:kOHLinkAttributeName value:(id)link range:range];
     }
 }
-
 -(void)setEmoit:(NSString *)link
 {
-//    NSLog(@"%@-%@",self,link);
+    //    NSLog(@"%@-%@",self,link);
     NSLog(@"sellllllllflength:%d",[self length]);
     [self removeAttribute:kOHEmoitAttributeName range:NSMakeRange(0,[self length])]; // Work around for Apple leak
     if (link)
@@ -302,7 +407,6 @@ NSString* kOHEmoitAttributeName = @"NSEmoitAttributeName";
         [self addAttribute:kOHEmoitAttributeName value:link range:NSMakeRange(0,[self length])];
     }
 }
-
 @end
 
 

@@ -17,7 +17,7 @@
 @protocol getContact <NSObject>
 -(void)getContact:(NSDictionary *)userDict;
 @end
-@interface selectContactPage : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
+@interface selectContactPage : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,UISearchDisplayDelegate>
 {
     UISearchBar * searchBar;
     UISearchDisplayController * searchDisplay;
@@ -27,6 +27,8 @@
     NSMutableArray * rowsArray;
     NSArray * searchResultArray;
     NSMutableArray * sectionIndexArray;
+    
+    float diffH;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic)UITableView *contactsTable;

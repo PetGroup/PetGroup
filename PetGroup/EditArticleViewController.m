@@ -662,7 +662,7 @@
         if (mutableAttributedString) {
             _dynamicTV.attributedString = mutableAttributedString;
         }
-        [self performSelector:@selector(scrollToBottomw) withObject:nil afterDelay:0.5];
+        [self performSelector:@selector(scrollToBottomw) withObject:nil afterDelay:0.3];
         //[_editor setValue:attachment forAttribute:OAAttachmentAttributeName inRange:selectedTextRange];
         
         

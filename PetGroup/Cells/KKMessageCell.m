@@ -53,6 +53,7 @@
         //聊天信息
         messageContentView = [[OHAttributedLabel alloc] initWithFrame:CGRectZero];
         messageContentView.backgroundColor = [UIColor clearColor];
+        messageContentView.delegate = self;
 //        messageContentView.backgroundColor = [UIColor clearColor];
 //        //不可编辑
 //        //        messageContentView.editable = NO;
@@ -79,6 +80,39 @@
     return self;
     
 }
+
+-(BOOL)attributedLabel:(OHAttributedLabel *)attributedLabel shouldFollowLink:(NSTextCheckingResult *)linkInfo
+{
+//	[self.visitedLinks addObject:objectForLinkInfo(linkInfo)];
+	[attributedLabel setNeedsRecomputeLinksInText];
+	
+    if ([[UIApplication sharedApplication] canOpenURL:linkInfo.extendedURL])
+    {
+        // use default behavior
+        return YES;
+    }
+    else
+    {
+        switch (linkInfo.resultType) {
+            case NSTextCheckingTypeAddress:
+                NSLog(@"%@",[linkInfo.addressComponents description]);
+                break;
+            case NSTextCheckingTypeDate:
+                NSLog(@"%@",[linkInfo.date description]);
+                break;
+            case NSTextCheckingTypePhoneNumber:
+                NSLog(@"%@",linkInfo.phoneNumber);
+                break;
+            default: {
+//                NSString* message = [NSString stringWithFormat:@"You typed on an unknown link type (NSTextCheckingType %lld)",linkInfo.resultType];
+//                [UIAlertView showWithTitle:@"Unknown link type" message:message];
+                break;
+            }
+        }
+        return NO;
+    }
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"sss");

@@ -380,7 +380,9 @@
                                                             //set the delegate
                                                             (id)delegate, (NSString*)kCTRunDelegateAttributeName,
                                                             nil];
-                    NSMutableAttributedString* foundString = [[NSMutableAttributedString alloc] initWithString:@" " attributes:attrDictionaryDelegate];
+                    unichar attachmentCharacter = FastTextAttachmentCharacter;
+//                    [_dynamicTV replaceRange:selectedTextRange withText:[NSString stringWithFormat:@"\n%@\n",[NSString stringWithCharacters:&attachmentCharacter length:1]]];
+                    NSMutableAttributedString* foundString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",[NSString stringWithCharacters:&attachmentCharacter length:1]] attributes:attrDictionaryDelegate];
                     
                     NSString *facefilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"emotionImageThird.plist"];
                     NSDictionary *m_pEmojiDic = [[NSDictionary alloc] initWithContentsOfFile:facefilePath];
