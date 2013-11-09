@@ -108,10 +108,12 @@
     whiteV.backgroundColor = [UIColor whiteColor];
     [_headV addSubview:whiteV];
     
-    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(170, 140, 60, 20)];
-    nameL.font = [UIFont systemFontOfSize:16];
+    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 140, 210, 20)];
+    nameL.font = [UIFont boldSystemFontOfSize:18];
     nameL.backgroundColor = [UIColor clearColor];
+    nameL.textAlignment = NSTextAlignmentRight;
     nameL.textColor = [UIColor whiteColor];
+    nameL.shadowColor = [UIColor blackColor];
     [_headV addSubview:nameL];
     
     UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(230, 120, 80, 80)];
@@ -125,8 +127,8 @@
     [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
     
     nameL.text = [dic objectForKey:@"nickname"];
-    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    nameL.frame = CGRectMake(220-size.width, 140, size.width, 20);
+//    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
+//    nameL.frame = CGRectMake(220-size.width, 140, size.width, 20);
     NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     
