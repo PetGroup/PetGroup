@@ -47,6 +47,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.needRequestDyn = NO;
         self.resultArray = [[NSMutableArray alloc]init];
         self.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleNome;
     }
@@ -89,6 +90,10 @@
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
+    
+    if (self.needRequestDyn) {
+        [self getStateByID];
+    }
     
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;
@@ -187,6 +192,33 @@
         default:
             break;
     }
+}
+-(void)getStateByID
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:self.dynamic.dynamicID forKey:@"stateid"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"service.uri.pet_states" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getUserStateById" forKey:@"method"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        self.dynamic = [[Dynamic alloc] initWithNSDictionary:responseObject];
+        [self.tableV reloadData];
+        if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+            [self loadZanList];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
 }
 - (void)didReceiveMemoryWarning
 {

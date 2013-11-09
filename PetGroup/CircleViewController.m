@@ -43,6 +43,7 @@
     
     UIImageView * notiBgV;
     UILabel * numberLabel;
+    float diffH;
 }
 @property (nonatomic,retain)NSString* myUserID;
 @property (nonatomic,retain)UICollectionView* attentionV;
@@ -77,7 +78,7 @@
 	// Do any additional setup after loading the view.
     self.hidesBottomBarWhenPushed = YES;
     
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
@@ -111,21 +112,36 @@
 
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
-    tabIV.image = [UIImage imageNamed:@"table_bg"];
+    tabIV.image = diffH==0.0f?[UIImage imageNamed:@"table_bg"]:[UIImage imageNamed:@"biaotidd"];
+//    [UIImage imageNamed:@"table_bg"];
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
     
     attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
+    if (diffH==0.0f) {
+        attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
+    }
+    else
+    {
+        attentionB.frame = CGRectMake(0, 0, 160, 31.5);
+    }
+    
     [attentionB setTitle:@"关注" forState:UIControlStateNormal];
     [attentionB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+    [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
     [tabIV addSubview:attentionB];
     [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
     
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
     [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
+    if (diffH==0.0f) {
+        hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
+    }
+    else
+    {
+        hotPintsB.frame = CGRectMake(160, 0, 160, 31.5);
+    }
     [hotPintsB setTitle:@"热点" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
@@ -252,6 +268,7 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
+    self.appDel.xmppHelper.commentDelegate = self;
     [self readNewNoti];
 }
 
@@ -270,14 +287,18 @@
 }
 -(void)attentionAct
 {
-    [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+    [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
+ //   [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
     [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
     [self.view bringSubviewToFront:_attentionV];
 }
 -(void)hotPintsAct
 {
     [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
-    [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
+    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+    [hotPintsB setBackgroundImage:bgB forState:UIControlStateNormal];
+//    [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
     [self.view bringSubviewToFront:_hotPintsV];
     if (self.goodArticleDS == nil) {
         self.goodArticleDS = [[GoodArticleDataSource alloc]init];
@@ -498,61 +519,31 @@
 #pragma mark - xmpp delegate
 -(void)newCommentReceived:(NSDictionary *)theDict
 {
-    
-    [self requestOneStateByStateID:[theDict objectForKey:@"dynamicID"] WithDict:theDict];
-    
+    [self storeReceivedNotification:theDict];
 }
-
--(void)requestOneStateByStateID:(NSString *)theID WithDict:(NSDictionary *)theDict
+-(void)storeReceivedNotification:(NSDictionary *)theDict
 {
-    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
-    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
-    [locationDict setObject:theID forKey:@"stateid"];
-    [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"findOneState" forKey:@"method"];
-    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [postDict setObject:locationDict forKey:@"params"];
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSDictionary * recDict = [receiveStr JSONValue];
-//        NSLog(@"rrrrrrrr:%@",recDict);
-        
-        
-        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-        
-        NSMutableDictionary * mydynamicDict = [NSMutableDictionary dictionaryWithDictionary:[userDefault objectForKey:MyDynamic]];
-        if (!mydynamicDict) {
-            mydynamicDict = [NSMutableDictionary dictionary];
-        }
-//        [mydynamicDict setObject:recDict forKey:theID];
-        
-        
-        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
-        if (!replyArray) {
-            replyArray = [NSMutableArray array];
-        }
-        int unreadOfComment = replyArray.count+1;
-//        unreadComment = unreadOfComment;
-//        [self.profileTableV reloadData];
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadOfComment OrDot:NO WithButtonIndex:4];
-        NSMutableDictionary * replyDict = [NSMutableDictionary dictionary];
-        [replyDict setObject:[theDict objectForKey:@"sender"] forKey:@"username"];
-        [replyDict setObject:[theDict objectForKey:@"msg"] forKey:@"replyContent"];
-        [replyDict setObject:theID forKey:@"dynamicID"];
-        [replyDict setObject:[theDict objectForKey:@"time"] forKey:@"time"];
-        [replyDict setObject:[theDict objectForKey:@"msgType"] forKey:@"theType"];
-        [replyDict setObject:[theDict objectForKey:@"fromNickname"] forKey:@"fromNickname"];
-        [replyDict setObject:[theDict objectForKey:@"fromHeadImg"] forKey:@"fromHeadImg"];
-        [replyArray insertObject:replyDict atIndex:0];
-        [userDefault setObject:replyArray forKey:NewComment];
-        [userDefault setObject:mydynamicDict forKey:MyDynamic];
-        [userDefault synchronize];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
-    
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
+    NSMutableArray * newNotiArray;
+    if (tempNewNotiArray) {
+        newNotiArray = [NSMutableArray arrayWithArray:tempNewNotiArray];
+        [newNotiArray insertObject:theDict atIndex:0];
+    }
+    else
+        newNotiArray = [NSMutableArray arrayWithObject:theDict];
+    AudioServicesPlayAlertSound(1003);
+    [defaultUserD setObject:newNotiArray forKey:notiKey];
+    [defaultUserD synchronize];
+    if (newNotiArray.count>0) {
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:1];
+        notiBgV.hidden = NO;
+        numberLabel.text = [NSString stringWithFormat:@"%d",newNotiArray.count];
+    }
+    else{
+        [self.customTabBarController removeNotificatonOfIndex:1];
+        notiBgV.hidden = YES;
+    }
 }
 @end

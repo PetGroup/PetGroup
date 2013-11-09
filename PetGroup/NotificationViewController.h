@@ -7,14 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "NotificationCell.h"
 #import "TempData.h"
 #import "ArticleViewController.h"
 #import "OnceDynamicViewController.h"
+@class AppDelegate;
 @interface NotificationViewController : UIViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     
 }
 @property (strong,nonatomic) UITableView * notiTableV;
 @property (strong,nonatomic) NSMutableArray * notiArray;
+@property (strong,nonatomic) AppDelegate * appDel;
 @end
