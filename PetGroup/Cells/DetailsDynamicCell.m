@@ -234,8 +234,8 @@
 }
 -(void)PersonDetail
 {
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButtonAtIndexPath:)]) {
-        [self.delegate dynamicCellPressNameButtonOrHeadButtonAtIndexPath:nil];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButton)]) {
+        [self.delegate dynamicCellPressNameButtonOrHeadButton];
     }
 }
 -(void)loadBagImage:(EGOImageButton*)button

@@ -6,8 +6,13 @@
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
 
-#import "DynamicDataSource.h"
+#import "DataSource.h"
 #import "DynamicCell.h"
-@interface FriendCircleDataSource : DynamicDataSource
-
+#import "TableViewDatasourceDidChange.h"
+@interface FriendCircleDataSource : DataSource<UITableViewDataSource>
+@property (nonatomic,assign)UIViewController<DynamicCellDelegate>* myController;
+@property (nonatomic,retain)NSMutableDictionary*replyCountDic;
+@property (nonatomic,retain)NSMutableArray*rowHighArray;
+-(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
+-(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

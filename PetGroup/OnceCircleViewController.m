@@ -25,6 +25,7 @@
 
 @interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
 {
+    BOOL free;
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
@@ -227,7 +228,16 @@
     [self.tableV addSubview:_refreshView];
     
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    free = YES;
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -236,12 +246,12 @@
 #pragma mark - button action
 -(void)backButton
 {
-    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)updateSelfMassage
 {
+    free = NO;
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
     editAVC.forumId = self.circleEntity.circleID;
     editAVC.forumName = self.circleEntity.name;
@@ -385,6 +395,7 @@
 }
 -(void)showSearchView
 {
+    free = NO;
     SearchViewController* searchVC = [[SearchViewController alloc]init];
     searchVC.forumPid = self.circleEntity.circleID;
     [self.navigationController pushViewController:searchVC animated:YES];
@@ -392,6 +403,7 @@
 #pragma mark - table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;

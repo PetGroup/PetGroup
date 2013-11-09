@@ -20,7 +20,7 @@
 #import "PersonDetailViewController.h"
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
-    
+    BOOL free;
 }
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
@@ -158,7 +158,16 @@
     
     [self reloadData];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    free = YES;
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -167,6 +176,7 @@
 #pragma mark - button action
 -(void)headAct
 {
+    free = NO;
     SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
     sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
     [self.navigationController pushViewController:sodVC animated:YES];
@@ -178,12 +188,12 @@
 }
 -(void)backButton
 {
-    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)updateSelfMassage
 {
+    free = NO;
     EditDynamicViewController* editVC = [[EditDynamicViewController alloc]init];
     editVC.delegate = self;
     [self.navigationController pushViewController:editVC animated:YES];
@@ -308,10 +318,11 @@
 #pragma mark - tableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [DynamicCell heightForRowWithDynamic:self.friendCircleDS.dataSourceArray[indexPath.row]];
+    return [self.friendCircleDS.rowHighArray[indexPath.row] floatValue];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
@@ -325,9 +336,11 @@
         [self headAct];
         return;
     }
+    free = NO;
     PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
     personDVC.hostInfo = [[HostInfo alloc]init];
     personDVC.hostInfo.userId = ((Dynamic*)self.friendCircleDS.dataSourceArray[indexPath.row]).userID;
+    personDVC.hostInfo.nickName = ((Dynamic*)self.friendCircleDS.dataSourceArray[indexPath.row]).nickName;
     personDVC.needRequest = YES;
     personDVC.needRequestPet = YES;
     [self.navigationController pushViewController:personDVC animated:YES];
@@ -390,6 +403,7 @@
 }
 -(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     odVC.delegate = self;
@@ -398,6 +412,7 @@
 }
 -(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.friendCircleDS.dataSourceArray[indexPath.row];
     odVC.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleZhuanfa;
@@ -406,6 +421,7 @@
 }
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
+    free = NO;
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
     [self presentViewController:vc animated:NO completion:nil];
 }

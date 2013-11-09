@@ -10,6 +10,7 @@
 
 @protocol DynamicCellDelegate <NSObject>
 @optional
+-(void)dynamicCellPressNameButtonOrHeadButton;
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressZanButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath;

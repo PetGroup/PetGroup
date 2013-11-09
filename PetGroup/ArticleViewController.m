@@ -357,6 +357,7 @@
     PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
     personDVC.hostInfo = [[HostInfo alloc]init];
     personDVC.hostInfo.userId = self.ariticle.userId;
+    personDVC.hostInfo.nickName =self.ariticle.userName;
     personDVC.needRequest = YES;
     personDVC.needRequestPet = YES;
     [self.navigationController pushViewController:personDVC animated:YES];
@@ -373,6 +374,7 @@
     PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
     personDVC.hostInfo = [[HostInfo alloc]init];
     personDVC.hostInfo.userId = ((NoteReply*)self.dataSourceArray[indexPath.row]).userID;
+    personDVC.hostInfo.nickName = ((NoteReply*)self.dataSourceArray[indexPath.row]).userName;
     personDVC.needRequest = YES;
     personDVC.needRequestPet = YES;
     [self.navigationController pushViewController:personDVC animated:YES];

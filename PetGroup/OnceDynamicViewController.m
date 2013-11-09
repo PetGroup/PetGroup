@@ -15,12 +15,16 @@
 #import "Reply.h"
 #import "ReplyCell.h"
 #import "ArticleViewController.h"
+#import "PhotoViewController.h"
+#import "PersonDetailViewController.h"
+#import "SomeOneDynamicViewController.h"
 @interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate,MJRefreshBaseViewDelegate>
 {
     int assessOrPraise;
     UIImageView * inputbg;
     UIView * inPutView;
     BOOL request;
+    BOOL free;
 }
 @property (strong,nonatomic) NSMutableString* zanPonsen;
 @property (strong,nonatomic) UITableView * tableV;
@@ -179,6 +183,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    free = YES;
     switch (self.onceDynamicViewControllerStyle) {
         case OnceDynamicViewControllerStyleNome:{
             
@@ -191,6 +196,12 @@
         }break;
         default:
             break;
+    }
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
     }
 }
 -(void)getStateByID
@@ -413,7 +424,6 @@
 }
 -(void)backButton
 {
-    [_footer free];
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)showActionShoot
@@ -471,6 +481,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             cell.textLabel.numberOfLines = 0;
+            cell.textLabel.backgroundColor = [UIColor clearColor];
             cell.textLabel.font = [UIFont systemFontOfSize:16];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.contentView.backgroundColor = [UIColor colorWithRed:238.0/255 green:238.0/255 blue:238.0/255 alpha:1];
@@ -510,6 +521,7 @@
     }
     if (indexPath.section == 0) {
         if (self.dynamic.transmitUrl) {
+            free = NO;
             NSMutableString* noteId = [NSMutableString  stringWithString:self.dynamic.transmitUrl];
             [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
             NSLog(@"%@",noteId);
@@ -544,6 +556,47 @@
     self.puserid = ((Reply*)self.resultArray[indexPath.row]).userID;
     _inputTF.text = [NSString stringWithFormat:@"回复 %@:",((Reply*)self.resultArray[indexPath.row]).nickName];
     [_inputTF becomeFirstResponder];
+}
+#pragma mark - dynmic delegate
+-(void)dynamicCellPressNameButtonOrHeadButton
+{
+    free = NO;
+    if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+        sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
+        [self.navigationController pushViewController:sodVC animated:YES];
+        return;
+    }
+    PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
+    personDVC.hostInfo = [[HostInfo alloc]init];
+    personDVC.hostInfo.userId = self.dynamic.userID;
+    personDVC.hostInfo.nickName = self.dynamic.nickName;
+    personDVC.needRequest = YES;
+    personDVC.needRequestPet = YES;
+    [self.navigationController pushViewController:personDVC animated:YES];
+}
+-(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
+{
+    free = NO;
+    if ([((Reply*)self.resultArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+        sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
+        [self.navigationController pushViewController:sodVC animated:YES];
+        return;
+    }
+    PersonDetailViewController* personDVC = [[PersonDetailViewController alloc]init];
+    personDVC.hostInfo = [[HostInfo alloc]init];
+    personDVC.hostInfo.userId = ((Reply*)self.resultArray[indexPath.row]).userID;
+    personDVC.hostInfo.nickName = ((Reply*)self.resultArray[indexPath.row]).nickName;
+    personDVC.needRequest = YES;
+    personDVC.needRequestPet = YES;
+    [self.navigationController pushViewController:personDVC animated:YES];
+}
+-(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray *)smallImageArray andImageIDArray:(NSArray *)idArray indext:(int)indext
+{
+    free = NO;
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
+    [self presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
