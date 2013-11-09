@@ -213,6 +213,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -233,6 +234,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];

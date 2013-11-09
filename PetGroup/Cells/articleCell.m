@@ -32,35 +32,35 @@
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 70, 50, 12)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 70, 50, 20)];
         _nameL.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:_nameL];
         
         self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 228, 20)];
         _titleL.numberOfLines = 0;
-        _titleL.font = [UIFont systemFontOfSize:14];
-        _titleL.textColor = [UIColor grayColor];
+        _titleL.font = [UIFont systemFontOfSize:16];
+//        _titleL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_titleL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 70, 100, 12)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(70, 70, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
         _timeL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_timeL];
         
-        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 70, 16, 10)];
+        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 75, 16, 10)];
         readI.image = [UIImage imageNamed:@"guanzhu"];
         [self.contentView addSubview:readI];
         
-        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 70, 70, 12)];
+        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 70, 70, 20)];
         _readL.font = [UIFont systemFontOfSize:14];
         _readL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_readL];
         
-        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 71, 16, 10)];
+        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 75, 16, 10)];
         replyI.image = [UIImage imageNamed:@"huifu"];
         [self.contentView addSubview:replyI];
         
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 70, 50, 12)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 70, 50, 20)];
         _replyL.font = [UIFont systemFontOfSize:14];
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
@@ -89,7 +89,7 @@
     [super layoutSubviews];
     _headPhote.imageURL = [NSURL URLWithString: [NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
     _nameL.text = self.article.userName;
-    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(228, 60) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(228, 60) lineBreakMode:NSLineBreakByWordWrapping];
     _titleL.frame = CGRectMake(70, 10, 228, size.height);
     _titleL.text = self.article.name;
     _timeL.text = self.article.ct;
