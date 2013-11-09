@@ -2,7 +2,7 @@
  * This software is under the MIT License quoted below:
  ***********************************************************************************
  *
- * Copyright (c) 2010 Olivier Halligon
+ * Copyright (c) 2013 Matt Galloway
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,48 @@
  ***********************************************************************************/
 
 
-#import "OHASMarkupParserBase.h"
+#import "OHTouchesGestureRecognizer.h"
 
-/*!
- * Supported tags:
- *
- *  "<b>bold text</b>" to write some text in bold
- *
- *  "<u>underline text</u>" to write some text underlined
- *
- *  "<font name='fontname' size='size'>some text</font>" to change font and size of some text
- *      note that you have to specify both "name" and "size" attributes and in that exact order
- *
- *  "<font color='color'>some text</font>" to change text color
- *      where color can be an hexadecimal color of the form "#rgb", "#rgba", "#rrggbb" or "#rrggbbaa"
- *      or a color name like "red" "green" "blue", "purple"…
- *      (the supported names correspond to the [UIColor xxxColor] commodity constructors of the UIColor class)
- *
- *  "<a href='link'>some text</a>" to add some links to a text
- *
- */
-enum {
-    FastTextAttachmentCharacter = 0xfffc // The magical Unicode character for attachments in both Cocoa (NSAttachmentCharacter) and CoreText ('run delegate' there).
-};
-@interface OHASBasicHTMLParser : OHASMarkupParserBase
+#import <UIKit/UIGestureRecognizerSubclass.h>
+
+@interface OHTouchesGestureRecognizer ()
+
+@property (nonatomic, assign) CGPoint startPoint;
+
+@end
+
+@implementation OHTouchesGestureRecognizer
+
+@synthesize startPoint = _startPoint;
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    self.startPoint = [(UITouch *)[touches anyObject] locationInView:self.view];
+    self.state = UIGestureRecognizerStateBegan;
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = (UITouch *)[touches anyObject];
+    CGPoint currentPoint = [touch locationInView:self.view];
+    CGFloat distanceX = (currentPoint.x - _startPoint.x);
+    CGFloat distanceY = (currentPoint.y - _startPoint.y);
+    CGFloat distance = sqrtf(distanceX * distanceX + distanceY * distanceY);
+    if (distance > 10.0f) {
+        self.state = UIGestureRecognizerStateCancelled;
+    } else {
+        self.state = UIGestureRecognizerStateChanged;
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    self.state = UIGestureRecognizerStateEnded;
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    self.state = UIGestureRecognizerStateCancelled;
+}
+
+- (void)reset {
+    self.state = UIGestureRecognizerStatePossible;
+}
 
 @end

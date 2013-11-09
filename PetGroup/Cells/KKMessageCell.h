@@ -8,7 +8,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "EGOImageView.h"
 #import "OHAttributedLabel.h"
-@interface KKMessageCell : UITableViewCell
+@interface KKMessageCell : UITableViewCell<OHAttributedLabelDelegate>
 
 
 @property(nonatomic, retain) UILabel *senderAndTimeLabel;

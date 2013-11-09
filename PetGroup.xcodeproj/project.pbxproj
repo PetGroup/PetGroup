@@ -76,7 +76,6 @@
 		86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56702180E364400A72604 /* NSData+Base64.m */; };
 		86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56704180E364400A72604 /* NSString+Base64.m */; };
 		86A569BB180F7D3D000FD684 /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56708180E364D00A72604 /* CoreTextUtils.m */; };
-		86A569BC180F7D3D000FD684 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F5670B180E365600A72604 /* NSAttributedString+Attributes.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86A569BD180F7D3D000FD684 /* NSTextCheckingResult+ExtendedURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F5670D180E365600A72604 /* NSTextCheckingResult+ExtendedURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86A569BE180F7D3D000FD684 /* OHAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F5670F180E365600A72604 /* OHAttributedLabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		86A569BF180F7D3D000FD684 /* OHASBasicHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56714180E365F00A72604 /* OHASBasicHTMLParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -526,6 +525,9 @@
 		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
 		979088CD182DE1360060A345 /* biaotidd.png in Resources */ = {isa = PBXBuildFile; fileRef = 979088CC182DE1360060A345 /* biaotidd.png */; };
 		979088CF182DE13F0060A345 /* biaotibtn_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 979088CE182DE13F0060A345 /* biaotibtn_01.png */; };
+		979088D4182DF7710060A345 /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D1182DF7710060A345 /* OHParagraphStyle.m */; };
+		979088D5182DF7710060A345 /* OHTouchesGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D3182DF7710060A345 /* OHTouchesGestureRecognizer.m */; };
+		979088D8182DF8950060A345 /* NSAttributedString+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D7182DF8950060A345 /* NSAttributedString+Attributes.m */; };
 		979546B817BA368F00D05874 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B717BA368F00D05874 /* UIKit.framework */; };
 		979546BA17BA368F00D05874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B917BA368F00D05874 /* Foundation.framework */; };
 		979546BC17BA368F00D05874 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546BB17BA368F00D05874 /* CoreGraphics.framework */; };
@@ -1415,6 +1417,12 @@
 		97703077182B7D69005E3018 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		979088CC182DE1360060A345 /* biaotidd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaotidd.png; sourceTree = "<group>"; };
 		979088CE182DE13F0060A345 /* biaotibtn_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaotibtn_01.png; sourceTree = "<group>"; };
+		979088D0182DF7710060A345 /* OHParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHParagraphStyle.h; sourceTree = "<group>"; };
+		979088D1182DF7710060A345 /* OHParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHParagraphStyle.m; sourceTree = "<group>"; };
+		979088D2182DF7710060A345 /* OHTouchesGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHTouchesGestureRecognizer.h; sourceTree = "<group>"; };
+		979088D3182DF7710060A345 /* OHTouchesGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHTouchesGestureRecognizer.m; sourceTree = "<group>"; };
+		979088D6182DF8950060A345 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
+		979088D7182DF8950060A345 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
 		979546B417BA368F00D05874 /* PetGroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979546B717BA368F00D05874 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		979546B917BA368F00D05874 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1720,8 +1728,6 @@
 		97F56704180E364400A72604 /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		97F56707180E364D00A72604 /* CoreTextUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextUtils.h; sourceTree = "<group>"; };
 		97F56708180E364D00A72604 /* CoreTextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreTextUtils.m; sourceTree = "<group>"; };
-		97F5670A180E365600A72604 /* NSAttributedString+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Attributes.h"; sourceTree = "<group>"; };
-		97F5670B180E365600A72604 /* NSAttributedString+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Attributes.m"; sourceTree = "<group>"; };
 		97F5670C180E365600A72604 /* NSTextCheckingResult+ExtendedURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextCheckingResult+ExtendedURL.h"; sourceTree = "<group>"; };
 		97F5670D180E365600A72604 /* NSTextCheckingResult+ExtendedURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextCheckingResult+ExtendedURL.m"; sourceTree = "<group>"; };
 		97F5670E180E365600A72604 /* OHAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHAttributedLabel.h; sourceTree = "<group>"; };
@@ -2266,6 +2272,10 @@
 		9727936817D9C8180001E863 /* AttributeLabel */ = {
 			isa = PBXGroup;
 			children = (
+				979088D0182DF7710060A345 /* OHParagraphStyle.h */,
+				979088D1182DF7710060A345 /* OHParagraphStyle.m */,
+				979088D2182DF7710060A345 /* OHTouchesGestureRecognizer.h */,
+				979088D3182DF7710060A345 /* OHTouchesGestureRecognizer.m */,
 				9727936917D9C8380001E863 /* HeightCalculate.h */,
 				9727936A17D9C8380001E863 /* HeightCalculate.m */,
 				97F56701180E364400A72604 /* NSData+Base64.h */,
@@ -2274,8 +2284,8 @@
 				97F56704180E364400A72604 /* NSString+Base64.m */,
 				97F56707180E364D00A72604 /* CoreTextUtils.h */,
 				97F56708180E364D00A72604 /* CoreTextUtils.m */,
-				97F5670A180E365600A72604 /* NSAttributedString+Attributes.h */,
-				97F5670B180E365600A72604 /* NSAttributedString+Attributes.m */,
+				979088D6182DF8950060A345 /* NSAttributedString+Attributes.h */,
+				979088D7182DF8950060A345 /* NSAttributedString+Attributes.m */,
 				97F5670C180E365600A72604 /* NSTextCheckingResult+ExtendedURL.h */,
 				97F5670D180E365600A72604 /* NSTextCheckingResult+ExtendedURL.m */,
 				97F5670E180E365600A72604 /* OHAttributedLabel.h */,
@@ -4430,10 +4440,10 @@
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
 				86A569BB180F7D3D000FD684 /* CoreTextUtils.m in Sources */,
-				86A569BC180F7D3D000FD684 /* NSAttributedString+Attributes.m in Sources */,
 				86A569BD180F7D3D000FD684 /* NSTextCheckingResult+ExtendedURL.m in Sources */,
 				86A569BE180F7D3D000FD684 /* OHAttributedLabel.m in Sources */,
 				86A569BF180F7D3D000FD684 /* OHASBasicHTMLParser.m in Sources */,
+				979088D4182DF7710060A345 /* OHParagraphStyle.m in Sources */,
 				86A569C0180F7D3D000FD684 /* OHASBasicMarkupParser.m in Sources */,
 				86A569C1180F7D3D000FD684 /* OHASMarkupParserBase.m in Sources */,
 				86EE206617DD86DB00F5753A /* ReportViewController.m in Sources */,
@@ -4519,6 +4529,7 @@
 				9736BB0017C4892A007DFE36 /* DDFileLogger.m in Sources */,
 				9736BB0117C4892A007DFE36 /* DDLog.m in Sources */,
 				9736BB0217C4892A007DFE36 /* DDTTYLogger.m in Sources */,
+				979088D8182DF8950060A345 /* NSAttributedString+Attributes.m in Sources */,
 				9736BB0317C4892A007DFE36 /* ContextFilterLogFormatter.m in Sources */,
 				9736BB0417C4892A007DFE36 /* DispatchQueueLogFormatter.m in Sources */,
 				9736BB0617C4892A007DFE36 /* NSString+DDXML.m in Sources */,
@@ -4550,6 +4561,7 @@
 				9736BB5A17C489CE007DFE36 /* XMPPJID.m in Sources */,
 				9736BB5B17C489CE007DFE36 /* XMPPMessage.m in Sources */,
 				9736BB5C17C489CE007DFE36 /* XMPPModule.m in Sources */,
+				979088D5182DF7710060A345 /* OHTouchesGestureRecognizer.m in Sources */,
 				9736BB5D17C489CE007DFE36 /* XMPPParser.m in Sources */,
 				9736BB5E17C489CE007DFE36 /* XMPPPresence.m in Sources */,
 				9736BB5F17C489CE007DFE36 /* XMPPStream.m in Sources */,

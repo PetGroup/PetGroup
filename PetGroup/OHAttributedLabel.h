@@ -29,7 +29,7 @@
 #import <CoreText/CoreText.h>
 #import "NSAttributedString+Attributes.h"
 #import "NSTextCheckingResult+ExtendedURL.h"
-
+#import "OHParagraphStyle.h"
 
 /////////////////////////////////////////////////////////////////////////////////////
 #pragma mark - OHAttributedLabel Delegate Protocol

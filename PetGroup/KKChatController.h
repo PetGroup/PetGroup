@@ -71,9 +71,12 @@
     NSMutableArray * animationTwo;
     
     float diffH;
+    
+    UIMenuController * menu;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;
+@property (strong, nonatomic)  NSMutableArray *HeightArray;
 @property (strong, nonatomic)  UITextField *messageTextField;
 //@property (strong, nonatomic)  UIButton * sendBtn;
 @property(nonatomic, retain) NSString *chatWithUser;

@@ -351,20 +351,40 @@
 #pragma mark - imagePickerController delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init] ;
-    [library assetForURL:[info objectForKey:UIImagePickerControllerReferenceURL]
-             resultBlock:^(ALAsset *asset){
-                 // This get called asynchronously (possibly after a permissions question to the user).
-                 [self _addAttachmentFromAsset:asset];
-             }
-            failureBlock:^(NSError *error){
-                NSLog(@"error finding asset %@", [error debugDescription]);
-            }];
+    
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImage *gotImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        //        CIImage *image = nil;
+        //        image = [CIImage imageWithCGImage:gotImage.CGImage
+        //                                  options:@{kCIImageProperties : [info  objectForKey:UIImagePickerControllerMediaMetadata]}];
+        [self _addAttachmentFromAsset:gotImage];
+    } else {
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init] ;
+        [library assetForURL:[info objectForKey:UIImagePickerControllerReferenceURL]
+                 resultBlock:^(ALAsset *asset){
+                     // This get called asynchronously (possibly after a permissions question to the user).
+                     ALAssetRepresentation *rep = [asset defaultRepresentation];
+                     NSMutableData *data = [NSMutableData dataWithLength:[rep size]];
+                     NSError *error = nil;
+                     if ([rep getBytes:[data mutableBytes] fromOffset:0 length:[rep size] error:&error] == 0) {
+                         NSLog(@"error getting asset data %@", [error debugDescription]);
+                     } else {
+                         UIImage *img=[UIImage imageWithData:data];
+                         [self _addAttachmentFromAsset:img];
+                     }
+                     
+                 }
+                failureBlock:^(NSError *error){
+                    NSLog(@"error finding asset %@", [error debugDescription]);
+                }];
+    }
+    
     //    if (self.pictureArray == nil) {
     //        self.pictureArray = [[NSMutableArray alloc]init];
     //    }
     //    PhotoB.hidden = NO;
     [picker dismissViewControllerAnimated:YES completion:^{}];
+    [_dynamicTV becomeFirstResponder];
     //    UIImage*selectImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     //    UIImageView* imageV = [[UIImageView alloc]initWithFrame:PhotoB.frame];
     //    imageV.userInteractionEnabled = YES;
@@ -450,21 +470,21 @@
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate
 
-- (void)_addAttachmentFromAsset:(ALAsset *)asset;
+- (void)_addAttachmentFromAsset:(UIImage *)img;
 {
-    ALAssetRepresentation *rep = [asset defaultRepresentation];
-    NSMutableData *data = [NSMutableData dataWithLength:[rep size]];
+//    ALAssetRepresentation *rep = [asset defaultRepresentation];
+//    NSMutableData *data = [NSMutableData dataWithLength:[rep size]];
+//    
+//    
+//    
+//    NSError *error = nil;
+//    if ([rep getBytes:[data mutableBytes] fromOffset:0 length:[rep size] error:&error] == 0) {
+//        NSLog(@"error getting asset data %@", [error debugDescription]);
+//    } else {
+//        //        NSFileWrapper *wrapper = [[NSFileWrapper alloc] initRegularFileWithContents:data];
+//        //        wrapper.filename = [[rep url] lastPathComponent];
+//        UIImage *img=[UIImage imageWithData:data];
     
-    
-    
-    NSError *error = nil;
-    if ([rep getBytes:[data mutableBytes] fromOffset:0 length:[rep size] error:&error] == 0) {
-        NSLog(@"error getting asset data %@", [error debugDescription]);
-    } else {
-        //        NSFileWrapper *wrapper = [[NSFileWrapper alloc] initRegularFileWithContents:data];
-        //        wrapper.filename = [[rep url] lastPathComponent];
-        UIImage *img=[UIImage imageWithData:data];
-        
         NSString *newfilename=[NSAttributedString scanAttachmentsForNewFileName:_dynamicTV.attributedString];
         
         NSString *path = [RootDocPath stringByAppendingPathComponent:@"UploadTopicPics"];
@@ -560,11 +580,15 @@
         if (mutableAttributedString) {
             _dynamicTV.attributedString = mutableAttributedString;
         }
-        
+        [self performSelector:@selector(scrollToBottomw) withObject:nil afterDelay:0.3];
         //[_editor setValue:attachment forAttribute:OAAttachmentAttributeName inRange:selectedTextRange];
         
         
-    }
+//    }
 }
-
+-(void)scrollToBottomw
+{
+    CGPoint bottomOffset = CGPointMake(0, _dynamicTV.contentSize.height - _dynamicTV.bounds.size.height);
+    [_dynamicTV setContentOffset:bottomOffset animated:YES];
+}
 @end
