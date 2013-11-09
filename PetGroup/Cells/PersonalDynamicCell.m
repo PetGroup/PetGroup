@@ -63,7 +63,7 @@
         self.imageButtons = arr;
         
         self.timeL = [[UILabel alloc]init];
-        _timeL.backgroundColor = [UIColor whiteColor];
+        _timeL.backgroundColor = [UIColor whiteColor ];
         _timeL.textColor = [UIColor blackColor];
         _timeL.textAlignment = NSTextAlignmentCenter;
         _timeL.adjustsFontSizeToFitWidth = YES;
