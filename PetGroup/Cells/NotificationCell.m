@@ -36,15 +36,19 @@
         [self.contentImageV setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
         [self.contentView addSubview:self.contentImageV];
         
-        self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(220, 10, 80, 80)];
-        self.contentLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        self.contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(225, 15, 70, 70)];
+        self.contentLabel.backgroundColor = [UIColor clearColor];
         [self.contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         self.contentLabel.font = [UIFont systemFontOfSize:15];
         [self.contentLabel setNumberOfLines:0];
         [self.contentView addSubview:self.contentLabel];
         
+        self.replyBgImageV = [[UIImageView alloc] initWithFrame:CGRectMake(220, 10, 80, 80)];
+        [self.replyBgImageV setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+        [self.contentView addSubview:self.replyBgImageV];
+        
         self.replyLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 60, 150, 20)];
-        self.replyLabel.backgroundColor = [UIColor redColor];
+        self.replyLabel.backgroundColor = [UIColor clearColor];
 //        [self.replyLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self.replyLabel setNumberOfLines:0];
         self.replyLabel.font = [UIFont systemFontOfSize:15];

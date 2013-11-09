@@ -17,8 +17,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        float diffH = [Common diffHeight:nil];
         UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
-        bg.image = [UIImage imageNamed:@"biaoti"];
+        bg.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
         [self addSubview:bg];
         self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 200, 20)];
         _titleL.backgroundColor = [UIColor clearColor];

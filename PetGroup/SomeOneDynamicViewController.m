@@ -155,7 +155,7 @@
 #pragma mark - button action
 -(void)changeCoverImage
 {
-    UIActionSheet* addActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
+    UIActionSheet* addActionSheet = [[UIActionSheet alloc]initWithTitle:@"更换您的封面" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
     [addActionSheet showInView:self.view];
 }
 -(void)backButton

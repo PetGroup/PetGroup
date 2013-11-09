@@ -18,7 +18,9 @@ typedef enum {
 @interface OnceDynamicViewController : UIViewController
 {
     float diffH;
+    
 }
+@property (assign,nonatomic) BOOL needRequestDyn;
 @property (nonatomic,retain)Dynamic* dynamic;
 @property (nonatomic,assign)OnceDynamicViewControllerStyle onceDynamicViewControllerStyle;
 @property (nonatomic,weak)id<TableViewDatasourceDidChange>delegate;

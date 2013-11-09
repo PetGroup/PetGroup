@@ -524,6 +524,8 @@
 		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
 		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
 		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
+		979088CD182DE1360060A345 /* biaotidd.png in Resources */ = {isa = PBXBuildFile; fileRef = 979088CC182DE1360060A345 /* biaotidd.png */; };
+		979088CF182DE13F0060A345 /* biaotibtn_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 979088CE182DE13F0060A345 /* biaotibtn_01.png */; };
 		979546B817BA368F00D05874 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B717BA368F00D05874 /* UIKit.framework */; };
 		979546BA17BA368F00D05874 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546B917BA368F00D05874 /* Foundation.framework */; };
 		979546BC17BA368F00D05874 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 979546BB17BA368F00D05874 /* CoreGraphics.framework */; };
@@ -1411,6 +1413,8 @@
 		97703074182B6E34005E3018 /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
 		97703076182B7D69005E3018 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		97703077182B7D69005E3018 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		979088CC182DE1360060A345 /* biaotidd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaotidd.png; sourceTree = "<group>"; };
+		979088CE182DE13F0060A345 /* biaotibtn_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaotibtn_01.png; sourceTree = "<group>"; };
 		979546B417BA368F00D05874 /* PetGroup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetGroup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979546B717BA368F00D05874 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		979546B917BA368F00D05874 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1899,6 +1903,8 @@
 				865FDD2518079D4F005BB088 /* table_click.png */,
 				865FDD311807FCE7005BB088 /* quanzi_bg.png */,
 				865FDD331807FEC7005BB088 /* biaoti.png */,
+				979088CC182DE1360060A345 /* biaotidd.png */,
+				979088CE182DE13F0060A345 /* biaotibtn_01.png */,
 				9765D7AE181BEBFA0021B36F /* biaoti2.png */,
 				865FDD3E1808DA14005BB088 /* footer_bg.png */,
 				865FDD401808DA7A005BB088 /* shouqi.png */,
@@ -4131,6 +4137,7 @@
 				9736BDB317C49146007DFE36 /* addpicbtn.png in Resources */,
 				9736BDB417C49146007DFE36 /* brownlong-normal.png in Resources */,
 				9736BDB717C49146007DFE36 /* mysigbg.png in Resources */,
+				979088CF182DE13F0060A345 /* biaotibtn_01.png in Resources */,
 				97B73F6C1827944300064447 /* redCB2.png in Resources */,
 				9736BDB817C49146007DFE36 /* asigbg.png in Resources */,
 				9736BDBB17C49146007DFE36 /* filterbg.png in Resources */,
@@ -4338,6 +4345,7 @@
 				86A56A61180F8191000FD684 /* biaoqing073.png in Resources */,
 				86A56A62180F8191000FD684 /* biaoqing074.png in Resources */,
 				9765D78E181BB5A30021B36F /* os7normal_05.png in Resources */,
+				979088CD182DE1360060A345 /* biaotidd.png in Resources */,
 				86A56A63180F8191000FD684 /* biaoqing075.png in Resources */,
 				86A56A64180F8191000FD684 /* biaoqing076.png in Resources */,
 				86A56A65180F8191000FD684 /* biaoqing077.png in Resources */,
@@ -4811,8 +4819,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4839,8 +4847,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4862,8 +4870,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4884,8 +4892,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A94305C3-522F-4707-8869-F3EC8906C6F4";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A94305C3-522F-4707-8869-F3EC8906C6F4";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

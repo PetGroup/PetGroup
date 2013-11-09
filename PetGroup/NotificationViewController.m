@@ -7,7 +7,9 @@
 //
 
 #import "NotificationViewController.h"
-
+#import "CustomTabBar.h"
+#import "AppDelegate.h"
+#import "XMPPHelper.h"
 @interface NotificationViewController ()
 
 @end
@@ -66,6 +68,8 @@
     self.notiTableV.dataSource = self;
     self.notiTableV.delegate = self;
     [self.view addSubview:self.notiTableV];
+    
+    self.appDel = [[UIApplication sharedApplication] delegate];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -74,7 +78,16 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    self.appDel.xmppHelper.commentDelegate = self;
     [self readNewNoti];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    [defaultUserD setObject:self.notiArray forKey:notiKey];
+    [defaultUserD synchronize];
+
 }
 -(void)readNewNoti
 {
@@ -94,6 +107,18 @@
     [self.notiTableV reloadData];
     
 }
+-(void)newCommentReceived:(NSDictionary *)theDict
+{
+    [self storeReceivedNotification:theDict];
+}
+-(void)storeReceivedNotification:(NSDictionary *)theDict
+{
+    AudioServicesPlayAlertSound(1003);
+    [self.notiArray insertObject:theDict atIndex:0];
+    [self.notiTableV reloadData];
+}
+
+
 -(void)backButton
 {
     [[TempData sharedInstance] Panned:NO];
@@ -182,16 +207,19 @@
     CGSize size;
     if ([[cDict objectForKey:@"contentType"] isEqualToString:@"topic"]) {
         size = CGSizeMake(250,80);
-        cell.replyLabel.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        cell.replyLabel.backgroundColor = [UIColor clearColor];
         CGSize labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
         cell.replyLabel.frame = CGRectMake(cell.replyLabel.frame.origin.x, cell.replyLabel.frame.origin.y, 250, labelsize.height);
+        cell.replyBgImageV.frame = CGRectMake(cell.replyLabel.frame.origin.x-5, cell.replyLabel.frame.origin.y-5, 260, labelsize.height+10);
+        cell.replyBgImageV.hidden = NO;
         cell.contentLabel.hidden = YES;
         cell.contentImageV.hidden = YES;
     }
     else
     {
+        cell.replyBgImageV.hidden = YES;
         size = CGSizeMake(150,80);
-        cell.replyLabel.backgroundColor = [UIColor redColor];
+        cell.replyLabel.backgroundColor = [UIColor clearColor];
         CGSize labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
         cell.replyLabel.frame = CGRectMake(cell.replyLabel.frame.origin.x, cell.replyLabel.frame.origin.y, 150, labelsize.height);
         
@@ -202,7 +230,8 @@
         }
         else
         {
-            cell.contentImageV.hidden = YES;
+            cell.contentImageV.hidden = NO;
+            cell.contentImageV.image = nil;
             cell.contentLabel.hidden = NO;
             cell.contentLabel.text = [cDict objectForKey:@"content"];
         }
@@ -240,6 +269,7 @@
     {
         OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
         odVC.dynamic = [[Dynamic alloc] init];
+        odVC.needRequestDyn = YES;
         odVC.dynamic.dynamicID = tempID;
         [self.navigationController pushViewController:odVC animated:YES];
     }

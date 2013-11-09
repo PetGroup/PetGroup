@@ -20,8 +20,9 @@
 //        [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
 //        [searchB addTarget:self action:@selector(selector) forControlEvents:UIControlEventTouchUpInside];
 //        [self addSubview:searchB];
+        float diffH = [Common diffHeight:nil];
         UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
-        bg.image = [UIImage imageNamed:@"biaoti"];
+        bg.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
         [self addSubview:bg];
         UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 200, 20)];
         titleL.backgroundColor = [UIColor clearColor];
