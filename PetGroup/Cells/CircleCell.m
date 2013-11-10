@@ -50,7 +50,7 @@
         _nameL.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:_nameL];
         
-        self.joinI = [[UIImageView alloc]initWithFrame:CGRectMake(0, 75, 30, 20)];
+        self.joinI = [[UIImageView alloc]initWithFrame:CGRectMake(0, 75, 35, 23)];
         _joinI.image = [UIImage imageNamed:@"jiaru2"];
         [self.contentView addSubview:_joinI];
         _joinI.hidden = YES;
