@@ -46,7 +46,7 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
     [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
     [self.view addSubview:backButton];
@@ -63,8 +63,8 @@
     
     UIButton * doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [doneBtn setFrame:CGRectMake(240, diffH, 80, 44)];
-    [doneBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    [doneBtn setTitle:@"按昵称" forState:UIControlStateNormal];
+    [doneBtn.titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    [doneBtn setTitle:@"按手机号" forState:UIControlStateNormal];
     [self.view addSubview:doneBtn];
     [doneBtn addTarget:self action:@selector(doneBtnDo:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -101,14 +101,14 @@
 
 -(void)doneBtnDo:(UIButton *)sender
 {
-    if ([sender.currentTitle isEqualToString:@"按昵称"]) {
-        [sender setTitle:@"按手机号" forState:UIControlStateNormal];
+    if ([sender.currentTitle isEqualToString:@"按手机号"]) {
+        [sender setTitle:@"按昵称" forState:UIControlStateNormal];
         asearchBar.placeholder = @"输入手机号查找用户";
         searchCondition = @"username";
     }
     else
     {
-        [sender setTitle:@"按昵称" forState:UIControlStateNormal];
+        [sender setTitle:@"按手机号" forState:UIControlStateNormal];
         asearchBar.placeholder = @"输入昵称查找用户";
         searchCondition = @"nickname";
     }

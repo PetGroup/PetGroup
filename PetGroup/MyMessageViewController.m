@@ -24,6 +24,8 @@
     UIButton* attentionB;
     UIButton* hotPintsB;
     float diffH;
+    
+    BOOL free;
 }
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MyDynamicDataSource* myDynamicDS;
@@ -48,6 +50,16 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    free = YES;
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
+    }
+}
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -66,7 +78,7 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
@@ -263,6 +275,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -283,6 +296,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -382,11 +396,13 @@
         if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
                odVC.delegate = self;
            }
+        free = NO;
         [self.navigationController pushViewController:odVC animated:YES];
     }
     if (_presentDS == _myReplNOteDS) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_myReplNOteDS.dataSourceArray[indexPath.row]).articleID;
+        free = NO;
         [self.navigationController pushViewController:articleVC animated:YES];
     }
 }
@@ -394,6 +410,7 @@
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
+    free = NO;
     [self presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - dynamic list reload data

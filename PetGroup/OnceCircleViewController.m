@@ -63,7 +63,7 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
@@ -136,7 +136,7 @@
     [headView addSubview:personL];
     
     joinB = [UIButton buttonWithType:UIButtonTypeCustom];
-    joinB.frame = CGRectMake(240, 60, 71, 20);
+    joinB.frame = CGRectMake(240, 60, 71, 21);
     if (self.circleEntity.atte) {
         [joinB setBackgroundImage:[UIImage imageNamed:@"yijiaru"] forState:UIControlStateNormal];
     }else{

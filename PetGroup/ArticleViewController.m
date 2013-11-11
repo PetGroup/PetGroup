@@ -60,19 +60,19 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
     nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
+    nextB.frame = CGRectMake(235, 1+diffH, 80, 44);
     [nextB setTitle:@"只看楼主" forState:UIControlStateNormal];
-    nextB.titleLabel.font = [UIFont systemFontOfSize:14];
-    if (diffH==0) {
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-        
-    }
+    nextB.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+//    if (diffH==0) {
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+//        
+//    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     

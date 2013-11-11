@@ -56,7 +56,7 @@
     
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
@@ -187,6 +187,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -207,6 +208,7 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
                 //                    [self presentModalViewController:imagePicker animated:YES];
+                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];

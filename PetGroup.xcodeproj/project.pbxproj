@@ -255,6 +255,7 @@
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		9707FDF3181CFCEE00795C00 /* topBar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9707FDF2181CFCEE00795C00 /* topBar1.png */; };
 		970D0A121828911D00C7473E /* EditReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 970D0A111828911D00C7473E /* EditReplyViewController.m */; };
+		971020B4182F4E8D00BB28F9 /* backnew.png in Resources */ = {isa = PBXBuildFile; fileRef = 971020B3182F4E8D00BB28F9 /* backnew.png */; };
 		9715A191181E1890009891A6 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A18E181E1890009891A6 /* HPGrowingTextView.m */; };
 		9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9715A190181E1890009891A6 /* HPTextViewInternal.m */; };
 		9718F46117E8668300BEC495 /* dyn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9718F46017E8668300BEC495 /* dyn.png */; };
@@ -978,6 +979,7 @@
 		9707FDF2181CFCEE00795C00 /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
 		970D0A101828911D00C7473E /* EditReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReplyViewController.h; sourceTree = "<group>"; };
 		970D0A111828911D00C7473E /* EditReplyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditReplyViewController.m; sourceTree = "<group>"; };
+		971020B3182F4E8D00BB28F9 /* backnew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backnew.png; sourceTree = "<group>"; };
 		9715A18D181E1890009891A6 /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		9715A18E181E1890009891A6 /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
 		9715A18F181E1890009891A6 /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
@@ -3367,6 +3369,7 @@
 			isa = PBXGroup;
 			children = (
 				9736BD5F17C49146007DFE36 /* back.png */,
+				971020B3182F4E8D00BB28F9 /* backnew.png */,
 				9736BD6017C49146007DFE36 /* back2.png */,
 				9736BD6117C49146007DFE36 /* cat.png */,
 				9736BD6217C49146007DFE36 /* chat-profile.png */,
@@ -4103,6 +4106,7 @@
 				9736BD7917C49146007DFE36 /* chat_input.png in Resources */,
 				9736BD7A17C49146007DFE36 /* chat_send.png in Resources */,
 				9736BD7B17C49146007DFE36 /* denglu_click.png in Resources */,
+				971020B4182F4E8D00BB28F9 /* backnew.png in Resources */,
 				9736BD7C17C49146007DFE36 /* denglu_normal.png in Resources */,
 				9736BD7D17C49146007DFE36 /* fanhui.png in Resources */,
 				9765D78B181BB5A30021B36F /* os7normal_02.png in Resources */,
@@ -4825,8 +4829,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4853,8 +4857,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4876,8 +4880,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4898,8 +4902,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
