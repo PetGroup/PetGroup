@@ -179,7 +179,6 @@
     if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
         [self loadZanList];
     }
-    
     [self reloadData];
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -716,7 +715,11 @@
         if (array.count>0&&array.count<5) {
             self.zanPonsen = [[NSMutableString alloc]init];
             for (NSDictionary* dic in array) {
-                [self.zanPonsen appendFormat:@"%@",[dic objectForKey:@"nickname"]];
+                if ([[dic objectForKey:@"userid"] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+                    [self.zanPonsen appendString:@"我"];
+                }else{
+                    [self.zanPonsen appendFormat:@"%@",[dic objectForKey:@"nickname"]];
+                }
                 if (![dic isEqualToDictionary:[array lastObject]]) {
                     [self.zanPonsen appendFormat:@","];
                 }
@@ -727,7 +730,11 @@
         if (array.count>=5) {
             self.zanPonsen = [[NSMutableString alloc]init];
             for (int i = 0; i<5 ;i++) {
-                [self.zanPonsen appendFormat:@"%@",[array[i] objectForKey:@"nickname"]];
+                if ([[array[i] objectForKey:@"userid"] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+                    [self.zanPonsen appendString:@"我"];
+                }else{
+                    [self.zanPonsen appendFormat:@"%@",[array[i] objectForKey:@"nickname"]];
+                }
                 if (i!=4) {
                     [self.zanPonsen appendFormat:@","];
                 }
