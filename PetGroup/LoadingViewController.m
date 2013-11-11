@@ -55,12 +55,12 @@
         {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"OpenImg"];
             if (iPhone5) {
-                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"568screen.png"]];
+                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Default-568h@2x.png"]];
                 splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
             }
             else
             {
-                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"normalScreen.png"]];
+                splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Default@2x.png"]];
                 splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
             }
         }
@@ -69,12 +69,12 @@
     else
     {
         if (iPhone5) {
-            splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"568screen.png"]];
+            splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Default-568h@2x.png"]];
             splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
         }
         else
         {
-            splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"normalScreen.png"]];
+            splashImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Default@2x.png"]];
             splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
         }
     }

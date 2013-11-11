@@ -6,6 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+// Modified by Tolecen
+
 #import <UIKit/UIKit.h>
 //@class MainView;
 @interface CustomTabBar : UITabBarController {
