@@ -219,12 +219,12 @@
             origin+=245;
         }
     }else{
-        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        self.transmitMsgL.frame =CGRectMake (60, origin, 300, transmitMsgSize.height);
+        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        self.transmitMsgL.frame =CGRectMake (60, origin, 250, transmitMsgSize.height);
          _transmitMsgL.attributedText = self.dynamic.transmitMsg;
         origin = origin + transmitMsgSize.height +5;
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        _msgL.frame = CGRectMake(60, origin, 300, size.height);
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        _msgL.frame = CGRectMake(60, origin, 250, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {

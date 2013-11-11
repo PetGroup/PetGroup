@@ -17,6 +17,12 @@
         self.replyID = [dic objectForKey:@"id"];
         self.submitTime = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[dic objectForKey:@"ct"]];
         self.msg = [OHASBasicHTMLParser attributedStringByProcessingMarkupInString:[dic objectForKey:@"msg"]];
+        OHParagraphStyle* paragraphStyle = [OHParagraphStyle defaultParagraphStyle];
+        paragraphStyle.textAlignment = kCTJustifiedTextAlignment;
+        paragraphStyle.lineBreakMode = kCTLineBreakByWordWrapping;
+        paragraphStyle.firstLineHeadIndent = 0.f; // indentation for first line
+        paragraphStyle.lineSpacing = 5.f; // increase space between lines by 3 points
+        [_msg setParagraphStyle:paragraphStyle];
         [_msg setFont:[UIFont systemFontOfSize:15]];
         [_msg setTextAlignment:kCTTextAlignmentLeft lineBreakMode:kCTLineBreakByWordWrapping];
         self.userHeadImage = [[dic objectForKey:@"userImage"] componentsSeparatedByString:@"_"][0];

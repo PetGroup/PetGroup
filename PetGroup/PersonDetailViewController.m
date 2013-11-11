@@ -547,7 +547,6 @@
             [DataStoreManager saveUserInfo:recDict];
         }
         [self reloadDynamicData];
-
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -580,6 +579,30 @@
             [DataStoreManager saveUserInfo:recDict];
         }
         [self reloadDynamicData];
+        if ([DataStoreManager ifHaveThisFriend:self.hostInfo.userName]) {
+            [self.helloBtn setTitle:@"发消息" forState:UIControlStateNormal];
+            self.myFriend = YES;
+        }
+        else
+        {
+            [self.helloBtn setTitle:@"打招呼" forState:UIControlStateNormal];
+            self.myFriend = NO;
+            if ([DataStoreManager ifSayHellosHaveThisPerson:self.hostInfo.userName]&&[self.friendStatus isEqualToString:@"waiting"]) {
+                [self.helloBtn setTitle:@"同意" forState:UIControlStateNormal];
+                [self.helloBtn setFrame:CGRectMake(10, self.view.frame.size.height-10-40, 145, 40)];
+                [self.rejectBtn setTitle:@"拒绝" forState:UIControlStateNormal];
+                self.rejectBtn.hidden = NO;
+            }
+            if ([DataStoreManager ifSayHellosHaveThisPerson:self.hostInfo.userName]&&[self.friendStatus isEqualToString:@"rejected"]) {
+                self.helloBtn.hidden = YES;
+                [self.rejectBtn setTitle:@"已拒绝" forState:UIControlStateNormal];
+                self.rejectBtn.frame = CGRectMake(10, self.view.frame.size.height-10-40, 300, 40);
+                self.rejectBtn.enabled = NO;
+                
+                self.rejectBtn.hidden = NO;
+            }
+        }
+
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
