@@ -90,23 +90,26 @@
     [self.view addSubview:_tableV];
     
     UIImageView* bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
-    bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
+    bottomIV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+//    bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
     bottomIV.userInteractionEnabled = YES;
     [self.view addSubview:bottomIV];
     
     showB = [UIButton buttonWithType:UIButtonTypeCustom];
     [showB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [showB setTitle:@"分页" forState:UIControlStateNormal];
+    [showB setBackgroundImage:[UIImage imageNamed:@"pageChange"] forState:UIControlStateNormal];
+//    [showB setTitle:@"分页" forState:UIControlStateNormal];
     showB.frame = CGRectMake(10, 4.5, 60, 40);
     [showB addTarget:self action:@selector(changePageView) forControlEvents:UIControlEventTouchUpInside];
     showB.userInteractionEnabled = NO;
     [bottomIV addSubview:showB];
     
     UIButton* replyB = [UIButton  buttonWithType:UIButtonTypeCustom];
-    [replyB setTitle:@"回复" forState:UIControlStateNormal];
-    [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [replyB setBackgroundImage:[UIImage imageNamed:@"replyBottom_03"] forState:UIControlStateNormal];
+//    [replyB setTitle:@"回复" forState:UIControlStateNormal];
+//    [replyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [replyB addTarget:self action:@selector(owenrCellPressReplyButton) forControlEvents:UIControlEventTouchUpInside];
-    replyB.frame = CGRectMake(80, 4.5, 240, 40);
+    replyB.frame = CGRectMake(122, 7, 188, 35);
     [bottomIV addSubview:replyB];
     
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
