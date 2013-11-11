@@ -245,7 +245,6 @@
 }
 -(void)backButton
 {
-    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }

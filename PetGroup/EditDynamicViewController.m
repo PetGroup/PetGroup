@@ -143,6 +143,7 @@
     }
     if (self.pictureArray.count>0) {
         [hud show:YES];
+        [self.view bringSubviewToFront:hud];
         NSMutableArray* imageArray = [[NSMutableArray alloc]init];
         NSMutableArray* nameArray = [[NSMutableArray alloc]init];
         for (int i = 0;i< self.pictureArray.count;i++) {
@@ -327,7 +328,7 @@
     if (PhotoB.frame.origin.x < 250) {
         PhotoB.frame = CGRectMake(PhotoB.frame.origin.x+ PhotoB.frame.size.width +12.875, PhotoB.frame.origin.y, PhotoB.frame.size.width, PhotoB.frame.size.height);
     }else{
-        PhotoB.frame = CGRectMake(13, 250.5, PhotoB.frame.size.width, PhotoB.frame.size.height);
+        PhotoB.frame = CGRectMake(13, 280.5, PhotoB.frame.size.width, PhotoB.frame.size.height);
     }
     [_pictureArray addObject:imageV];
     if (_pictureArray.count == 9) {
