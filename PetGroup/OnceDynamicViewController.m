@@ -93,6 +93,7 @@
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self;
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableV];
     
     if (self.needRequestDyn) {
@@ -474,6 +475,7 @@
             cell.delegate = self;
         }
         cell.dynamic  = self.dynamic;
+        
         return cell;
     }else if(indexPath.section == 1){
         static NSString *cellIdentifier = @"zanCell";

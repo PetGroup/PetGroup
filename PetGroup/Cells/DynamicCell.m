@@ -33,19 +33,27 @@
     if (!dynamic.ifTransmitMsg) {
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height += (msgSize.height+10);
+        if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
+            height+=85;
+        }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
+            height+=165;
+        }else if(dynamic.smallImage.count>6){
+            height+=245;
+        }
     }else{
         CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height+=(size.height+5);
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
         height+=(msgSize.height+10);
+        if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
+            height+=80;
+        }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
+            height+=160;
+        }else if(dynamic.smallImage.count>6){
+            height+=240;
+        }
     }
-    if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
-        height+=85;
-    }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
-        height+=165;
-    }else if(dynamic.smallImage.count>6){
-        height+=245;
-    }
+    
 
     return height+=33.5;
 }
@@ -220,6 +228,7 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
+            origin-=5;
             int originX = 60;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
@@ -229,6 +238,7 @@
             }
             origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+            origin-=5;
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
@@ -245,6 +255,7 @@
             }
             origin+=165;
         }else if(self.dynamic.smallImage.count>6){
+            origin-=5;
             int originX = 60;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
@@ -269,7 +280,7 @@
             origin+=245;
         }
        
-        self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 250, origin-_msgL.frame.origin.y);
+        self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 255, origin-_msgL.frame.origin.y);
     }
     if (self.dynamic.ifIZaned) {
         _zanImageV.image = [UIImage imageNamed:@"zaned"];

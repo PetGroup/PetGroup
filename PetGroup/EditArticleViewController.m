@@ -317,9 +317,9 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [params setObject:[NSString stringWithFormat:@"bbsNoteId_%@",noteID] forKey:@"transmitUrl"];
-    [params setObject:@"" forKey:@"transmitMsg"];
-    [params setObject:@"0" forKey:@"ifTransmitMsg"];
-    [params setObject:[NSString stringWithFormat:@"我在%@发布了一篇帖子:\"%@\"",self.forumName,self.titleTF.text] forKey:@"msg"];
+    [params setObject:[NSString stringWithFormat:@"《%@》",self.titleTF.text] forKey:@"msg"];
+    [params setObject:@"true" forKey:@"ifTransmitMsg"];
+    [params setObject:[NSString stringWithFormat:@"我在%@发布了一篇帖子:",self.forumName] forKey:@"transmitMsg"];
     [params setObject:@"" forKey:@"imgid"];
     NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
     [body setObject:@"service.uri.pet_states" forKey:@"service"];

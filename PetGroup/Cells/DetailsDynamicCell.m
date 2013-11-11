@@ -21,6 +21,7 @@
 @property (nonatomic,retain)OHAttributedLabel* transmitMsgL;
 @property (nonatomic,retain)OHAttributedLabel* msgL;
 @property (nonatomic,retain)NSArray* imageButtons;
+@property (nonatomic,retain)UILabel*separatorL;
 @end
 @implementation DetailsDynamicCell
 +(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic;
@@ -29,19 +30,27 @@
     if (!dynamic.ifTransmitMsg) {
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
         height += msgSize.height;
+        if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
+            height+=103.3;
+        }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
+            height+=206.6;
+        }else if(dynamic.smallImage.count>6){
+            height+=309.9;
+        }
     }else{
         CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
         height+=(size.height+5);
         CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
         height+=(msgSize.height+5);
+        if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
+            height+=96.6;
+        }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
+            height+=193.2;
+        }else if(dynamic.smallImage.count>6){
+            height+=289.8;
+        }
     }
-    if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
-        height+=103.3;
-    }else if(dynamic.smallImage.count>3&&dynamic.smallImage.count<=6){
-        height+=206.6;
-    }else if(dynamic.smallImage.count>6){
-        height+=309.9;
-    }
+    
     return height;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -90,6 +99,9 @@
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
         [self.contentView addSubview:_msgL];
+        self.separatorL = [[UILabel alloc]init];
+        _separatorL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        [self.contentView addSubview:_separatorL];
     }
     return self;
 }
@@ -170,61 +182,63 @@
         self.transmitMsgL.frame =CGRectMake (10, 55, 300, transmitMsgSize.height);
         _transmitMsgL.attributedText = self.dynamic.transmitMsg;
         origin = origin + transmitMsgSize.height + 5;
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-        _msgL.frame = CGRectMake(10, origin, 300, size.height);
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(280, 200)];
+        _msgL.frame = CGRectMake(20, origin, 280, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 5;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 10;
+            int originX = 20;
             for (int i = 0; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 86.6, 86.6);
+                originX+=96.6;
             }
-            origin+=103.3;
+            origin+=96.6;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 10;
+            int originX = 20;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 86.6, 86.6);
+                originX+=96.6;
             }
-            originX = 10;
+            originX = 20;
             for (int i = 3; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+96.6, 86.6, 86.6);
+                originX+=96.6;
             }
-            origin+=206.6;
+            origin+=193.2;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 10;
+            int originX = 20;
             for (int i = 0; i<3; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin, 86.6, 86.6);
+                originX+=96.6;
             }
-            originX = 10;
+            originX = 20;
             for (int i = 3; i<6; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+103.3, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+96.6, 86.6, 86.6);
+                originX+=96.6;
             }
-            originX = 10;
+            originX = 20;
             for (int i = 6; i<self.dynamic.smallImage.count; i++) {
                 EGOImageButton * a = self.imageButtons[i];
                 a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+206.6, 93.3, 93.3);
-                originX+=103.3;
+                a.frame = CGRectMake(originX, origin+193.2, 86.6, 86.6);
+                originX+=96.6;
             }
-            origin+=309.9;
+            origin+=289.8;
         }
-        self.backView.frame = CGRectMake(_msgL.frame.origin.x, _msgL.frame.origin.y-3, 300, origin-_msgL.frame.origin.y);
+        self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-3, 300, origin-_msgL.frame.origin.y);
     }
+    
+    _separatorL.frame = CGRectMake(0, self.contentView.frame.size.height-1, 320, 1);
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

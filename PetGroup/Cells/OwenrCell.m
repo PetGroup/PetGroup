@@ -24,6 +24,7 @@
 @property(nonatomic,retain)UILabel* timeL;
 @property(nonatomic,retain)UILabel* locationL;
 @property (strong,nonatomic)DTAttributedTextContentView * textView;
+
 @end
 @implementation OwenrCell
 @synthesize mediaPlayers;

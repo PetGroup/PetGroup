@@ -430,12 +430,15 @@
 #pragma mark - dynamic list reload data
 -(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic
 {
-    [self.friendCircleDS.dataSourceArray removeObject:dynamic];
+    NSUInteger a = [self.friendCircleDS.dataSourceArray indexOfObject:dynamic];
+    [self.friendCircleDS.rowHighArray removeObjectAtIndex:a];
+    [self.friendCircleDS.dataSourceArray removeObjectAtIndex:a];
     [self.tableV reloadData];
 }
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
 {
     [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
+    [self.friendCircleDS.rowHighArray insertObject:[NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]] atIndex:0];
     [self.tableV reloadData];
 }
 -(void)dynamicListJustReload
