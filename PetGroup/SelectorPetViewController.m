@@ -118,6 +118,10 @@
         upLoadVC.petType = self.petType;
         upLoadVC.hostDic = self.dic;
         [self.navigationController pushViewController:upLoadVC animated:YES];
+    }else{
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物类型" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
     }
 }
 -(void)selectDog

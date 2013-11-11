@@ -81,7 +81,7 @@
     [self.view addSubview:xialaIV];
     
     UIButton* xialaB = [UIButton buttonWithType:UIButtonTypeCustom];
-    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, titleLabel.frame.origin.x+size.width+15, 44);
+    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
     [xialaB addTarget:self action:@selector(screen) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:xialaB];
     

@@ -108,6 +108,7 @@
     self.identifyingCodeTF = [[UITextField alloc]initWithFrame:CGRectMake(32.25, 150+diffH, 255.5, 20)];
     _identifyingCodeTF.placeholder = @"请输入验证码";
     _identifyingCodeTF.textAlignment = NSTextAlignmentCenter;
+    _identifyingCodeTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_identifyingCodeTF];
     
     reGetB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -115,7 +116,7 @@
     [reGetB setTitle:@"重新发送验证码（60s）" forState:UIControlStateNormal];
     [reGetB setBackgroundImage:[UIImage imageNamed:@"yanzhengma_normal"] forState:UIControlStateNormal];
     [reGetB setBackgroundImage:[UIImage imageNamed:@"yanzhengma_click"] forState:UIControlStateHighlighted];
-    reGetB.userInteractionEnabled = NO;
+    reGetB.enabled = NO;
     [reGetB addTarget:self action:@selector(reGetIdentifyingCode) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:reGetB];
     
@@ -157,19 +158,22 @@
         [alert show];
     }];
     [reGetB setTitle:@"重新发送验证码（60s）" forState:UIControlStateNormal];
-    reGetB.userInteractionEnabled = NO;
+    reGetB.enabled = NO;
     if (timer != nil) {
         [timer invalidate];
     }
     timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+    [reGetB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 -(void)countDown
 {
     i = i - 1;
     [reGetB setTitle:[NSString  stringWithFormat: @"重新发送验证码（%ds）",i]forState:UIControlStateNormal];
     if (i < 1) {
+        [reGetB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [reGetB setTitle:@"重新发送验证码" forState:UIControlStateNormal];
         [timer invalidate];
-        reGetB.userInteractionEnabled = YES;
+        reGetB.enabled = YES;
         i = 60;
         
     }

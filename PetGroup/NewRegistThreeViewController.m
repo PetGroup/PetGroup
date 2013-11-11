@@ -291,6 +291,11 @@
 }
 -(void)next
 {
+    if (_nameTF.text.length<=0) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入密码" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
     if (![IdentifyingString isValidatePassWord:_nameTF.text]) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请输入正确的密码格式" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
@@ -301,8 +306,8 @@
         [alert show];
         return;
     }
-    if (_nickNameTF.text.length<=0||_nickNameTF.text.length>16) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"昵称需在1到16个字之间" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+    if (_nickNameTF.text.length<=1||_nickNameTF.text.length>16) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"昵称需在2到16个字之间" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         return;
     }
