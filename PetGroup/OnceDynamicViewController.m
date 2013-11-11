@@ -838,11 +838,17 @@
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
 {
-    if (growingTextView.text.length>=1) {
-        [self didInput];
-        growingTextView.text = @"";
-        [growingTextView resignFirstResponder];
+    if (growingTextView.text.length<1) {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"说点什么吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles:nil];
+        [alert show];
+        return YES;
     }
+    if (growingTextView.text.length>400) {
+        growingTextView.text=[growingTextView.text substringToIndex:400];
+    }
+    [self didInput];
+    growingTextView.text = @"";
+    [growingTextView resignFirstResponder];
     return YES;
 }
 #pragma mark - Responding to keyboard events

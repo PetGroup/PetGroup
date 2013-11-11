@@ -146,7 +146,10 @@
 }
 -(void)next
 {
-    if (_dynamicTV.text.length<=0) {
+    if (_dynamicTV.text.length<=0)
+    {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"你还没有想好说些什么!" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
         return;
     }
     if (self.pictureArray.count>0) {
@@ -248,6 +251,10 @@
         _placeholderL.text = @"";
     }else{
         _placeholderL.text = @"今天想跟别人说点什么……";
+    }
+    if (textView.text.length>500)
+    {
+        textView.text=[textView.text substringToIndex:500];
     }
     
 }
