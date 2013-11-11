@@ -534,7 +534,6 @@
 		979546C217BA368F00D05874 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 979546C017BA368F00D05874 /* InfoPlist.strings */; };
 		979546C417BA368F00D05874 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546C317BA368F00D05874 /* main.m */; };
 		979546C817BA368F00D05874 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546C717BA368F00D05874 /* AppDelegate.m */; };
-		979546CA17BA368F00D05874 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 979546C917BA368F00D05874 /* Default.png */; };
 		979546CC17BA368F00D05874 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 979546CB17BA368F00D05874 /* Default@2x.png */; };
 		979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 979546CD17BA368F00D05874 /* Default-568h@2x.png */; };
 		9795471617BA36AE00D05874 /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546DE17BA36AD00D05874 /* MagicalImportFunctions.m */; };
@@ -597,8 +596,6 @@
 		97D5020717C49B6C00799BD4 /* CustomTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5020617C49B6C00799BD4 /* CustomTabBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97D5020A17C49BD200799BD4 /* AddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5020917C49BD200799BD4 /* AddContactViewController.m */; };
 		97D5021017C49CC500799BD4 /* XMLMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5020F17C49CC500799BD4 /* XMLMatcher.m */; };
-		97D5021317C4BBA300799BD4 /* 568screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021117C4BBA300799BD4 /* 568screen.png */; };
-		97D5021417C4BBA300799BD4 /* normalScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D5021217C4BBA300799BD4 /* normalScreen.png */; };
 		97D5CB1517E4171F008C47D3 /* KGStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D5CB1417E4171F008C47D3 /* KGStatusBar.m */; };
 		97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */; };
 		97D632FD1803F6EA00204363 /* third_common_selected_no.png in Resources */ = {isa = PBXBuildFile; fileRef = 86C799421803EAEE00DF89C5 /* third_common_selected_no.png */; };
@@ -1432,7 +1429,6 @@
 		979546C517BA368F00D05874 /* PetGroup-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PetGroup-Prefix.pch"; sourceTree = "<group>"; };
 		979546C617BA368F00D05874 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		979546C717BA368F00D05874 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		979546C917BA368F00D05874 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		979546CB17BA368F00D05874 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		979546CD17BA368F00D05874 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		979546DD17BA36AD00D05874 /* MagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalImportFunctions.h; sourceTree = "<group>"; };
@@ -1549,8 +1545,6 @@
 		97D5020917C49BD200799BD4 /* AddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddContactViewController.m; sourceTree = "<group>"; };
 		97D5020E17C49CC500799BD4 /* XMLMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLMatcher.h; sourceTree = "<group>"; };
 		97D5020F17C49CC500799BD4 /* XMLMatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLMatcher.m; sourceTree = "<group>"; };
-		97D5021117C4BBA300799BD4 /* 568screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 568screen.png; sourceTree = "<group>"; };
-		97D5021217C4BBA300799BD4 /* normalScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = normalScreen.png; sourceTree = "<group>"; };
 		97D5CB1317E4171F008C47D3 /* KGStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGStatusBar.h; sourceTree = "<group>"; };
 		97D5CB1417E4171F008C47D3 /* KGStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGStatusBar.m; sourceTree = "<group>"; };
 		97DA1C0217D42A5A00F7B507 /* HGPhotoWall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGPhotoWall.h; sourceTree = "<group>"; };
@@ -3466,9 +3460,6 @@
 				97D4BAD417E944EB00929BF4 /* icon.png */,
 				97D4BAD517E944EB00929BF4 /* icon@2x.png */,
 				979546C517BA368F00D05874 /* PetGroup-Prefix.pch */,
-				97D5021117C4BBA300799BD4 /* 568screen.png */,
-				97D5021217C4BBA300799BD4 /* normalScreen.png */,
-				979546C917BA368F00D05874 /* Default.png */,
 				979546CB17BA368F00D05874 /* Default@2x.png */,
 				979546CD17BA368F00D05874 /* Default-568h@2x.png */,
 			);
@@ -4087,7 +4078,6 @@
 				97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */,
 				97D632FD1803F6EA00204363 /* third_common_selected_no.png in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
-				979546CA17BA368F00D05874 /* Default.png in Resources */,
 				979546CC17BA368F00D05874 /* Default@2x.png in Resources */,
 				9765D798181BB5AE0021B36F /* os6normal_05.png in Resources */,
 				979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */,
@@ -4195,8 +4185,6 @@
 				9736BE0417C49146007DFE36 /* tupian5.png in Resources */,
 				9736BE0817C49146007DFE36 /* yanzhengma_click.png in Resources */,
 				9736BE0917C49146007DFE36 /* yanzhengma_normal.png in Resources */,
-				97D5021317C4BBA300799BD4 /* 568screen.png in Resources */,
-				97D5021417C4BBA300799BD4 /* normalScreen.png in Resources */,
 				97DB09B917C5B037000EC195 /* anjiao.png in Resources */,
 				97DB09BA17C5B037000EC195 /* cat_click.png in Resources */,
 				9765D7A2181BB5B80021B36F /* os6select_05.png in Resources */,
