@@ -11,11 +11,13 @@
 #import "TempData.h"
 #import "Article.h"
 #import "articleCell.h"
+#import "ArticleViewController.h"
 
 @interface SearchViewController ()<MJRefreshBaseViewDelegate>
 {
     UISearchBar * asearchBar;
     UISearchDisplayController * searchDisplay;
+    BOOL free;
 }
 @property (strong,nonatomic) UITableView * resultTable;
 @property (strong,nonatomic) MJRefreshFooterView *footer;
@@ -38,6 +40,16 @@
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    free = YES;
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
+    }
 }
 - (void)viewDidLoad
 {
@@ -101,13 +113,12 @@
 }
 -(void)searchBarData
 {
-    //body={"method":"searchNote","token":"","params":{"forumid":"0","notename":"我","pageNo":"1","pageSize":"10"}}
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:self.notename forKey:@"condition"];
     [params setObject:@"SEARCH" forKey:@"action"];
-    [params setObject:@"true" forKey:@"withTop"];
+    [params setObject:@"false" forKey:@"withTop"];
     [params setObject:self.forumPid forKey:@"forumId"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
@@ -141,7 +152,6 @@
 #pragma mark - button action
 -(void)backButton
 {
-    [_footer free];
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -167,8 +177,12 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = ((Article*)self.resultArray[indexPath.row]).articleID;
+    [self.navigationController pushViewController:articleVC animated:YES];
 }
 
 #pragma mark -

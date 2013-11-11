@@ -30,7 +30,7 @@
 #import "Article.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
-@interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate>
+@interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate>
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
@@ -419,6 +419,7 @@
     }else{
         OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
         onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section-1]).circleArray[indexPath.row];
+        onceCircleVC.delegate = self;
         [self.navigationController pushViewController:onceCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
@@ -467,6 +468,10 @@
     }
 }
 #pragma mark - load data
+-(void)joinOrQuitCircle
+{
+    [self reloadAttentionData];
+}
 -(void)reloadAttentionData
 {
     [_attentionDS reloadDataSuccess:^{

@@ -134,7 +134,7 @@
             showB.userInteractionEnabled = NO;
         }
         self.pageNo = 0;
-        [self loadMoreData];
+        [self reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -147,6 +147,13 @@
 #pragma mark - button action
 -(void)next
 {
+    if ([self.view.subviews containsObject:self.pageV]) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
+        }completion:^(BOOL finished) {
+            [_pageV removeFromSuperview];
+        }];
+    }
     if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
         [nextB setTitle:@"查看全部" forState:UIControlStateNormal];
         self.pageNo = 0;
@@ -423,6 +430,46 @@
     [self.navigationController pushViewController:webVC animated:YES];
 }
 #pragma mark - load data
+-(void)reloadData
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    if (![nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+        [params setObject:self.ariticle.userId forKey:@"userId"];
+    }
+    [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
+    [params setObject:self.articleID forKey:@"noteId"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getReplyList" forKey:@"method"];
+    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.dataSourceArray removeAllObjects];
+        NSArray* array = [responseObject objectForKey:@"data"];
+        if (array.count>0) {
+            for (NSDictionary* dic in array) {
+                NoteReply* rep = [[NoteReply alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:rep];
+            }
+            [self.replyHighArray removeAllObjects];
+            for (NoteReply* rep in self.dataSourceArray) {
+                float high = [FollowerCell heightForRowWithArticle:rep];
+                [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
+            }
+        }
+        [self.tableV reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
 -(void)loadMoreData
 {
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
@@ -472,7 +519,8 @@
 }
 -(void)editReplyViewDidEdit
 {
-    self.pageNo = 0;
-    [self loadMoreData];
+    int a = [self.ariticle.replyCount intValue];
+    self.ariticle.replyCount = [NSString stringWithFormat:@"%d",a++];
+    [self reloadData];
 }
 @end

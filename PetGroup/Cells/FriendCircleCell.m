@@ -39,13 +39,13 @@
     if (_dynamic.smallImage.count>0) {
         _imageV.hidden = NO;
         _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[0]]];
-        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 50)];
-        _titleL.frame = CGRectMake(70, 10, 140, size.height);
+        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(230, 40)];
+        _titleL.frame = CGRectMake(70, 10, 230, size.height);
     }else{
         _imageV.hidden = YES;
         _imageV.imageURL = [NSURL URLWithString:@""];
-        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 50)];
-        _titleL.frame = CGRectMake(10, 10, 300, size.height);
+        CGSize size =  [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 40)];
+        _titleL.frame = CGRectMake(20, 10, 280, size.height);
     }
     
     _titleL.attributedText = _dynamic.msg;

@@ -279,7 +279,7 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            
+            [self.delegate joinOrQuitCircle];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
@@ -301,7 +301,7 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"%@",responseObject);
-            
+            [self.delegate joinOrQuitCircle];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
         }];
@@ -395,6 +395,7 @@
 }
 -(void)showSearchView
 {
+    [self screen];
     free = NO;
     SearchViewController* searchVC = [[SearchViewController alloc]init];
     searchVC.forumPid = self.circleEntity.circleID;
