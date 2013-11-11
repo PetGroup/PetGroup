@@ -91,7 +91,15 @@
     
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    tool.image = [UIImage imageNamed:@"table_bg"];
+    if (diffH==0.0f) {
+        tool.image = [UIImage imageNamed:@"table_bg"];
+    }
+    else
+    {
+        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        tool.layer.borderColor = [[UIColor grayColor] CGColor];
+        tool.layer.borderWidth = 1;
+    }
     tool.userInteractionEnabled = YES;
     _dynamicTV.inputAccessoryView = tool;
     

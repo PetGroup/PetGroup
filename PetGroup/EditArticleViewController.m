@@ -58,7 +58,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [_dynamicTV becomeFirstResponder];
+    [_titleTF becomeFirstResponder];
 }
 - (void)viewDidLoad
 {
@@ -74,11 +74,21 @@
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
-    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
-    [self.view addSubview:backButton];
-    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
+//    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
+//    [self.view addSubview:backButton];
+//    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(5, 5+diffH, 70, 34);
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    if (diffH==0.0f) {
+        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
+    [cancelBtn addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:cancelBtn];
     
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -174,9 +184,11 @@
 #pragma mark - button action
 -(void)backButton:(UIButton*)button
 {
-    [[TempData sharedInstance] Panned:NO];
-
-    [self.navigationController popViewControllerAnimated:YES];
+//    [[TempData sharedInstance] Panned:NO];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+//    [self.navigationController popViewControllerAnimated:YES];
 //    [self dismissViewControllerAnimated:YES completion:^{
 //        
 //    }];
@@ -218,6 +230,8 @@
         return;
     }
     [hud show:YES];
+    [_titleTF resignFirstResponder];
+    [_dynamicTV resignFirstResponder];
     NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
     if (fileArray.count>0) {
         NSMutableArray *uploadImageArray = [NSMutableArray array];
