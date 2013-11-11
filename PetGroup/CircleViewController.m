@@ -380,6 +380,7 @@
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 
 #pragma mark - collection view delegate flow layout

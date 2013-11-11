@@ -197,12 +197,12 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                                   cellFrame.origin.y+SLIDE_MARGIN,
                                   txtsize.width, txtsize.height);
         
-        CGRect imgrect=CGRectMake(cellFrame.origin.x+ (cellFrame.size.width-imgsize.width)/2,
+        CGRect imgrect=CGRectMake(cellFrame.origin.x+ (275-imgsize.width)/2,
                                   txtrect.origin.y+txtrect.size.height+SLIDE_BEYWEEN_MARGIN,
                                   imgsize.width,
                                   imgsize.height);
         if (txtsize.height==0) {
-            imgrect=CGRectMake(cellFrame.origin.x+ (cellFrame.size.width-imgsize.width)/2,
+            imgrect=CGRectMake(cellFrame.origin.x+ (275-imgsize.width)/2,
                                cellFrame.origin.y+SLIDE_MARGIN,
                                imgsize.width,
                                imgsize.height);
@@ -220,7 +220,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
         UIGraphicsPushContext(ctx);
         UIImage *imgpicbox=[UIImage imageNamed:bgImageName];        
         imgpicbox=[imgpicbox stretchableImageWithLeftCapWidth:imgpicbox.size.width*0.5 topCapHeight:imgpicbox.size.height*0.5];
-        [imgpicbox drawInRect:cellFrame];
+        [imgpicbox drawInRect:CGRectMake(cellFrame.origin.x, cellFrame.origin.y, 275, cellFrame.size.height)];
 
     
        // [_image drawInRect:imgrect];

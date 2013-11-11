@@ -110,8 +110,8 @@
     [self.view addSubview:_titleTF];
     
     self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
-    _dynamicTV.backgroundColor = [UIColor clearColor];
-    _dynamicTV.font = [UIFont systemFontOfSize:16];
+//    _dynamicTV.backgroundColor = [UIColor clearColor];
+//    _dynamicTV.font = [UIFont systemFontOfSize:16];
 //    _dynamicTV.delegate = self;
     
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
