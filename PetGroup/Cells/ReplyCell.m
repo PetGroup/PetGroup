@@ -16,12 +16,13 @@
 }
 @property (nonatomic,retain)UILabel* timeL;
 @property (nonatomic,retain)OHAttributedLabel* msgL;
+@property (nonatomic,retain)UILabel * separatorL;
 @end
 @implementation ReplyCell
 +(CGFloat)heightForRowWithDynamic:(Reply*)reply;
 {
-    CGFloat height = 60;
-    CGSize msgSize = [reply.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
+    CGFloat height = 45;
+    CGSize msgSize = [reply.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
     return height += msgSize.height;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -50,6 +51,9 @@
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
         [self.contentView addSubview:_msgL];
+        self.separatorL = [[UILabel alloc]init];
+        _separatorL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        [self.contentView addSubview:_separatorL];
         
     }
     return self;
@@ -71,12 +75,14 @@
     [nameB setTitle:self.reply.nickName forState:UIControlStateNormal];
     
     CGSize timeSize = [self.reply.submitTime sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(250, 12) lineBreakMode:NSLineBreakByWordWrapping];
-    _timeL.frame = CGRectMake(60, 30, timeSize.width, timeSize.height);
+    _timeL.frame = CGRectMake(250, 10, timeSize.width, timeSize.height);
     _timeL.text = self.reply.submitTime;
     
-    CGSize size = [self.reply.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
-    _msgL.frame = CGRectMake(10, 55, 300, size.height);
+    CGSize size = [self.reply.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+    _msgL.frame = CGRectMake(60, 35, 250, size.height);
     _msgL.attributedText = self.reply.msg;
+    
+    _separatorL.frame = CGRectMake(50, self.contentView.frame.size.height-1, 270, 1);
 }
 -(void)PersonDetail
 {
