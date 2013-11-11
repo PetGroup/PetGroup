@@ -161,7 +161,6 @@
     CGSize timeSize = [self.dynamic.submitTime sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:CGSizeMake(250, 12) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.frame = CGRectMake(60, 40, timeSize.width, timeSize.height);
     _timeL.text = self.dynamic.submitTime;
-    
     CGFloat origin = 60;
     
     if (!self.dynamic.ifTransmitMsg) {

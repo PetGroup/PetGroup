@@ -195,7 +195,6 @@
         [self searchBarData];
         [asearchBar resignFirstResponder];
     }
-    
 }
 #pragma mark MJRefreshBaseView delegate
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
