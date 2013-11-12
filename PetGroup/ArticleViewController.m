@@ -142,6 +142,7 @@
         
     }];
 }
+//-(void)
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -214,23 +215,30 @@
         pageB.frame = CGRectMake(x, 0, 40, 44);
         x+=40;
         [scV addSubview:pageB];
+        if (i == self.pageNo+1) {
+            [pageB setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        }
         if (i != self.pageNo+1) {
             [pageB addTarget:self action:@selector(pageSelect:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
     UIButton * liftB = [UIButton buttonWithType:UIButtonTypeCustom];
     liftB.frame = CGRectMake(0, 0, 60, 44);
-    [liftB setTitle:@"左" forState:UIControlStateNormal];
+    [liftB setTitle:@"上一页" forState:UIControlStateNormal];
     [_pageV addSubview:liftB];
     if (self.pageNo > 0) {
         [liftB addTarget:self action:@selector(pageUp) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [liftB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     }
     UIButton * rightB = [UIButton buttonWithType:UIButtonTypeCustom];
     rightB.frame = CGRectMake(260, 0, 60, 44);
-    [rightB setTitle:@"右" forState:UIControlStateNormal];
+    [rightB setTitle:@"下一页" forState:UIControlStateNormal];
     [_pageV addSubview:rightB];
     if (self.pageNo < a-1) {
         [rightB addTarget:self action:@selector(pageDown) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [rightB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     }
     [self.view insertSubview:_pageV aboveSubview:_tableV];
     [UIView animateWithDuration:0.3 animations:^{
@@ -455,6 +463,11 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
+        if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+            self.ariticle.replyCount = [NSString stringWithFormat:@"%d",[[responseObject objectForKey:@"totalCount"] integerValue]];
+        }else{
+            self.ariticle.cTotalReply = [NSString stringWithFormat:@"%d",[[responseObject objectForKey:@"totalCount"] integerValue]];
+        }
         [self.dataSourceArray removeAllObjects];
         NSArray* array = [responseObject objectForKey:@"data"];
         if (array.count>0) {
@@ -495,6 +508,11 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
+        if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+            self.ariticle.replyCount = [NSString stringWithFormat:@"%d",[[responseObject objectForKey:@"totalCount"] integerValue]];
+        }else{
+            self.ariticle.cTotalReply = [NSString stringWithFormat:@"%d",[[responseObject objectForKey:@"totalCount"] integerValue]];
+        }
         [self.dataSourceArray removeAllObjects];
         NSArray* array = [responseObject objectForKey:@"data"];
         if (array.count>0) {
@@ -522,8 +540,13 @@
 }
 -(void)editReplyViewDidEdit
 {
-    int a = [self.ariticle.replyCount intValue];
-    self.ariticle.replyCount = [NSString stringWithFormat:@"%d",a++];
+    if ([self.view.subviews containsObject:self.pageV]) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
+        }completion:^(BOOL finished) {
+            [_pageV removeFromSuperview];
+        }];
+    }
     [self reloadData];
 }
 @end

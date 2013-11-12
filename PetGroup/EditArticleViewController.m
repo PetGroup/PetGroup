@@ -323,11 +323,36 @@
         [hud hide:YES];
         NSLog(@"stringuu = %@",responseObject);
         [self upOneDymicWithNoteID:responseObject];
+        
+        
         [self backButton:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+}
+-(void)getMyArticleWithId:(NSString*)articleId
+{
+    NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+    dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    NSString*dateS = [dateF stringFromDate:[NSDate date]];
+    NSDictionary* d = [DataStoreManager queryMyInfo];
+    NSString* articleid = articleId;
+    NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
+    [dic setObject:articleid forKey:@"id"];
+    [dic setObject:[d objectForKey:@"nickname"] forKey:@"nickname"];
+    [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
+    [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
+    [dic setObject:self.dynamicTV.text forKey:@"msg"];
+    [dic setObject:[d objectForKey:@"id"] forKey:@"userIcon"];
+    [dic setObject:dateS forKey:@"ct"];
+    [dic setObject:@"" forKey:@"transmitUrl"];
+    [dic setObject:@"3" forKey:@"state"];
+    [dic setObject:@"0" forKey:@"reportTimes"];
+    [dic setObject:@"" forKey:@"transmitMsg"];
+    [dic setObject:@"0" forKey:@"totalPat"];
+    [dic setObject:@"0" forKey:@"didIpat"];
+    Article* aricle = [[Article alloc]initWithDictionnary:dic];
 }
 -(void)upOneDymicWithNoteID:(NSString*)noteID
 {

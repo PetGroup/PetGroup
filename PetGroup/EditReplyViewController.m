@@ -17,6 +17,7 @@
 #import "UIImage-Extensions.h"
 #import "NSAttributedString+TextUtil.h"
 #import "TextConfig.h"
+#import "IdentifyingString.h"
 @interface EditReplyViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
     UIButton* PhotoB;
@@ -169,7 +170,7 @@
 
 -(void)next
 {
-    if (_dynamicTV.text.length<4) {
+    if (_dynamicTV.text.length<4||[IdentifyingString isValidateAllSpace:_dynamicTV.text]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不写点内容能行么，至少4个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
