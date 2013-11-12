@@ -15,7 +15,7 @@
 @property (nonatomic,retain)UILabel* topicL;
 @property (nonatomic,retain)UILabel* replyL;
 @property (nonatomic,retain)UILabel* nameL;
-@property (nonatomic,retain)UIImageView* joinI;
+@property (nonatomic,retain)UILabel* joinI;
 
 @end
 @implementation CircleCell
@@ -28,31 +28,34 @@
         UIImageView* bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 152.5, 100)];
         bg.image = [UIImage imageNamed:@"quanzi_bg"];
         [self.contentView addSubview:bg];
-        self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
+        self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 40, 50, 50)];
         _imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
-        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 80, 13)];
+        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 80, 13)];
         _todayTopicL.backgroundColor = [UIColor clearColor];
-        _todayTopicL.textColor = [UIColor orangeColor];
+//        _todayTopicL.textColor = [UIColor orangeColor];
         _todayTopicL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_todayTopicL];
-        self.topicL = [[UILabel alloc]initWithFrame:CGRectMake(70, 28, 80, 13)];
+        self.topicL = [[UILabel alloc]initWithFrame:CGRectMake(70, 58, 80, 13)];
         _topicL.backgroundColor = [UIColor clearColor];
         _topicL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_topicL];
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(70, 46, 80, 13)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(70, 76, 80, 13)];
         _replyL.backgroundColor = [UIColor clearColor];
         _replyL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_replyL];
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(0, 75, 152.5, 20)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(5, 3, 152.5, 20)];
         _nameL.backgroundColor = [UIColor clearColor];
         _nameL.font = [UIFont boldSystemFontOfSize:14];
-        _nameL.textAlignment = NSTextAlignmentCenter;
+//        _nameL.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:_nameL];
         
-        self.joinI = [[UIImageView alloc]initWithFrame:CGRectMake(0, 75, 35, 23)];
-        _joinI.image = [UIImage imageNamed:@"jiaru2"];
+        self.joinI = [[UILabel alloc]initWithFrame:CGRectMake(116, 3, 35, 23)];
+        _joinI.text = @"已关注";
+        _joinI.textColor = [UIColor grayColor];
+        _joinI.textAlignment = NSTextAlignmentRight;
         [self.contentView addSubview:_joinI];
+        _joinI.font = [UIFont systemFontOfSize:11];
         _joinI.hidden = YES;
     }
     return self;
@@ -75,9 +78,9 @@
     _replyL.text = [NSString stringWithFormat:@"回复:%@",self.entity.totalReply];
     _nameL.text = [NSString stringWithFormat:@"%@",self.entity.name];
     if (!self.entity.atte) {
-        _joinI.hidden = NO;
-    }else{
         _joinI.hidden = YES;
+    }else{
+        _joinI.hidden = NO;
     }
 }
 @end

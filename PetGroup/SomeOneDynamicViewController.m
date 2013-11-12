@@ -15,6 +15,7 @@
 #import "SRRefreshView.h"
 #import "PersonalDynamicCell.h"
 #import "HostInfo.h"
+#import "ArticleViewController.h"
 @interface SomeOneDynamicViewController ()<UITableViewDelegate,UITableViewDataSource,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
 {
     BOOL free;
@@ -300,13 +301,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     free = NO;
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-    odVC.dynamic = self.dataSourceArray[indexPath.row];
-    if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
-        odVC.delegate = self;
-    }
-    [self.navigationController pushViewController:odVC animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+//    odVC.dynamic = self.dataSourceArray[indexPath.row];
+//    if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
+//        odVC.delegate = self;
+//    }
+//    [self.navigationController pushViewController:odVC animated:YES];
+    NSMutableString* noteId = [NSMutableString  stringWithString:((Dynamic*)self.dataSourceArray[indexPath.row]).transmitUrl];
+    [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
+    NSLog(@"%@",noteId);
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = noteId;
+    [self.navigationController pushViewController:articleVC animated:YES];
 }
 #pragma mark - table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

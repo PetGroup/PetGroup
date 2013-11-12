@@ -386,18 +386,19 @@
 #pragma mark - collection view delegate flow layout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        return CGSizeMake(310, 70);
-    }else if(indexPath.section == 1 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
+//    if (indexPath.section == 0) {
+//        return CGSizeMake(310, 70);
+//    }else
+    if(indexPath.section == 0 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
         return CGSizeMake(310, 70);
     }else
         return CGSizeMake(152.5, 100);
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return CGSizeZero;
-    }
+//    if (section == 0) {
+//        return CGSizeZero;
+//    }
     return CGSizeMake(320, 26);
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
@@ -410,25 +411,25 @@
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
-        FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
-        [self.navigationController pushViewController:friendCircleVC animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
-    }else if(indexPath.section == 1&&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
-        return;
-    }else{
+//    if (indexPath.section == 0) {
+//        FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
+//        [self.navigationController pushViewController:friendCircleVC animated:YES];
+//        [self.customTabBarController hidesTabBar:YES animated:YES];
+//    }else if(indexPath.section == 1&&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
+//        return;
+//    }else{
         OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
-        onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section-1]).circleArray[indexPath.row];
+        onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
         onceCircleVC.delegate = self;
         [self.navigationController pushViewController:onceCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
-    }
+//    }
 }
 #pragma mark - footer view delegate
 -(void)footerView:(FooterView*)footerV didSelectUnfoldBAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    ((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section-1]).zhankai = !((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section-1]).zhankai;
+    ((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section]).zhankai = !((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section]).zhankai;
     [self.attentionV reloadData];
     
     
