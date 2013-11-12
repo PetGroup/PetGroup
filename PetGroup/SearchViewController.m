@@ -143,6 +143,10 @@
                 [self.resultArray addObject:a];
             }
         }
+        else
+        {
+            
+        }
         [self.resultTable reloadData];
         [_footer endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
