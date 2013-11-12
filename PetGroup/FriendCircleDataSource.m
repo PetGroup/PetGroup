@@ -17,7 +17,7 @@
     self = [super init];
     if (self) {
         self.replyCountDic = [[NSMutableDictionary alloc]init];
-        self.rowHighArray = [[NSMutableArray alloc]init];
+//        self.rowHighArray = [[NSMutableArray alloc]init];
     }
     return self;
 }
@@ -49,7 +49,7 @@
                 Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
                 [self.dataSourceArray addObject:b];
                 [self saveReplyNumberDic:b];
-                [self saverowHighArray:b];
+//                [self saverowHighArray:b];
             }
             
         }
@@ -83,7 +83,7 @@
                 Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
                 [self.dataSourceArray addObject:b];
                 [self saveReplyNumberDic:b];
-                [self saverowHighArray:b];
+//                [self saverowHighArray:b];
             }
         }
         success();
@@ -123,11 +123,11 @@
         
     }];
 }
--(void)saverowHighArray:(Dynamic*)dynamic
-{
-    NSString* high = [NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]];
-    [self.rowHighArray addObject:high];
-}
+//-(void)saverowHighArray:(Dynamic*)dynamic
+//{
+//    NSString* high = [NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]];
+//    [self.rowHighArray addObject:high];
+//}
 #pragma mark - table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

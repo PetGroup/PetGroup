@@ -28,6 +28,8 @@
         allHeadImgArray = [NSMutableArray array];
         pyChineseArray = [NSMutableArray array];
         searchResultArray = [NSArray array];
+        
+        firstOpen = YES;
     }
     return self;
 }
@@ -142,7 +144,10 @@
 //        [self tempMakeSomeData];
 //        [self performSelector:@selector(displayMsgsForDefaultView) withObject:nil afterDelay:4];
         [self displayMsgsForDefaultView];
-        
+        if (firstOpen) {
+            [self.customTabBarController setSelectedPage:1];
+            firstOpen = NO;
+        }
 //        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 //        NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
 //        int unreadComment = 0;
@@ -159,6 +164,8 @@
         
         [self readNewNoti];
     }
+
+    
 }
 -(void)readNewNoti
 {
@@ -208,6 +215,8 @@
     self.appDel.xmppHelper.processFriendDelegate = self;
     self.appDel.xmppHelper.addReqDelegate = self;
     self.appDel.xmppHelper.commentDelegate = self;
+    
+//    [self.customTabBarController setSelectedPage:1];
 //    self.appDel.xmppHelper.notConnect = self;
 }
 
