@@ -23,7 +23,7 @@
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
 
-@interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
+@interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate,EditArticleViewDelegate>
 {
     BOOL free;
     UIButton* joinB;
@@ -243,6 +243,13 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma maek -
+#pragma maek - lingshi
+-(void)editArticleViewDidEdit:(Article *)aricle
+{
+    [hotPintsDS.dataSourceArray insertObject:aricle atIndex:0];
+    [self.tableV reloadData];
+}
 #pragma mark - button action
 -(void)backButton
 {
@@ -255,6 +262,7 @@
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
     editAVC.forumId = self.circleEntity.circleID;
     editAVC.forumName = self.circleEntity.name;
+    editAVC.delegate = self;
     [self presentViewController:editAVC animated:YES completion:^{
         
     }];

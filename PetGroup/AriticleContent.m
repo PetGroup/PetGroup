@@ -22,7 +22,7 @@
         self.userName = [info objectForKey:@"nickname"];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
         self.headImage = arr[0];
-        self.ct =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
+        self.ct =[Common noteContentCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
         self.userId = [info objectForKey:@"userId"];
     }
     return self;

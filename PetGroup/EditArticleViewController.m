@@ -323,7 +323,7 @@
         [hud hide:YES];
         NSLog(@"stringuu = %@",responseObject);
         [self upOneDymicWithNoteID:responseObject];
-        
+        [self getMyArticleWithId:responseObject];
         
         [self backButton:nil];
         
@@ -341,18 +341,22 @@
     NSMutableDictionary* dic = [[NSMutableDictionary alloc]init];
     [dic setObject:articleid forKey:@"id"];
     [dic setObject:[d objectForKey:@"nickname"] forKey:@"nickname"];
-    [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
-    [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
-    [dic setObject:self.dynamicTV.text forKey:@"msg"];
-    [dic setObject:[d objectForKey:@"id"] forKey:@"userIcon"];
+    [dic setObject:[d objectForKey:@"img"] forKey:@"userIcon"];
+    [dic setObject:[d objectForKey:@"id"] forKey:@"userId"];
+    [dic setObject:self.titleTF.text forKey:@"name"];
     [dic setObject:dateS forKey:@"ct"];
-    [dic setObject:@"" forKey:@"transmitUrl"];
-    [dic setObject:@"3" forKey:@"state"];
-    [dic setObject:@"0" forKey:@"reportTimes"];
-    [dic setObject:@"" forKey:@"transmitMsg"];
-    [dic setObject:@"0" forKey:@"totalPat"];
-    [dic setObject:@"0" forKey:@"didIpat"];
+    [dic setObject:dateS forKey:@"et"];
+    [dic setObject:@"0" forKey:@"cTotalReply"];
+    [dic setObject:@"0" forKey:@"clientCount"];
+    [dic setObject:self.forumId forKey:@"forumId"];
+    [dic setObject:@"0" forKey:@"isEute"];
+    [dic setObject:@"0" forKey:@"isTop"];
+    [dic setObject:@"0" forKey:@"totalReply"];
+    [dic setObject:@"0" forKey:@"type"];
     Article* aricle = [[Article alloc]initWithDictionnary:dic];
+    if (self.delegate&& [self.delegate respondsToSelector:@selector(editArticleViewDidEdit:)]) {
+        [self.delegate editArticleViewDidEdit:aricle];
+    }
 }
 -(void)upOneDymicWithNoteID:(NSString*)noteID
 {

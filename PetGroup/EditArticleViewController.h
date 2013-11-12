@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "Article.h"
-@protocol EditReplyViewDelegate<NSObject>
+@protocol EditArticleViewDelegate<NSObject>
 -(void)editArticleViewDidEdit:(Article*)aricle;
 @end
 @interface EditArticleViewController : UIViewController
@@ -19,7 +19,7 @@
 
     
 }
-@property (nonatomic,retain)id <EditReplyViewDelegate> delegate;
+@property (nonatomic,retain)id <EditArticleViewDelegate> delegate;
 @property (nonatomic,retain)NSString* forumId;
 @property (nonatomic,retain)NSString* forumName;
 @end

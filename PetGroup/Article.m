@@ -24,7 +24,7 @@
         self.isTop = [[info objectForKey:@"isTop"] boolValue];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
         self.headImage = arr[0];
-        self.ct =[Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
+        self.ct =[Common noteCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
         
     }
     return self;
