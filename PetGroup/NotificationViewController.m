@@ -262,6 +262,7 @@
     if ([[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"topic"]) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = tempID;
+        articleVC.floor = [[self.notiArray[indexPath.row] objectForKey:@"floor"] intValue];
         [self.navigationController pushViewController:articleVC animated:YES];
 
     }

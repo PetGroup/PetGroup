@@ -42,6 +42,7 @@
         // Custom initialization
         self.dataSourceArray = [NSMutableArray array];
         self.replyHighArray =[NSMutableArray array];
+        self.floor = 0;
     }
     return self;
 }
@@ -136,7 +137,11 @@
         else{
             showB.userInteractionEnabled = NO;
         }
-        self.pageNo = 0;
+        if (self.floor!=0) {
+            self.pageNo = _floor/19;
+        }else{
+            self.pageNo = 0;
+        }
         [self reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -482,6 +487,10 @@
             }
         }
         [self.tableV reloadData];
+        if (_floor!= 0) {
+            [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(_floor%19)-1 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            _floor = 0;
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];

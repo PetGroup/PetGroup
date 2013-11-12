@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "WebViewViewController.h"
 @interface ArticleViewController : UIViewController
+@property (nonatomic,assign)int floor;
 @property (nonatomic,retain)NSString* articleID;
 @end
