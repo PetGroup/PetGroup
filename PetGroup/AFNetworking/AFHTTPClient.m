@@ -519,6 +519,8 @@ static void AFNetworkReachabilityReleaseCallback(const void *info) {
 {
     NSParameterAssert(method);
     NSParameterAssert(![method isEqualToString:@"GET"] && ![method isEqualToString:@"HEAD"]);
+    
+
 
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:nil];
 
@@ -956,7 +958,7 @@ NSTimeInterval const kAFUploadStream3GSuggestedDelay = 0.2;
         NSParameterAssert([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]);
         [mutableHeaders setValue:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"Content-Type"];
     }
-    
+//    [mutableHeaders setValue:@"OK" forKey:@"compressImage"];
 
     [self appendPartWithHeaders:mutableHeaders body:data];
 }

@@ -15,6 +15,13 @@
 #import "ProfileCell.h"
 #import "PhotoViewController.h"
 @interface NormalPetDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
+{
+    NSString * petType;
+    NSString * petNickname;
+    NSString * petGender;
+    NSString * petAge;
+    NSString * petTrait;
+}
 @property (strong, nonatomic) HGPhotoWall *photoWall;
 @property (strong,nonatomic) UITableView * profileTableV;
 @property (strong,nonatomic) PetInfo * petInfo;

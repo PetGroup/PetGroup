@@ -54,21 +54,22 @@
     self.photoWall.delegate = self;
     self.photoWall.tag =1;
     
-    self.petInfo.petType = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
-    self.petInfo.petTrait = self.petInfo.petTrait.length>1?self.petInfo.petTrait:@"主人还没有给她填写特点呢";
+    petNickname = self.petInfo.petNickname;
+    petType = [XMLMatcher typeStringWithNumber:self.petInfo.petType];
+    petTrait = self.petInfo.petTrait.length>1?self.petInfo.petTrait:@"主人还没有给她填写特点呢";
     if ([self.petInfo.petGender isEqualToString:@"male"]) {
-        self.petInfo.petGender = @"公";
+        petGender = @"公";
     }
     else if ([self.petInfo.petGender isEqualToString:@"female"]){
-        self.petInfo.petGender = @"母";
+        petGender = @"母";
     }
     else
-        self.petInfo.petGender = @"还不知道呢";
-    self.petInfo.petAge = [NSString stringWithFormat:@"%@岁",self.petInfo.petAge];
+        petGender = @"还不知道呢";
+    petAge = [NSString stringWithFormat:@"%@岁",self.petInfo.petAge];
     
     [self makeHeight];
     self.titleArray = [NSArray arrayWithObjects:@"品种",@"昵称",@"性别",@"年龄",@"特点", nil];
-    self.discribeArray = [NSArray arrayWithObjects:self.petInfo.petType,self.petInfo.petNickname,self.petInfo.petGender,self.petInfo.petAge,self.petInfo.petTrait, nil];
+    self.discribeArray = [NSArray arrayWithObjects:petType,petNickname,petGender,petAge,petTrait, nil];
     
     self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     [self.view addSubview:self.profileTableV];
@@ -81,15 +82,15 @@
 }
 -(void)makeHeight
 {
-    CGSize size1 = [self.petInfo.petType sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size1 = [petType sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height1 = [NSNumber numberWithFloat:size1.height];
-    CGSize size2 = [self.petInfo.petNickname sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size2 = [petNickname sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height2 = [NSNumber numberWithFloat:size2.height];
-    CGSize size3 = [self.petInfo.petGender sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size3 = [petGender sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height3 = [NSNumber numberWithFloat:size3.height];
-    CGSize size4 = [self.petInfo.petAge sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size4 = [petAge sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height4 = [NSNumber numberWithFloat:size4.height];
-    CGSize size5 = [self.petInfo.petTrait sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size5 = [petTrait sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping];
     NSNumber * height5 = [NSNumber numberWithFloat:size5.height];
     self.heightArray = [NSMutableArray arrayWithObjects:height1,height2,height3,height4,height5, nil];
 }
