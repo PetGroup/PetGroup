@@ -37,7 +37,7 @@ static CustomTabBar *customTabBarController;
         theControllerArray = [[NSArray alloc]initWithArray:controllers];
         [self setViewControllers:controllers];
         
-     //   self.selectedIndex = 0;
+//        self.selectedIndex = 1;
         [self hidesTabBar];
         [self customTabBar];
         

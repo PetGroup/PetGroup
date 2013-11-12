@@ -12,7 +12,7 @@
 @interface FriendCircleDataSource : DataSource<UITableViewDataSource>
 @property (nonatomic,assign)UIViewController<DynamicCellDelegate>* myController;
 @property (nonatomic,retain)NSMutableDictionary*replyCountDic;
-@property (nonatomic,retain)NSMutableArray*rowHighArray;
+//@property (nonatomic,retain)NSMutableArray*rowHighArray;
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 -(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

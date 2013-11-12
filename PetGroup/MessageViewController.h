@@ -75,6 +75,8 @@
     NSString * appStoreURL;
     
     float diffH;
+    
+    BOOL firstOpen;
 }
 
 

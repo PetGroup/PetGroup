@@ -320,7 +320,8 @@
 #pragma mark - tableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.friendCircleDS.rowHighArray[indexPath.row] floatValue];
+    return [DynamicCell heightForRowWithDynamic:self.friendCircleDS.dataSourceArray[indexPath.row]];
+//    return ];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -431,14 +432,14 @@
 -(void)dynamicListDeleteOneDynamic:(Dynamic*)dynamic
 {
     NSUInteger a = [self.friendCircleDS.dataSourceArray indexOfObject:dynamic];
-    [self.friendCircleDS.rowHighArray removeObjectAtIndex:a];
+//    [self.friendCircleDS.rowHighArray removeObjectAtIndex:a];
     [self.friendCircleDS.dataSourceArray removeObjectAtIndex:a];
     [self.tableV reloadData];
 }
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
 {
     [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
-    [self.friendCircleDS.rowHighArray insertObject:[NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]] atIndex:0];
+//    [self.friendCircleDS.rowHighArray insertObject:[NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]] atIndex:0];
     [self.tableV reloadData];
 }
 -(void)dynamicListJustReload
