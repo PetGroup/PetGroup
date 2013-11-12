@@ -277,10 +277,19 @@
 }
 -(void)getAnActionSheet
 {
-    if (_pictureArray.count<=8) {
+    NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
+    if (fileArray.count>0) {
+        NSArray * dd = fileArray[0];
+        if (dd.count>=5) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"加了5张图片了，休息一会吧，或者换个楼层发吧~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+            [alert show];
+            return;
+        }
+    }
+//    if (_pictureArray.count<=8) {
         self.addActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
         [_addActionSheet showInView:self.view];
-    }
+//    }
 }
 -(void)tapImage:(UIGestureRecognizer*)tapGR
 {

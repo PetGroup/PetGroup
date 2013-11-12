@@ -363,7 +363,9 @@
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             
             [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-            
+            [params setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+            [params setObject:[responseObject objectForKey:@"userid"] forKey:@"id"];
+            [DataStoreManager saveUserInfo:params];
             DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
             newReg.dic = params;
             [self.navigationController pushViewController:newReg animated:YES];

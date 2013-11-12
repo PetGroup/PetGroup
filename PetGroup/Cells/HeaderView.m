@@ -19,6 +19,7 @@
         // Initialization code
         float diffH = [Common diffHeight:nil];
         UIImageView * bg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
+//        bg.backgroundColor = [UIColor yellowColor];
         bg.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
         [self addSubview:bg];
         self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(10, 3, 200, 20)];

@@ -284,6 +284,7 @@
     [body setObject:@"service.uri.pet_user" forKey:@"service"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [params setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+        [params setObject:[DataStoreManager getMyUserID] forKey:@"id"];
         [DataStoreManager saveUserInfo:params];
         [hud hide:YES];
 //        [self dismissModalViewControllerAnimated:YES];
