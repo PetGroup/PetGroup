@@ -30,10 +30,18 @@
 +(BOOL)isValidateIdentionCode:(NSString*)identionCode
 {
     if (identionCode.length==4) {
-        NSString *passwordRegex = @"^[a-zA-Z0-9]*$";
+        NSString *passwordRegex = @"^[0-9]*$";
         NSPredicate *passwordTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", passwordRegex];
         return  [passwordTest evaluateWithObject:identionCode];
     }
     return NO;
+}
++(BOOL)isValidateAllSpace:(NSString*)str
+{
+    NSString* string = [str stringByReplacingOccurrencesOfString:@" "withString:@""];
+    if (string.length>0) {
+        return NO;
+    }else
+        return YES;
 }
 @end

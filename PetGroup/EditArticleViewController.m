@@ -11,7 +11,7 @@
 #import "MBProgressHUD.h"
 #import "TempData.h"
 #import "FastTextView.h"
-
+#import "IdentifyingString.h"
 //#import "ImageAttachmentCell.h"
 #import "SlideAttachmentCell.h"
 #import "EmotionAttachmentCell.h"
@@ -219,12 +219,16 @@
 //    }else{
 //        [self publishWithImageString:nil];
 //    }
-    if (_titleTF.text.length<3) {
+    
+//    if ([IdentifyingString isValidateAllSpace:_titleTF.text]) {
+//
+//    }
+    if (_titleTF.text.length<3||[IdentifyingString isValidateAllSpace:_titleTF.text]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"写个标题吧，最少3个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
     }
-    if (_dynamicTV.text.length<4) {
+    if (_dynamicTV.text.length<4||[IdentifyingString isValidateAllSpace:_dynamicTV.text]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不写点内容能行么，至少4个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;

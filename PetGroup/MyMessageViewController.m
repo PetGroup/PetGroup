@@ -391,13 +391,19 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (_presentDS == _myDynamicDS) {
-        OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
-        odVC.dynamic = self.myDynamicDS.dataSourceArray[indexPath.row];
-        if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
-               odVC.delegate = self;
-           }
+//        OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+//        odVC.dynamic = self.myDynamicDS.dataSourceArray[indexPath.row];
+//        if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
+//               odVC.delegate = self;
+//           }
         free = NO;
-        [self.navigationController pushViewController:odVC animated:YES];
+//        [self.navigationController pushViewController:odVC animated:YES];
+        NSMutableString* noteId = [NSMutableString  stringWithString:((Dynamic*)self.myDynamicDS.dataSourceArray[indexPath.row]).transmitUrl];
+        [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
+        NSLog(@"%@",noteId);
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = noteId;
+        [self.navigationController pushViewController:articleVC animated:YES];
     }
     if (_presentDS == _myReplNOteDS) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
