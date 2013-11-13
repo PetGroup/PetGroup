@@ -192,7 +192,7 @@
     cell.headImageV.imageURL = theUrl;
     // Configure the cell...
     cell.nameLabel.text = [cDict objectForKey:@"fromNickname"];
-    cell.timeLabel.text = cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[cDict objectForKey:@"time"]];
+    cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[cDict objectForKey:@"time" ]];
 //    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"dynamic"]) {
 //        cell.contentLabel.text = [cDict objectForKey:@"content"];
 //        if ([[cDict objectForKey:@"replyContent"] isEqualToString:@"iszan"]) {
