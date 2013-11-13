@@ -109,6 +109,7 @@ typedef  enum
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    _textView.attributedString = nil;
     CGFloat origin = 10;
     _headPhote.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.reply.headImage]];
     _headPhote.frame = CGRectMake(10, origin, 40, 40);

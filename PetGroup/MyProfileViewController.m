@@ -357,7 +357,7 @@
 - (void)photoWallPhotoTaped:(NSUInteger)index WithPhotoWall:(UIView *)photoWall
 {
     PhotoViewController * photoV = [[PhotoViewController alloc] initWithSmallImages:nil images:self.hostInfo.headBigImgArray indext:index];
-    [self presentViewController:photoV animated:YES completion:^{
+    [self presentViewController:photoV animated:NO completion:^{
         
     }];
 }

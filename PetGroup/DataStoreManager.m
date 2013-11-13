@@ -471,6 +471,16 @@
     else
         return @"";
 }
++(void)storeMyUserID:(NSString *)theID
+{
+    [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+        DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
+        if (!dFriend)
+            dFriend = [DSFriends MR_createInContext:localContext];
+        dFriend.userId = theID;
+    }];
+}
 +(NSString *)queryNickNameForUser:(NSString *)userName
 {
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];

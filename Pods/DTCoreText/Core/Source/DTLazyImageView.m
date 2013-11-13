@@ -184,9 +184,11 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 
 - (void)_notifyDelegate
 {
-	if ([self.delegate respondsToSelector:@selector(lazyImageView:didChangeImageSize:)]) {
-		[self.delegate lazyImageView:self didChangeImageSize:CGSizeMake(_fullWidth, _fullHeight)];
-	}
+    if (self.delegate){
+        if ([self.delegate respondsToSelector:@selector(lazyImageView:didChangeImageSize:)]) {
+            [self.delegate lazyImageView:self didChangeImageSize:CGSizeMake(_fullWidth, _fullHeight)];
+        }
+    }
 }
 
 - (void)completeDownloadWithData:(NSData *)data
@@ -197,7 +199,10 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 	_fullWidth = image.size.width;
 	_fullHeight = image.size.height;
 
-	[self _notifyDelegate];
+    if (self) {
+        [self _notifyDelegate];
+    }
+	
 	
 	static dispatch_once_t predicate;
 
@@ -269,7 +274,7 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	if (_receivedData)
+	if (_receivedData&&self)
 	{
 		[self performSelectorOnMainThread:@selector(completeDownloadWithData:) withObject:_receivedData waitUntilDone:YES];
 		

@@ -221,7 +221,7 @@
 -(void)sureBtnDo
 {
     if (![self.appDel.xmppHelper addFriend:self.hostInfo.userName]) {
-        [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+        [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
         return;
     }
     NSString *message = locationTextF.text;
@@ -242,7 +242,7 @@
         locationTextF.text = @"";
 //        [self.appDel.xmppHelper.xmppStream sendElement:mes];
         if (![self.appDel.xmppHelper sendMessage:mes]) {
-            [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+            [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
             //Do something when send failed...
             return;
         }
@@ -254,7 +254,7 @@
         [typeMsgView setFrame:CGRectMake(0, -self.view.frame.size.height, 320, self.view.frame.size.height)];
     } completion:^(BOOL finished) {
         //locationTextF.text = @"";
-        [KGStatusBar showSuccessWithStatus:@"好友请求发送成功"];
+        [KGStatusBar showSuccessWithStatus:@"好友请求发送成功" Controller:self];
     }];
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -680,7 +680,7 @@
             [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
             [mes addChild:body];
             if (![self.appDel.xmppHelper sendMessage:mes]) {
-                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧"];
+                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
                 //Do something when send failed...
                 return;
             }

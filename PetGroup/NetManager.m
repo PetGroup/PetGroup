@@ -90,7 +90,8 @@
         if (controller) {
             NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSDictionary * dict = [receiveStr JSONValue];
-            if ([dict objectForKey:@"success"]) {
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
                 success(operation,[dict objectForKey:@"entity"]);
             }
             else
@@ -110,7 +111,7 @@
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:320 targetSizeY:960];
+    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:1136];
     NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
 //    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage", nil];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
@@ -123,7 +124,8 @@
         if (controller) {
             NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSDictionary * dict = [receiveStr JSONValue];
-            if ([dict objectForKey:@"success"]) {
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
                 success(operation,[dict objectForKey:@"entity"]);
             }
             else
@@ -182,6 +184,63 @@
         }];
     }
 }
+
++(void)uploadWaterMarkImages:(NSArray *)imageArray WithURLStr:(NSString *)urlStr ImageName:(NSArray *)imageNameArray TheController:(UIViewController *)controller Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation,  NSDictionary *responseObject))success
+            failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSMutableDictionary * reponseStrArray = [NSMutableDictionary dictionary];
+    for (int i = 0; i<imageArray.count; i++) {
+        [NetManager uploadWaterMarkImage:[imageArray objectAtIndex:i] WithURLStr:urlStr ImageName:[imageNameArray objectAtIndex:i] TheController:controller Progress:block Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *response = responseObject;
+            [reponseStrArray setObject:response forKey:[imageNameArray objectAtIndex:i]];
+            if (reponseStrArray.count==imageArray.count) {
+                if (controller) {
+                    success(operation,reponseStrArray);
+                }
+                
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (controller) {
+                failure(operation,error);
+            }
+        }];
+    }
+}
++(void)uploadWaterMarkImage:(UIImage *)uploadImage WithURLStr:(NSString *)urlStr ImageName:(NSString *)imageName TheController:(UIViewController *)controller Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:1136];
+    NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"OK",@"addTopImage", nil];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
+    }];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setUploadProgressBlock:block];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (controller) {
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                failure(operation,nil);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (controller) {
+            failure(operation,error);
+        }
+    }];
+    [httpClient enqueueHTTPRequestOperation:operation];
+}
+
 
 +(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  id responseObject))success
                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure

@@ -10,6 +10,7 @@
 
 @interface KGStatusBar ()
     @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+    @property (nonatomic,strong) UIViewController * theCon;
     @property (nonatomic, strong, readonly) UIView *topBar;
     @property (nonatomic, strong) UILabel *stringLabel;
 @end
@@ -17,6 +18,7 @@
 @implementation KGStatusBar
 
 @synthesize topBar, overlayWindow, stringLabel;
+@synthesize theCon;
 
 + (KGStatusBar*)sharedView {
     static dispatch_once_t once;
@@ -27,22 +29,27 @@
 
 +(void)showStatusBarWithoutAutoHide:(NSString *)status
 {
-    [KGStatusBar showWithStatus:status];
+    [KGStatusBar showWithStatus:status Controller:nil];
 }
-
-
 + (void)showSuccessWithStatus:(NSString*)status
 {
-    [KGStatusBar showWithStatus:status];
+    [KGStatusBar showWithStatus:status Controller:nil];
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
 }
 
-+ (void)showWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor blackColor] textColor:[UIColor colorWithRed:191.0/255.0 green:191.0/255.0 blue:191.0/255.0 alpha:1.0]];
++ (void)showSuccessWithStatus:(NSString*)status Controller:(UIViewController *)controller
+{
+//    self.theController = controller;
+    [KGStatusBar showWithStatus:status Controller:controller];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+}
+
++ (void)showWithStatus:(NSString*)status Controller:(UIViewController *)controller {
+    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor orangeColor] textColor:[UIColor whiteColor] Controller:controller];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor colorWithRed:97.0/255.0 green:4.0/255.0 blue:4.0/255.0 alpha:1.0] textColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor colorWithRed:97.0/255.0 green:4.0/255.0 blue:4.0/255.0 alpha:1.0] textColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0] Controller:nil];
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
 }
 
@@ -61,7 +68,8 @@
     return self;
 }
 
-- (void)showWithStatus:(NSString *)status barColor:(UIColor*)barColor textColor:(UIColor*)textColor{
+- (void)showWithStatus:(NSString *)status barColor:(UIColor*)barColor textColor:(UIColor*)textColor Controller:(UIViewController *)controller{
+    self.theCon = controller;
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
@@ -94,11 +102,21 @@
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 0.0;
     } completion:^(BOOL finished) {
+
         [topBar removeFromSuperview];
         topBar = nil;
         
         [overlayWindow removeFromSuperview];
         overlayWindow = nil;
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+            
+        } else {
+            if (self.theCon) {
+                [self.theCon setNeedsStatusBarAppearanceUpdate];
+            }
+            
+        }
+        
     }];
 }
 
@@ -134,8 +152,8 @@
 #endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = [UIFont boldSystemFontOfSize:14.0];
-		stringLabel.shadowColor = [UIColor blackColor];
-		stringLabel.shadowOffset = CGSizeMake(0, -1);
+//		stringLabel.shadowColor = [UIColor blackColor];
+//		stringLabel.shadowOffset = CGSizeMake(0, -1);
         stringLabel.numberOfLines = 0;
     }
     

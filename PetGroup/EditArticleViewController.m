@@ -261,7 +261,7 @@
 }
 -(void)uploadForMixingTypePics:(NSArray *)imageArray PicsName:(NSArray *)picsNameArray PositionArray:(NSArray *)positionArray Width:(NSArray *)widthArray Height:(NSArray *)heightArray
 {
-    [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:picsNameArray TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadWaterMarkImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:picsNameArray TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSMutableArray * idArray = [NSMutableArray array];
@@ -639,7 +639,7 @@
 //        NSString * _documentDirectory = [[NSString alloc] initWithString:[_paths objectAtIndex:0]];
         
         
-        UIImage *thumbimg=[img imageByScalingProportionallyToSize:CGSizeMake(320,640)];
+        UIImage *thumbimg=[img imageByScalingProportionallyToSize:CGSizeMake(640,1136)];
         
         NSString *pngPath=[path stringByAppendingPathComponent:[NSString stringWithFormat:@"/%@",newfilename]];
         

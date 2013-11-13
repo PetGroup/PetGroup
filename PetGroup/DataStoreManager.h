@@ -72,4 +72,5 @@
 +(void)updateReceivedHellosStatus:(NSString *)theStatus ForPerson:(NSString *)userName;
 +(void)qureyAllFriends;
 +(NSMutableArray *)queryAllFriendsNickname;
++(void)storeMyUserID:(NSString *)theID;
 @end

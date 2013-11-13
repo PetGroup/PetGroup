@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CircleEntity.h"
-
+#import <QuartzCore/QuartzCore.h>
 @interface CircleCell : UICollectionViewCell
 @property (nonatomic,weak)CircleEntity* entity;
 @end
