@@ -250,7 +250,9 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+    if ([[TempData sharedInstance] getMyUserID]&&[[[TempData sharedInstance] getMyUserID] isKindOfClass:[NSNull class]]) {
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
+    }
     [params setObject:self.articleID forKey:@"noteId"];
     [params setObject:imageString forKey:@"content"];
     [params setObject:self.replyID forKey:@"pid"];

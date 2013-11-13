@@ -303,7 +303,7 @@
         [dict setObject:from forKey:@"sender"];
         //[dict setObject:fromNickName forKey:@"nickname"];
         //消息接收到的时间
-        [dict setObject:msgTime forKey:@"time"];
+        [dict setObject:msgTime  forKey:@"time"];
         
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
