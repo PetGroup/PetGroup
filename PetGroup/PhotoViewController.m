@@ -91,6 +91,7 @@
 }
 -(void)desappear
 {
+//    self.view.userInteractionEnabled = NO;
     int a = _sc.contentOffset.x/320;
     [UIView animateWithDuration:0.3 animations:^{
         ((UIView*)((UIView*)_sc.subviews[a]).subviews[0]).frame = CGRectMake(160,_sc.frame.size.height/2,0,0);

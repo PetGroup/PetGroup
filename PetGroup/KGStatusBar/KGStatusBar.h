@@ -13,9 +13,10 @@
 @interface KGStatusBar : UIView
 
 +(void)showStatusBarWithoutAutoHide:(NSString *)status;
-+ (void)showWithStatus:(NSString*)status;
++ (void)showWithStatus:(NSString*)status Controller:(UIViewController *)controller;
 + (void)showErrorWithStatus:(NSString*)status;
 + (void)showSuccessWithStatus:(NSString*)status;
++ (void)showSuccessWithStatus:(NSString*)status Controller:(UIViewController *)controller;
 + (void)dismiss;
 
 @end

@@ -185,8 +185,8 @@
 }
 -(void)parseFriendsList:(NSArray *)friendsList
 {
+    dispatch_queue_t queue = dispatch_queue_create("com.pet.StoreFriends", NULL);
     for (NSDictionary * dict in friendsList) {
-        dispatch_queue_t queue = dispatch_queue_create("com.pet.StoreFriends", NULL);
         dispatch_async(queue, ^{
             [DataStoreManager saveUserInfo:dict];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -194,6 +194,7 @@
             });
         });
     }
+    [self refreshFriendList];
 }
 -(void)refreshFriendList
 {

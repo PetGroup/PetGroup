@@ -21,6 +21,14 @@
         self.atte = [[info objectForKey:@"atte"] boolValue];
         self.imageID = [info objectForKey:@"logoImg"];
         self.totalAtte = [info objectForKey:@"totalAtte"];
+        UIColor * color1 = [UIColor colorWithRed:0.6 green:0.7 blue:0.2 alpha:1];
+        UIColor * color2 = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+        UIColor * color3 = [UIColor colorWithRed:0.1 green:0.3 blue:0.8 alpha:1];
+        UIColor * color4 = [UIColor colorWithRed:0.7 green:0.3 blue:0.6 alpha:1];
+        UIColor * color5 = [UIColor colorWithRed:0.6 green:0.5 blue:0.2 alpha:1];
+        NSArray * array = [NSArray arrayWithObjects:color1,color2,color4,color5,color3, nil];
+        int g = arc4random()%4;
+        self.theColor = array[g];
     }
     return self;
 }

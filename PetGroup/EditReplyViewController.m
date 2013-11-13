@@ -202,7 +202,7 @@
 }
 -(void)uploadForMixingTypePics:(NSArray *)imageArray PicsName:(NSArray *)picsNameArray PositionArray:(NSArray *)positionArray Width:(NSArray *)widthArray Height:(NSArray *)heightArray
 {
-    [NetManager uploadImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:picsNameArray TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+    [NetManager uploadWaterMarkImages:imageArray WithURLStr:BaseUploadImageUrl ImageName:picsNameArray TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         
     } Success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         NSMutableArray * idArray = [NSMutableArray array];
@@ -281,8 +281,8 @@
     NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
     if (fileArray.count>0) {
         NSArray * dd = fileArray[0];
-        if (dd.count>=5) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"加了5张图片了，休息一会吧，或者换个楼层发吧~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        if (dd.count>=3) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"加了3张图片了，休息一会吧，或者换个楼层发吧~" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
             [alert show];
             return;
         }

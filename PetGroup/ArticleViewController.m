@@ -151,6 +151,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+//    self.tableV = nil;
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
@@ -606,4 +607,5 @@
     }
     [self reloadData];
 }
+
 @end
