@@ -159,7 +159,9 @@
         }
         else
         {
-            noResultLabel.hidden = NO;
+            if (self.pageNo == 0) {
+                noResultLabel.hidden = NO;
+            }
         }
         [self.resultTable reloadData];
         [_footer endRefreshing];
