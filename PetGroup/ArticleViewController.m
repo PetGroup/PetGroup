@@ -31,6 +31,8 @@
 @property (nonatomic,assign)int pageNo;
 @property (nonatomic,retain)NSAttributedString* content;
 @property (nonatomic,retain)UIView* pageV;
+@property (nonatomic,retain)UIView* reportV;
+@property (nonatomic,assign)int row;
 @end
 
 @implementation ArticleViewController
@@ -43,6 +45,7 @@
         self.dataSourceArray = [NSMutableArray array];
         self.replyHighArray =[NSMutableArray array];
         self.floor = 0;
+        self.row = 0;
     }
     return self;
 }
@@ -154,6 +157,39 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)cancelRepotr
+{
+    [self.reportV removeFromSuperview];
+}
+-(void)report
+{
+    [self.reportV removeFromSuperview];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    if (self.row == 0) {
+        [params setObject:self.articleID forKey:@"noteId"];
+    }else{
+        [params setObject:((NoteReply*)self.dataSourceArray[self.row-1]).replyID forKey:@"replyId"];
+    }
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"reportNote" forKey:@"method"];
+    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    self.row = 0;
+    [self cancelRepotr];
+}
 -(void)next
 {
     if ([self.view.subviews containsObject:self.pageV]) {
@@ -340,25 +376,34 @@
     [self presentViewController:replyVC animated:YES completion:nil];
 }
 -(void)owenrCellPressReportButton//举报
-{//
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:self.articleID forKey:@"noteId"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"reportNote" forKey:@"method"];
-    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+{
+    self.reportV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    _reportV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+    UIView* b = [[UIView alloc]initWithFrame:CGRectMake(60, 150, 200, 180)];
+    b.backgroundColor = [UIColor whiteColor];
+    [_reportV addSubview:b];
+    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+    titleL.text = @"请选择举报类型";
+    titleL.textAlignment = NSTextAlignmentCenter;
+    [b addSubview:titleL];
+    NSArray* a = @[@"广告",@"色情",@"辱骂",@"垃圾信息",@"取消"];
+    for (int i = 0; i<5; i++) {
+        UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame = CGRectMake(10, 30+i*30, 180, 20);
+        [button setTitle:a[i] forState:UIControlStateNormal];
+        [b addSubview:button];
+        if (i!=4) {
+            [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(cancelRepotr) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    _reportV.alpha = 0;
+    [self.view addSubview:_reportV];
+    [UIView animateWithDuration:0.3 animations:^{
+        _reportV.alpha = 1;
     }];
 }
 -(void)owenrCellPressImageWithID:(NSString*)imageID//查看大图
@@ -417,25 +462,34 @@
 }
 -(void)followerCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:((NoteReply*)self.dataSourceArray[indexPath.row]).replyID forKey:@"replyId"];
-    
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"reportNote" forKey:@"method"];
-    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+    self.reportV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    _reportV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+    UIView* b = [[UIView alloc]initWithFrame:CGRectMake(60, 150, 200, 180)];
+    b.backgroundColor = [UIColor whiteColor];
+    [_reportV addSubview:b];
+    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+    titleL.text = @"请选择举报类型";
+    titleL.textAlignment = NSTextAlignmentCenter;
+    [b addSubview:titleL];
+    NSArray* a = @[@"广告",@"色情",@"辱骂",@"垃圾信息",@"取消"];
+    for (int i = 0; i<5; i++) {
+        UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame = CGRectMake(10, 30+i*30, 180, 20);
+        [button setTitle:a[i] forState:UIControlStateNormal];
+        [b addSubview:button];
+        if (i!=4) {
+            [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(cancelRepotr) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    _reportV.alpha = 0;
+    self.row = indexPath.row+1;
+    [self.view addSubview:_reportV];
+    [UIView animateWithDuration:0.3 animations:^{
+        _reportV.alpha = 1;
     }];
 }
 -(void)followerCellPressImageWithID:(NSString*)imageID

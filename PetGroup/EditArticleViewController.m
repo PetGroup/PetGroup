@@ -305,7 +305,9 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+    if ([[TempData sharedInstance] getMyUserID]&&[[[TempData sharedInstance] getMyUserID] isKindOfClass:[NSNull class]]) {
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
+    }
     [params setObject:self.forumId forKey:@"forumId"];
     [params setObject:_titleTF.text forKey:@"name"];
     [params setObject:imageString forKey:@"content"];
