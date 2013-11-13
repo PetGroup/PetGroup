@@ -74,9 +74,9 @@
     a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
     [self.view addSubview:a];
     
-    UIImageView * nickNameIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 190+diffH, 257.5, 41)];
-    [nickNameIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
-    [self.view addSubview:nickNameIV];
+//    UIImageView * nickNameIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 190+diffH, 257.5, 41)];
+//    [nickNameIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
+//    [self.view addSubview:nickNameIV];
     
     UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
     nameL.text = @"账号";
@@ -90,11 +90,11 @@
     passWordL.backgroundColor = [UIColor clearColor];
     [passWordIV addSubview:passWordL];
     
-    UILabel* nickNameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
-    nickNameL.text = @"忘记密码";
-    nickNameL.font = [UIFont systemFontOfSize:13];
-    nickNameL.backgroundColor = [UIColor clearColor];
-    [nickNameIV addSubview:nickNameL];
+//    UILabel* nickNameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+//    nickNameL.text = @"忘记密码";
+//    nickNameL.font = [UIFont systemFontOfSize:13];
+//    nickNameL.backgroundColor = [UIColor clearColor];
+//    [nickNameIV addSubview:nickNameL];
     
     self.PhoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 86+diffH, 175, 30)];
     _PhoneNoTF.placeholder = @"手机号";
@@ -110,29 +110,50 @@
     _passWordTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_passWordTF];
     
-    UIButton* passWordB = [UIButton buttonWithType:UIButtonTypeCustom];
-    passWordB.frame = CGRectMake(31.25, 190+diffH, 257.5, 41);
-    [self.view addSubview:passWordB];
-    [passWordB addTarget:self action:@selector(resetPassWord) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIImageView* anjiao = [[UIImageView alloc]initWithFrame:CGRectMake(240, 15, 5, 10)];
-    anjiao.image = [UIImage imageNamed:@"anjiao"];
-    [passWordB addSubview:anjiao];
+//    UIButton* passWordB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    passWordB.frame = CGRectMake(31.25, 190+diffH, 257.5, 41);
+//    [self.view addSubview:passWordB];
+//    [passWordB addTarget:self action:@selector(resetPassWord) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    UIImageView* anjiao = [[UIImageView alloc]initWithFrame:CGRectMake(240, 15, 5, 10)];
+//    anjiao.image = [UIImage imageNamed:@"anjiao"];
+//    [passWordB addSubview:anjiao];
     
     UIButton* registB = [UIButton buttonWithType:UIButtonTypeCustom];
     [registB setTitle:@"登录" forState:UIControlStateNormal];
-    registB.frame = CGRectMake(31.25, 250+diffH, 257.5, 41);
+    registB.frame = CGRectMake(31.25, 200+diffH, 257.5, 41);
     [registB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [registB setBackgroundImage:[UIImage imageNamed:@"daanniu_normal"] forState:UIControlStateNormal];
     [registB setBackgroundImage:[UIImage imageNamed:@"daanniu_click"] forState:UIControlStateHighlighted];
     [registB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:registB];
     
+    UIButton * regBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [regBtn setFrame:CGRectMake(25, 251+diffH, 50, 20)];
+    [regBtn.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [regBtn setTitle:@"注册" forState:UIControlStateNormal];
+    regBtn.titleLabel.textColor = [UIColor blueColor];
+    [self.view addSubview:regBtn];
+    [regBtn addTarget:self action:@selector(doRegister:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton * forgetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [forgetBtn setFrame:CGRectMake(215, 251+diffH, 80, 20)];
+    [forgetBtn.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [forgetBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
+    forgetBtn.titleLabel.textColor = [UIColor blueColor];
+    [self.view addSubview:forgetBtn];
+    [forgetBtn addTarget:self action:@selector(resetPassWord:) forControlEvents:UIControlEventTouchUpInside];
+    
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"提交中...";
 }
-
+-(void)doRegister:(UIButton *)sender
+{
+    sender.titleLabel.textColor = [UIColor blueColor];
+    NewRegistOneViewController* newRegVC = [[NewRegistOneViewController alloc]init];
+    [self.navigationController pushViewController:newRegVC animated:YES];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -215,8 +236,9 @@
     }];
 }
 
--(void)resetPassWord
+-(void)resetPassWord:(UIButton *)sender
 {
+    sender.titleLabel.textColor = [UIColor blueColor];
     ReSetPassWordViewController* resetPasswordVC = [[ReSetPassWordViewController alloc]init];
     [self.navigationController pushViewController:resetPasswordVC animated:YES];
 }
