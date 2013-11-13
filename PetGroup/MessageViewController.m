@@ -673,6 +673,12 @@
 //    }
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
+    
+    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
+    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
+    if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
+        [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
+    }
 //    [self saveMyInfo:[dict objectForKey:@"petUserView"]];
 //    NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
 ////    if (iPhone5) {
@@ -689,7 +695,7 @@
 }
 -(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
 {
-    [NetManager downloadImageWithBaseURLStr:BaseImageUrl ImageId:imageId success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [NetManager downloadImageWithBaseURLStr:imageId ImageId:@"" success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
         if ([theType isEqualToString:@"open"]) {
             NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
             NSFileManager *fm = [NSFileManager defaultManager];
@@ -697,12 +703,12 @@
             {
                 [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
             }
-            NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage_%@.jpg",path,imageId];
+            NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage.jpg",path];
 
             
             if ([UIImageJPEGRepresentation(image, 1.0) writeToFile:openImgPath atomically:YES]) {
                 NSLog(@"success///");
-                [[NSUserDefaults standardUserDefaults] setObject:openImgPath forKey:@"OpenImg"];
+                [[NSUserDefaults standardUserDefaults] setObject:imageId forKey:@"OpenImg"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
             else

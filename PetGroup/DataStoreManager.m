@@ -269,13 +269,13 @@
         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
         [dict setObject:[[rechellos objectAtIndex:i] userName] forKey:@"userName"];
         [dict setObject:[[rechellos objectAtIndex:i] nickName] forKey:@"nickName"];
-        NSRange range=[[[rechellos objectAtIndex:i] headImgID] rangeOfString:@","];
-        if (range.location!=NSNotFound) {
-            NSArray *imageArray = [[[rechellos objectAtIndex:i] headImgID] componentsSeparatedByString:@","];
-            [dict setObject:[imageArray objectAtIndex:0] forKey:@"headImgID"];
-        }
-        else
-            [dict setObject:[[rechellos objectAtIndex:i] headImgID] forKey:@"headImgID"];
+//        NSRange range=[[[rechellos objectAtIndex:i] headImgID] rangeOfString:@","];
+//        if (range.location!=NSNotFound) {
+////            NSArray *imageArray = [[[rechellos objectAtIndex:i] headImgID] componentsSeparatedByString:@","];
+//            [dict setObject:[[rechellos objectAtIndex:i] headImgID] forKey:@"headImgID"];
+//        }
+//        else
+        [dict setObject:[[rechellos objectAtIndex:i] headImgID] forKey:@"headImgID"];
         [dict setObject:[[rechellos objectAtIndex:i] addtionMsg] forKey:@"addtionMsg"];
         [dict setObject:[[rechellos objectAtIndex:i] acceptStatus] forKey:@"acceptStatus"];
         [dict setObject:[[rechellos objectAtIndex:i] receiveTime] forKey:@"receiveTime"];

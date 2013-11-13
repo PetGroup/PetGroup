@@ -154,7 +154,7 @@
     }
 
     cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
-    cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]];
+    cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[self getHead:[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]]];
     cell.headImageV.tag = indexPath.row+1;
     [cell.headImageV addTarget:self action:@selector(toDetailPage:) forControlEvents:UIControlEventTouchUpInside];
 //    [cell.headImageV setImageWithURL:[NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]] placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]]]];
@@ -191,7 +191,7 @@
         KKChatController * kkchat = [[KKChatController alloc] init];
         kkchat.chatWithUser = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"userName"];
         kkchat.nickName = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"nickName"];
-        kkchat.chatUserImg = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"];
+        kkchat.chatUserImg = [self getHead:[[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"headImgID"]];
         kkchat.friendStatus = [[receivedHellos objectAtIndex:indexPath.row] objectForKey:@"acceptStatus"];
         [self.navigationController pushViewController:kkchat animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -242,6 +242,20 @@
     [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:[[receivedHellos objectAtIndex:(sender.tag-1)] objectForKey:@"userName"]];
     [self loadTableviewData];
     
+}
+-(NSString *)getHead:(NSString *)headImgStr
+{
+    NSMutableArray * littleHeadArray = [NSMutableArray array];
+    NSArray* i = [headImgStr componentsSeparatedByString:@","];
+    if (i.count>1) {
+        for (NSString* a in i) {
+            NSArray *arr = [a componentsSeparatedByString:@"_"];
+            if (arr.count>1) {
+                [littleHeadArray addObject:arr[0]];
+            }
+        }
+    }//动态大图ID数组和小图ID数组
+    return littleHeadArray.count>0?littleHeadArray[0]:@"no";
 }
 -(void)rejectAddreq:(UIButton *)sender
 {

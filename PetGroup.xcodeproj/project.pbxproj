@@ -536,8 +536,6 @@
 		979546C217BA368F00D05874 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 979546C017BA368F00D05874 /* InfoPlist.strings */; };
 		979546C417BA368F00D05874 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546C317BA368F00D05874 /* main.m */; };
 		979546C817BA368F00D05874 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546C717BA368F00D05874 /* AppDelegate.m */; };
-		979546CC17BA368F00D05874 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 979546CB17BA368F00D05874 /* Default@2x.png */; };
-		979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 979546CD17BA368F00D05874 /* Default-568h@2x.png */; };
 		9795471617BA36AE00D05874 /* MagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546DE17BA36AD00D05874 /* MagicalImportFunctions.m */; };
 		9795471717BA36AE00D05874 /* NSAttributeDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546E017BA36AD00D05874 /* NSAttributeDescription+MagicalDataImport.m */; };
 		9795471817BA36AE00D05874 /* NSEntityDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 979546E217BA36AD00D05874 /* NSEntityDescription+MagicalDataImport.m */; };
@@ -697,6 +695,8 @@
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
 		97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */; };
+		97F2FA6B18338C2100FD6725 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6918338C2100FD6725 /* Default-568h@2x.png */; };
+		97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6A18338C2100FD6725 /* Default@2x.png */; };
 		97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F567C8180E84B000A72604 /* AVFoundation.framework */; };
 		97F764B317F817750063A72E /* newfriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F764B217F817750063A72E /* newfriend.png */; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
@@ -1433,8 +1433,6 @@
 		979546C517BA368F00D05874 /* PetGroup-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PetGroup-Prefix.pch"; sourceTree = "<group>"; };
 		979546C617BA368F00D05874 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		979546C717BA368F00D05874 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		979546CB17BA368F00D05874 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		979546CD17BA368F00D05874 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		979546DD17BA36AD00D05874 /* MagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicalImportFunctions.h; sourceTree = "<group>"; };
 		979546DE17BA36AD00D05874 /* MagicalImportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MagicalImportFunctions.m; sourceTree = "<group>"; };
 		979546DF17BA36AD00D05874 /* NSAttributeDescription+MagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributeDescription+MagicalDataImport.h"; sourceTree = "<group>"; };
@@ -1719,6 +1717,8 @@
 		97E9D17F17D5C024003A4A4C /* PetProfileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PetProfileCell.m; sourceTree = "<group>"; };
 		97E9D18117D5D4F8003A4A4C /* MyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoCell.h; sourceTree = "<group>"; };
 		97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoCell.m; sourceTree = "<group>"; };
+		97F2FA6918338C2100FD6725 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		97F2FA6A18338C2100FD6725 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		97F56701180E364400A72604 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		97F56702180E364400A72604 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		97F56703180E364400A72604 /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
@@ -3466,8 +3466,8 @@
 				97D4BAD417E944EB00929BF4 /* icon.png */,
 				97D4BAD517E944EB00929BF4 /* icon@2x.png */,
 				979546C517BA368F00D05874 /* PetGroup-Prefix.pch */,
-				979546CB17BA368F00D05874 /* Default@2x.png */,
-				979546CD17BA368F00D05874 /* Default-568h@2x.png */,
+				97F2FA6918338C2100FD6725 /* Default-568h@2x.png */,
+				97F2FA6A18338C2100FD6725 /* Default@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -4084,9 +4084,7 @@
 				97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */,
 				97D632FD1803F6EA00204363 /* third_common_selected_no.png in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
-				979546CC17BA368F00D05874 /* Default@2x.png in Resources */,
 				9765D798181BB5AE0021B36F /* os6normal_05.png in Resources */,
-				979546CE17BA368F00D05874 /* Default-568h@2x.png in Resources */,
 				97E25C3D17C3729A007E187D /* Localizable.strings in Resources */,
 				9765D78C181BB5A30021B36F /* os7normal_03.png in Resources */,
 				9736BB0517C4892A007DFE36 /* README.txt in Resources */,
@@ -4181,6 +4179,7 @@
 				9736BDF917C49146007DFE36 /* moreBtn.png in Resources */,
 				9765D78D181BB5A30021B36F /* os7normal_04.png in Resources */,
 				9736BDFA17C49146007DFE36 /* moren_people.png in Resources */,
+				97F2FA6B18338C2100FD6725 /* Default-568h@2x.png in Resources */,
 				9736BDFB17C49146007DFE36 /* publish.png in Resources */,
 				9736BDFC17C49146007DFE36 /* shaixuan.png in Resources */,
 				9736BDFD17C49146007DFE36 /* shezhi.png in Resources */,
@@ -4209,6 +4208,7 @@
 				9765D79E181BB5B80021B36F /* os6select_01.png in Resources */,
 				97DB09C617C5B037000EC195 /* paizhao-click.png in Resources */,
 				97DB09C717C5B037000EC195 /* paizhao-normal.png in Resources */,
+				97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */,
 				97DB09C817C5B037000EC195 /* qita_click.png in Resources */,
 				97DB09C917C5B037000EC195 /* qita_normal.png in Resources */,
 				97DB09CD17C5B037000EC195 /* xiangche-click.png in Resources */,
@@ -4825,8 +4825,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4853,8 +4853,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4876,8 +4876,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4898,8 +4898,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -276,8 +276,8 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 {
 	if (_receivedData&&self)
 	{
-		[self performSelectorOnMainThread:@selector(completeDownloadWithData:) withObject:_receivedData waitUntilDone:YES];
-		
+//		[self performSelectorOnMainThread:@selector(completeDownloadWithData:) withObject:_receivedData waitUntilDone:YES];
+		[self completeDownloadWithData:_receivedData];
 		_receivedData = nil;
 	}
 	

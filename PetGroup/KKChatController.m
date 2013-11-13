@@ -1238,6 +1238,7 @@
             [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
             [dictionary setObject:self.chatWithUser forKey:@"receiver"];
             [messages addObject:dictionary];
+            [self normalMsgToFinalMsg];
             [DataStoreManager storeMyMessage:dictionary];
             //重新刷新tableView
             [self.tView reloadData];

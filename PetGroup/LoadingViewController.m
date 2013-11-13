@@ -43,9 +43,17 @@
     float diffH = [Common diffHeight:self];
     diffH++;
     NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
+    NSString *path1 = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+    NSFileManager *fm1 = [NSFileManager defaultManager];
+    if([fm1 fileExistsAtPath:path1] == NO)
+    {
+        [fm1 createDirectoryAtPath:path1 withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage.jpg",path1];
+
     if (openImgStr) {
         
-        NSData * nsData= [NSData dataWithContentsOfFile:openImgStr];
+        NSData * nsData= [NSData dataWithContentsOfFile:openImgPath];
         UIImage * openPic= [UIImage imageWithData:nsData];
         if (openPic) {
             splashImageView=[[UIImageView alloc]initWithImage:openPic];
