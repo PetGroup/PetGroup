@@ -258,6 +258,7 @@
 }
 -(void)updateSelfMassage
 {
+    [self canselScreen];
     free = NO;
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
     editAVC.forumId = self.circleEntity.circleID;
@@ -330,6 +331,12 @@
         } completion:^(BOOL finished) {
             _screenV.hidden = YES;
         }];
+    }
+}
+-(void)canselScreen
+{
+    if (!_screenV.hidden) {
+         _screenV.hidden = YES;
     }
 }
 -(void)changeDataSource:(UIButton*)button
@@ -414,6 +421,7 @@
 #pragma mark - table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self canselScreen];
     free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
@@ -437,6 +445,10 @@
     }
 }
 #pragma mark - scroll view delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self canselScreen];
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(scrollView == _tableV){

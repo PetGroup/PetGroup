@@ -303,7 +303,7 @@
         [dict setObject:from forKey:@"sender"];
         //[dict setObject:fromNickName forKey:@"nickname"];
         //消息接收到的时间
-        [dict setObject:msgTime  forKey:@"time"];
+        [dict setObject:[NSString stringWithFormat:@"%lld",[msgTime longLongValue]/1000]  forKey:@"time"];
         
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
@@ -335,7 +335,7 @@
                         else
                         {
                             [dict setObject:msg forKey:@"floor"];
-                            [dict setObject:[NSString stringWithFormat:@"在帖子《%@》%@楼中评论了你",[[message attributeForName:@"content"] stringValue],msg] forKey:@"replyContent"];
+                            [dict setObject:[NSString stringWithFormat:@"在帖子《%@》%d楼中评论了你",[[message attributeForName:@"content"] stringValue],[msg intValue]+1] forKey:@"replyContent"];
                         }
                         
                     }

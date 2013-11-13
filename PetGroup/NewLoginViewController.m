@@ -130,17 +130,17 @@
     
     UIButton * regBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [regBtn setFrame:CGRectMake(25, 251+diffH, 50, 20)];
-    [regBtn.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [regBtn.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [regBtn setTitle:@"注册" forState:UIControlStateNormal];
-    regBtn.titleLabel.textColor = [UIColor blueColor];
+    regBtn.titleLabel.textColor = [UIColor grayColor];
     [self.view addSubview:regBtn];
     [regBtn addTarget:self action:@selector(doRegister:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * forgetBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [forgetBtn setFrame:CGRectMake(215, 251+diffH, 80, 20)];
-    [forgetBtn.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [forgetBtn.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [forgetBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
-    forgetBtn.titleLabel.textColor = [UIColor blueColor];
+    forgetBtn.titleLabel.textColor = [UIColor grayColor];
     [self.view addSubview:forgetBtn];
     [forgetBtn addTarget:self action:@selector(resetPassWord:) forControlEvents:UIControlEventTouchUpInside];
     

@@ -184,7 +184,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        
+        [KGStatusBar showSuccessWithStatus:@"举报成功" Controller:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -548,7 +548,7 @@
         }
         [self.tableV reloadData];
         if (_floor!= 0) {
-            [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(_floor%20)-1 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(_floor-1)%20 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
             _floor = 0;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
