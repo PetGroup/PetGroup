@@ -138,7 +138,7 @@
             showB.userInteractionEnabled = NO;
         }
         if (self.floor!=0) {
-            self.pageNo = _floor/19;
+            self.pageNo = _floor/20;
         }else{
             self.pageNo = 0;
         }
@@ -253,21 +253,25 @@
 }
 -(void)pageUp
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
-    }completion:^(BOOL finished) {
-        [_pageV removeFromSuperview];
-    }];
+    if ([self.view.subviews containsObject:self.pageV]) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
+        }completion:^(BOOL finished) {
+            [_pageV removeFromSuperview];
+        }];
+    }
     self.pageNo--;
     [self loadMoreData];
 }
 -(void)pageDown
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
-    }completion:^(BOOL finished) {
-        [_pageV removeFromSuperview];
-    }];
+    if ([self.view.subviews containsObject:self.pageV]) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
+        }completion:^(BOOL finished) {
+            [_pageV removeFromSuperview];
+        }];
+    }
     self.pageNo++;
     [self loadMoreData];
 }
@@ -456,7 +460,7 @@
     }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.articleID forKey:@"noteId"];
-    [params setObject:@"20" forKey:@"pageSize"];
+    [params setObject:@"21" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getReplyList" forKey:@"method"];
@@ -485,10 +489,11 @@
                 float high = [FollowerCell heightForRowWithArticle:rep];
                 [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
             }
+            [self setTableFootView];
         }
         [self.tableV reloadData];
         if (_floor!= 0) {
-            [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(_floor%19)-1 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            [_tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(_floor%20)-1 inSection:1] atScrollPosition: UITableViewScrollPositionTop animated:YES];
             _floor = 0;
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -505,7 +510,7 @@
     }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.articleID forKey:@"noteId"];
-    [params setObject:@"20" forKey:@"pageSize"];
+    [params setObject:@"21" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getReplyList" forKey:@"method"];
@@ -534,6 +539,7 @@
                 float high = [FollowerCell heightForRowWithArticle:rep];
                 [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
             }
+            [self setTableFootView];
         }
         [self.tableV reloadData];
         if (array.count>0) {
@@ -546,6 +552,48 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+}
+-(void)setTableFootView
+{
+    UIView* footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+    UIButton* liftB = [UIButton buttonWithType:UIButtonTypeCustom];
+    liftB.frame = CGRectMake(32.5, 6, 85, 28);
+    [liftB.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [liftB setTitle:@"上一页" forState:UIControlStateNormal];
+    [liftB setBackgroundImage:[UIImage imageNamed:@"huifu_normal"] forState:UIControlStateNormal];
+    [liftB setBackgroundImage:[UIImage imageNamed:@"huifu_click"] forState:UIControlStateHighlighted];
+    if (self.pageNo > 0) {
+        [liftB addTarget:self action:@selector(pageUp) forControlEvents:UIControlEventTouchUpInside];
+        [liftB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }else{
+        [liftB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    UIButton* rightB = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightB.frame = CGRectMake(202.5, 6, 85, 28);
+    [rightB.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [rightB setTitle:@"下一页" forState:UIControlStateNormal];
+    [rightB setBackgroundImage:[UIImage imageNamed:@"huifu_normal"] forState:UIControlStateNormal];
+    [rightB setBackgroundImage:[UIImage imageNamed:@"huifu_click"] forState:UIControlStateHighlighted];
+    int a = 0;
+    if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+        a =[self.ariticle.replyCount intValue]%20?[self.ariticle.replyCount intValue]/20+1:[self.ariticle.replyCount intValue]/20;
+    }else{
+        a =[self.ariticle.cTotalReply intValue]%20?[self.ariticle.cTotalReply intValue]/20+1:[self.ariticle.cTotalReply intValue]/20;
+    }
+    if (self.pageNo < a-1) {
+        [rightB addTarget:self action:@selector(pageDown) forControlEvents:UIControlEventTouchUpInside];
+        [rightB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }else{
+        [rightB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(117.5, 6, 85, 28)];
+    titleL.textAlignment = NSTextAlignmentCenter;
+    titleL.text = [NSString stringWithFormat:@"%d/%d",self.pageNo+1,a];
+    [footView addSubview:liftB];
+    [footView addSubview:rightB];
+    [footView addSubview:titleL];
+    self.tableV.tableFooterView = footView;
+    
 }
 -(void)editReplyViewDidEdit
 {
