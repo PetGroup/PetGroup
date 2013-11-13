@@ -723,6 +723,9 @@
             [petDict setObject:petThis.petAge forKey:@"birthdate"];
             [petDict setObject:petThis.petHeadImgID forKey:@"img"];
             [petArray addObject:petDict];
+            if (petArray.count>=8) {
+                break;
+            }
         }
         [dict setObject:petArray forKey:@"petInfoViews"];
         [dict setObject:dFriend.backgroundImg forKey:@"backgroundImg"];

@@ -95,6 +95,18 @@
     
     [asearchBar insertSubview:dd atIndex:1];
     asearchBar.delegate = self;
+    
+    noResultLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 150+diffH, 200, 80)];
+    [noResultLabel setTextAlignment:NSTextAlignmentCenter];
+    noResultLabel.text = @"找不到你要搜索的内容呢，换个关键词试试呗！";
+    [noResultLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    noResultLabel.font = [UIFont systemFontOfSize:15];
+    [noResultLabel setNumberOfLines:0];
+    //    noResultLabel.adjustsFontSizeToFitWidth = YES;
+    noResultLabel.backgroundColor = [UIColor clearColor];
+    noResultLabel.textColor = [UIColor grayColor];
+    [self.view addSubview:noResultLabel];
+    noResultLabel.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,6 +116,7 @@
 }
 -(void)loadMoreData
 {
+//    noResultLabel.hidden = YES;
     if (self.notename.length>0) {
         self.pageNo++;
         [self searchBarData];
@@ -113,6 +126,7 @@
 }
 -(void)searchBarData
 {
+    noResultLabel.hidden = YES;
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
@@ -145,7 +159,7 @@
         }
         else
         {
-            
+            noResultLabel.hidden = NO;
         }
         [self.resultTable reloadData];
         [_footer endRefreshing];
