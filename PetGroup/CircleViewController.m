@@ -239,12 +239,10 @@
     
     [self.hotPintsV addSubview:_refreshView];
     
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSArray* array = [defaults objectForKey:MyCircle];
-    if (array.count>0) {
-        [self loadHistory];
-        self.myUserID =[[TempData sharedInstance] getMyUserID];
-    }
+//    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+//    NSArray* array = [defaults objectForKey:MyCircle];
+    [self loadHistory];
+//    self.myUserID =[[TempData sharedInstance] getMyUserID];
     
     self.appDel = [[UIApplication sharedApplication] delegate];
 }
@@ -256,10 +254,10 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    if (![self.myUserID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
-        [self reloadAttentionData];
-        self.myUserID =[[TempData sharedInstance] getMyUserID];
-    }
+//    if (![self.myUserID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+//        [self reloadAttentionData];
+//        self.myUserID =[[TempData sharedInstance] getMyUserID];
+//    }
     if ([[TempData sharedInstance] ifPanned]) {
         [self.customTabBarController hidesTabBar:NO animated:NO];
     }
@@ -389,9 +387,9 @@
 //    if (indexPath.section == 0) {
 //        return CGSizeMake(310, 70);
 //    }else
-    if(indexPath.section == 0 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
-        return CGSizeMake(310, 70);
-    }else
+//    if(indexPath.section == 0 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
+//        return CGSizeMake(310, 70);
+//    }else
         return CGSizeMake(152.5, 80);
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
