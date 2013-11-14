@@ -204,7 +204,7 @@
         [nextB setTitle:@"查看全部" forState:UIControlStateNormal];
         self.pageNo = 0;
         [self loadMoreData];
-        if ([self.ariticle.cTotalReply integerValue]%20?[self.ariticle.cTotalReply integerValue]/20+1:[self.ariticle.cTotalReply integerValue]/20>1) {
+        if ([self.ariticle.cTotalReply integerValue]%20?[self.ariticle.cTotalReply integerValue]/20+1:[self.ariticle.cTotalReply integerValue]/20>=1) {
             showB.userInteractionEnabled = YES;
         }
         else{
@@ -214,7 +214,7 @@
         [nextB setTitle:@"只看楼主" forState:UIControlStateNormal];
         self.pageNo = 0;
         [self loadMoreData];
-        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>1) {
+        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>=1) {
             showB.userInteractionEnabled = YES;
         }
         else{
@@ -226,6 +226,16 @@
 {
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)cancolChangePageView
+{
+    if ([self.view.subviews containsObject:self.pageV]) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _pageV.frame = CGRectMake(0, self.view.frame.size.height, 320, 44);
+        }completion:^(BOOL finished) {
+            [_pageV removeFromSuperview];
+        }];
+    }
 }
 -(void)changePageView
 {
@@ -239,7 +249,7 @@
     }
     self.pageV = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 44)];
     [self.view addSubview:_pageV];
-    _pageV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+    _pageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:0.4];
     UIScrollView* scV = [[UIScrollView alloc]initWithFrame:CGRectMake(60, 0, 200, 44)];
     [_pageV addSubview:scV];
     int a = 0;
@@ -258,7 +268,8 @@
         x+=40;
         [scV addSubview:pageB];
         if (i == self.pageNo+1) {
-            [pageB setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+//            [pageB setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+            [pageB setBackgroundImage:[UIImage imageNamed:@"pagenum_bg"] forState:UIControlStateNormal];
         }
         if (i != self.pageNo+1) {
             [pageB addTarget:self action:@selector(pageSelect:) forControlEvents:UIControlEventTouchUpInside];
@@ -266,21 +277,25 @@
     }
     UIButton * liftB = [UIButton buttonWithType:UIButtonTypeCustom];
     liftB.frame = CGRectMake(0, 0, 60, 44);
-    [liftB setTitle:@"上一页" forState:UIControlStateNormal];
+    [liftB setBackgroundImage:[UIImage imageNamed:@"page_left"] forState:UIControlStateNormal];
+//    [liftB setTitle:@"上一页" forState:UIControlStateNormal];
     [_pageV addSubview:liftB];
     if (self.pageNo > 0) {
         [liftB addTarget:self action:@selector(pageUp) forControlEvents:UIControlEventTouchUpInside];
     }else{
-        [liftB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//        [liftB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        liftB.enabled = NO;
     }
     UIButton * rightB = [UIButton buttonWithType:UIButtonTypeCustom];
     rightB.frame = CGRectMake(260, 0, 60, 44);
-    [rightB setTitle:@"下一页" forState:UIControlStateNormal];
+    [rightB setBackgroundImage:[UIImage imageNamed:@"page_right"] forState:UIControlStateNormal];
+//    [rightB setTitle:@"下一页" forState:UIControlStateNormal];
     [_pageV addSubview:rightB];
     if (self.pageNo < a-1) {
         [rightB addTarget:self action:@selector(pageDown) forControlEvents:UIControlEventTouchUpInside];
     }else{
-        [rightB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//        [rightB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        rightB.enabled = NO;
     }
     [self.view insertSubview:_pageV aboveSubview:_tableV];
     [UIView animateWithDuration:0.3 animations:^{
@@ -323,6 +338,10 @@
     [self loadMoreData];
 }
 #pragma mark - table view delegate
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self cancolChangePageView];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
@@ -332,7 +351,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    [self cancolChangePageView];
 }
 #pragma mark - table view data source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -375,6 +394,7 @@
     replyVC.articleID = self.articleID;
     replyVC.delegate = self;
     [self presentViewController:replyVC animated:YES completion:nil];
+    [self cancolChangePageView];
 }
 -(void)owenrCellPressReportButton//举报
 {
@@ -408,6 +428,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         _reportV.alpha = 1;
     }];
+    [self cancolChangePageView];
 }
 -(void)owenrCellPressImageWithID:(NSString*)imageID//查看大图
 {
@@ -419,7 +440,7 @@
     WebViewViewController* webVC = [[WebViewViewController alloc]init];
     webVC.addressURL = URL;
     [self.navigationController pushViewController:webVC animated:YES];
-    
+    [self cancolChangePageView];
 }
 -(void)owenrCellPressNameButtonOrHeadButton
 {
@@ -436,6 +457,7 @@
     personDVC.needRequest = YES;
     personDVC.needRequestPet = YES;
     [self.navigationController pushViewController:personDVC animated:YES];
+    [self cancolChangePageView];
 }
 #pragma mark -  followerCellDelegate
 -(void)followerCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
@@ -453,6 +475,7 @@
     personDVC.needRequest = YES;
     personDVC.needRequestPet = YES;
     [self.navigationController pushViewController:personDVC animated:YES];
+    [self cancolChangePageView];
 }
 -(void)followerCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -462,6 +485,7 @@
     replyVC.row = [((NoteReply*)self.dataSourceArray[indexPath.row]).seq intValue]+1;
     replyVC.replyID = ((NoteReply*)self.dataSourceArray[indexPath.row]).replyID;
     [self presentViewController:replyVC animated:YES completion:nil];
+    [self cancolChangePageView];
 }
 -(void)followerCellPressReportButtonAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -494,17 +518,20 @@
     [UIView animateWithDuration:0.3 animations:^{
         _reportV.alpha = 1;
     }];
+    [self cancolChangePageView];
 }
 -(void)followerCellPressImageWithID:(NSString*)imageID
 {
     PhotoViewController* photoVC = [[PhotoViewController alloc]initWithSmallImages:nil images:@[imageID] indext:0];
     [self presentViewController:photoVC animated:NO completion:nil];
+    [self cancolChangePageView];
 }
 -(void)followerCellPressWithURL:(NSURL*)URL
 {
     WebViewViewController* webVC = [[WebViewViewController alloc]init];
     webVC.addressURL = URL;
     [self.navigationController pushViewController:webVC animated:YES];
+    [self cancolChangePageView];
 }
 #pragma mark - load data
 -(void)reloadData
@@ -546,7 +573,21 @@
                 float high = [FollowerCell heightForRowWithArticle:rep];
                 [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
             }
-            [self setTableFootView];
+            if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+                if ([self.ariticle.replyCount intValue]>20) {
+                    [self setTableFootView];
+                }else{
+                    self.tableV.tableFooterView = nil;
+                }
+            }else{
+                if ([self.ariticle.cTotalReply intValue]>20) {
+                    [self setTableFootView];
+                }else{
+                    self.tableV.tableFooterView = nil;
+                }
+            }
+        }else{
+            self.tableV.tableFooterView = nil;
         }
         [self.tableV reloadData];
         if (_floor!= 0) {
@@ -596,7 +637,21 @@
                 float high = [FollowerCell heightForRowWithArticle:rep];
                 [self.replyHighArray addObject:[NSString stringWithFormat:@"%f",high]];
             }
-            [self setTableFootView];
+            if ([nextB.titleLabel.text isEqualToString:@"只看楼主"]) {
+                if ([self.ariticle.replyCount intValue]>20) {
+                    [self setTableFootView];
+                }else{
+                    self.tableV.tableFooterView = nil;
+                }
+            }else{
+                if ([self.ariticle.cTotalReply intValue]>20) {
+                    [self setTableFootView];
+                }else{
+                    self.tableV.tableFooterView = nil;
+                }
+            }
+        }else{
+            self.tableV.tableFooterView = nil;
         }
         [self.tableV reloadData];
         if (array.count>0) {
@@ -614,7 +669,7 @@
 {
     UIView* footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
     UIView* lineV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 1)];
-    lineV.backgroundColor = [UIColor grayColor];
+    lineV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     [footView addSubview:lineV];
     UIButton* liftB = [UIButton buttonWithType:UIButtonTypeCustom];
     liftB.frame = CGRectMake(32.5, 6, 85, 28);

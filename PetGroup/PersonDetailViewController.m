@@ -17,6 +17,7 @@
 #import "Dynamic.h"
 #import "PersonalDynamicCell.h"
 #import "SomeOneDynamicViewController.h"
+#import "OnceDynamicViewController.h"
 
 @interface PersonDetailViewController ()<UIExpandingTextViewDelegate>
 
@@ -308,11 +309,15 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_myFriend) {
-        if (indexPath.section == 3) {
+    if (indexPath.section == 3) {
+        if (_myFriend) {
             SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
             sodVC.userInfo = self.hostInfo;
             [self.navigationController pushViewController:sodVC animated:YES];
+        }else{
+            OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
+            odVC.dynamic = self.dynamicArray[indexPath.row-1];
+            [self.navigationController pushViewController:odVC animated:YES];
         }
     }
 }

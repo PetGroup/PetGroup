@@ -324,7 +324,7 @@
 -(void)didInput
 {
     switch (assessOrPraise) {
-        case 1:{//评论{"msg":"回复内容","pid":"被回复的回复ID","puserid":"被回复的回复人ID","stateid":"动态ID"}
+        case 1:{
             NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
             long long a = (long long)(cT*1000);
@@ -372,10 +372,19 @@
             NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
             long long a = (long long)(cT*1000);
             [params setObject:@"" forKey:@"transmitUrl"];
-            [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+            if (self.inputTF.text.length>0) {
+                [params setObject:self.inputTF.text forKey:@"transmitMsg"];
+            }else{
+                [params setObject:@"转发" forKey:@"transmitMsg"];
+            }
             [params setObject:@"true" forKey:@"ifTransmitMsg"];
             [params setObject:self.dynamic.msg.string forKey:@"msg"];
-            [params setObject:self.dynamic.imageID forKey:@"imgid"];
+            if (self.dynamic.imageID) {
+                [params setObject:self.dynamic.imageID forKey:@"imgid"];
+            }
+            if (self.dynamic.transmitUrl) {
+                [params setObject:self.dynamic.transmitUrl forKey:@"transmitUrl"];
+            }
             NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
             [body setObject:@"service.uri.pet_states" forKey:@"service"];
             [body setObject:@"1" forKey:@"channel"];
@@ -397,14 +406,20 @@
                 [dic setObject:[d objectForKey:@"username"] forKey:@"username"];
                 [dic setObject:[d objectForKey:@"img"] forKey:@"userImage"];
                 [dic setObject:@"1" forKey:@"ifTransmitMsg"];
-                [dic setObject:self.dynamic.imageID forKey:@"imgid"];
+                if (self.dynamic.imageID) {
+                    [dic setObject:self.dynamic.imageID forKey:@"imgid"];
+                }
                 [dic setObject:self.dynamic.msg.string forKey:@"msg"];
                 [dic setObject:[d objectForKey:@"id"] forKey:@"userid"];
                 [dic setObject:dateS forKey:@"ct"];
-                [dic setObject:@"" forKey:@"transmitUrl"];
+                if (self.dynamic.transmitUrl) {
+                    [dic setObject:self.dynamic.transmitUrl forKey:@"transmitUrl"];
+                }
                 [dic setObject:@"3" forKey:@"state"];
                 [dic setObject:@"0" forKey:@"reportTimes"];
-                [dic setObject:[params objectForKey:@"transmitMsg"] forKey:@"transmitMsg"];
+                if ([params objectForKey:@"transmitMsg"]) {
+                    [dic setObject:[params objectForKey:@"transmitMsg"] forKey:@"transmitMsg"];
+                }
                 [dic setObject:@"0" forKey:@"totalPat"];
                 [dic setObject:@"0" forKey:@"didIpat"];
                 Dynamic* dynamic = [[Dynamic alloc]initWithNSDictionary:dic];
@@ -838,6 +853,12 @@
 }
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
 {
+    if (assessOrPraise == 2) {
+        [self didInput];
+        growingTextView.text = @"";
+        [growingTextView resignFirstResponder];
+        return YES;
+    }
     if (growingTextView.text.length<1) {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"说点什么吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles:nil];
         [alert show];
