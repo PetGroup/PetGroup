@@ -98,7 +98,7 @@
     }
     
     _timeL.frame = CGRectMake((self.contentView.frame.size.width-300)/2, 10, 80, 40);
-    _timeL.text = self.dynamic.submitTime;
+    _timeL.text = self.dynamic.listTime;
     CGFloat origin = 10;
     
     if (!self.dynamic.ifTransmitMsg) {

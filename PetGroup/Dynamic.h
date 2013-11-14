@@ -11,7 +11,8 @@
 
 @interface Dynamic : NSObject
 @property (nonatomic,assign)int countZan;
-@property (nonatomic,strong)NSString*submitTime;
+@property (nonatomic,strong)NSString*submitTime;//发布时间
+@property (nonatomic,strong)NSString*listTime;//列表时间
 @property (nonatomic,strong)NSString*dynamicID;
 @property (nonatomic,assign)BOOL ifIZaned;
 @property (nonatomic,assign)int ifTransmitMsg;

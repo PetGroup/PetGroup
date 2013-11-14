@@ -134,7 +134,7 @@
         self.ariticle = [[AriticleContent alloc]initWithDictionnary:responseObject];
         self.owenrCellHigh = [NSString stringWithFormat:@"%f",[OwenrCell heightForRowWithArticle:self.ariticle]];
         [self.tableV reloadData];
-        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>1) {
+        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>=1) {
             showB.userInteractionEnabled = YES;
         }
         else{
@@ -612,6 +612,9 @@
 -(void)setTableFootView
 {
     UIView* footView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+    UIView* lineV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 1)];
+    lineV.backgroundColor = [UIColor grayColor];
+    [footView addSubview:lineV];
     UIButton* liftB = [UIButton buttonWithType:UIButtonTypeCustom];
     liftB.frame = CGRectMake(32.5, 6, 85, 28);
     [liftB.titleLabel setFont:[UIFont systemFontOfSize:16]];

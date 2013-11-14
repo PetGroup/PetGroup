@@ -158,13 +158,13 @@
         if (classify.zhankai) {
             return classify.circleArray.count;
         }else{
-            if (classify.circleArray.count>4) {
+            if (classify.circleArray.count>3) {
                 return 4;
             }else{
                 if (classify.circleArray.count==0) {
                     return 1;
                 }
-                return classify.circleArray.count;
+                return classify.circleArray.count+1;
             }
         }
     }else{
@@ -182,23 +182,44 @@
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section!=0) {
-        if (indexPath.section==0) {
-            CircleClassify* classify = self.dataSourceArray[0];
-            if (classify.circleArray.count==0) {
-                static NSString *identifier = @"place";
-                PlaceHolderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-                cell.placeHolderString = @"您还没有关注圈子，快去关注自己感兴趣的圈子吧";
-                [cell layoutSubviews];
-                return cell;
-            }
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            static NSString *identifier = @"friend";
+            FriendCircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+            return cell;
+        }else{
+            static NSString *cellIdentifier = @"cell";
+            CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+            CircleClassify* classify = self.dataSourceArray[indexPath.section];
+            cell.entity = classify.circleArray[indexPath.row-1];
+            [cell layoutSubviews];
+            return cell;
         }
+    }else{
         static NSString *cellIdentifier = @"cell";
         CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
         CircleClassify* classify = self.dataSourceArray[indexPath.section];
         cell.entity = classify.circleArray[indexPath.row];
         [cell layoutSubviews];
         return cell;
+    }
+//    if (indexPath.section!=0) {
+//        if (indexPath.section==0) {
+//            CircleClassify* classify = self.dataSourceArray[0];
+//            if (classify.circleArray.count==0) {
+//                static NSString *identifier = @"place";
+//                PlaceHolderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+//                cell.placeHolderString = @"您还没有关注圈子，快去关注自己感兴趣的圈子吧";
+//                [cell layoutSubviews];
+//                return cell;
+//            }
+//        }
+//        static NSString *cellIdentifier = @"cell";
+//        CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+//        CircleClassify* classify = self.dataSourceArray[indexPath.section];
+//        cell.entity = classify.circleArray[indexPath.row];
+//        [cell layoutSubviews];
+//        return cell;
 //    }else{
 //        if (self.dynamicArray.count>0) {
 //            static NSString *identifier = @"friend";

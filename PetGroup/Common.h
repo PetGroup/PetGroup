@@ -12,6 +12,7 @@
 +(NSString *)getCurrentTime;
 +(NSString *)noteContentCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
 +(NSString *)noteCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
++(NSString *)dynamicListCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
 +(NSString *)DynamicCurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
 +(NSString *)CurrentTime:(NSString *)currentTime AndMessageTime:(NSString *)messageTime;
 +(NSDate *)getCurrentTimeFromString:(NSString *)datetime;

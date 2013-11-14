@@ -16,8 +16,8 @@
 @property (nonatomic,retain)UILabel* todayTopicL;
 @property (nonatomic,retain)UILabel* topicL;
 @property (nonatomic,retain)UILabel* replyL;
-@property (nonatomic,retain)UILabel* nameL;
-@property (nonatomic,retain)UILabel* joinI;
+//@property (nonatomic,retain)UILabel* nameL;
+//@property (nonatomic,retain)UILabel* joinI;
 
 @end
 @implementation CircleCell
@@ -32,14 +32,14 @@
         [self.contentView addSubview:bg];
         self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(5, 5, 70, 70)];
         self.imageV.layer.cornerRadius = 5;
-        UIColor * color1 = [UIColor colorWithRed:0.6 green:0.7 blue:0.2 alpha:1];
-        UIColor * color2 = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
-        UIColor * color3 = [UIColor colorWithRed:0.1 green:0.3 blue:0.8 alpha:1];
-        UIColor * color4 = [UIColor colorWithRed:0.7 green:0.3 blue:0.6 alpha:1];
-        UIColor * color5 = [UIColor colorWithRed:0.6 green:0.5 blue:0.2 alpha:1];
-        NSArray * array = [NSArray arrayWithObjects:color1,color2,color4,color5,color3, nil];
-        int g = arc4random()%4;
-        self.imageV.backgroundColor = array[g];
+//        UIColor * color1 = [UIColor colorWithRed:0.6 green:0.7 blue:0.2 alpha:1];
+//        UIColor * color2 = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
+//        UIColor * color3 = [UIColor colorWithRed:0.1 green:0.3 blue:0.8 alpha:1];
+//        UIColor * color4 = [UIColor colorWithRed:0.7 green:0.3 blue:0.6 alpha:1];
+//        UIColor * color5 = [UIColor colorWithRed:0.6 green:0.5 blue:0.2 alpha:1];
+//        NSArray * array = [NSArray arrayWithObjects:color1,color2,color4,color5,color3, nil];
+//        int g = arc4random()%4;
+//        self.imageV.backgroundColor = array[g];
 //        _imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
         self.bigLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
@@ -49,7 +49,7 @@
         [self.bigLabel setNumberOfLines:0];
         self.bigLabel.font = [UIFont boldSystemFontOfSize:25];
         [self.bigLabel setTextColor:[UIColor whiteColor]];
-        self.bigLabel.text = @"苏格兰折耳猫";
+//        self.bigLabel.text = @"苏格兰折耳猫";
         [self.contentView addSubview:self.bigLabel];
         
         self.quanziNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(80, 8, 80, 13)];
@@ -57,7 +57,7 @@
         self.quanziNameLabel.textColor = [UIColor orangeColor];
         self.quanziNameLabel.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:self.quanziNameLabel];
-        self.quanziNameLabel.text = @"哈士奇犬";
+//        self.quanziNameLabel.text = @"哈士奇犬";
         
         self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(80, 26, 80, 13)];
         _todayTopicL.backgroundColor = [UIColor clearColor];
@@ -104,7 +104,7 @@
     _todayTopicL.text =[NSString stringWithFormat:@"今日话题:%@",self.entity.todayTotal];
     _topicL.text = [NSString stringWithFormat:@"话题:%@",self.entity.totalCount];
     _replyL.text = [NSString stringWithFormat:@"回复:%@",self.entity.totalReply];
-    _nameL.text = [NSString stringWithFormat:@"%@",self.entity.name];
+//    _nameL.text = [NSString stringWithFormat:@"%@",self.entity.name];
     self.bigLabel.text = [NSString stringWithFormat:@"%@",self.entity.name];
     self.quanziNameLabel.text = [NSString stringWithFormat:@"%@",self.entity.name];
     self.imageV.backgroundColor = self.entity.theColor;
@@ -113,10 +113,10 @@
     }
     else
         self.bigLabel.font = [UIFont boldSystemFontOfSize:17];
-    if (!self.entity.atte) {
-        _joinI.hidden = YES;
-    }else{
-        _joinI.hidden = NO;
-    }
+//    if (!self.entity.atte) {
+//        _joinI.hidden = YES;
+//    }else{
+//        _joinI.hidden = NO;
+//    }
 }
 @end
