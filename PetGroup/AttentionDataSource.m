@@ -34,6 +34,9 @@
 //        Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
 //        [self.dynamicArray addObject:b];
 //    }
+    if (array.count<=0) {
+        array = @[@{@"id": @"0",@"atte" :@"1",@"name" :@"我关注的圈子",@"child":@[]}];
+    }
     for (NSDictionary* dic in array) {
         CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
         [self.dataSourceArray addObject:a];

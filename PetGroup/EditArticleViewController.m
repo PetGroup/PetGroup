@@ -226,7 +226,7 @@
 //
 //    }
     if (_titleTF.text.length<3||[IdentifyingString isValidateAllSpace:_titleTF.text]||_titleTF.text.length>40) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"写个标题吧，最少3个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"写个标题吧，最少3个字，但是也不要超过40个字" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
     }
