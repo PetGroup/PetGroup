@@ -536,7 +536,7 @@
         return;
     }
     if (indexPath.section == 0) {
-        if (self.dynamic.transmitUrl) {
+        if (self.dynamic.transmitUrl&&![self.dynamic.transmitUrl isEqualToString:@""]) {
             free = NO;
             NSMutableString* noteId = [NSMutableString  stringWithString:self.dynamic.transmitUrl];
             [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
@@ -842,8 +842,18 @@
     inputbg.frame = r2;
     
 }
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
+{
+    if (growingTextView.internalTextView.text.length>2&&[[Emoji allEmoji] containsObject:[growingTextView.internalTextView.text substringFromIndex:growingTextView.internalTextView.text.length-2]]) {
+        growingTextView.internalTextView.text = [growingTextView.internalTextView.text substringToIndex:growingTextView.internalTextView.text.length-2];
+    }
+    if (growingTextView.internalTextView.text.length>400) {
+        growingTextView.internalTextView.text=[growingTextView.internalTextView.text substringToIndex:400];
+    }
+}
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
+    
     float diff = (growingTextView.frame.size.height - height);
     
 	CGRect r = inPutView.frame;
@@ -864,9 +874,7 @@
         [alert show];
         return YES;
     }
-    if (growingTextView.text.length>400) {
-        growingTextView.text=[growingTextView.text substringToIndex:400];
-    }
+
     [self didInput];
     growingTextView.text = @"";
     [growingTextView resignFirstResponder];
