@@ -66,6 +66,9 @@
             PetInfo * petinfo = [[PetInfo alloc] initWithPetInfo:dict];
             [tempArray addObject:petinfo];
             [petH addObject:petinfo.firstHead];
+            if (tempArray.count>=8) {
+                break;
+            }
         }
         self.petsArray = tempArray;
         self.petsHeadArray = petH;

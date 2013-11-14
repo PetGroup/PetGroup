@@ -1419,7 +1419,7 @@ NSDictionary *_classesForNames = nil;
 		{
 			_paragraphStyle.alignment = kCTTextAlignmentLeft;
 		}
-		else if ([align isEqualToString: @"center"])
+		else if ([align isEqualToString: @"center"]||[align isEqualToString: @"middle"])
 		{
 			_paragraphStyle.alignment = kCTTextAlignmentCenter;
 		}

@@ -630,6 +630,9 @@
             PetInfo * petinfo = [[PetInfo alloc] initWithPetInfo:dict];
             [tempArray addObject:petinfo];
             [petH addObject:petinfo.firstHead];
+            if (tempArray.count>=8) {
+                break;
+            }
         }
         self.hostInfo.petsArray = tempArray;
         self.hostInfo.petsHeadArray = petH;

@@ -180,9 +180,11 @@
             [self updataUserAndPetInFo];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self showAlertView];
+            [hud hide:YES];
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self showAlertView];
+        [hud hide:YES];
     }];
 }
 -(void)uploadPetImage
@@ -199,6 +201,7 @@
             [self uploadUserImage];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self showAlertView];
+            
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self showAlertView];
@@ -309,6 +312,7 @@
 }
 -(void)showAlertView
 {
+    [hud hide:YES];
     UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
     [alert show];
 }

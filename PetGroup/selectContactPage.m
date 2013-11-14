@@ -140,18 +140,18 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if ([[TempData sharedInstance] needChat]) {
-        [self.customTabBarController setSelectedPage:0];
-        return;
-    }
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
+//    if ([[TempData sharedInstance] needChat]) {
+//        [self.customTabBarController setSelectedPage:0];
+//        return;
+//    }
+//    if ([[TempData sharedInstance] ifPanned]) {
+//        [self.customTabBarController hidesTabBar:NO animated:NO];
+//    }
+//    else
+//    {
+//        [self.customTabBarController hidesTabBar:NO animated:YES];
+//        [[TempData sharedInstance] Panned:YES];
+//    }
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -173,15 +173,6 @@
     friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
     [friendsArray sortUsingSelector:@selector(compare:)];
     [self.contactsTable reloadData];
-    NSMutableArray * tempF = [DataStoreManager queryAllFriendsNickname];
-    for (int i = 0; i<tempF.count; i++) {
-        //        if ([[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"nickName"] length]<1) {
-        //            [self getFriendInfo:[[friendDict objectForKey:[friendsArray objectAtIndex:i]] objectForKey:@"userName"] withIndex:i];
-        //        }
-        if ([[[tempF objectAtIndex:i] objectAtIndex:0] length]<=1) {
-            [self getFriendInfo:[[tempF objectAtIndex:i] objectAtIndex:1] withIndex:i];
-        }
-    }
 }
 -(void)getFriendInfo:(NSString *)userName withIndex:(int)index
 {

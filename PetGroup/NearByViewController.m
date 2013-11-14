@@ -456,14 +456,27 @@
         }
         int dist = [[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"] intValue];
         NSString *distf;
-        if (dist>1000) {
-            float dd = dist/1000;
-            distf = [NSString stringWithFormat:@"%.1fkm",dd];
+        if (dist>=1000) {
+            int aa = dist/1000;
+            float dd = (float)dist/1000;
+            if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
+                distf = [NSString stringWithFormat:@"%d.5km",aa];
+            }
+            else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
+            {
+                distf = [NSString stringWithFormat:@"%dkm",aa];
+            }
+            else
+                distf = [NSString stringWithFormat:@"%dkm",aa+1];
         }
         else
         {
             dist = ((int)(dist/100)+1)*100;
-            distf = [NSString stringWithFormat:@"%dm",dist];
+            if (dist==1000) {
+                distf = [NSString stringWithFormat:@"1km"];
+            }
+            else
+                distf = [NSString stringWithFormat:@"%dm",dist];
         }
         [cell.distLabel setText:distf];
 
@@ -484,16 +497,28 @@
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
         int dist = [[self.petDistanceArray objectAtIndex:indexPath.row] intValue];
         NSString *distf;
-        if (dist>1000) {
-            float dd = dist/1000;
-            distf = [NSString stringWithFormat:@"%.1fkm",dd];
+        if (dist>=1000) {
+            int aa = dist/1000;
+            float dd = (float)dist/1000;
+            if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
+                distf = [NSString stringWithFormat:@"%d.5km",aa];
+            }
+            else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
+            {
+                distf = [NSString stringWithFormat:@"%dkm",aa];
+            }
+            else
+                distf = [NSString stringWithFormat:@"%dkm",aa+1];
         }
         else
         {
             dist = ((int)(dist/100)+1)*100;
-            distf = [NSString stringWithFormat:@"%dm",dist];
+            if (dist==1000) {
+                distf = [NSString stringWithFormat:@"1km"];
+            }
+            else
+                distf = [NSString stringWithFormat:@"%dm",dist];
         }
-
         [cell.distLabel setText:distf];
         NSString* sigStr = [pet objectForKey:@"trait"];
         NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
