@@ -285,15 +285,15 @@ typedef  enum
 	else if ([attachment isKindOfClass:[DTImageTextAttachment class]])
 	{
 		// if the attachment has a hyperlinkURL then this is currently ignored
-		DTLazyImageView *imageView = [[DTLazyImageView alloc] initWithFrame:frame];
+		EGOImageButton *imageView = [[EGOImageButton alloc] initWithFrame:frame];
         imageView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-		imageView.delegate = self;
+//		imageView.delegate = self;
 		
 		// sets the image if there is one
-		imageView.image = [(DTImageTextAttachment *)attachment image];
+//		imageView.image = [(DTImageTextAttachment *)attachment image];
 		
 		// url for deferred loading
-		imageView.url = attachment.contentURL;
+		imageView.imageURL = attachment.contentURL;
 		
 		// if there is a hyperlink then add a link button on top of this image
 		if (attachment.hyperLinkURL)

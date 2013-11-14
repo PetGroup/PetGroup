@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "WebViewViewController.h"
 @interface ArticleViewController : UIViewController
 @property (nonatomic,assign)int floor;

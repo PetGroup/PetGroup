@@ -80,7 +80,8 @@
     UIImage* a = [NetManager compressImageDownToPhoneScreenSize:uploadImage targetSizeX:100 targetSizeY:100];
     UIImage* upImage = [NetManager image:a centerInSize:CGSizeMake(100, 100)];
     NSData *imageData = UIImageJPEGRepresentation(upImage, 1);
-    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"N",@"compressImage",@"N",@"addTopImage", nil];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
     
@@ -114,7 +115,8 @@
     UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:1136];
     NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
 //    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage", nil];
-    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"N",@"addTopImage", nil];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
     

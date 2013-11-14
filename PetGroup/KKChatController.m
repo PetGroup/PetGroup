@@ -198,7 +198,7 @@
     [inPutView addSubview:self.textView];
     
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emojiBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
+    [emojiBtn setFrame:CGRectMake(277, inPutView.frame.size.height-12-36, 45, 45)];
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     [inPutView addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -771,7 +771,7 @@
     }
     //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
     [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
-    [emojiBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
+    [emojiBtn setFrame:CGRectMake(277, inPutView.frame.size.height-12-36, 45, 45)];
     [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
 }
 
