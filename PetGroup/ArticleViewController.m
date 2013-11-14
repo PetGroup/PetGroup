@@ -204,7 +204,7 @@
         [nextB setTitle:@"查看全部" forState:UIControlStateNormal];
         self.pageNo = 0;
         [self loadMoreData];
-        if ([self.ariticle.cTotalReply integerValue]%20?[self.ariticle.cTotalReply integerValue]/20+1:[self.ariticle.cTotalReply integerValue]/20>1) {
+        if ([self.ariticle.cTotalReply integerValue]%20?[self.ariticle.cTotalReply integerValue]/20+1:[self.ariticle.cTotalReply integerValue]/20>=1) {
             showB.userInteractionEnabled = YES;
         }
         else{
@@ -214,7 +214,7 @@
         [nextB setTitle:@"只看楼主" forState:UIControlStateNormal];
         self.pageNo = 0;
         [self loadMoreData];
-        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>1) {
+        if ([self.ariticle.replyCount integerValue]%20?[self.ariticle.replyCount integerValue]/20+1:[self.ariticle.replyCount integerValue]/20>=1) {
             showB.userInteractionEnabled = YES;
         }
         else{
