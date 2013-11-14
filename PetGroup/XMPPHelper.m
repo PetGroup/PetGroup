@@ -303,18 +303,21 @@
         [dict setObject:from forKey:@"sender"];
         //[dict setObject:fromNickName forKey:@"nickname"];
         //消息接收到的时间
-        [dict setObject:[NSString stringWithFormat:@"%lld",[msgTime longLongValue]/1000]  forKey:@"time"];
+        
         
         //消息委托(这个后面讲)
         NSLog(@"theDict%@",dict);
         if ([type isEqualToString:@"chat"]) {
             if ([msgtype isEqualToString:@"normalchat"]||!msgtype) {
+                [dict setObject:msgTime  forKey:@"time"];
                 [self.chatDelegate newMessageReceived:dict];
             }
             else if ([msgtype isEqualToString:@"sayHello"]){
+                [dict setObject:msgTime  forKey:@"time"];
                 [self.addReqDelegate newAddReq:dict];
             }
             else {
+                [dict setObject:[NSString stringWithFormat:@"%lld",[msgTime longLongValue]/1000]  forKey:@"time"];
                 //此处时间应该message里携带，暂时没有，使用当前时间
                 [dict setObject:msgtype forKey:@"msgType"];
 //                msgTime = [NSString stringWithFormat:@"%.0f",[msgTime doubleValue]/1000];

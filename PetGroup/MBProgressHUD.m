@@ -239,7 +239,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		[self setNeedsDisplay];
 		[self showUsingAnimation:useAnimation];
 	}
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 - (void)hide:(BOOL)animated {
@@ -256,7 +256,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	}
 	// ... otherwise hide the HUD immediately
 	[self hideUsingAnimation:useAnimation];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void)hide:(BOOL)animated afterDelay:(NSTimeInterval)delay {

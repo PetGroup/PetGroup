@@ -280,7 +280,13 @@
     
     [self analysisRegion];
 }
-
+- (void) textFieldDidChange:(UITextField *) textField
+{
+    NSLog(@"%@",textField.text);
+    if (textField.text.length>2&&[[Emoji allEmoji] containsObject:[textField.text substringFromIndex:textField.text.length-2]]) {
+        textField.text = [textField.text substringToIndex:textField.text.length-2];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
