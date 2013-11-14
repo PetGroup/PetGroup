@@ -154,8 +154,8 @@
         return;
     }
     [hud show:YES];
+    [self.dynamicTV resignFirstResponder];
     if (self.pictureArray.count>0) {
-        [self.dynamicTV resignFirstResponder];
         [self.view bringSubviewToFront:hud];
         NSMutableArray* imageArray = [[NSMutableArray alloc]init];
         NSMutableArray* nameArray = [[NSMutableArray alloc]init];
