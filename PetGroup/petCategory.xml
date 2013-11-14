@@ -41,5 +41,6 @@
         <name id = "03004">宠物鸟</name>
         <name id = "03005">两栖及爬行类</name>
         <name id = "03006">其他</name>
+        <name id = "03007">龙猫</name>
     </Other>
 </petCategory>
