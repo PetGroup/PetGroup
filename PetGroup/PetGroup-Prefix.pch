@@ -22,6 +22,7 @@
     #import "MakeDict.h"
     #import "Common.h"
     #import "DTCoreText.h"
+    #import "Emoji.h"
 #endif
 
 #define BaseClientUrl @"http://123.178.27.74/pet-hub/request"

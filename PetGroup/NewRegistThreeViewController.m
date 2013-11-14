@@ -176,6 +176,7 @@
     _nameTF.delegate = self;
     _nameTF.secureTextEntry = YES;
     [self.view addSubview:_nameTF];
+   
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 125+diffH, 175, 30)];
     _passWordTF.placeholder = @"再次输入密码";
@@ -191,6 +192,7 @@
     _nickNameTF.font = [UIFont systemFontOfSize:13];
     _nickNameTF.delegate = self;
     [self.view addSubview:_nickNameTF];
+    [self.nickNameTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     manB = [UIButton buttonWithType:UIButtonTypeCustom];
     manB.frame = CGRectMake(111.25, 270+diffH, 21, 21);

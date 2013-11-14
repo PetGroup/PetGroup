@@ -580,6 +580,11 @@
 		97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
+		97BCF0E41834ACC8006B7C0F /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DB1834ACC8006B7C0F /* Emoji.m */; };
+		97BCF0E51834ACC8006B7C0F /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DD1834ACC8006B7C0F /* EmojiEmoticons.m */; };
+		97BCF0E61834ACC8006B7C0F /* EmojiMapSymbols.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DF1834ACC8006B7C0F /* EmojiMapSymbols.m */; };
+		97BCF0E71834ACC8006B7C0F /* EmojiPictographs.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0E11834ACC8006B7C0F /* EmojiPictographs.m */; };
+		97BCF0E81834ACC8006B7C0F /* EmojiTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0E31834ACC8006B7C0F /* EmojiTransport.m */; };
 		97CCB6121807889D000BD1BE /* shezhi22.png in Resources */ = {isa = PBXBuildFile; fileRef = 86BDA5CE17F6E98B00613866 /* shezhi22.png */; };
 		97D4B2B417D6D83600B331A4 /* ButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97D4B2B317D6D83600B331A4 /* ButtonCell.m */; };
 		97D4BAD617E944EB00929BF4 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 97D4BAD117E944EB00929BF4 /* icon-72.png */; };
@@ -1522,6 +1527,16 @@
 		97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = writing_picbox_bg.png; sourceTree = "<group>"; };
 		97B73F6A1827944300064447 /* redCB2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCB2.png; sourceTree = "<group>"; };
 		97B73F6B1827944300064447 /* redpot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redpot2.png; sourceTree = "<group>"; };
+		97BCF0DA1834ACC8006B7C0F /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
+		97BCF0DB1834ACC8006B7C0F /* Emoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Emoji.m; sourceTree = "<group>"; };
+		97BCF0DC1834ACC8006B7C0F /* EmojiEmoticons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiEmoticons.h; sourceTree = "<group>"; };
+		97BCF0DD1834ACC8006B7C0F /* EmojiEmoticons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmojiEmoticons.m; sourceTree = "<group>"; };
+		97BCF0DE1834ACC8006B7C0F /* EmojiMapSymbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiMapSymbols.h; sourceTree = "<group>"; };
+		97BCF0DF1834ACC8006B7C0F /* EmojiMapSymbols.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmojiMapSymbols.m; sourceTree = "<group>"; };
+		97BCF0E01834ACC8006B7C0F /* EmojiPictographs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiPictographs.h; sourceTree = "<group>"; };
+		97BCF0E11834ACC8006B7C0F /* EmojiPictographs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmojiPictographs.m; sourceTree = "<group>"; };
+		97BCF0E21834ACC8006B7C0F /* EmojiTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiTransport.h; sourceTree = "<group>"; };
+		97BCF0E31834ACC8006B7C0F /* EmojiTransport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmojiTransport.m; sourceTree = "<group>"; };
 		97D0309117C5EB3900055EF6 /* DSFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSFriends.h; sourceTree = "<group>"; };
 		97D0309217C5EB3900055EF6 /* DSFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSFriends.m; sourceTree = "<group>"; };
 		97D20A3217D05AAB001C8162 /* DSNameIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSNameIndex.h; sourceTree = "<group>"; };
@@ -3573,6 +3588,23 @@
 			path = Core;
 			sourceTree = "<group>";
 		};
+		97BCF0D91834ACB2006B7C0F /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				97BCF0DA1834ACC8006B7C0F /* Emoji.h */,
+				97BCF0DB1834ACC8006B7C0F /* Emoji.m */,
+				97BCF0DC1834ACC8006B7C0F /* EmojiEmoticons.h */,
+				97BCF0DD1834ACC8006B7C0F /* EmojiEmoticons.m */,
+				97BCF0DE1834ACC8006B7C0F /* EmojiMapSymbols.h */,
+				97BCF0DF1834ACC8006B7C0F /* EmojiMapSymbols.m */,
+				97BCF0E01834ACC8006B7C0F /* EmojiPictographs.h */,
+				97BCF0E11834ACC8006B7C0F /* EmojiPictographs.m */,
+				97BCF0E21834ACC8006B7C0F /* EmojiTransport.h */,
+				97BCF0E31834ACC8006B7C0F /* EmojiTransport.m */,
+			);
+			name = Emoji;
+			sourceTree = "<group>";
+		};
 		97D501D417C499E400799BD4 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -3943,6 +3975,7 @@
 		97FB480A17BCBAC40071FA12 /* OtherRefs */ = {
 			isa = PBXGroup;
 			children = (
+				97BCF0D91834ACB2006B7C0F /* Emoji */,
 				86FC7654182116A30025686B /* FastTextView */,
 				86FC764218209F290025686B /* MJRefresh */,
 				97F567CA180E868100A72604 /* amr */,
@@ -4477,6 +4510,7 @@
 				9795472C17BA36AE00D05874 /* MagicalRecord+Options.m in Sources */,
 				9795472D17BA36AE00D05874 /* MagicalRecord+Setup.m in Sources */,
 				9795472E17BA36AE00D05874 /* MagicalRecord+ShorthandSupport.m in Sources */,
+				97BCF0E51834ACC8006B7C0F /* EmojiEmoticons.m in Sources */,
 				9795472F17BA36AE00D05874 /* MagicalRecord.m in Sources */,
 				9795473217BA36DA00D05874 /* LocalStore.xcdatamodeld in Sources */,
 				97FB47D817BC79F00071FA12 /* DSPets.m in Sources */,
@@ -4686,12 +4720,14 @@
 				97DB08FD17C5A1FF000EC195 /* MyPetProfileViewController.m in Sources */,
 				97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */,
 				97DB098017C5A95C000EC195 /* addFriendCell.m in Sources */,
+				97BCF0E71834ACC8006B7C0F /* EmojiPictographs.m in Sources */,
 				97DB098117C5A95C000EC195 /* ContactsCell.m in Sources */,
 				97DB098217C5A95C000EC195 /* KKMessageCell.m in Sources */,
 				97DB098317C5A95C000EC195 /* MessageCell.m in Sources */,
 				97DB098417C5A95C000EC195 /* MoreCell.m in Sources */,
 				97DB098517C5A95C000EC195 /* MyProfileACell.m in Sources */,
 				849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */,
+				97BCF0E41834ACC8006B7C0F /* Emoji.m in Sources */,
 				97DB098617C5A95C000EC195 /* MyProfileBCell.m in Sources */,
 				97DB098717C5A95C000EC195 /* MyProfileBtnCell.m in Sources */,
 				97A93DD1182CBC1D00D571A5 /* TextAttchment.m in Sources */,
@@ -4705,6 +4741,7 @@
 				9715A192181E1890009891A6 /* HPTextViewInternal.m in Sources */,
 				97DB09F617C5B167000EC195 /* IdentifyingString.m in Sources */,
 				97DB09F717C5B167000EC195 /* NewLoginViewController.m in Sources */,
+				97BCF0E61834ACC8006B7C0F /* EmojiMapSymbols.m in Sources */,
 				97DB09F817C5B167000EC195 /* NewRegistOneViewController.m in Sources */,
 				97DB09F917C5B167000EC195 /* NewRegistThreeViewController.m in Sources */,
 				97DB09FA17C5B167000EC195 /* NewRegistTwoViewController.m in Sources */,
@@ -4764,6 +4801,7 @@
 				86A56A99180FB6C2000FD684 /* CircleEntity.m in Sources */,
 				86F324BA1810D43E004BC4EF /* Article.m in Sources */,
 				86F324D118111E9C004BC4EF /* AllArticleDataSource.m in Sources */,
+				97BCF0E81834ACC8006B7C0F /* EmojiTransport.m in Sources */,
 				86CC16AB18166EE7008E1D1F /* ArticleViewController.m in Sources */,
 				867257511818C91400624A04 /* OwenrCell.m in Sources */,
 				8672575B1819197900624A04 /* FollowerCell.m in Sources */,

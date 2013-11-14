@@ -117,7 +117,9 @@
     self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(22.75, 63.75+diffH, 272.5, 20)];
     _titleTF.placeholder = @"标题";
     _titleTF.backgroundColor = [UIColor clearColor];
+    _titleTF.delegate = self;
     [self.view addSubview:_titleTF];
+    [_titleTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
 //    _dynamicTV.backgroundColor = [UIColor clearColor];
@@ -407,6 +409,18 @@
     deleteIV = (UIImageView*)tapGR.view;
     self.deleteActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
     [_deleteActionSheet showInView:self.view];
+}
+//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//    NSLog(@"%@",textField.text);
+//    return YES;
+//}
+- (void) textFieldDidChange:(UITextField *) textField
+{
+    NSLog(@"%@",textField.text);
+    if (textField.text.length>2&&[[Emoji allEmoji] containsObject:[textField.text substringFromIndex:textField.text.length-2]]) {
+        textField.text = [textField.text substringToIndex:textField.text.length-2];
+    }
 }
 #pragma mark - text view delegate
 - (void)textViewDidChange:(UITextView *)textView

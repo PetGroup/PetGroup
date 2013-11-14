@@ -43,6 +43,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     
+    
     diffH = [Common diffHeight:self];
     
     [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];

@@ -102,6 +102,7 @@
     _PhoneNoTF.keyboardType = UIKeyboardTypeNumberPad;
     _PhoneNoTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_PhoneNoTF];
+    [self.PhoneNoTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 126+diffH, 175, 30)];
     _passWordTF.placeholder = @"请输入登录密码";
@@ -109,6 +110,7 @@
     _passWordTF.secureTextEntry = YES;
     _passWordTF.font = [UIFont systemFontOfSize:13];
     [self.view addSubview:_passWordTF];
+    [self.passWordTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
 //    UIButton* passWordB = [UIButton buttonWithType:UIButtonTypeCustom];
 //    passWordB.frame = CGRectMake(31.25, 190+diffH, 257.5, 41);
@@ -147,6 +149,13 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"提交中...";
+}
+- (void) textFieldDidChange:(UITextField *) textField
+{
+    NSLog(@"%@",textField.text);
+    if (textField.text.length>2&&[[Emoji allEmoji] containsObject:[textField.text substringFromIndex:textField.text.length-2]]) {
+        textField.text = [textField.text substringToIndex:textField.text.length-2];
+    }
 }
 -(void)doRegister:(UIButton *)sender
 {

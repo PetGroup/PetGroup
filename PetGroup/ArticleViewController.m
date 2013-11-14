@@ -385,12 +385,13 @@
     b.backgroundColor = [UIColor colorWithRed:0.92 green:0.92 blue:0.92 alpha:1];
     [_reportV addSubview:b];
     UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 200, 20)];
+    titleL.backgroundColor = [UIColor clearColor];
     titleL.text = @"请选择举报类型";
     titleL.textAlignment = NSTextAlignmentCenter;
     [b addSubview:titleL];
     NSArray* a = @[@"广告",@"色情",@"辱骂",@"垃圾信息",@"取消"];
     for (int i = 0; i<5; i++) {
-        UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(10, 40+i*30, 180, 20);
         [button setTitle:a[i] forState:UIControlStateNormal];
         [b addSubview:button];

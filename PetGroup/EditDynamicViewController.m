@@ -129,6 +129,7 @@
     hud.labelText = @"正在为您发布...";
     
 }
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [self.dynamicTV becomeFirstResponder];
@@ -247,6 +248,9 @@
 #pragma mark - text view delegate
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
+        textView.text = [textView.text substringToIndex:textView.text.length-2];
+    }
     if (textView.text.length>0) {
         _placeholderL.text = @"";
     }else{

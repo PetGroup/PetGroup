@@ -120,6 +120,7 @@
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_phoneTF];
     
+    
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.delegate = self;

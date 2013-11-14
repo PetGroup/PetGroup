@@ -12,7 +12,7 @@
 @protocol EditArticleViewDelegate<NSObject>
 -(void)editArticleViewDidEdit:(Article*)aricle;
 @end
-@interface EditArticleViewController : UIViewController
+@interface EditArticleViewController : UIViewController<UITextFieldDelegate>
 {
     float diffH;
     NSAttributedString * attributeStringHH;

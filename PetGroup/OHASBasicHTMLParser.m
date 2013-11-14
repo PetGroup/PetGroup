@@ -387,10 +387,17 @@
                     NSString *facefilePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"emotionImageThird.plist"];
                     NSDictionary *m_pEmojiDic = [[NSDictionary alloc] initWithContentsOfFile:facefilePath];
                     
-                    [foundString setEmoit:[NSString stringWithFormat:@"%@|%@|%@",m_pEmojiDic[link],
-                                           imgAttr[@"width"], imgAttr[@"height"]]];
+                    if (m_pEmojiDic[link]) {
+                        [foundString setEmoit:[NSString stringWithFormat:@"%@|%@|%@",m_pEmojiDic[link],
+                                               imgAttr[@"width"], imgAttr[@"height"]]];
+                        
+                        return MRC_AUTORELEASE(foundString);
+                    }
+                    else
+                    {
+                        return nil;
+                    }
                     
-                    return MRC_AUTORELEASE(foundString);
                 } else {
                     return nil;
                 }

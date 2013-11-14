@@ -278,7 +278,11 @@
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str{
     
-    NSLog(@"_attrstring.string.length %d",_attrstring.string.length);
+    NSLog(@"_attrstring.string.length %d,%@",_attrstring.string.length,str);
+    if ([[Emoji allEmoji] containsObject:str]) {
+        str = @"";
+        return;
+    }
 
     if (range.location!=NSNotFound && (range.location + range.length)>_attrstring.string.length )  return; //避免错误
     

@@ -175,6 +175,7 @@
     
     self.typeTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 340+diffH, 0, 0)];
     [self.view addSubview:_typeTF];
+    [self.typeTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     self.typePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0+diffH, 320, 200)];
     _typePV.dataSource = self;
@@ -191,6 +192,7 @@
     
     self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 382+diffH, 0, 0)];
     [self.view addSubview:_ageTF];
+    [self.ageTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     self.agePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
     _agePV.showsSelectionIndicator = YES;
@@ -231,7 +233,13 @@
     [self.view addSubview:hud];
     hud.labelText = @"提交中...";
 }
-
+- (void) textFieldDidChange:(UITextField *) textField
+{
+    NSLog(@"%@",textField.text);
+    if (textField.text.length>2&&[[Emoji allEmoji] containsObject:[textField.text substringFromIndex:textField.text.length-2]]) {
+        textField.text = [textField.text substringToIndex:textField.text.length-2];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
