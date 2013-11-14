@@ -223,7 +223,7 @@
 //    if ([IdentifyingString isValidateAllSpace:_titleTF.text]) {
 //
 //    }
-    if (_titleTF.text.length<3||[IdentifyingString isValidateAllSpace:_titleTF.text]) {
+    if (_titleTF.text.length<3||[IdentifyingString isValidateAllSpace:_titleTF.text]||_titleTF.text.length>40) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"写个标题吧，最少3个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
@@ -330,7 +330,9 @@
         [self backButton:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        UIAlertView* alertV = [[UIAlertView alloc]initWithTitle:nil message:@"发布失败,请稍候再试!" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alertV show];
+        [hud hide:YES];
     }];
 }
 -(void)getMyArticleWithId:(NSString*)articleId

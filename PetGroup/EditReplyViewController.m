@@ -275,6 +275,8 @@
         [self backButton:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alertV = [[UIAlertView alloc]initWithTitle:nil message:@"发布失败,请稍候再试!" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alertV show];
         [hud hide:YES];
     }];
 }

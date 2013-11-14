@@ -247,7 +247,14 @@
 #pragma maek - lingshi
 -(void)editArticleViewDidEdit:(Article *)aricle
 {
-    [hotPintsDS.dataSourceArray insertObject:aricle atIndex:0];
+    int index = 0;
+    for (int i = 0; i< hotPintsDS.dataSourceArray.count; i++) {
+        if (!((Article*)hotPintsDS.dataSourceArray[i]).isTop) {
+            index = i;
+            break;
+        }
+    }
+    [hotPintsDS.dataSourceArray insertObject:aricle atIndex:index];
     [self.tableV reloadData];
 }
 #pragma mark - button action

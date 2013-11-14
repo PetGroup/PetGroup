@@ -40,7 +40,7 @@
     }else{
         CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(300, 200)];
         height+=(size.height+5);
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(300, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(280, 200)];
         height+=(msgSize.height+5);
         if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
             height+=96.6;

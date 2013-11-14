@@ -11,6 +11,9 @@
 		785C20548B42418D82CF7FFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D25B313ED94E54A59AB8E2 /* libPods.a */; };
 		849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */; };
 		849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */; };
+		84BD195D1834881A004D51F2 /* pagenum_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BD195A1834881A004D51F2 /* pagenum_bg.png */; };
+		84BD196218348B6D004D51F2 /* page_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BD196018348B6D004D51F2 /* page_right.png */; };
+		84BD196318348B6D004D51F2 /* page_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BD196118348B6D004D51F2 /* page_left.png */; };
 		84BEDCFB1831CB270011ED98 /* quanzi_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 84BEDCFA1831CB270011ED98 /* quanzi_bg.png */; };
 		84C399B3182C918A0004C288 /* PlaceHolderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C399B2182C918A0004C288 /* PlaceHolderCell.m */; };
 		84C6A1BE182DF98200ECC11C /* FriendCircleDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C6A1BD182DF98200ECC11C /* FriendCircleDataSource.m */; };
@@ -730,6 +733,9 @@
 		849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDynamicDataSource.m; sourceTree = "<group>"; };
 		849D3461182B7FBA009376C0 /* MyReplyNoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReplyNoteDataSource.h; sourceTree = "<group>"; };
 		849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReplyNoteDataSource.m; sourceTree = "<group>"; };
+		84BD195A1834881A004D51F2 /* pagenum_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pagenum_bg.png; sourceTree = "<group>"; };
+		84BD196018348B6D004D51F2 /* page_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_right.png; sourceTree = "<group>"; };
+		84BD196118348B6D004D51F2 /* page_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_left.png; sourceTree = "<group>"; };
 		84BEDCFA1831CB270011ED98 /* quanzi_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quanzi_bg.png; sourceTree = "<group>"; };
 		84C399B1182C918A0004C288 /* PlaceHolderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceHolderCell.h; sourceTree = "<group>"; };
 		84C399B2182C918A0004C288 /* PlaceHolderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceHolderCell.m; sourceTree = "<group>"; };
@@ -1886,6 +1892,9 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				84BD196018348B6D004D51F2 /* page_right.png */,
+				84BD196118348B6D004D51F2 /* page_left.png */,
+				84BD195A1834881A004D51F2 /* pagenum_bg.png */,
 				9764FF391830D02300AA12CD /* pageChange.png */,
 				9764FF371830C53E00AA12CD /* replyBottom_03.png */,
 				97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */,
@@ -4046,6 +4055,7 @@
 				9765D778181B9B400021B36F /* topBar3.png in Resources */,
 				86A56A76180F81D6000FD684 /* third_xiemessage_record_icon.png in Resources */,
 				86A56A77180F81D6000FD684 /* third_xiemessage_record_ani1.png in Resources */,
+				84BD196218348B6D004D51F2 /* page_right.png in Resources */,
 				86A56A78180F81D6000FD684 /* third_xiemessage_record_ani10.png in Resources */,
 				86A56A79180F81D6000FD684 /* third_xiemessage_record_ani11.png in Resources */,
 				86A56A7A180F81D6000FD684 /* third_xiemessage_record_ani12.png in Resources */,
@@ -4086,6 +4096,7 @@
 				97E25C3D17C3729A007E187D /* Localizable.strings in Resources */,
 				9765D78C181BB5A30021B36F /* os7normal_03.png in Resources */,
 				9736BB0517C4892A007DFE36 /* README.txt in Resources */,
+				84BD196318348B6D004D51F2 /* page_left.png in Resources */,
 				9736BB0A17C4892A007DFE36 /* build-libidn.sh in Resources */,
 				97233BA21820F42C00A8015D /* magnifier-ranged-lo@2x.png in Resources */,
 				9736BCC517C48B7B007DFE36 /* petCategory.xml in Resources */,
@@ -4354,6 +4365,7 @@
 				86A56A64180F8191000FD684 /* biaoqing076.png in Resources */,
 				86A56A65180F8191000FD684 /* biaoqing077.png in Resources */,
 				86A56A66180F8191000FD684 /* biaoqing078.png in Resources */,
+				84BD195D1834881A004D51F2 /* pagenum_bg.png in Resources */,
 				86A56A67180F8191000FD684 /* biaoqing079.png in Resources */,
 				86A56A68180F8191000FD684 /* biaoqing080.png in Resources */,
 				86A56A69180F8191000FD684 /* biaoqing081.png in Resources */,
@@ -4825,8 +4837,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4853,8 +4865,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4876,8 +4888,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4898,8 +4910,8 @@
 					"\"$(SRCROOT)/PetGroup/amr/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
