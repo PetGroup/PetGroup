@@ -164,11 +164,11 @@
     tableHeadView.userInteractionEnabled = YES;
     
     goodB = [UIButton buttonWithType:UIButtonTypeCustom];
-    goodB.frame = CGRectMake(0, 0, 320/3, 26);
+    goodB.frame = CGRectMake(2*320/3, 0, 320/3, 26);
     goodB.titleLabel.font = [UIFont systemFontOfSize:14];
     goodB.tag = 2;
     [goodB setTitle:@"精华" forState:UIControlStateNormal];
-    [goodB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [goodB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [goodB addTarget:self action:@selector(changeDataSource:) forControlEvents:UIControlEventTouchUpInside];
     [tableHeadView addSubview:goodB];
     
@@ -182,11 +182,11 @@
     [tableHeadView addSubview:newReplyB];
     
     newPublishB = [UIButton buttonWithType:UIButtonTypeCustom];
-    newPublishB.frame = CGRectMake(2*320/3, 0, 320/3, 26);
+    newPublishB.frame = CGRectMake(0, 0, 320/3, 26);
     newPublishB.titleLabel.font = [UIFont systemFontOfSize:14];
     newPublishB.tag = 4;
     [newPublishB setTitle:@"最新发表" forState:UIControlStateNormal];
-    [newPublishB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [newPublishB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [newPublishB addTarget:self action:@selector(changeDataSource:) forControlEvents:UIControlEventTouchUpInside];
     [tableHeadView addSubview:newPublishB];
     
@@ -203,10 +203,10 @@
     self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
     _attentionV.delegate = self;
     _attentionV.backgroundColor = [UIColor whiteColor];
-    [_attentionV registerClass:[PlaceHolderCell class] forCellWithReuseIdentifier:@"place"];
+//    [_attentionV registerClass:[PlaceHolderCell class] forCellWithReuseIdentifier:@"place"];
     [_attentionV registerClass:[CircleCell class] forCellWithReuseIdentifier:@"cell"];
     [_attentionV registerClass:[FriendCircleCell class] forCellWithReuseIdentifier:@"friend"];
-    [_attentionV registerClass:[FriendHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"friendHeader"];
+//    [_attentionV registerClass:[FriendHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"friendHeader"];
     [_attentionV registerClass:[HeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     [_attentionV registerClass:[FooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer"];
     [self.view addSubview:_attentionV];
@@ -300,11 +300,11 @@
     [hotPintsB setBackgroundImage:bgB forState:UIControlStateNormal];
 //    [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
     [self.view bringSubviewToFront:_hotPintsV];
-    if (self.goodArticleDS == nil) {
-        self.goodArticleDS = [[GoodArticleDataSource alloc]init];
-        _hotPintsV.dataSource = _goodArticleDS;
-        hotPintsDS = _goodArticleDS;
-        _goodArticleDS.myController = self;
+    if (_publishArticleDS == nil) {
+        self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
+        _hotPintsV.dataSource = _publishArticleDS;
+        hotPintsDS = _publishArticleDS;
+        _publishArticleDS.myController = self;
         [self reloadHotPintsData];
     }
 }
@@ -411,19 +411,25 @@
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section == 0) {
-//        FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
-//        [self.navigationController pushViewController:friendCircleVC animated:YES];
-//        [self.customTabBarController hidesTabBar:YES animated:YES];
-//    }else if(indexPath.section == 1&&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
-//        return;
-//    }else{
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
+            [self.navigationController pushViewController:friendCircleVC animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }else{
+            OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
+            onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row-1];
+            onceCircleVC.delegate = self;
+            [self.navigationController pushViewController:onceCircleVC animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }
+    }else{
         OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
         onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
         onceCircleVC.delegate = self;
         [self.navigationController pushViewController:onceCircleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
-//    }
+    }
 }
 #pragma mark - footer view delegate
 -(void)footerView:(FooterView*)footerV didSelectUnfoldBAtIndexPath:(NSIndexPath *)indexPath

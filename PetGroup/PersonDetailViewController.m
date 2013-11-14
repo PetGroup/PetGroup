@@ -309,9 +309,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_myFriend) {
-        SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
-        sodVC.userInfo = self.hostInfo;
-        [self.navigationController pushViewController:sodVC animated:YES];
+        if (indexPath.section == 3) {
+            SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+            sodVC.userInfo = self.hostInfo;
+            [self.navigationController pushViewController:sodVC animated:YES];
+        }
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

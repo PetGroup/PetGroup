@@ -17,6 +17,7 @@
     if (self) {
         self.countZan = [[dic objectForKey:@"totalPat"] integerValue];
         self.submitTime = [Common DynamicCurrentTime:[Common getCurrentTime] AndMessageTime:[dic objectForKey:@"ct"]];
+        self.listTime = [Common dynamicListCurrentTime:[Common getCurrentTime] AndMessageTime:[dic objectForKey:@"ct"]];
         self.dynamicID = [dic objectForKey:@"id"];
         self.ifIZaned = [[dic objectForKey:@"didIpat"] boolValue];
         self.ifTransmitMsg = [[dic objectForKey:@"ifTransmitMsg"] intValue];
