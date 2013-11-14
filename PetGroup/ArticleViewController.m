@@ -544,7 +544,7 @@
     }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.articleID forKey:@"noteId"];
-    [params setObject:@"21" forKey:@"pageSize"];
+    [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getReplyList" forKey:@"method"];
@@ -608,7 +608,7 @@
     }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:self.articleID forKey:@"noteId"];
-    [params setObject:@"21" forKey:@"pageSize"];
+    [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
     [body setObject:@"getReplyList" forKey:@"method"];
