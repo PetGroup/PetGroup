@@ -250,7 +250,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             if (indexPath.section==2) {
                 [cell.headImageV setImage:[UIImage imageNamed:@"dyn.png"]];
-                cell.titleLabel.text = @"动态";
+                cell.titleLabel.text = @"我的动态";
                 if (unreadComment>0) {
                     cell.notiBgV.hidden = NO;
                     [cell.unreadCountLabel setText:[NSString stringWithFormat:@"%d",unreadComment]];

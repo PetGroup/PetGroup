@@ -84,7 +84,7 @@
     
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"我的圈子"];
+    [titleLabel setText:@"我的动态"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];

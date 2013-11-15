@@ -94,7 +94,7 @@
         [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
     
-    NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
+    NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirstPet"];
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
