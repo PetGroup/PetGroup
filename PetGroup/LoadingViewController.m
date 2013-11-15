@@ -57,7 +57,7 @@
         UIImage * openPic= [UIImage imageWithData:nsData];
         if (openPic) {
             splashImageView=[[UIImageView alloc]initWithImage:openPic];
-            splashImageView.frame=CGRectMake(0, 0, 320, self.view.frame.size.height);
+            splashImageView.frame=CGRectMake(0, 0, 320, 568);
         }
         else
         {
@@ -98,7 +98,8 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
-    //    [self firtOpen];
+        [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
+        [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
     }
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];
@@ -206,7 +207,8 @@
     NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirst"];
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
-    {  
+    {
+        [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
     }
 }

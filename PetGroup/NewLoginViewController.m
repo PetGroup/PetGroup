@@ -214,7 +214,7 @@
             [DataStoreManager storeMyUserID:[[dic objectForKey:@"authenticationToken"] objectForKey:@"userid"]];
             [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
 //            [self dismissModalViewControllerAnimated:YES];
-        [self dismissViewControllerAnimated:YES completion:^{
+        [self dismissViewControllerAnimated:NO completion:^{
             
         }];
 //        }

@@ -67,9 +67,9 @@
         replyL.backgroundColor = [UIColor clearColor];
         replyL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:replyL];
-        todayTopicL.text =@"今日话题";
-        topicL.text = @"话题";
-        replyL.text = @"回复";
+        todayTopicL.text =@"朋友在做的";
+        topicL.text = @"在这里";
+        replyL.text = @"我都知道";
     }
     return self;
 }

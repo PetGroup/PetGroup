@@ -35,7 +35,7 @@
 //        [self.dynamicArray addObject:b];
 //    }
     if (array.count<=0) {
-        array = @[@{@"id": @"0",@"atte" :@"1",@"name" :@"我关注的圈子",@"child":@[]}];
+        array = @[@{@"id": @"0",@"atte" :@"1",@"name" :@"我关注的圈子",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"热点推荐",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"综合交流区",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"汪星人",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"喵星人",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"鸟兽虫鱼",@"child":@[]},@{@"id": @"0",@"atte" :@"1",@"name" :@"各地俱乐部",@"child":@[]}];
     }
     for (NSDictionary* dic in array) {
         CircleClassify* a = [[CircleClassify alloc]initWithDictionnary:dic];
