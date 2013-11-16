@@ -309,13 +309,18 @@
 #pragma mark - 存储联系人相关
 +(BOOL)ifHaveThisFriend:(NSString *)userName
 {
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
-    DSFriends * dFriends = [DSFriends MR_findFirstWithPredicate:predicate];
-    if (dFriends) {
-        return YES;
+    if (userName) {
+        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
+        DSFriends * dFriends = [DSFriends MR_findFirstWithPredicate:predicate];
+        if (dFriends) {
+            return YES;
+        }
+        else
+            return NO;
     }
     else
         return NO;
+
 }
 
 +(BOOL)ifFriendHaveNicknameAboutUser:(NSString *)username
