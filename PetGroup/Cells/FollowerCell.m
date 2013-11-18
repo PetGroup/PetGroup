@@ -381,7 +381,9 @@ typedef  enum
         
         if ([[UIApplication sharedApplication] canOpenURL:[URL absoluteURL]])
         {
-            [[UIApplication sharedApplication] openURL:[URL absoluteURL]];
+            if (self.delegate&&[self.delegate respondsToSelector:@selector(followerCellPressWithURL:)]) {
+                [self.delegate followerCellPressWithURL:button.URL];
+            }
         }
         else
         {

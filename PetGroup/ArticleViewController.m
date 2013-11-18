@@ -439,7 +439,9 @@
 {
     WebViewViewController* webVC = [[WebViewViewController alloc]init];
     webVC.addressURL = URL;
-    [self.navigationController pushViewController:webVC animated:YES];
+    [self presentViewController:webVC animated:YES completion:^{
+        
+    }];
     [self cancolChangePageView];
 }
 -(void)owenrCellPressNameButtonOrHeadButton
@@ -532,7 +534,9 @@
 {
     WebViewViewController* webVC = [[WebViewViewController alloc]init];
     webVC.addressURL = URL;
-    [self.navigationController pushViewController:webVC animated:YES];
+    [self presentViewController:webVC animated:YES completion:^{
+        
+    }];
     [self cancolChangePageView];
 }
 #pragma mark - load data

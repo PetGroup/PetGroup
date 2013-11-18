@@ -34,6 +34,14 @@
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
     
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
+    titleLabel.backgroundColor=[UIColor clearColor];
+    [titleLabel setText:@"网页"];
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    titleLabel.textAlignment=NSTextAlignmentCenter;
+    titleLabel.textColor=[UIColor whiteColor];
+    [self.view addSubview:titleLabel];
+    
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
@@ -51,7 +59,12 @@
     hud.labelText = @"正在加载网页...";
 	// Do any additional setup after loading the view.
 }
-
+-(void)backButton:(UIButton *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
     [hud show:YES];
