@@ -428,7 +428,9 @@
         
         if ([[UIApplication sharedApplication] canOpenURL:[URL absoluteURL]])
         {
-            [[UIApplication sharedApplication] openURL:[URL absoluteURL]];
+            if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressWithURL:)]) {
+                [self.delegate owenrCellPressWithURL:button.URL];
+            }
         }
         else
         {

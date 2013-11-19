@@ -654,18 +654,18 @@
 
 -(void)logInServerSuccessWithInfo:(NSDictionary *)dict
 {
-    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
-
-    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
-//        appStoreURL = [dict objectForKey:@"iosurl"];
-//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
-//        alert.tag = 20;
+//    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+//
+//    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
+////        appStoreURL = [dict objectForKey:@"iosurl"];
+////        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+////        alert.tag = 20;
+////        [alert show];
+//        appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
+//        alert.tag = 21;
 //        [alert show];
-        appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
-        alert.tag = 21;
-        [alert show];
-    }
+//    }
 //    else if ([[dict objectForKey:@"needUpdate"] intValue]>0) {
 //        appStoreURL = [dict objectForKey:@"iosurl"];
 //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
@@ -675,11 +675,11 @@
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     
-    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
-    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
-    if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
-        [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
-    }
+//    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
+//    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
+//    if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
+//        [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
+//    }
 //    [self saveMyInfo:[dict objectForKey:@"petUserView"]];
 //    NSString * openImgId = [NSString stringWithFormat:@"%@",[[dict objectForKey:@"petUserView"] objectForKey:@"imgId"]];
 ////    if (iPhone5) {

@@ -141,39 +141,94 @@
 }
 -(void)checkNewVersion
 {
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+//    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+//    long long a = (long long)(cT*1000);
+//    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+//    [body setObject:@"1" forKey:@"channel"];
+//    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+//    [body setObject:@"iphone" forKey:@"imei"];
+//    [body setObject:params forKey:@"params"];
+//    [body setObject:@"updateVersion" forKey:@"method"];
+//    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+//    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+//    
+//    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+//        NSString * newV = [dic objectForKey:@"petVersion"];
+//        if ([newV doubleValue]>[version doubleValue]) {
+//            appStroreURL = [dic objectForKey:@"iosurl"];
+//            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"检测到新版本%@",newV] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"现在更新", nil];
+//            [alert show];
+//        }
+//        else
+//        {
+//            appStroreURL = [dic objectForKey:@"iosurl"];
+//            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"已经是最新版本啦，继续享受宠物圈给你带来的快乐吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//            [alert show];
+//        }
+//        NSLog(@"dddd:%@,%f",dic,[version doubleValue]);
+//        
+//    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//        [alert show];
+//    }];
+    NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    //    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+    //    [userInfoDict setObject:[SFHFKeychainUtils getPasswordForUsername:PASSWORD andServiceName:LOCALACCOUNT error:nil] forKey:@"password"];
+    //    [userInfoDict setObject:@"31" forKey:@"imgId"];
+    //    [userInfoDict setObject:@"2" forKey:@"type"];
+    [userInfoDict setObject:@"open" forKey:@"action"];
+    //    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+    //    [userInfoDict setObject:version forKey:@"version"];
+    [postDict setObject:userInfoDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"token" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
-    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"updateVersion" forKey:@"method"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
-        NSString * newV = [dic objectForKey:@"petVersion"];
-        if ([newV doubleValue]>[version doubleValue]) {
-            appStroreURL = [dic objectForKey:@"iosurl"];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"检测到新版本%@",newV] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"现在更新", nil];
-            [alert show];
-        }
-        else
-        {
-            appStroreURL = [dic objectForKey:@"iosurl"];
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"已经是最新版本啦，继续享受宠物圈给你带来的快乐吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [alert show];
-        }
-        NSLog(@"dddd:%@,%f",dic,[version doubleValue]);
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        //        NSDictionary * recDict = [receiveStr JSONValue];
+        //        if ([[recDict objectForKey:@"token"] length]>3) {
+        [self logInServerSuccessWithInfo:responseObject];
+        //        }
+        //        else
+        //        {
+        //            titleLabel.text = @"消息(未连接)";
+        //        }
         
-    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-        [alert show];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
     }];
 
+
+}
+-(void)logInServerSuccessWithInfo:(NSDictionary *)dict
+{
+    NSString * versionq = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+    
+    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[versionq floatValue]) {
+        //        appStoreURL = [dict objectForKey:@"iosurl"];
+        //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+        //        alert.tag = 20;
+        //        [alert show];
+        appStroreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"立刻升级", nil];
+        [alert show];
+    }
+    else
+    {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已经是最新版本啦，继续享受宠物圈给你带来的快乐吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

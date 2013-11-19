@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "CircleEntity.h"
 @protocol OnceCircleViewControllerDelegate <NSObject>
 -(void)joinOrQuitCircle;
 @end
 @interface OnceCircleViewController : UIViewController
 @property (nonatomic,assign)id <OnceCircleViewControllerDelegate>delegate;
-@property (nonatomic,assign)CircleEntity*circleEntity;
+@property (nonatomic,retain)CircleEntity*circleEntity;
 @end

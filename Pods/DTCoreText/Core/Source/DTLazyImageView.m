@@ -199,11 +199,11 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 	_fullWidth = image.size.width;
 	_fullHeight = image.size.height;
 
-    if (self) {
+	if (self) {
         [self _notifyDelegate];
     }
 	
-	
+    
 	static dispatch_once_t predicate;
 
 	dispatch_once(&predicate, ^{
@@ -274,10 +274,10 @@ NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageVie
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	if (_receivedData&&self)
+	if (_receivedData)
 	{
 		[self performSelectorOnMainThread:@selector(completeDownloadWithData:) withObject:_receivedData waitUntilDone:YES];
-//		[self completeDownloadWithData:_receivedData];
+		
 		_receivedData = nil;
 	}
 	

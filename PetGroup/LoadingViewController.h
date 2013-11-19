@@ -10,10 +10,12 @@
 #import "MLNavigationController.h"
 #import "LocationManager.h"
 @class ViewController,CustomTabBar,LeveyTabBarController,MessageViewController,DynamicViewController,NearByViewController,ContactsViewController,MoreViewController,LoginViewController,DetailMessageViewController,KKChatController;
-@interface LoadingViewController : UIViewController
+@interface LoadingViewController : UIViewController<UIAlertViewDelegate>
 {
     UIImageView *splashImageView;
     MessageViewController * messageV;
+    
+    NSString * appStoreURL;
 }
 @property (strong,nonatomic) CustomTabBar * tabBarC;
 @property (strong,nonatomic) MLNavigationController * NaviMessage, *NaviDynamic,* NaviNearBy, * NaviContacts, * NaviMore ,* NaviRandom;
