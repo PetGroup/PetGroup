@@ -34,6 +34,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSUserDefaults standardUserDefaults] setObject:@"https://itunes.apple.com/us/app/chong-wu-quan-ai-chong-wu/id686838840?ls=1&mt=8" forKey:@"IOSURL"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 //    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
 //        // Load resources for iOS 6.1 or earlier
 //    } else {
@@ -100,11 +102,26 @@
     {
         [self firtOpen];
         [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
+        [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
+        [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
+        
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        NSString *path2 = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+        NSFileManager *fm2 = [NSFileManager defaultManager];
+        if([fm2 fileExistsAtPath:path2] == NO)
+        {
+            [fm2 removeItemAtPath:path2 error:nil];
+        }
     }
     else
     {
         [self doOpen];
+    }
+    if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
+        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        //        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
+        //        NSString * macAddress = [dv macaddress];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];
@@ -241,11 +258,15 @@
         //        alert.tag = 20;
         //        [alert show];
         appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+        [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:@"IOSURL"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
         alert.tag = 21;
         [alert show];
     }
-    
+    appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+    [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:@"IOSURL"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
     NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
     if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {

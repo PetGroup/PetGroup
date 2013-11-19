@@ -82,7 +82,7 @@
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
 
-    [self getFriendByHttp];
+//    [self getFriendByHttp];
 
  //   [self getFriendsList];
 	// Do any additional setup after loading the view.

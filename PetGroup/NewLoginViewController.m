@@ -223,7 +223,7 @@
 //            [alert show];
 //        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请确保用户名密码正确" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         [hud hide:YES];
     }];

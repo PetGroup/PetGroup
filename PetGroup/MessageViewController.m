@@ -580,12 +580,55 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self saveMyInfo:responseObject];
+        [self getFriendByHttp];
         [self getMyPetInfoFromNet];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 
 }
+-(void)getFriendByHttp
+{
+    //    NSMutableDictionary * paramDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    //    [paramDict setObject:userName forKey:@"username"];
+    //    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"service.uri.pet_user" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [postDict setObject:@"getFriendList" forKey:@"method"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        //        NSDictionary * recDict = [receiveStr JSONValue];
+        //        [DataStoreManager saveUserInfo:responseObject];
+        //        [self refreshFriendList];
+        [self parseFriendsList:responseObject];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+-(void)parseFriendsList:(NSArray *)friendsList
+{
+    dispatch_queue_t queue = dispatch_queue_create("com.pet.StoreFriends", NULL);
+     dispatch_async(queue, ^{
+    for (NSDictionary * dict in friendsList) {
+       
+            [DataStoreManager saveUserInfo:dict];
+ 
+    }
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+         });
+     });
+
+}
+
 -(void)getMyPetInfoFromNet
 {
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];

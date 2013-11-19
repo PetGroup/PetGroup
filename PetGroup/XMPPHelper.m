@@ -273,7 +273,7 @@
                 if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]||[[item attributeStringValueForName:@"subscription"] isEqualToString:@"to"]) {
                     [self.rosters addObject:sender];
 //                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
-                    [DataStoreManager addFriendToLocal:sender];
+//                    [DataStoreManager addFriendToLocal:sender];
                     //[DataStoreManager saveUserInfo:dict];
                 }
             }
