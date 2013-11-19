@@ -98,8 +98,13 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
+        [self firtOpen];
         [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    else
+    {
+        [self doOpen];
     }
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];
@@ -181,23 +186,116 @@
 
     [postDict setObject:userInfoDict forKey:@"params"];
     [postDict setObject:@"1" forKey:@"channel"];
-    [postDict setObject:@"open" forKey:@"method"];
-    [postDict setObject:@"" forKey:@"token"];
+    [postDict setObject:@"firstOpen" forKey:@"method"];
+  //  [postDict setObject:@"" forKey:@"token"];
+    [postDict setObject:@"service.uri.pet_sso" forKey:@"service"];
     [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [postDict setObject:@"iphone" forKey:@"imei"];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
-    [NetManager requestWithURLStr:BaseCoreUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self makeNotFirstOpen];
-        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSDictionary * recDict = [receiveStr JSONValue];
-        NSLog(@"eeeeee:%@",recDict);
-        //存储返回的DeviceID，注册使用...
-        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self openSuccessWithInfo:responseObject];
+//        //存储返回的DeviceID，注册使用...
+//        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
     }];
 
+}
+
+-(void)doOpen
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
+    
+    [postDict setObject:userInfoDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"open" forKey:@"method"];
+    //  [postDict setObject:@"" forKey:@"token"];
+    [postDict setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self openSuccessWithInfo:responseObject];
+        //        //存储返回的DeviceID，注册使用...
+        //        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
+        //        [[NSUserDefaults standardUserDefaults] synchronize];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+
+-(void)openSuccessWithInfo:(NSDictionary *)dict
+{
+    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+    
+    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
+        //        appStoreURL = [dict objectForKey:@"iosurl"];
+        //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+        //        alert.tag = 20;
+        //        [alert show];
+        appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
+        alert.tag = 21;
+        [alert show];
+    }
+    
+    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
+    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
+    if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
+        [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
+    }
+}
+-(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
+{
+    [NetManager downloadImageWithBaseURLStr:imageId ImageId:@"" success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        if ([theType isEqualToString:@"open"]) {
+            NSString *path = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:path] == NO)
+            {
+                [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+            NSString  *openImgPath = [NSString stringWithFormat:@"%@/openImage.jpg",path];
+            
+            
+            if ([UIImageJPEGRepresentation(image, 1.0) writeToFile:openImgPath atomically:YES]) {
+                NSLog(@"success///");
+                [[NSUserDefaults standardUserDefaults] setObject:imageId forKey:@"OpenImg"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            else
+            {
+                NSLog(@"fail");
+            }
+            //            NSFileManager *file_manager = [NSFileManager defaultManager];
+            //            if ([file_manager fileExistsAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"]]) {
+            //                [file_manager removeItemAtPath:[[NSUserDefaults standardUserDefaults]objectForKey:@"OpenImg"] error:nil];
+            //            }
+            
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==0) {
+        NSString * appLink = appStoreURL;
+        if (appStoreURL&&![appStoreURL isKindOfClass:[NSNull class]]) {
+            NSURL *url = [NSURL URLWithString:appLink];
+            if([[UIApplication sharedApplication] canOpenURL:url])
+            {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        }
+    }
 }
 
 -(void)makeNotFirstOpen
