@@ -77,6 +77,8 @@
         UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
         [imageV addGestureRecognizer:longPress];
         
+        [tapOne requireGestureRecognizerToFail:tapTwo];
+        
     }
 }
 
@@ -87,7 +89,8 @@
 }
 -(void)tapOne:(UITapGestureRecognizer*)tap
 {
-    [self performSelector:@selector(desappear) withObject:nil afterDelay:0.2f];
+//    [self performSelector:@selector(desappear) withObject:nil afterDelay:0.2f];
+    [self desappear];
 }
 -(void)desappear
 {
@@ -101,7 +104,7 @@
 }
 -(void)tapTwo:(UITapGestureRecognizer*)tap
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(desappear) object:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(desappear) object:nil];
     UIScrollView*subSC = (UIScrollView*)tap.view.superview;
     CGPoint touchPoint = [tap locationInView:tap.view];
     if (subSC.contentSize.width>639) {
