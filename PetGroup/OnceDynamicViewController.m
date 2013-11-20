@@ -26,6 +26,7 @@
     BOOL request;
     BOOL free;
 }
+@property (strong,nonatomic) NSMutableArray* zanPonsenArrey;
 @property (strong,nonatomic) NSMutableString* zanPonsen;
 @property (strong,nonatomic) UITableView * tableV;
 @property (strong,nonatomic) MJRefreshFooterView * footer;
@@ -51,6 +52,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.zanPonsenArrey = [NSMutableArray array];
         self.needRequestDyn = NO;
         self.resultArray = [[NSMutableArray alloc]init];
         self.onceDynamicViewControllerStyle = OnceDynamicViewControllerStyleNome;
@@ -62,6 +64,12 @@
 }
 - (void)viewDidLoad
 {
+    if (self.dynamic.countZan>0) {
+        self.zanPonsen = [NSMutableString stringWithFormat:@"%d 人赞过这条动态",self.dynamic.countZan];
+        if (self.dynamic.ifIZaned) {
+            self.zanPonsen = [NSMutableString stringWithFormat:@"我等%d 人赞过这条动态",self.dynamic.countZan];
+        }
+    }
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     diffH = [Common diffHeight:self];
@@ -244,12 +252,66 @@
         self.dynamic.countZan++;
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_normal"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_click"] forState:UIControlStateHighlighted];
+        if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+            [self.zanPonsenArrey insertObject:@"我" atIndex:0];
+            if (self.zanPonsenArrey.count>0&&self.zanPonsenArrey.count<5) {
+                self.zanPonsen = [[NSMutableString alloc]init];
+                for (NSString* str in self.zanPonsenArrey) {
+                    [self.zanPonsen appendString:str];
+                    if (![str isEqualToString:[self.zanPonsenArrey lastObject]]) {
+                        [self.zanPonsen appendFormat:@","];
+                    }
+                }
+                [self.zanPonsen appendFormat:@"\t赞过这条动态"];
+            }
+            if (self.zanPonsenArrey.count>=5) {
+                self.zanPonsen = [[NSMutableString alloc]init];
+                for (int i = 0; i<5 ;i++) {
+                    [self.zanPonsen appendString:self.zanPonsenArrey[i]];
+                    if (i!=4) {
+                        [self.zanPonsen appendFormat:@","];
+                    }
+                }
+                [self.zanPonsen appendFormat:@"\t等%d位好友赞过这条动态",self.zanPonsenArrey.count];
+            }
+        }else
+            self.zanPonsen = [NSMutableString stringWithFormat:@"我等%d 人赞过这条动态",self.dynamic.countZan];
     }else{
         self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
         self.dynamic.countZan--;
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
+        if (self.dynamic.countZan==0) {
+            self.zanPonsen = nil;
+        }else
+        {
+            if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+                [self.zanPonsenArrey removeObject:@"我"];
+                if (self.zanPonsenArrey.count>0&&self.zanPonsenArrey.count<5) {
+                    self.zanPonsen = [[NSMutableString alloc]init];
+                    for (NSString* str in self.zanPonsenArrey) {
+                        [self.zanPonsen appendString:str];
+                        if (![str isEqualToString:[self.zanPonsenArrey lastObject]]) {
+                            [self.zanPonsen appendFormat:@","];
+                        }
+                    }
+                    [self.zanPonsen appendFormat:@"\t赞过这条动态"];
+                }
+                if (self.zanPonsenArrey.count>=5) {
+                    self.zanPonsen = [[NSMutableString alloc]init];
+                    for (int i = 0; i<5 ;i++) {
+                        [self.zanPonsen appendString:self.zanPonsenArrey[i]];
+                        if (i!=4) {
+                            [self.zanPonsen appendFormat:@","];
+                        }
+                    }
+                    [self.zanPonsen appendFormat:@"\t等%d位好友赞过这条动态",self.zanPonsenArrey.count];
+                }
+            }else
+                self.zanPonsen = [NSMutableString stringWithFormat:@"%d 人赞过这条动态",self.dynamic.countZan];
+        }
     }
+    [self.tableV reloadData];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListJustReload)]) {
         [self.delegate dynamicListJustReload];
     }
@@ -730,10 +792,12 @@
         if (array.count>0&&array.count<5) {
             self.zanPonsen = [[NSMutableString alloc]init];
             for (NSDictionary* dic in array) {
-                if ([[dic objectForKey:@"userid"] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
+                if ([[dic objectForKey:@"id"] isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
                     [self.zanPonsen appendString:@"我"];
+                    [self.zanPonsenArrey addObject:@"我"];
                 }else{
                     [self.zanPonsen appendFormat:@"%@",[dic objectForKey:@"nickname"]];
+                    [self.zanPonsenArrey addObject:[NSString stringWithFormat:@"%@",[dic objectForKey:@"nickname"]]];
                 }
                 if (![dic isEqualToDictionary:[array lastObject]]) {
                     [self.zanPonsen appendFormat:@","];
