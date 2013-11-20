@@ -33,21 +33,21 @@
 //#define BaseUploadImageUrl  @"http://123.178.27.74/pet-file-server/put"
 //#define BaseImageUrl  @"http://123.178.27.74/pet-file-server/get/"
 
-//#define BaseClientUrl @"http://221.122.114.216/pet-hub/request"
-////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
-//#define BaseCoreUrl @"http://221.122.114.216/pet/core/request"
-////#define BaseImageUrl @"http://123.178.27.74/pet/static/"
-////#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
-//#define BaseUploadImageUrl  @"http://221.122.114.216/pet-file-server/put"
-//#define BaseImageUrl  @"http://221.122.114.216/pet-file-server/get/"
-
-#define BaseClientUrl @"http://www.52pet.net/pet-hub/request"
+#define BaseClientUrl @"http://221.122.114.216/pet-hub/request"
 //#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
-#define BaseCoreUrl @"http://www.52pet.net/pet/core/request"
+#define BaseCoreUrl @"http://221.122.114.216/pet/core/request"
 //#define BaseImageUrl @"http://123.178.27.74/pet/static/"
 //#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
-#define BaseUploadImageUrl  @"http://www.52pet.net/pet-file-server/put"
-#define BaseImageUrl  @"http://www.52pet.net/pet-file-server/get/"
+#define BaseUploadImageUrl  @"http://221.122.114.216/pet-file-server/put"
+#define BaseImageUrl  @"http://221.122.114.216/pet-file-server/get/"
+
+//#define BaseClientUrl @"http://www.52pet.net/pet-hub/request"
+////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
+//#define BaseCoreUrl @"http://www.52pet.net/pet/core/request"
+////#define BaseImageUrl @"http://123.178.27.74/pet/static/"
+////#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
+//#define BaseUploadImageUrl  @"http://www.52pet.net/pet-file-server/put"
+//#define BaseImageUrl  @"http://www.52pet.net/pet-file-server/get/"
 
 
 //#define BaseClientUrl @"http://www.52pet.net/pet/client/request"
