@@ -46,10 +46,10 @@
     NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"debug_log.txt"];
     freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
-- (void)installUncaughtExceptionHandler
-{
-    InstallUncaughtExceptionHandler();
-}
+//- (void)installUncaughtExceptionHandler
+//{
+//    InstallUncaughtExceptionHandler();
+//}
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)pToken {
     
     
