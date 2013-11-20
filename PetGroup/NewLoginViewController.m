@@ -148,7 +148,7 @@
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
-    hud.labelText = @"提交中...";
+    hud.labelText = @"登录中...";
 }
 - (void) textFieldDidChange:(UITextField *) textField
 {

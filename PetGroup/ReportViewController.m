@@ -73,7 +73,7 @@
     
     self.inputTextF = [[UITextView alloc] initWithFrame:CGRectMake(25, 69+diffH, 260, 90)];
     [self.inputTextF setBackgroundColor:[UIColor clearColor]];
-    self.inputTextF.text = self.defaultContent;
+    self.inputTextF.text = [self.defaultContent substringToIndex:self.maxCount];
     self.inputTextF.delegate = self;
     self.inputTextF.font = [UIFont systemFontOfSize:16];
 
@@ -108,7 +108,7 @@
     [remainingLabel setTextAlignment:NSTextAlignmentRight];
     remainingLabel.textColor=[UIColor grayColor];
     [remainingLabel setFont:[UIFont systemFontOfSize:14]];
-    [remainingLabel setText:[NSString stringWithFormat:@"还可以输入%d字",self.maxCount]];
+    [remainingLabel setText:[NSString stringWithFormat:@"还可以输入%d字",self.maxCount-self.inputTextF.text.length]];
     [bigBG addSubview:remainingLabel];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -138,23 +138,45 @@
     return  YES;
 }
 #pragma mark 检测输入框字数，避免显示为负数
-- (void)textViewDidChange:(UITextView *)textView
+//- (void)textViewDidChange:(UITextView *)textView
+//{
+//
+//    NSString * hhh = self.inputTextF.text;
+//    NSUInteger contentLen = self.inputTextF.text.length;
+//    if (contentLen<self.maxCount)
+//    {
+//        remainingLabel.text=[NSString stringWithFormat:@"还可以输入%d字",self.maxCount-contentLen];
+//        if (hhh.length>2&&[[Emoji allEmoji] containsObject:[hhh substringFromIndex:hhh.length-2]]) {
+//            self.inputTextF.text = [hhh substringToIndex:hhh.length-2];
+//        }
+//    }
+//    else
+//    {
+//        remainingLabel.text=[NSString stringWithFormat:@"还可以输入0字"];
+//        self.inputTextF.text=[hhh substringToIndex:self.maxCount-1];
+//        //  self.adviceTextView.text=[[NSString stringWithFormat:@"%@",self.adviceTextView.text]substringToIndex:140];
+//    }
+//
+//
+//}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
-        textView.text = [textView.text substringToIndex:textView.text.length-2];
-    }
+    NSString * hhh = self.inputTextF.text;
     NSUInteger contentLen = self.inputTextF.text.length;
-    if (contentLen<=self.maxCount)
+    if (contentLen<self.maxCount)
     {
         remainingLabel.text=[NSString stringWithFormat:@"还可以输入%d字",self.maxCount-contentLen];
+        if (hhh.length>2&&[[Emoji allEmoji] containsObject:[hhh substringFromIndex:hhh.length-2]]) {
+            self.inputTextF.text = [hhh substringToIndex:hhh.length-2];
+        }
     }
     else
     {
         remainingLabel.text=[NSString stringWithFormat:@"还可以输入0字"];
-        self.inputTextF.text=[self.inputTextF.text substringToIndex:self.maxCount];
+        self.inputTextF.text=[hhh substringToIndex:self.maxCount];
         //  self.adviceTextView.text=[[NSString stringWithFormat:@"%@",self.adviceTextView.text]substringToIndex:140];
     }
-
+    return YES;
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -179,7 +201,7 @@
 
 -(void)submitBtnClicked
 {
-    if (self.inputTextF.text.length<2) {
+    if (self.inputTextF.text.length<2||[IdentifyingString isValidateAllSpace:self.inputTextF.text]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入至少2个字" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;

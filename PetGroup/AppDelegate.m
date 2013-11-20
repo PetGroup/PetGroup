@@ -25,7 +25,7 @@
 //    [self redirectLogToDocumentFolder];
     
     
-//    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     
