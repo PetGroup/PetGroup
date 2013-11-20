@@ -314,7 +314,7 @@
         [alert show];
         return;
     }
-    if (_nickNameTF.text.length<=1||_nickNameTF.text.length>16) {
+    if (_nickNameTF.text.length<=1||_nickNameTF.text.length>16||[IdentifyingString isValidateAllSpace:_nickNameTF.text]) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"昵称需在2到16个字之间" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         return;
