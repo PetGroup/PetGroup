@@ -25,6 +25,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        firstOpenIt = NO;
     }
     return self;
 }
@@ -100,7 +101,9 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
+        firstOpenIt = YES;
         [self firtOpen];
+        [self doOpen];
         [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
         [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
         [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
@@ -115,6 +118,7 @@
     }
     else
     {
+        firstOpenIt = NO;
         [self doOpen];
     }
 //    NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:yourpath];
@@ -221,7 +225,7 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self openSuccessWithInfo:responseObject];
+        [self openSuccessWithInfo:responseObject From:@"firstOpen"];
 //        //存储返回的DeviceID，注册使用...
 //        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
 //        [[NSUserDefaults standardUserDefaults] synchronize];
@@ -247,7 +251,7 @@
     long long a = (long long)(cT*1000);
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"createTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self openSuccessWithInfo:responseObject];
+        [self openSuccessWithInfo:responseObject From:@"open"];
         //        //存储返回的DeviceID，注册使用...
         //        [[NSUserDefaults standardUserDefaults] setObject:[recDict objectForKey:@"id"] forKey:@"DeviceID"];
         //        [[NSUserDefaults standardUserDefaults] synchronize];
@@ -257,30 +261,42 @@
     
 }
 
--(void)openSuccessWithInfo:(NSDictionary *)dict
+-(void)openSuccessWithInfo:(NSDictionary *)dict From:(NSString *)where
 {
-    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
-    
-    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
-        //        appStoreURL = [dict objectForKey:@"iosurl"];
-        //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
-        //        alert.tag = 20;
-        //        [alert show];
+    if ((!firstOpenIt&&[where isEqualToString:@"open"])||(firstOpenIt&&[where isEqualToString:@"firstOpen"])) {
+        NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+        
+        if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
+            //        appStoreURL = [dict objectForKey:@"iosurl"];
+            //        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您的版本已低于最低版本需求，请立即升级" delegate:self cancelButtonTitle:@"立即升级" otherButtonTitles: nil];
+            //        alert.tag = 20;
+            //        [alert show];
+            appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
+            [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:@"IOSURL"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
+            alert.tag = 21;
+            [alert show];
+        }
         appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
         [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:@"IOSURL"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到新版本，您要升级吗" delegate:self cancelButtonTitle:@"立刻升级" otherButtonTitles:@"取消", nil];
-        alert.tag = 21;
-        [alert show];
+        NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
+        NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
+        if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
+            [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
+        }
+
     }
-    appStoreURL = [[dict objectForKey:@"version"] objectForKey:@"iosurl"];
-    [[NSUserDefaults standardUserDefaults] setObject:appStoreURL forKey:@"IOSURL"];
+    NSString * verifyCodeStatus = [dict objectForKey:@"verifyCode"];
+    NSString * vd = @"shouldSend";
+    if (verifyCodeStatus) {
+        if ([verifyCodeStatus isEqualToString:@"disable"]) {
+            vd = @"doNotSend";
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:vd forKey:@"verifyCode"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
-    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
-    if (!openImgStr||![receivedImgStr isEqualToString:openImgStr]) {
-        [self downloadImageWithID:receivedImgStr Type:@"open" PicName:nil];
-    }
 }
 -(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
 {
