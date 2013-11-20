@@ -32,7 +32,7 @@
     if (self) {
         // Custom initialization
         canNext = YES;
-        passVerificationCode = YES;
+        passVerificationCode = NO;
     }
     return self;
 }
@@ -123,6 +123,11 @@
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_phoneTF];
     
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* str = [userDefaults objectForKey:@"verifyCode"];
+    if (![str isEqualToString:@"shouldSend"]) {
+        passVerificationCode = YES;
+    }
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
