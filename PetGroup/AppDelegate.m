@@ -20,10 +20,12 @@
 {
 //    [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
 //    [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
-     [self installUncaughtExceptionHandler];
-    //把NSlog 输出到文件中 给测试时想着打开即可
-    [self redirectLogToDocumentFolder];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+//     [self installUncaughtExceptionHandler];
+//    //把NSlog 输出到文件中 给测试时想着打开即可
+//    [self redirectLogToDocumentFolder];
+    
+    
+//    [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

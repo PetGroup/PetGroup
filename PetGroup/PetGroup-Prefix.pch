@@ -33,13 +33,22 @@
 //#define BaseUploadImageUrl  @"http://123.178.27.74/pet-file-server/put"
 //#define BaseImageUrl  @"http://123.178.27.74/pet-file-server/get/"
 
-#define BaseClientUrl @"http://221.122.114.216/pet-hub/request"
+//#define BaseClientUrl @"http://221.122.114.216/pet-hub/request"
+////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
+//#define BaseCoreUrl @"http://221.122.114.216/pet/core/request"
+////#define BaseImageUrl @"http://123.178.27.74/pet/static/"
+////#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
+//#define BaseUploadImageUrl  @"http://221.122.114.216/pet-file-server/put"
+//#define BaseImageUrl  @"http://221.122.114.216/pet-file-server/get/"
+
+#define BaseClientUrl @"http://www.52pet.net/pet-hub/request"
 //#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
-#define BaseCoreUrl @"http://221.122.114.216/pet/core/request"
+#define BaseCoreUrl @"http://www.52pet.net/pet/core/request"
 //#define BaseImageUrl @"http://123.178.27.74/pet/static/"
 //#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
-#define BaseUploadImageUrl  @"http://221.122.114.216/pet-file-server/put"
-#define BaseImageUrl  @"http://221.122.114.216/pet-file-server/get/"
+#define BaseUploadImageUrl  @"http://www.52pet.net/pet-file-server/put"
+#define BaseImageUrl  @"http://www.52pet.net/pet-file-server/get/"
+
 
 //#define BaseClientUrl @"http://www.52pet.net/pet/client/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
@@ -89,11 +98,11 @@
 
 #define AppStoreAddress @"https://itunes.apple.com/us/app/chong-wu-quan-ai-chong-wu/id686838840?ls=1&mt=8"
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
-//#ifndef __OPTIMIZE__
-//#define NSLog(...) NSLog(__VA_ARGS__)
-//#else
-//#define NSLog(...) {}
-//#endif
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#define NSLog(...) {}
+#endif
 
 #define DEFAULT_thumbImageWidth 200.0f
 #define DEFAULT_thumbImageHeight 300.0f

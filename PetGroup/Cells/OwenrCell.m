@@ -417,8 +417,16 @@
 {
     if (button.tag==ButtonTypeImage) {
         if (self.delegate&&[self.delegate respondsToSelector:@selector(owenrCellPressImageWithID:)]) {
-            NSMutableString* imageID = [NSMutableString  stringWithFormat:@"%@",button.URL];
-            [imageID deleteCharactersInRange:[imageID rangeOfString:BaseImageUrl]];
+            NSArray *imageArray = [[NSString stringWithFormat:@"%@",button.URL] componentsSeparatedByString:@"/pet-file-server/get/"];
+            NSString * imageID;
+            if (imageArray.count>0) {
+                 imageID = imageArray[1];
+            }
+            else
+                imageID = [NSString stringWithFormat:@"%@",button.URL];
+           
+//            NSMutableString* imageID = [NSMutableString  stringWithFormat:@"%@",button.URL];
+//            [imageID deleteCharactersInRange:[imageID rangeOfString:BaseImageUrl]];
             [self.delegate owenrCellPressImageWithID:imageID];
         }
     }
