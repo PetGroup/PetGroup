@@ -16,6 +16,7 @@
     MessageViewController * messageV;
     
     NSString * appStoreURL;
+    BOOL firstOpenIt;
 }
 @property (strong,nonatomic) CustomTabBar * tabBarC;
 @property (strong,nonatomic) MLNavigationController * NaviMessage, *NaviDynamic,* NaviNearBy, * NaviContacts, * NaviMore ,* NaviRandom;
