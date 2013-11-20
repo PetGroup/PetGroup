@@ -12,7 +12,7 @@
 #import "XMPPHelper.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
-
+#import "MobClick.h"
 
 #define DataStoreModel @"LocalDataStore.sqlite"
 @implementation AppDelegate
@@ -28,6 +28,9 @@
 //    [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
+    
+    [MobClick startWithAppkey:@"5215673e56240bf77705978a"];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.loadingV = [[LoadingViewController alloc] init];
