@@ -29,7 +29,7 @@
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     
-    [MobClick startWithAppkey:@"5215673e56240bf77705978a"];
+    [MobClick startWithAppkey:@"528c5e1056240b39ce0a0f90"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
