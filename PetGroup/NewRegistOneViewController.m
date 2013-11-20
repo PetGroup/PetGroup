@@ -11,12 +11,14 @@
 #import "UserTreatyViewController.h"
 #import "IdentifyingString.h"
 #import "MBProgressHUD.h"
+#import "NewRegistThreeViewController.h"
 
 @interface NewRegistOneViewController ()<MBProgressHUDDelegate>
 {
     BOOL canNext;
     MBProgressHUD * hud;
     UIButton* readB;
+    BOOL passVerificationCode;
 }
 @property (nonatomic, strong) UITextField * phoneTF;
 
@@ -30,6 +32,7 @@
     if (self) {
         // Custom initialization
         canNext = YES;
+        passVerificationCode = YES;
     }
     return self;
 }
@@ -191,6 +194,12 @@
 }
 -(void)puchNextView
 {
+    if (passVerificationCode) {
+        NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
+        newReg.phoneNo = self.phoneTF.text;
+        [self.navigationController pushViewController:newReg animated:YES];
+        return;
+    }
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
