@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "TempData.h"
 #import "LoadingViewController.h"
+#import "UncaughtExceptionHandler.h"
 @class ViewController;
 @class XMPPHelper;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

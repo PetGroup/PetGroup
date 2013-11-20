@@ -523,6 +523,7 @@
 		9765D7AB181BD46E0021B36F /* BHExpandingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9765D7AA181BD46E0021B36F /* BHExpandingTextView.m */; };
 		9765D7AD181BEABC0021B36F /* mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 9765D7AC181BEABC0021B36F /* mail.png */; };
 		9765D7AF181BEBFA0021B36F /* biaoti2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9765D7AE181BEBFA0021B36F /* biaoti2.png */; };
+		97685FCD183B859D00989310 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 97685FCC183B859D00989310 /* UncaughtExceptionHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
 		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
 		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
@@ -1420,6 +1421,8 @@
 		9765D7AA181BD46E0021B36F /* BHExpandingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BHExpandingTextView.m; sourceTree = "<group>"; };
 		9765D7AC181BEABC0021B36F /* mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail.png; sourceTree = "<group>"; };
 		9765D7AE181BEBFA0021B36F /* biaoti2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaoti2.png; sourceTree = "<group>"; };
+		97685FCB183B859D00989310 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		97685FCC183B859D00989310 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		97703070182B4504005E3018 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		97703071182B4504005E3018 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		97703073182B6E34005E3018 /* MyMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMessageViewController.h; sourceTree = "<group>"; };
@@ -3471,6 +3474,8 @@
 				97E25BE617C329A5007E187D /* Helper */,
 				979546C617BA368F00D05874 /* AppDelegate.h */,
 				979546C717BA368F00D05874 /* AppDelegate.m */,
+				97685FCB183B859D00989310 /* UncaughtExceptionHandler.h */,
+				97685FCC183B859D00989310 /* UncaughtExceptionHandler.m */,
 				979546BE17BA368F00D05874 /* Supporting Files */,
 			);
 			path = PetGroup;
@@ -4562,6 +4567,7 @@
 				97E25C2B17C34B38007E187D /* SBJsonWriter.m in Sources */,
 				97E25C3217C35367007E187D /* NetManager.m in Sources */,
 				97E25C3517C360E7007E187D /* MakeDict.m in Sources */,
+				97685FCD183B859D00989310 /* UncaughtExceptionHandler.m in Sources */,
 				9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */,
 				9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */,
 				9736BAFD17C4892A007DFE36 /* GCDAsyncSocket.m in Sources */,

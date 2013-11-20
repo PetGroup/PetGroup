@@ -106,17 +106,26 @@
         [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
         
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        NSString *path2 = [RootDocPath stringByAppendingPathComponent:@"OpenImages"];
-        NSFileManager *fm2 = [NSFileManager defaultManager];
-        if([fm2 fileExistsAtPath:path2] == NO)
-        {
-            [fm2 removeItemAtPath:path2 error:nil];
+        NSString *storeURL = [NSPersistentStore MR_applicationStorageDirectory];;
+        NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:storeURL];
+        NSString *fileName;
+        while (fileName= [dirEnum nextObject]) {
+            [[NSFileManager defaultManager] removeItemAtPath: [NSString stringWithFormat:@"%@/%@",storeURL,fileName] error:nil];
         }
     }
     else
     {
         [self doOpen];
     }
+//    NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:yourpath];
+//    NSString *fileName;
+//    while (fileName= [dirEnum nextObject]) {
+//        [[NSFileManager defaultManager] removeItemAtPath:  [NSString stringWithFormat:@"yourpath%@",fileName]; error:&error];
+//    }
+
+
+//    NSLog(@"uuuuurrrrrlllll:%@",storeURL.path);
+//    [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
         NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
         //        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];

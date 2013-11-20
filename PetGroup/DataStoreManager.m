@@ -483,6 +483,7 @@
         DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
         if (!dFriend)
             dFriend = [DSFriends MR_createInContext:localContext];
+        dFriend.userName = [SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
         dFriend.userId = theID;
     }];
 }

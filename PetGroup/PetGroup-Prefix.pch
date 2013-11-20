@@ -89,11 +89,11 @@
 
 #define AppStoreAddress @"https://itunes.apple.com/us/app/chong-wu-quan-ai-chong-wu/id686838840?ls=1&mt=8"
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
-#ifndef __OPTIMIZE__
-#define NSLog(...) NSLog(__VA_ARGS__)
-#else
-#define NSLog(...) {}
-#endif
+//#ifndef __OPTIMIZE__
+//#define NSLog(...) NSLog(__VA_ARGS__)
+//#else
+//#define NSLog(...) {}
+//#endif
 
 #define DEFAULT_thumbImageWidth 200.0f
 #define DEFAULT_thumbImageHeight 300.0f
