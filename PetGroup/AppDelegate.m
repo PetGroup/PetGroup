@@ -20,7 +20,7 @@
 {
 //    [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
 //    [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
-     [self installUncaughtExceptionHandler];
+//     [self installUncaughtExceptionHandler];
     //把NSlog 输出到文件中 给测试时想着打开即可
     [self redirectLogToDocumentFolder];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -44,10 +44,10 @@
     NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"debug_log.txt"];
     freopen([logPath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 }
-- (void)installUncaughtExceptionHandler
-{
-    InstallUncaughtExceptionHandler();
-}
+//- (void)installUncaughtExceptionHandler
+//{
+//    InstallUncaughtExceptionHandler();
+//}
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)pToken {
     
     
