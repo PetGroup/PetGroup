@@ -31,10 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
-    
+    UILabel * aLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 320, 50)];
+    [aLabel setBackgroundColor:[UIColor clearColor]];
+    [aLabel setTextColor:[UIColor grayColor]];
+    [aLabel setText:@"暂收还没有新消息呢"];
+    [self.view addSubview:aLabel];
+    [aLabel setTextAlignment:NSTextAlignmentCenter];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -97,14 +102,19 @@
     if (tempNewNotiArray) {
         if (tempNewNotiArray.count>0) {
             self.notiArray = [NSMutableArray arrayWithArray:tempNewNotiArray];
+            self.notiTableV.hidden = NO;
+            [self.notiTableV reloadData];
         }
         else{
             self.notiArray = [NSMutableArray array];
+            self.notiTableV.hidden = YES;
         }
     }
-    else
+    else{
         self.notiArray = [NSMutableArray array];
-    [self.notiTableV reloadData];
+        self.notiTableV.hidden = YES;
+    }
+    
     
 }
 -(void)newCommentReceived:(NSDictionary *)theDict

@@ -268,6 +268,10 @@
     }
     self.appDel.xmppHelper.commentDelegate = self;
     [self readNewNoti];
+    if ([[TempData sharedInstance] needChat]) {
+        [self.customTabBarController setSelectedPage:0];
+        return;
+    }
 }
 
 #pragma mark - button action

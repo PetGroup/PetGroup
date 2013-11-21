@@ -96,18 +96,26 @@
 //        NSString * macAddress = [dv macaddress];
         [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
+    NSString * theVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
     
-    NSString *path = [RootDocPath stringByAppendingPathComponent:@"TestFirstPet"];
+    NSString *path = [RootDocPath stringByAppendingPathComponent:[NSString stringWithFormat:@"TestFirstPet%@",theVersion]];
     NSFileManager *fm = [NSFileManager defaultManager];
     if([fm fileExistsAtPath:path] == NO)
     {
         firstOpenIt = YES;
         [self firtOpen];
         [self doOpen];
-        [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
-        [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
-        [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
+
         
+        if (![SFHFKeychainUtils getPasswordForUsername:@"petGroupVersion" andServiceName:LOCALACCOUNT error:nil])
+        {
+            [SFHFKeychainUtils deleteItemForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil];
+            [SFHFKeychainUtils deleteItemForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil];
+            [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
+        }
+        
+        [SFHFKeychainUtils storeUsername:@"petGroupVersion" andPassword:theVersion forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         NSString *storeURL = [NSPersistentStore MR_applicationStorageDirectory];;
         NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:storeURL];
