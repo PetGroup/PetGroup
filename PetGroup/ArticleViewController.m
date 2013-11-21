@@ -249,7 +249,7 @@
     }
     self.pageV = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 44)];
     [self.view addSubview:_pageV];
-    _pageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:0.4];
+    _pageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:0.7];
     UIScrollView* scV = [[UIScrollView alloc]initWithFrame:CGRectMake(60, 0, 200, 44)];
     [_pageV addSubview:scV];
     int a = 0;
@@ -272,6 +272,7 @@
             [pageB setBackgroundImage:[UIImage imageNamed:@"pagenum_bg"] forState:UIControlStateNormal];
         }
         if (i != self.pageNo+1) {
+            [pageB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [pageB addTarget:self action:@selector(pageSelect:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
