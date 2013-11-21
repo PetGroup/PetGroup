@@ -20,6 +20,7 @@
 #import "SomeOneDynamicViewController.h"
 @interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate,MJRefreshBaseViewDelegate>
 {
+    UIImageView* bottomIV;
     int assessOrPraise;
     UIImageView * inputbg;
     UIView * inPutView;
@@ -112,7 +113,7 @@
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
     
-    UIImageView* bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
+    bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
     bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
     bottomIV.userInteractionEnabled = YES;
     [self.view addSubview:bottomIV];
@@ -143,6 +144,9 @@
     [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zhuanfaB];
     
+    if (_needRequestDyn) {
+        bottomIV.hidden = YES;
+    }
     inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, 50)];
     
 	self.inputTF = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 300, 20)];
@@ -229,13 +233,22 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
+        bottomIV.hidden = NO;
         self.dynamic = [[Dynamic alloc] initWithNSDictionary:responseObject];
         [self.tableV reloadData];
         if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
             [self loadZanList];
+        }else {
+            if (self.dynamic.countZan>0) {
+                self.zanPonsen = [NSMutableString stringWithFormat:@"%d 人赞过这条动态",self.dynamic.countZan];
+                if (self.dynamic.ifIZaned) {
+                    self.zanPonsen = [NSMutableString stringWithFormat:@"我等%d 人赞过这条动态",self.dynamic.countZan];
+                }
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        UIAlertView * alertV = [[UIAlertView alloc]initWithTitle:nil message:@"该动态不存在或已被删除" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alertV show];
     }];
 
 }

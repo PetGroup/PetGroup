@@ -29,6 +29,7 @@
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
+@property (nonatomic,retain)UILabel* personL;
 @property (nonatomic,retain)UIImageView* screenV;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -141,12 +142,12 @@
     UIImageView* personIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ren"]];
     personIV.frame = CGRectMake(100, 65, 13.5, 8.5);
     [headView addSubview:personIV];
-    UILabel* personL = [[UILabel alloc]initWithFrame:CGRectMake(113.5, 65, 100, 10)];
-    personL.backgroundColor = [UIColor clearColor];
-    personL.font = [UIFont systemFontOfSize:10];
-    personL.textColor = [UIColor grayColor];
-    personL.text = [NSString stringWithFormat:@"%@人",self.circleEntity.totalAtte];
-    [headView addSubview:personL];
+    self.personL = [[UILabel alloc]initWithFrame:CGRectMake(113.5, 65, 100, 10)];
+    _personL.backgroundColor = [UIColor clearColor];
+    _personL.font = [UIFont systemFontOfSize:10];
+    _personL.textColor = [UIColor grayColor];
+    _personL.text = [NSString stringWithFormat:@"%d人",self.circleEntity.totalAtte];
+    [headView addSubview:_personL];
     
     joinB = [UIButton buttonWithType:UIButtonTypeCustom];
     joinB.frame = CGRectMake(240, 60, 71, 21);
@@ -293,6 +294,7 @@
 {
     self.circleEntity.atte = !self.circleEntity.atte;
     if (self.circleEntity.atte) {
+        _personL.text = [NSString stringWithFormat:@"%d人",++self.circleEntity.totalAtte];
         [joinB setBackgroundImage:[UIImage imageNamed:@"yijiaru"] forState:UIControlStateNormal];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
@@ -316,6 +318,7 @@
         }];
     }else{
         [joinB setBackgroundImage:[UIImage imageNamed:@"jiaru"] forState:UIControlStateNormal];
+        _personL.text = [NSString stringWithFormat:@"%d人",--self.circleEntity.totalAtte];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
         NSMutableDictionary* params = [NSMutableDictionary dictionary];

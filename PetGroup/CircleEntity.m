@@ -20,7 +20,7 @@
         self.totalReply = [info objectForKey:@"totalReply"];
         self.atte = [[info objectForKey:@"atte"] boolValue];
         self.imageID = [info objectForKey:@"logoImg"];
-        self.totalAtte = [info objectForKey:@"totalAtte"];
+        self.totalAtte = [[info objectForKey:@"totalAtte"] intValue];
         UIColor * color1 = [UIColor colorWithRed:0.6 green:0.7 blue:0.2 alpha:1];
         UIColor * color2 = [UIColor colorWithRed:0.2 green:0.6 blue:0.4 alpha:1];
         UIColor * color3 = [UIColor colorWithRed:0.1 green:0.3 blue:0.8 alpha:1];

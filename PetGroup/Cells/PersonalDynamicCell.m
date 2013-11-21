@@ -24,12 +24,12 @@
 {
     CGFloat height = 10;
     if (!dynamic.ifTransmitMsg) {
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 100)];
         height += (msgSize.height+10);
     }else{
-        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(210, 100)];
         height+=(size.height+5);
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 100)];
         height+=(msgSize.height+10);
     }
     if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
@@ -102,7 +102,7 @@
     CGFloat origin = 10;
     
     if (!self.dynamic.ifTransmitMsg) {
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 100)];
         _msgL.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 210, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
@@ -156,11 +156,11 @@
             origin+=215;
         }
     }else{
-        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(210, 100)];
         self.transmitMsgL.frame =CGRectMake (self.contentView.frame.size.width-220, origin, 210, transmitMsgSize.height);
         _transmitMsgL.attributedText = self.dynamic.transmitMsg;
         origin = origin + transmitMsgSize.height +5;
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 200)];
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(210, 100)];
         _msgL.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 210, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;

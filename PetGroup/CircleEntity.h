@@ -16,7 +16,7 @@
 @property (nonatomic,retain)NSString*totalReply;
 @property (nonatomic,assign)BOOL atte;
 @property (nonatomic,retain)NSString*imageID;
-@property (nonatomic,retain)NSString* totalAtte;
+@property (nonatomic,assign)int totalAtte;
 @property (nonatomic,retain)UIColor* theColor;
 - (id)initWithDictionnary:(NSDictionary*)info;
 @end
