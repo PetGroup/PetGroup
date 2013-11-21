@@ -247,7 +247,23 @@
     [_deleteActionSheet showInView:self.view];
 }
 #pragma mark - text view delegate
-- (void)textViewDidChange:(UITextView *)textView
+//- (void)textViewDidChange:(UITextView *)textView
+//{
+//    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
+//        textView.text = [textView.text substringToIndex:textView.text.length-2];
+//    }
+//    if (textView.text.length>0) {
+//        _placeholderL.text = @"";
+//    }else{
+//        _placeholderL.text = @"今天想跟别人说点什么……";
+//    }
+//    if (textView.text.length>500)
+//    {
+//        textView.text=[textView.text substringToIndex:500];
+//    }
+//    
+//}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
         textView.text = [textView.text substringToIndex:textView.text.length-2];
@@ -261,7 +277,7 @@
     {
         textView.text=[textView.text substringToIndex:500];
     }
-    
+    return YES;
 }
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

@@ -15,9 +15,12 @@
 +(void)requestWithURLStr:(NSString *)urlStr Parameters:(NSDictionary *)parameters TheController:(UIViewController *)controller success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
 {
+    NSMutableDictionary * parameters2 = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    NSString * theChannel = [[NSUserDefaults standardUserDefaults] objectForKey:@"theChannel"];
+    [parameters2 setObject:theChannel?theChannel:@"1" forKey:@"channel"];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlStr]];
     [httpClient setParameterEncoding:AFFormURLParameterEncoding];
-    [httpClient postPath:@"" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [httpClient postPath:@"" parameters:parameters2 success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (controller) {
             NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSDictionary * dict = [receiveStr JSONValue];

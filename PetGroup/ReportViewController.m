@@ -73,7 +73,7 @@
     
     self.inputTextF = [[UITextView alloc] initWithFrame:CGRectMake(25, 69+diffH, 260, 90)];
     [self.inputTextF setBackgroundColor:[UIColor clearColor]];
-    self.inputTextF.text = [self.defaultContent substringToIndex:self.maxCount];
+    self.inputTextF.text = self.defaultContent.length>self.maxCount?[self.defaultContent substringToIndex:self.maxCount]:self.defaultContent;
     self.inputTextF.delegate = self;
     self.inputTextF.font = [UIFont systemFontOfSize:16];
 

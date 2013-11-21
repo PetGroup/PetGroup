@@ -1156,8 +1156,8 @@
     }
     else
         [DataStoreManager refreshThumbMsgsAfterDeleteCommonMsg:[messages lastObject] ForUser:self.chatWithUser ifDel:YES];
+    [self normalMsgToFinalMsg];
     [self.tView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPathTo] withRowAnimation:UITableViewRowAnimationRight];
-   
     [self.tView reloadData];
 
 }

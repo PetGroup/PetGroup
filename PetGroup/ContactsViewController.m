@@ -94,7 +94,7 @@
         [searchBar setFrame:CGRectMake(0, 20, 320, 64)];
         searchBar.backgroundImage = [UIImage imageNamed:@"topBar2.png"];
         [UIView animateWithDuration:0.3 animations:^{
-            [self.contactsTable setFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-(49+64))];
+            [self.contactsTable setFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-49-44-diffH-44)];
         } completion:^(BOOL finished) {
             
         }];
@@ -115,7 +115,7 @@
     if (diffH==20.0f) {
         [UIView animateWithDuration:0.2 animations:^{
             [searchBar setFrame:CGRectMake(0, 64, 320, 44)];
-            [self.contactsTable setFrame:CGRectMake(0, 44+44+diffH, 320, self.view.frame.size.height-(49+44+diffH))];
+            [self.contactsTable setFrame:CGRectMake(0, 44+44+diffH, 320, self.view.frame.size.height-49-44-diffH-44)];
         } completion:^(BOOL finished) {
             searchBar.backgroundImage = nil;
         }];
