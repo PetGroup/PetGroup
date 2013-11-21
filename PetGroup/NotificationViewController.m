@@ -125,6 +125,7 @@
 {
     AudioServicesPlayAlertSound(1003);
     [self.notiArray insertObject:theDict atIndex:0];
+    self.notiTableV.hidden = NO;
     [self.notiTableV reloadData];
 }
 
