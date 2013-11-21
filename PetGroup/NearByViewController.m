@@ -303,7 +303,7 @@
 -(void)parseData:(NSArray *)recArray
 {
     if (recArray.count>0) {
-        self.currentPage = [self getIndex:recArray];
+        self.currentPage++;
     }
     if (!self.requestNextPage) {
         [self.nearbyArray removeAllObjects];
