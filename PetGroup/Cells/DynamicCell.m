@@ -31,7 +31,7 @@
 {
     CGFloat height = 60;
     if (!dynamic.ifTransmitMsg) {
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 100)];
         height += (msgSize.height+10);
         if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
             height+=85;
@@ -41,9 +41,9 @@
             height+=245;
         }
     }else{
-        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize size =[dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 100)];
         height+=(size.height+5);
-        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize msgSize = [dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 100)];
         height+=(msgSize.height+10);
         if (dynamic.smallImage.count>=1&&dynamic.smallImage.count<=3) {
             height+=80;
@@ -164,7 +164,7 @@
     CGFloat origin = 60;
     
     if (!self.dynamic.ifTransmitMsg) {
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 100)];
         _msgL.frame = CGRectMake(60, origin, 250, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
@@ -218,11 +218,11 @@
             origin+=245;
         }
     }else{
-        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize transmitMsgSize = [self.dynamic.transmitMsg sizeConstrainedToSize:CGSizeMake(250, 100)];
         self.transmitMsgL.frame =CGRectMake (60, origin, 250, transmitMsgSize.height);
          _transmitMsgL.attributedText = self.dynamic.transmitMsg;
         origin = origin + transmitMsgSize.height +5;
-        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 200)];
+        CGSize size = [self.dynamic.msg sizeConstrainedToSize:CGSizeMake(250, 100)];
         _msgL.frame = CGRectMake(60, origin, 250, size.height);
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
