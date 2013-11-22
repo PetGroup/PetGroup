@@ -10,7 +10,25 @@
 #import "JSON.h"
 #define CompressionQuality 1  //图片上传时压缩质量
 @implementation NetManager
+NSString * gen_uuid()
 
+{
+    
+    CFUUIDRef uuid_ref = CFUUIDCreate(NULL);
+    
+    CFStringRef uuid_string_ref= CFUUIDCreateString(NULL, uuid_ref);
+    
+    
+    CFRelease(uuid_ref);
+    
+    NSString *uuid =  [[NSString  alloc]initWithCString:CFStringGetCStringPtr(uuid_string_ref, 0) encoding:NSUTF8StringEncoding];
+    
+    
+    CFRelease(uuid_string_ref);
+    
+    return uuid;
+    
+}
 //post请求，需自己设置失败提示
 +(void)requestWithURLStr:(NSString *)urlStr Parameters:(NSDictionary *)parameters TheController:(UIViewController *)controller success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
@@ -18,6 +36,7 @@
     NSMutableDictionary * parameters2 = [NSMutableDictionary dictionaryWithDictionary:parameters];
     NSString * theChannel = [[NSUserDefaults standardUserDefaults] objectForKey:@"theChannel"];
     [parameters2 setObject:theChannel?theChannel:@"1" forKey:@"channel"];
+    [parameters2 setObject:gen_uuid() forKey:@"sn"];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlStr]];
     [httpClient setParameterEncoding:AFFormURLParameterEncoding];
     [httpClient postPath:@"" parameters:parameters2 success:^(AFHTTPRequestOperation *operation, id responseObject) {

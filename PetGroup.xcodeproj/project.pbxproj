@@ -4880,8 +4880,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -4897,8 +4897,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4915,8 +4915,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4925,8 +4925,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4936,8 +4936,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -4949,8 +4949,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4959,8 +4959,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -4972,8 +4972,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
