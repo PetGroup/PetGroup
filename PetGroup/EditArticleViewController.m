@@ -114,6 +114,15 @@
     editIV.image = bgImage ;
     [self.view addSubview:editIV];
     
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 5.0) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    }
+    else{
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(22.75, 63.75+diffH, 272.5, 20)];
     _titleTF.placeholder = @"标题";
     _titleTF.backgroundColor = [UIColor clearColor];
@@ -138,24 +147,37 @@
     [self.view addSubview:_dynamicTV];
     [_titleTF becomeFirstResponder];
     
-    UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-    if (diffH==0.0f) {
-        tool.image = [UIImage imageNamed:@"table_bg"];
-    }
-    else
-    {
-        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-        tool.layer.borderColor = [[UIColor grayColor] CGColor];
-        tool.layer.borderWidth = 1;
-    }
+    UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
+    tool.backgroundColor = [UIColor clearColor];
+//    if (diffH==0.0f) {
+//        tool.image = [UIImage imageNamed:@"table_bg"];
+//    }
+//    else
+//    {
+//        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+//        tool.layer.borderColor = [[UIColor grayColor] CGColor];
+//        tool.layer.borderWidth = 1;
+//    }
     tool.userInteractionEnabled = YES;
-    _dynamicTV.inputAccessoryView = tool;
+//    _dynamicTV.inputAccessoryView = tool;
+    [self.view addSubview:tool];
     
-    UIButton* imageB = [UIButton buttonWithType:UIButtonTypeCustom];
+    imageB = [UIButton buttonWithType:UIButtonTypeCustom];
     imageB.frame = CGRectMake(270, 4, 32, 32);
     [imageB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
+    
+    emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emojiBtn setFrame:CGRectMake(220,-2 , 45, 45)];
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    [tool addSubview:emojiBtn];
+    [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO];
+    theEmojiView.delegate = self;
+    [self.view addSubview:theEmojiView];
+    theEmojiView.hidden = YES;
     
 //    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 95.75+diffH, 200, 20)];
 //    self.placeholderL.font = [UIFont systemFontOfSize:16];
@@ -182,6 +204,103 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    theEmojiView.hidden = YES;
+    imageB.hidden = YES;
+    emojiBtn.hidden = YES;
+}
+-(void)textFieldDidEndEditing:(UITextView *)textView{
+    imageB.hidden = NO;
+    emojiBtn.hidden = NO;
+}
+-(void)emojiBtnClicked:(UIButton *)sender
+{
+    if (!ifEmoji) {
+        [_dynamicTV resignFirstResponder];
+        [_titleTF resignFirstResponder];
+        ifEmoji = YES;
+        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
+        [self showEmojiScrollView];
+        
+    }
+    else
+    {
+        [_dynamicTV becomeFirstResponder];
+        ifEmoji = NO;
+        theEmojiView.hidden = YES;
+        [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    }
+}
+-(void)showEmojiScrollView
+{
+    theEmojiView.hidden = NO;
+    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253)];
+}
+-(void)backBtnDo
+{
+    if (_dynamicTV.text.length>=1) {
+        _dynamicTV.text = [_dynamicTV.text substringToIndex:(_dynamicTV.text.length-1)];
+    }
+    
+}
+-(void)deleteEmojiStr
+{
+//    if (self.textView.text.length>=1) {
+//        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
+//    }
+}
+-(NSString *)selectedEmoji:(NSString *)ssss
+{
+//	if (_dynamicTV.text == nil) {
+//		_dynamicTV.text = ssss;
+//	}
+//	else {
+        UITextRange *selectedTextRange = [_dynamicTV selectedTextRange];
+        if (!selectedTextRange) {
+            UITextPosition *endOfDocument = [_dynamicTV endOfDocument];
+            selectedTextRange = [_dynamicTV textRangeFromPosition:endOfDocument toPosition:endOfDocument];
+        }
+        UITextPosition *startPosition = [selectedTextRange start] ; // hold onto this since the edit will drop
+        
+//        unichar attachmentCharacter = FastTextAttachmentCharacter;
+        [_dynamicTV replaceRange:selectedTextRange withText:[NSString stringWithFormat:@"%@",ssss]];
+        
+        //    startPosition=[_fastTextView positionFromPosition:startPosition inDirection:UITextLayoutDirectionRight offset:1];
+        UITextPosition *endPosition = [_dynamicTV positionFromPosition:startPosition offset:1];
+        selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
+        
+        
+        NSMutableAttributedString *mutableAttributedString=[_dynamicTV.attributedString mutableCopy];
+        
+        NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
+        NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
+        
+        if (en < st) {
+            return 0;
+        }
+        NSUInteger contentLength = [[_dynamicTV.attributedString string] length];
+        if (en > contentLength) {
+            en = contentLength; // but let's not crash
+        }
+        if (st > en)
+            st = en;
+        NSRange cr = [[_dynamicTV.attributedString string] rangeOfComposedCharacterSequencesForRange:(NSRange){ st, en - st }];
+        if (cr.location + cr.length > contentLength) {
+            cr.length = ( contentLength - cr.location ); // but let's not crash
+        }
+        if (mutableAttributedString) {
+            _dynamicTV.attributedString = mutableAttributedString;
+        }
+//		_dynamicTV.text = [_dynamicTV.text stringByAppendingString:ssss];
+//	}
+    
+    return 0;
+}
+-(void)emojiSendBtnDo
+{
+    
 }
 #pragma mark - button action
 -(void)backButton:(UIButton*)button
@@ -576,6 +695,8 @@
 }
 
 - (void)fastTextViewDidBeginEditing:(FastTextView *)textView {
+
+
 }
 
 - (void)fastTextViewDidEndEditing:(FastTextView *)textView {
@@ -742,6 +863,21 @@
         
 //    }
 }
+- (void)keyboardWillShow:(NSNotification *)notification {
+
+    ifEmoji = NO;
+    theEmojiView.hidden = YES;
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+
+    
+    
+}
+
 -(void)scrollToBottomw
 {
     CGPoint bottomOffset = CGPointMake(0, _dynamicTV.contentSize.height - _dynamicTV.bounds.size.height);

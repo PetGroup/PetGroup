@@ -233,6 +233,7 @@
     [self.view addSubview:hud];
     hud.labelText = @"提交中...";
 }
+
 - (void) textFieldDidChange:(UITextField *) textField
 {
     NSLog(@"%@",textField.text);

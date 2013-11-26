@@ -19,8 +19,9 @@
 #import "MyProfileViewController.h"
 #import "selectContactPage.h"
 #import "OHASBasicHTMLParser.h"
+#import "EmojiView.h"
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -63,6 +64,8 @@
     UIScrollView *m_EmojiScrollView;
     UIPageControl *m_Emojipc;
     UIView * emojiBGV;
+    
+    EmojiView * theEmojiView;
     
     NSMutableDictionary *recordSetting;
     AVAudioPlayer * audioPlayer;
