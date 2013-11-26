@@ -12,6 +12,7 @@
 #import "NearByViewController.h"
 #import "ContactsViewController.h"
 #import "PersonalCenterViewController.h"
+#import "DiscoverViewController.h"
 #import "JSON.h"
 #import "CircleViewController.h"
 @interface LoadingViewController ()
@@ -372,7 +373,7 @@
     
 //    DynamicViewController * dynamicV = [[DynamicViewController alloc] init];
 //    self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:dynamicV];
-    NearByViewController * nearbyV = [[NearByViewController alloc] init];
+    DiscoverViewController * nearbyV = [[DiscoverViewController alloc] init];
     self.NaviNearBy = [[MLNavigationController alloc] initWithRootViewController:nearbyV];
     ContactsViewController * contactsV = [[ContactsViewController alloc] init];
     self.NaviContacts = [[MLNavigationController alloc] initWithRootViewController:contactsV];
