@@ -18,13 +18,15 @@
 @end
 
 @implementation DiscoverViewController
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nameArray = @[@"附近的人",@"附近商户",@"美图"];
+        self.nameArray = @[@"附近的人",@"宠物周边",@"发现美图",@"宠物百科",@"养宠经验"];
     }
     return self;
 }
@@ -48,10 +50,9 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     _tableV.delegate = self;
     _tableV.dataSource = self;
-    _tableV.rowHeight = 100;
     [self.view addSubview:_tableV];
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -83,11 +84,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 4;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _nameArray.count;
+    if(section == 3){
+        return 2;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -96,15 +100,17 @@
     UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = _nameArray[indexPath.row];
+    cell.textLabel.text = _nameArray[indexPath.row+indexPath.section];
     return cell;
 }
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.row) {
+    switch (indexPath.row+indexPath.section) {
         case 0:{
             NearByViewController* nearByVC = [[NearByViewController alloc]init];
             [self.navigationController pushViewController:nearByVC animated:YES];
