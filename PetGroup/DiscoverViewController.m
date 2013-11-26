@@ -53,6 +53,7 @@
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     _tableV.delegate = self;
     _tableV.dataSource = self;
+    _tableV.backgroundView = nil;
     [self.view addSubview:_tableV];
 }
 -(void)viewWillAppear:(BOOL)animated
