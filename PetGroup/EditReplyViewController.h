@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EmojiView.h"
 @protocol EditReplyViewDelegate<NSObject>
 -(void)editReplyViewDidEdit;
 @end
-@interface EditReplyViewController : UIViewController
+@interface EditReplyViewController : UIViewController<EmojiViewDelegate>
 {
     float diffH;
     NSAttributedString * attributeStringHH;
-    
-    
+    EmojiView * theEmojiView;
+    BOOL ifEmoji;
+    UIButton * emojiBtn;
+    UIButton* imageB;
 }
 @property (nonatomic,assign)id<EditReplyViewDelegate>delegate;
 @property (nonatomic,assign)int row;
