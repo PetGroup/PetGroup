@@ -13,6 +13,15 @@
 		72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */; };
 		72795AEB184347EB00BB58E0 /* Business.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AEA184347EB00BB58E0 /* Business.m */; };
 		72795AEE184432B400BB58E0 /* BusinessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AED184432B400BB58E0 /* BusinessCell.m */; };
+		72795AF81844456C00BB58E0 /* star_16_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF01844456C00BB58E0 /* star_16_0.png */; };
+		72795AF91844456C00BB58E0 /* star_16_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF11844456C00BB58E0 /* star_16_1.png */; };
+		72795AFA1844456C00BB58E0 /* star_16_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF21844456C00BB58E0 /* star_16_2.png */; };
+		72795AFB1844456C00BB58E0 /* star_16_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF31844456C00BB58E0 /* star_16_3.png */; };
+		72795AFC1844456C00BB58E0 /* star_16_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF41844456C00BB58E0 /* star_16_4.png */; };
+		72795AFD1844456C00BB58E0 /* star_16_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF51844456C00BB58E0 /* star_16_5.png */; };
+		72795AFE1844456C00BB58E0 /* star_16_35.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF61844456C00BB58E0 /* star_16_35.png */; };
+		72795AFF1844456C00BB58E0 /* star_16_45.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795AF71844456C00BB58E0 /* star_16_45.png */; };
+		72795B021844470C00BB58E0 /* DiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795B011844470C00BB58E0 /* DiscoverViewController.m */; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -753,6 +762,16 @@
 		72795AEA184347EB00BB58E0 /* Business.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Business.m; sourceTree = "<group>"; };
 		72795AEC184432B400BB58E0 /* BusinessCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessCell.h; sourceTree = "<group>"; };
 		72795AED184432B400BB58E0 /* BusinessCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessCell.m; sourceTree = "<group>"; };
+		72795AF01844456C00BB58E0 /* star_16_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_0.png; sourceTree = "<group>"; };
+		72795AF11844456C00BB58E0 /* star_16_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_1.png; sourceTree = "<group>"; };
+		72795AF21844456C00BB58E0 /* star_16_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_2.png; sourceTree = "<group>"; };
+		72795AF31844456C00BB58E0 /* star_16_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_3.png; sourceTree = "<group>"; };
+		72795AF41844456C00BB58E0 /* star_16_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_4.png; sourceTree = "<group>"; };
+		72795AF51844456C00BB58E0 /* star_16_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_5.png; sourceTree = "<group>"; };
+		72795AF61844456C00BB58E0 /* star_16_35.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_35.png; sourceTree = "<group>"; };
+		72795AF71844456C00BB58E0 /* star_16_45.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star_16_45.png; sourceTree = "<group>"; };
+		72795B001844470C00BB58E0 /* DiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoverViewController.h; sourceTree = "<group>"; };
+		72795B011844470C00BB58E0 /* DiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoverViewController.m; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		72CAD8B3183C7C7200B1F927 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
@@ -1900,6 +1919,7 @@
 		72795ADD1843251B00BB58E0 /* DianpingModule */ = {
 			isa = PBXGroup;
 			children = (
+				72795AEF1844450200BB58E0 /* StarImage */,
 				72795AE518432E4000BB58E0 /* Controller */,
 				72795AE418432E2800BB58E0 /* View */,
 				72795AE318432DFF00BB58E0 /* DataModel */,
@@ -1942,6 +1962,21 @@
 				72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */,
 			);
 			name = Controller;
+			sourceTree = "<group>";
+		};
+		72795AEF1844450200BB58E0 /* StarImage */ = {
+			isa = PBXGroup;
+			children = (
+				72795AF01844456C00BB58E0 /* star_16_0.png */,
+				72795AF11844456C00BB58E0 /* star_16_1.png */,
+				72795AF21844456C00BB58E0 /* star_16_2.png */,
+				72795AF31844456C00BB58E0 /* star_16_3.png */,
+				72795AF41844456C00BB58E0 /* star_16_4.png */,
+				72795AF51844456C00BB58E0 /* star_16_5.png */,
+				72795AF61844456C00BB58E0 /* star_16_35.png */,
+				72795AF71844456C00BB58E0 /* star_16_45.png */,
+			);
+			name = StarImage;
 			sourceTree = "<group>";
 		};
 		72CAD8B1183C7C7200B1F927 /* UMAnalytics */ = {
@@ -2470,6 +2505,8 @@
 			children = (
 				97D501F917C49A0500799BD4 /* NearByViewController.h */,
 				97D501FA17C49A0500799BD4 /* NearByViewController.m */,
+				72795B001844470C00BB58E0 /* DiscoverViewController.h */,
+				72795B011844470C00BB58E0 /* DiscoverViewController.m */,
 			);
 			name = NearbyView;
 			sourceTree = "<group>";
@@ -4268,11 +4305,13 @@
 				9736BDA717C49146007DFE36 /* singleSelectBtn-click.png in Resources */,
 				9765D784181BB5340021B36F /* os7select_05.png in Resources */,
 				9736BDA817C49146007DFE36 /* singleSelectBtn-normal.png in Resources */,
+				72795AFD1844456C00BB58E0 /* star_16_5.png in Resources */,
 				9736BDA917C49146007DFE36 /* tpicBtn-normal.png in Resources */,
 				9736BDAB17C49146007DFE36 /* youshangjiao-click.png in Resources */,
 				9736BDAC17C49146007DFE36 /* youshangjiao_normal.png in Resources */,
 				9736BDAE17C49146007DFE36 /* outkuang.png in Resources */,
 				9736BDB017C49146007DFE36 /* reportinput.png in Resources */,
+				72795AFC1844456C00BB58E0 /* star_16_4.png in Resources */,
 				9736BDB317C49146007DFE36 /* addpicbtn.png in Resources */,
 				9736BDB417C49146007DFE36 /* brownlong-normal.png in Resources */,
 				9764FF3A1830D02300AA12CD /* pageChange.png in Resources */,
@@ -4288,6 +4327,7 @@
 				9736BDBE17C49146007DFE36 /* selected-s.png in Resources */,
 				9736BDBF17C49146007DFE36 /* selectednormal-big.png in Resources */,
 				9736BDC017C49146007DFE36 /* selectednormal-s.png in Resources */,
+				72795AF91844456C00BB58E0 /* star_16_1.png in Resources */,
 				9736BDC117C49146007DFE36 /* surebtn-click.png in Resources */,
 				9765D780181BB5340021B36F /* os7select_01.png in Resources */,
 				9736BDC217C49146007DFE36 /* surebtn-normal.png in Resources */,
@@ -4306,6 +4346,7 @@
 				9736BDE217C49146007DFE36 /* redCB.png in Resources */,
 				9736BDE317C49146007DFE36 /* redpot.png in Resources */,
 				9736BDF317C49146007DFE36 /* back.png in Resources */,
+				72795AF81844456C00BB58E0 /* star_16_0.png in Resources */,
 				9736BDF417C49146007DFE36 /* back2.png in Resources */,
 				97233B9D1820F42C00A8015D /* loupe-hi@2x.png in Resources */,
 				9736BDF517C49146007DFE36 /* cat.png in Resources */,
@@ -4346,6 +4387,7 @@
 				97DB09C717C5B037000EC195 /* paizhao-normal.png in Resources */,
 				97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */,
 				97DB09C817C5B037000EC195 /* qita_click.png in Resources */,
+				72795AFB1844456C00BB58E0 /* star_16_3.png in Resources */,
 				97DB09C917C5B037000EC195 /* qita_normal.png in Resources */,
 				97DB09CD17C5B037000EC195 /* xiangche-click.png in Resources */,
 				9765D782181BB5340021B36F /* os7select_03.png in Resources */,
@@ -4478,9 +4520,11 @@
 				86A56A5B180F8191000FD684 /* biaoqing067.png in Resources */,
 				86A56A5C180F8191000FD684 /* biaoqing068.png in Resources */,
 				86A56A5D180F8191000FD684 /* biaoqing069.png in Resources */,
+				72795AFF1844456C00BB58E0 /* star_16_45.png in Resources */,
 				86A56A5E180F8191000FD684 /* biaoqing070.png in Resources */,
 				86FC764F1820A08B0025686B /* arrow.png in Resources */,
 				86A56A5F180F8191000FD684 /* biaoqing071.png in Resources */,
+				72795AFA1844456C00BB58E0 /* star_16_2.png in Resources */,
 				86A56A60180F8191000FD684 /* biaoqing072.png in Resources */,
 				86A56A61180F8191000FD684 /* biaoqing073.png in Resources */,
 				86A56A62180F8191000FD684 /* biaoqing074.png in Resources */,
@@ -4491,6 +4535,7 @@
 				86A56A65180F8191000FD684 /* biaoqing077.png in Resources */,
 				86A56A66180F8191000FD684 /* biaoqing078.png in Resources */,
 				84BD195D1834881A004D51F2 /* pagenum_bg.png in Resources */,
+				72795AFE1844456C00BB58E0 /* star_16_35.png in Resources */,
 				86A56A67180F8191000FD684 /* biaoqing079.png in Resources */,
 				86A56A68180F8191000FD684 /* biaoqing080.png in Resources */,
 				86A56A69180F8191000FD684 /* biaoqing081.png in Resources */,
@@ -4824,6 +4869,7 @@
 				97D5021017C49CC500799BD4 /* XMLMatcher.m in Sources */,
 				97DB08F417C5A1BD000EC195 /* PersonDetailViewController.m in Sources */,
 				97DB08F717C5A1CB000EC195 /* PetDetailViewController.m in Sources */,
+				72795B021844470C00BB58E0 /* DiscoverViewController.m in Sources */,
 				97DB08FA17C5A1EE000EC195 /* MyProfileViewController.m in Sources */,
 				97DB08FD17C5A1FF000EC195 /* MyPetProfileViewController.m in Sources */,
 				97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */,

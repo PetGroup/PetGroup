@@ -638,7 +638,7 @@
             petDetailV.hostInfo = hostInfo;
         }
         [self.navigationController pushViewController:petDetailV animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];    
+//        [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
