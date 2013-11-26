@@ -147,7 +147,7 @@
 //        [self performSelector:@selector(displayMsgsForDefaultView) withObject:nil afterDelay:4];
         [self displayMsgsForDefaultView];
         if (firstOpen) {
-            [self.customTabBarController setSelectedPage:1];
+            [self.customTabBarController setSelectedPage:0];
             firstOpen = NO;
         }
 //        NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
@@ -176,10 +176,10 @@
     NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
     if (tempNewNotiArray) {
         if (tempNewNotiArray.count>0) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:1];
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:4];
         }
         else{
-            [self.customTabBarController removeNotificatonOfIndex:1];
+            [self.customTabBarController removeNotificatonOfIndex:4];
         }
     }
     
@@ -293,10 +293,10 @@
     [defaultUserD setObject:newNotiArray forKey:notiKey];
     [defaultUserD synchronize];
     if (newNotiArray.count>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:1];
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:4];
     }
     else{
-        [self.customTabBarController removeNotificatonOfIndex:1];
+        [self.customTabBarController removeNotificatonOfIndex:4];
     }
 }
 
@@ -921,14 +921,14 @@
         allUnread = allUnread+[[allMsgUnreadArray objectAtIndex:i] intValue];
     }
     if (allUnread>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:0];
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:1];
         if (allUnread>99) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:0];
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:1];
         }
     }
     else
     {
-        [self.customTabBarController removeNotificatonOfIndex:0];
+        [self.customTabBarController removeNotificatonOfIndex:1];
     }
  
 }

@@ -41,7 +41,7 @@
     
     hotPintsDataSource* hotPintsDS;
     
-    UIImageView * notiBgV;
+//    UIImageView * notiBgV;
     UILabel * numberLabel;
     float diffH;
 }
@@ -93,22 +93,28 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 0+diffH, 80, 44);
-    [nextB setBackgroundImage:[UIImage imageNamed:@"mail"] forState:UIControlStateNormal];
-    [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+    nextB.frame = CGRectMake(278, 7+diffH, 35, 33);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+    [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(287, 2+diffH, 28, 22)];
-    [notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
-    notiBgV.hidden = YES;
-    [self.view addSubview:notiBgV];
-    numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];
-    [numberLabel setBackgroundColor:[UIColor clearColor]];
-    [numberLabel setTextColor:[UIColor whiteColor]];
-    [numberLabel setFont:[UIFont systemFontOfSize:14]];
-    [numberLabel setTextAlignment:NSTextAlignmentCenter];
-    [notiBgV addSubview:numberLabel];
-    [numberLabel setText:[NSString stringWithFormat:@"%d",0]];
+//    UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//    publishButton.frame=CGRectMake(278, 3+diffH, 35, 33);
+//    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+//    [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:publishButton];
+    
+//    notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(287, 2+diffH, 28, 22)];
+//    [notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
+//    notiBgV.hidden = YES;
+//    [self.view addSubview:notiBgV];
+//    numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];
+//    [numberLabel setBackgroundColor:[UIColor clearColor]];
+//    [numberLabel setTextColor:[UIColor whiteColor]];
+//    [numberLabel setFont:[UIFont systemFontOfSize:14]];
+//    [numberLabel setTextAlignment:NSTextAlignmentCenter];
+//    [notiBgV addSubview:numberLabel];
+//    [numberLabel setText:[NSString stringWithFormat:@"%d",0]];
 
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
@@ -269,7 +275,7 @@
     self.appDel.xmppHelper.commentDelegate = self;
     [self readNewNoti];
     if ([[TempData sharedInstance] needChat]) {
-        [self.customTabBarController setSelectedPage:0];
+        [self.customTabBarController setSelectedPage:1];
         return;
     }
 }
@@ -280,6 +286,16 @@
     NotificationViewController * notiV = [[NotificationViewController alloc] init];
     [self.navigationController pushViewController:notiV animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
+}
+-(void)toPublishPage
+{
+    EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
+//    editAVC.forumId = self.circleEntity.circleID;
+//    editAVC.forumName = self.circleEntity.name;
+//    editAVC.delegate = self;
+    [self presentViewController:editAVC animated:YES completion:^{
+        
+    }];
 }
 -(void)showSearchView
 {
@@ -516,18 +532,18 @@
     NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
     if (tempNewNotiArray) {
         if (tempNewNotiArray.count>0) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:1];
-            notiBgV.hidden = NO;
-            numberLabel.text = [NSString stringWithFormat:@"%d",tempNewNotiArray.count];
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:4];
+//            notiBgV.hidden = NO;
+//            numberLabel.text = [NSString stringWithFormat:@"%d",tempNewNotiArray.count];
         }
         else{
-            [self.customTabBarController removeNotificatonOfIndex:1];
-            notiBgV.hidden = YES;
+            [self.customTabBarController removeNotificatonOfIndex:4];
+//            notiBgV.hidden = YES;
         }
     }
     else{
-        [self.customTabBarController removeNotificatonOfIndex:1];
-        notiBgV.hidden = YES;
+        [self.customTabBarController removeNotificatonOfIndex:4];
+//        notiBgV.hidden = YES;
     }
 
 }
@@ -552,13 +568,13 @@
     [defaultUserD setObject:newNotiArray forKey:notiKey];
     [defaultUserD synchronize];
     if (newNotiArray.count>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:1];
-        notiBgV.hidden = NO;
-        numberLabel.text = [NSString stringWithFormat:@"%d",newNotiArray.count];
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:4];
+//        notiBgV.hidden = NO;
+//        numberLabel.text = [NSString stringWithFormat:@"%d",newNotiArray.count];
     }
     else{
-        [self.customTabBarController removeNotificatonOfIndex:1];
-        notiBgV.hidden = YES;
+        [self.customTabBarController removeNotificatonOfIndex:4];
+//        notiBgV.hidden = YES;
     }
 }
 @end

@@ -393,9 +393,9 @@
     
     float diffH = [Common diffHeight:self];
     
-    NSArray * views = [NSArray arrayWithObjects:self.NaviMessage,self.NaviDynamic,self.NaviNearBy,self.NaviContacts,self.NaviMore, nil];
-    NSArray * normalPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6normal_01.png":@"os7normal_01.png",diffH==0.0f?@"os6normal_02.png":@"os7normal_02.png",diffH==0.0f?@"os6normal_03.png":@"os7normal_03.png",diffH==0.0f?@"os6normal_04.png":@"os7normal_04.png",diffH==0.0f?@"os6normal_05.png":@"os7normal_05.png", nil];
-    NSArray * selectPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6select_01.png":@"os7select_01.png", diffH==0.0f?@"os6select_02.png":@"os7select_02.png",diffH==0.0f?@"os6select_03.png":@"os7select_03.png",diffH==0.0f?@"os6select_04.png":@"os7select_04.png",diffH==0.0f?@"os6select_05.png":@"os7select_05.png",nil];
+    NSArray * views = [NSArray arrayWithObjects:self.NaviDynamic,self.NaviMessage,self.NaviNearBy,self.NaviContacts,self.NaviMore, nil];
+    NSArray * normalPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6normal_02.png":@"os7normal_02.png",diffH==0.0f?@"os6normal_01.png":@"os7normal_01.png",diffH==0.0f?@"os6normal_03.png":@"os7normal_03.png",diffH==0.0f?@"os6normal_04.png":@"os7normal_04.png",diffH==0.0f?@"os6normal_05.png":@"os7normal_05.png", nil];
+    NSArray * selectPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6select_02.png":@"os7select_02.png", diffH==0.0f?@"os6select_01.png":@"os7select_01.png",diffH==0.0f?@"os6select_03.png":@"os7select_03.png",diffH==0.0f?@"os6select_04.png":@"os7select_04.png",diffH==0.0f?@"os6select_05.png":@"os7select_05.png",nil];
     self.tabBarC = [[CustomTabBar alloc] initWithImages:normalPic AndSelected:selectPic AndControllers:views];
     
     [self presentViewController:self.tabBarC animated:NO completion:^{

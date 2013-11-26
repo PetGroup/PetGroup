@@ -138,7 +138,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     if ([[TempData sharedInstance] needChat]) {
-        [self.customTabBarController setSelectedPage:0];
+        [self.customTabBarController setSelectedPage:1];
         return;
     }
     if ([[TempData sharedInstance] ifPanned]) {
