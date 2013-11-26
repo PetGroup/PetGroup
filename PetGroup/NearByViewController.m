@@ -51,14 +51,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.hidesBottomBarWhenPushed = YES;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     diffH = [Common diffHeight:self];
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
+    
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
+    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
+    [self.view addSubview:backButton];
+    [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *filterButton=[UIButton buttonWithType:UIButtonTypeCustom];
     filterButton.frame=CGRectMake(275, 5+diffH, 45, 32.5);
@@ -75,7 +79,7 @@
     [self.view addSubview:titleLabel];
     self.titleLabel = titleLabel;
     
-    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-94-diffH) style:UITableViewStylePlain];
+    self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     [self.view addSubview:self.messageTable];
     self.messageTable.dataSource = self;
     self.messageTable.delegate = self;
@@ -132,23 +136,28 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    if ([[TempData sharedInstance] needChat]) {
-        [self.customTabBarController setSelectedPage:1];
-        return;
-    }
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
+//    if ([[TempData sharedInstance] needChat]) {
+//        [self.customTabBarController setSelectedPage:1];
+//        return;
+//    }
+//    if ([[TempData sharedInstance] ifPanned]) {
+//        [self.customTabBarController hidesTabBar:NO animated:NO];
+//    }
+//    else
+//    {
+//        [self.customTabBarController hidesTabBar:NO animated:YES];
+//        [[TempData sharedInstance] Panned:YES];
+//    }
 }
 -(void)showAlertWithMessage:(NSString *)msg
 {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
     [alert show];
+}
+-(void)backButton
+{
+    [[TempData sharedInstance] Panned:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)getUserLocation
 {

@@ -13,9 +13,11 @@
 #import "TempData.h"
 #import "Business.h"
 #import "BusinessCell.h"
+#import "MBProgressHUD.h"
 @interface DPBusinessListViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     BOOL free;
+    MBProgressHUD* hud;
 }
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)DPNetManager* netManager;
@@ -83,6 +85,10 @@
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = @"搜索中...";
     
     [self reloadData];
 }
@@ -170,6 +176,7 @@
 {
     if(_pageNo == 1)
     {
+        [hud hide:YES];
         [_refreshView endRefresh];
         [self.dataSourceArray removeAllObjects];
     }else{
@@ -189,6 +196,7 @@
 {
     if(_pageNo == 1)
     {
+        [hud hide:YES];
         [_refreshView endRefresh];
     }else{
         [_footer endRefreshing];
@@ -212,6 +220,7 @@
         NSString* url = [DPNetManager serializeURL:@"http://api.dianping.com/v1/business/find_businesses_by_coordinate" params:dic];
         NSLog(@"%@",url);
         self.netManager = [[DPNetManager alloc]initWithURL:url delegate:self];
+        [hud show:YES];
     }else{
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许《宠物圈》获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alertView show];
