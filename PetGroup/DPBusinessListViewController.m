@@ -89,7 +89,7 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"搜索中...";
-    
+    [hud show:YES];
     [self reloadData];
 }
 
@@ -220,7 +220,6 @@
         NSString* url = [DPNetManager serializeURL:@"http://api.dianping.com/v1/business/find_businesses_by_coordinate" params:dic];
         NSLog(@"%@",url);
         self.netManager = [[DPNetManager alloc]initWithURL:url delegate:self];
-        [hud show:YES];
     }else{
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许《宠物圈》获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alertView show];

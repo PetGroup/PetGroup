@@ -34,26 +34,25 @@
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
-    
     UIButton* goodB;
-    UIButton* newReplyB;
-    UIButton* newPublishB;
     
-    hotPintsDataSource* hotPintsDS;
-    
-//    UIImageView * notiBgV;
     UILabel * numberLabel;
     float diffH;
 }
 @property (nonatomic,retain)NSString* myUserID;
-@property (nonatomic,retain)UICollectionView* attentionV;
+@property (nonatomic,retain)UIView* pageV;
+@property (nonatomic,retain)UIScrollView* backGroundV;
+
+@property (nonatomic,retain)UITableView* goodV;
 @property (nonatomic,retain)UITableView* hotPintsV;
+@property (nonatomic,retain)UICollectionView* attentionV;
+
+@property (nonatomic,retain)SRRefreshView* goodrefreshView;
 @property (nonatomic,retain)SRRefreshView* slimeView;
 @property (nonatomic,retain)SRRefreshView* refreshView;
-@property (nonatomic,retain)AttentionDataSource* attentionDS;
 
+@property (nonatomic,retain)AttentionDataSource* attentionDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
-@property (nonatomic,retain)NewReplyArticleDataSource* replyArticleDS;
 @property (nonatomic,retain)NewPublishArticleDataSource* publishArticleDS;
 
 @property (strong,nonatomic) AppDelegate * appDel;
@@ -97,108 +96,68 @@
     [nextB setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
-    
-//    UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    publishButton.frame=CGRectMake(278, 3+diffH, 35, 33);
-//    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
-//    [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:publishButton];
-    
-//    notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(287, 2+diffH, 28, 22)];
-//    [notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];
-//    notiBgV.hidden = YES;
-//    [self.view addSubview:notiBgV];
-//    numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(-1, 0, 30, 22)];
-//    [numberLabel setBackgroundColor:[UIColor clearColor]];
-//    [numberLabel setTextColor:[UIColor whiteColor]];
-//    [numberLabel setFont:[UIFont systemFontOfSize:14]];
-//    [numberLabel setTextAlignment:NSTextAlignmentCenter];
-//    [notiBgV addSubview:numberLabel];
-//    [numberLabel setText:[NSString stringWithFormat:@"%d",0]];
 
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
-    tabIV.image = diffH==0.0f?[UIImage imageNamed:@"table_bg"]:[UIImage imageNamed:@"biaotidd"];
+    tabIV.image = [UIImage imageNamed:@"biaotidd"];
 //    [UIImage imageNamed:@"table_bg"];
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
     
     attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (diffH==0.0f) {
-        attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
-    }
-    else
-    {
-        attentionB.frame = CGRectMake(0, 0, 160, 31.5);
-    }
-    
+    attentionB.frame = CGRectMake(106.666*2, 0, 106.666, 31.5);
     [attentionB setTitle:@"关注" forState:UIControlStateNormal];
     [attentionB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
-    [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
     [tabIV addSubview:attentionB];
     [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
     
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
     [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    if (diffH==0.0f) {
-        hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
-    }
-    else
-    {
-        hotPintsB.frame = CGRectMake(160, 0, 160, 31.5);
-    }
-    [hotPintsB setTitle:@"热点" forState:UIControlStateNormal];
+    hotPintsB.frame = CGRectMake(106.666, 0, 106.666, 31.5);
+    [hotPintsB setTitle:@"最新发表" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
+    goodB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [goodB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    goodB.frame = CGRectMake(0, 0, 106.666, 31.5);
+    [goodB setTitle:@"精华" forState:UIControlStateNormal];
+    [goodB addTarget:self action:@selector(changeDataSource) forControlEvents:UIControlEventTouchUpInside];
+    [tabIV addSubview:goodB];
     
-    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH)];
+    self.pageV = [[UIView alloc]initWithFrame:CGRectMake(106.666, 29, 106.666, 2.5)];
+    _pageV.backgroundColor = [UIColor orangeColor];
+    [tabIV addSubview:_pageV];
+    
+    self.backGroundV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH)];
+    _backGroundV.delegate = self;
+    _backGroundV.contentSize = CGSizeMake(960, self.view.frame.size.height-124.5-diffH);
+    _backGroundV.contentOffset = CGPointMake(320, 0);
+    _backGroundV.pagingEnabled=YES;
+	_backGroundV.showsHorizontalScrollIndicator=NO;
+	_backGroundV.showsVerticalScrollIndicator=NO;
+    _backGroundV.bounces = NO;
+    [self.view addSubview:_backGroundV];
+    
+    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, 320, self.view.frame.size.height-124.5-diffH)];
     _hotPintsV.rowHeight = 100;
     _hotPintsV.delegate = self;
-    [self.view addSubview:_hotPintsV];
+    [_backGroundV addSubview:_hotPintsV];
     
-    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
-//    UIButton * searchB = [UIButton buttonWithType:UIButtonTypeCustom];
-//    searchB.frame = CGRectMake(0, 0, 320, 45);
-//    [searchB setBackgroundImage:[UIImage imageNamed:@"search_bg"] forState:UIControlStateNormal];
-//    [searchB addTarget:self action:@selector(showSearchView) forControlEvents:UIControlEventTouchUpInside];
-//    [headV addSubview:searchB];
+    self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
+    _hotPintsV.dataSource = _publishArticleDS;
+    _publishArticleDS.myController = self;
+    [self reloadHotPintsData];
     
-    UIImageView* tableHeadView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
-    tableHeadView.image = diffH==0.0f?[UIImage imageNamed:@"biaoti"]:[UIImage imageNamed:@"biaoti2"];
-    tableHeadView.userInteractionEnabled = YES;
+    self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-124.5-diffH)];
+    _goodV.rowHeight = 100;
+    _goodV.delegate = self;
+    [_backGroundV addSubview:_goodV];
     
-    goodB = [UIButton buttonWithType:UIButtonTypeCustom];
-    goodB.frame = CGRectMake(2*320/3, 0, 320/3, 26);
-    goodB.titleLabel.font = [UIFont systemFontOfSize:14];
-    goodB.tag = 2;
-    [goodB setTitle:@"精华" forState:UIControlStateNormal];
-    [goodB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [goodB addTarget:self action:@selector(changeDataSource:) forControlEvents:UIControlEventTouchUpInside];
-    [tableHeadView addSubview:goodB];
-    
-    newReplyB = [UIButton buttonWithType:UIButtonTypeCustom];
-    newReplyB.frame = CGRectMake(320/3, 0, 320/3, 26);
-    newReplyB.titleLabel.font = [UIFont systemFontOfSize:14];
-    newReplyB.tag = 3;
-    [newReplyB setTitle:@"最新回复" forState:UIControlStateNormal];
-    [newReplyB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [newReplyB addTarget:self action:@selector(changeDataSource:) forControlEvents:UIControlEventTouchUpInside];
-    [tableHeadView addSubview:newReplyB];
-    
-    newPublishB = [UIButton buttonWithType:UIButtonTypeCustom];
-    newPublishB.frame = CGRectMake(0, 0, 320/3, 26);
-    newPublishB.titleLabel.font = [UIFont systemFontOfSize:14];
-    newPublishB.tag = 4;
-    [newPublishB setTitle:@"最新发表" forState:UIControlStateNormal];
-    [newPublishB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [newPublishB addTarget:self action:@selector(changeDataSource:) forControlEvents:UIControlEventTouchUpInside];
-    [tableHeadView addSubview:newPublishB];
-    
-    [headV addSubview:tableHeadView];
-    
-    _hotPintsV.tableHeaderView = headV;
+    self.goodArticleDS = [[GoodArticleDataSource alloc]init];
+    _goodV.dataSource = _goodArticleDS;
+    _goodArticleDS.myController = self;
+    [self reloadGoodArticleData];
     
     UICollectionViewFlowLayout* cv = [[UICollectionViewFlowLayout alloc]init];
     cv.minimumLineSpacing = 5.0;
@@ -206,20 +165,19 @@
     cv.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
     cv.headerReferenceSize = CGSizeMake(320, 26);
     cv.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
+    self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
     _attentionV.delegate = self;
     _attentionV.backgroundColor = [UIColor whiteColor];
-//    [_attentionV registerClass:[PlaceHolderCell class] forCellWithReuseIdentifier:@"place"];
     [_attentionV registerClass:[CircleCell class] forCellWithReuseIdentifier:@"cell"];
     [_attentionV registerClass:[FriendCircleCell class] forCellWithReuseIdentifier:@"friend"];
-//    [_attentionV registerClass:[FriendHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"friendHeader"];
     [_attentionV registerClass:[HeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     [_attentionV registerClass:[FooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer"];
-    [self.view addSubview:_attentionV];
+    [_backGroundV addSubview:_attentionV];
     
     self.attentionDS = [[AttentionDataSource alloc]init];
     _attentionDS.myController = self;
     _attentionV.dataSource = _attentionDS;
+    [self loadHistory];
     
     self.slimeView = [[SRRefreshView alloc] init];
     _slimeView.delegate = self;
@@ -230,7 +188,6 @@
     _slimeView.slime.lineWith = 1;
     _slimeView.slime.shadowBlur = 4;
     _slimeView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
-    
     [self.attentionV addSubview:_slimeView];
     
     self.refreshView = [[SRRefreshView alloc] init];
@@ -242,13 +199,18 @@
     _refreshView.slime.lineWith = 1;
     _refreshView.slime.shadowBlur = 4;
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
-    
     [self.hotPintsV addSubview:_refreshView];
     
-//    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-//    NSArray* array = [defaults objectForKey:MyCircle];
-    [self loadHistory];
-//    self.myUserID =[[TempData sharedInstance] getMyUserID];
+    self.goodrefreshView = [[SRRefreshView alloc] init];
+    _goodrefreshView.delegate = self;
+    _goodrefreshView.upInset = 0;
+    _goodrefreshView.slimeMissWhenGoingBack = YES;
+    _goodrefreshView.slime.bodyColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    _goodrefreshView.slime.skinColor = [UIColor whiteColor];
+    _goodrefreshView.slime.lineWith = 1;
+    _goodrefreshView.slime.shadowBlur = 4;
+    _goodrefreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    [self.goodV addSubview:_goodrefreshView];
     
     self.appDel = [[UIApplication sharedApplication] delegate];
 }
@@ -305,100 +267,33 @@
 }
 -(void)attentionAct
 {
-    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
-    [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
- //   [attentionB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
-    [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
-    [self.view bringSubviewToFront:_attentionV];
+    [_backGroundV scrollRectToVisible:CGRectMake(640, 0, 320, _backGroundV.frame.size.height) animated:YES];
 }
 -(void)hotPintsAct
 {
-    [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
-    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
-    [hotPintsB setBackgroundImage:bgB forState:UIControlStateNormal];
-//    [hotPintsB setBackgroundImage:[UIImage imageNamed:@"table_click"] forState:UIControlStateNormal];
-    [self.view bringSubviewToFront:_hotPintsV];
-    if (_publishArticleDS == nil) {
-        self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
-        _hotPintsV.dataSource = _publishArticleDS;
-        hotPintsDS = _publishArticleDS;
-        _publishArticleDS.myController = self;
-        [self reloadHotPintsData];
-    }
+    [_backGroundV scrollRectToVisible:CGRectMake(320, 0, 320, _backGroundV.frame.size.height) animated:YES];
 }
--(void)changeDataSource:(UIButton*)button
+-(void)changeDataSource
 {
-    switch (button.tag) {
-        case 2:{
-            if (self.hotPintsV.dataSource!=_goodArticleDS) {
-                [goodB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                [newReplyB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                [newPublishB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                if (_goodArticleDS == nil) {
-                    self.goodArticleDS = [[GoodArticleDataSource alloc]init];
-                    _hotPintsV.dataSource = _goodArticleDS;
-                    hotPintsDS = _goodArticleDS;
-                    _goodArticleDS.myController = self;
-                    [self reloadHotPintsData];
-                }else{
-                    _hotPintsV.dataSource = _goodArticleDS;
-                    hotPintsDS = _goodArticleDS;
-                    [_hotPintsV reloadData];
-                }
-            }
-            
-        }break;
-        case 3:{
-            if (self.hotPintsV.dataSource!=_replyArticleDS) {
-                [goodB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                [newReplyB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                [newPublishB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                if (_replyArticleDS == nil) {
-                    self.replyArticleDS = [[NewReplyArticleDataSource alloc]init];
-                    _hotPintsV.dataSource = _replyArticleDS;
-                    hotPintsDS = _replyArticleDS;
-                    _replyArticleDS.myController = self;
-                    [self reloadHotPintsData];
-                }else{
-                    _hotPintsV.dataSource = _replyArticleDS;
-                    hotPintsDS = _replyArticleDS;
-                    [_hotPintsV reloadData];
-                }
-            }
-            
-        }break;
-        case 4:{
-            if (self.hotPintsV.dataSource!= _publishArticleDS) {
-                [goodB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                [newReplyB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                [newPublishB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-                if (_publishArticleDS == nil) {
-                    self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
-                    _hotPintsV.dataSource = _publishArticleDS;
-                    hotPintsDS = _publishArticleDS;
-                    _publishArticleDS.myController = self;
-                    [self reloadHotPintsData];
-                }else{
-                    _hotPintsV.dataSource = _publishArticleDS;
-                    hotPintsDS = _publishArticleDS;
-                    [_hotPintsV reloadData];
-                }
-                
-            }
-            
-        }break;
-        default:
-            break;
-    }
+    [_backGroundV scrollRectToVisible:CGRectMake(0, 0, 320, _backGroundV.frame.size.height) animated:YES];
 }
 #pragma mark - table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-    articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
-    [self.navigationController pushViewController:articleVC animated:YES];
-    [self.customTabBarController hidesTabBar:YES animated:YES];
+    if (tableView == _hotPintsV) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = ((Article*)_publishArticleDS.dataSourceArray[indexPath.row]).articleID;
+        [self.navigationController pushViewController:articleVC animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
+    if (tableView == _goodV) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = ((Article*)_goodArticleDS.dataSourceArray[indexPath.row]).articleID;
+        [self.navigationController pushViewController:articleVC animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
 }
 
 #pragma mark - collection view delegate flow layout
@@ -473,14 +368,24 @@
     if (refreshView == _refreshView) {
         [self reloadHotPintsData];
     }
+    if (refreshView == _goodrefreshView) {
+        [self reloadGoodArticleData];
+    }
 }
 #pragma mark - scroll view delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView == _backGroundV) {
+        _pageV.frame = CGRectMake((scrollView.contentOffset.x/320)*106.666, 29, 106.666, 2.5);
+    }
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidScroll];
-    }else if(scrollView == _hotPintsV){
+    }
+    if(scrollView == _hotPintsV){
         [_refreshView scrollViewDidScroll];
+    }
+    if(scrollView == _goodV){
+        [_goodrefreshView scrollViewDidScroll];
     }
 }
 
@@ -488,8 +393,12 @@
 {
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidEndDraging];
-    }else if (scrollView == _hotPintsV) {
+    }
+    if (scrollView == _hotPintsV) {
         [_refreshView scrollViewDidEndDraging];
+    }
+    if (scrollView == _goodV) {
+        [_goodrefreshView scrollViewDidEndDraging];
     }
 }
 #pragma mark - load data
@@ -506,9 +415,18 @@
         [_slimeView endRefresh];
     }];
 }
+-(void)reloadGoodArticleData
+{
+    [_goodArticleDS reloadDataSuccess:^{
+        [self.goodV reloadData];
+        [_goodrefreshView endRefresh];
+    } failure:^{
+        [_goodrefreshView endRefresh];
+    }];
+}
 -(void)reloadHotPintsData
 {
-    [hotPintsDS reloadDataSuccess:^{
+    [_publishArticleDS reloadDataSuccess:^{
         [self.hotPintsV reloadData];
         [_refreshView endRefresh];
     } failure:^{
