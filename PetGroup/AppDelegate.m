@@ -40,7 +40,11 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
-    
+    if (launchOptions) {
+        //截取apns推送的消息
+        NSDictionary* pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+        NSLog(@"pushInfoStr-->>%@",pushInfo);
+    }
     return YES;
 }
 -(void)setChannel:(NSString *)theChannel
@@ -84,7 +88,8 @@
 //    
 //    [alert show];
 //    
-//    NSLog(@"%@", userInfo);
+    NSLog(@"uuuuuuuuinfo：%@", userInfo);
+    
     
 }
 
