@@ -12,6 +12,7 @@
 #import "DPNetManager.h"
 #import "TempData.h"
 #import "Business.h"
+#import "BusinessCell.h"
 @interface DPBusinessListViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     BOOL free;
@@ -150,17 +151,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    BusinessCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[BusinessCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%d",indexPath.row];
+    cell.business = self.dataSourceArray[indexPath.row];
     return cell;
 }
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    free = NO;
     
 }
 #pragma mark - DPNetManager Delegate
@@ -208,6 +210,7 @@
         [dic setObject:@"宠物" forKey:@"category"];
         [dic setObject:[NSString stringWithFormat:@"%d",2] forKey:@"platform"];
         NSString* url = [DPNetManager serializeURL:@"http://api.dianping.com/v1/business/find_businesses_by_coordinate" params:dic];
+        NSLog(@"%@",url);
         self.netManager = [[DPNetManager alloc]initWithURL:url delegate:self];
     }else{
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许《宠物圈》获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];

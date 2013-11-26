@@ -130,21 +130,6 @@
     noResultLabel.hidden = YES;
    // [self getCheatUser];
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    if ([[TempData sharedInstance] needChat]) {
-        [self.customTabBarController setSelectedPage:0];
-        return;
-    }
-    if ([[TempData sharedInstance] ifPanned]) {
-        [self.customTabBarController hidesTabBar:NO animated:NO];
-    }
-    else
-    {
-        [self.customTabBarController hidesTabBar:NO animated:YES];
-        [[TempData sharedInstance] Panned:YES];
-    }
-}
 -(void)showAlertWithMessage:(NSString *)msg
 {
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
@@ -638,7 +623,7 @@
             petDetailV.hostInfo = hostInfo;
         }
         [self.navigationController pushViewController:petDetailV animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];    
+//        [self.customTabBarController hidesTabBar:YES animated:YES];    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

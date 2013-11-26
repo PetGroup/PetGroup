@@ -5,7 +5,6 @@
 //  Created by 阿铛 on 13-10-14.
 //  Copyright (c) 2013年 Tolecen. All rights reserved.
 //
-#import "DPBusinessListViewController.h"
 #import "FriendCircleViewController.h"
 #import "TempData.h"
 #import "EditDynamicViewController.h"
@@ -177,11 +176,10 @@
 -(void)headAct
 {
     free = NO;
-//    SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
-//    sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
-//    [self.navigationController pushViewController:sodVC animated:YES];
-    DPBusinessListViewController* businessVC = [[DPBusinessListViewController alloc]init];
-    [self.navigationController pushViewController:businessVC animated:YES];
+    SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
+    sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
+    [self.navigationController pushViewController:sodVC animated:YES];
+    
 }
 -(void)changeCoverImage
 {

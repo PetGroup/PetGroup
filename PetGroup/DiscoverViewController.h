@@ -1,5 +1,5 @@
 //
-//  BusinessCell.h
+//  DiscoverViewController.h
 //  PetGroup
 //
 //  Created by wangxr on 13-11-26.
@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Business.h"
-@interface BusinessCell : UITableViewCell
-@property (nonatomic,retain)Business* business;
+
+@interface DiscoverViewController : UIViewController
+
 @end
