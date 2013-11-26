@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
+		72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADB1842F84F00BB58E0 /* ImageCell.m */; };
+		72795AE01843274700BB58E0 /* DPNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADF1843274700BB58E0 /* DPNetManager.m */; };
+		72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */; };
+		72795AEB184347EB00BB58E0 /* Business.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AEA184347EB00BB58E0 /* Business.m */; };
+		72795AEE184432B400BB58E0 /* BusinessCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AED184432B400BB58E0 /* BusinessCell.m */; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -738,6 +743,16 @@
 		4E86BCF917A44940AF695B2A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
+		72795ADA1842F84F00BB58E0 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
+		72795ADB1842F84F00BB58E0 /* ImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
+		72795ADE1843274700BB58E0 /* DPNetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPNetManager.h; sourceTree = "<group>"; };
+		72795ADF1843274700BB58E0 /* DPNetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPNetManager.m; sourceTree = "<group>"; };
+		72795AE618432EB600BB58E0 /* DPBusinessListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPBusinessListViewController.h; sourceTree = "<group>"; };
+		72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPBusinessListViewController.m; sourceTree = "<group>"; };
+		72795AE9184347EB00BB58E0 /* Business.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Business.h; sourceTree = "<group>"; };
+		72795AEA184347EB00BB58E0 /* Business.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Business.m; sourceTree = "<group>"; };
+		72795AEC184432B400BB58E0 /* BusinessCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessCell.h; sourceTree = "<group>"; };
+		72795AED184432B400BB58E0 /* BusinessCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessCell.m; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		72CAD8B3183C7C7200B1F927 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
@@ -1882,6 +1897,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72795ADD1843251B00BB58E0 /* DianpingModule */ = {
+			isa = PBXGroup;
+			children = (
+				72795AE518432E4000BB58E0 /* Controller */,
+				72795AE418432E2800BB58E0 /* View */,
+				72795AE318432DFF00BB58E0 /* DataModel */,
+				72795AE118432DCD00BB58E0 /* NetManager */,
+			);
+			name = DianpingModule;
+			sourceTree = "<group>";
+		};
+		72795AE118432DCD00BB58E0 /* NetManager */ = {
+			isa = PBXGroup;
+			children = (
+				72795ADE1843274700BB58E0 /* DPNetManager.h */,
+				72795ADF1843274700BB58E0 /* DPNetManager.m */,
+			);
+			name = NetManager;
+			sourceTree = "<group>";
+		};
+		72795AE318432DFF00BB58E0 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				72795AE9184347EB00BB58E0 /* Business.h */,
+				72795AEA184347EB00BB58E0 /* Business.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
+		72795AE418432E2800BB58E0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				72795AEC184432B400BB58E0 /* BusinessCell.h */,
+				72795AED184432B400BB58E0 /* BusinessCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		72795AE518432E4000BB58E0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				72795AE618432EB600BB58E0 /* DPBusinessListViewController.h */,
+				72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		72CAD8B1183C7C7200B1F927 /* UMAnalytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -2173,6 +2235,8 @@
 		86A56A92180F9071000FD684 /* DynamicCells */ = {
 			isa = PBXGroup;
 			children = (
+				72795ADA1842F84F00BB58E0 /* ImageCell.h */,
+				72795ADB1842F84F00BB58E0 /* ImageCell.m */,
 				86D69CFE17C6120D00FFFBDD /* DynamicCell.h */,
 				86D69CFF17C6120D00FFFBDD /* DynamicCell.m */,
 				86FCCC86181B6B490077A409 /* DetailsDynamicCell.h */,
@@ -3810,6 +3874,7 @@
 		97E25BE717C33E8E007E187D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				72795ADD1843251B00BB58E0 /* DianpingModule */,
 				97DB098D17C5AC70000EC195 /* LogAndReg */,
 				97FB034C17E002B5002086D9 /* Setting */,
 				97DB08F117C5A0DC000EC195 /* DetailView */,
@@ -4516,11 +4581,13 @@
 				86EE206617DD86DB00F5753A /* ReportViewController.m in Sources */,
 				97D6B6CD17D8313F009C0524 /* Reply.m in Sources */,
 				97D6B6CC17D83124009C0524 /* PhotoViewController.m in Sources */,
+				72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */,
 				86FC764B18209F290025686B /* MJRefreshFooterView.m in Sources */,
 				862CE00717D41F60007BBDAB /* DSNameIndex.m in Sources */,
 				863D47B717CC63DE0051FA75 /* DSUnreadCount.m in Sources */,
 				863D47B817CC63DE0051FA75 /* DSFriends.m in Sources */,
 				979546C417BA368F00D05874 /* main.m in Sources */,
+				72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */,
 				97A93DCF182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m in Sources */,
 				979546C817BA368F00D05874 /* AppDelegate.m in Sources */,
 				9795471617BA36AE00D05874 /* MagicalImportFunctions.m in Sources */,
@@ -4622,6 +4689,7 @@
 				9736BB4117C489C6007DFE36 /* NSData+XMPP.m in Sources */,
 				97031FE21823905700F769E0 /* WebViewViewController.m in Sources */,
 				9736BB4217C489C6007DFE36 /* NSNumber+XMPP.m in Sources */,
+				72795AE01843274700BB58E0 /* DPNetManager.m in Sources */,
 				9736BB4317C489C6007DFE36 /* NSXMLElement+XMPP.m in Sources */,
 				9736BB5817C489CE007DFE36 /* XMPPElement.m in Sources */,
 				97A93DCC182CBC1D00D571A5 /* FastTextView.m in Sources */,
@@ -4741,6 +4809,7 @@
 				9736BCCB17C48B7B007DFE36 /* SRSlimeView.m in Sources */,
 				9736BCCC17C48B7B007DFE36 /* TempData.m in Sources */,
 				9736BCCD17C48B7B007DFE36 /* UIExpandingTextView.m in Sources */,
+				72795AEE184432B400BB58E0 /* BusinessCell.m in Sources */,
 				9736BCCE17C48B7B007DFE36 /* UIExpandingTextViewInternal.m in Sources */,
 				9736BCCF17C48B7B007DFE36 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				86FC76531820D9C10025686B /* SomeOneDynamicViewController.m in Sources */,
@@ -4825,6 +4894,7 @@
 				865FDD3A180804D3005BB088 /* HeaderView.m in Sources */,
 				865FDD3D180804F6005BB088 /* FooterView.m in Sources */,
 				865FDD4618091884005BB088 /* articleCell.m in Sources */,
+				72795AEB184347EB00BB58E0 /* Business.m in Sources */,
 				865FDD5618094329005BB088 /* DataSource.m in Sources */,
 				86993B51180B88B500F61A3F /* AttentionDataSource.m in Sources */,
 				86993B54180B937500F61A3F /* hotPintsDataSource.m in Sources */,

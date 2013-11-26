@@ -23,6 +23,7 @@ NSString * gen_uuid()
     
     NSString *uuid =  [[NSString  alloc]initWithCString:CFStringGetCStringPtr(uuid_string_ref, 0) encoding:NSUTF8StringEncoding];
     
+    uuid = [uuid stringByReplacingOccurrencesOfString:@"-"withString:@""];
     
     CFRelease(uuid_string_ref);
     

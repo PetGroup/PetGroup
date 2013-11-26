@@ -9,8 +9,9 @@
 #import "DynamicCell.h"
 #import "EGOImageButton.h"
 #import "OHAttributedLabel.h"
+#import "ImageCell.h"
 
-@interface DynamicCell ()
+@interface DynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
 {
     UIButton* nameB;
@@ -23,8 +24,9 @@
 @property (nonatomic,retain)UILabel* timeL;
 @property (nonatomic,retain)OHAttributedLabel* transmitMsgL;
 @property (nonatomic,retain)OHAttributedLabel* msgL;
-@property (nonatomic,retain)NSArray* imageButtons;
+//@property (nonatomic,retain)NSArray* imageButtons;
 @property (nonatomic,retain)UIImageView* bottomIV;
+@property (nonatomic,retain)UICollectionView*imageCollectionV;
 @end
 @implementation DynamicCell
 +(CGFloat)heightForRowWithDynamic:(Dynamic*)dynamic
@@ -56,6 +58,7 @@
     
 
     return height+=33.5;
+    return 300;
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -79,15 +82,18 @@
         headB.tintColor = [UIColor grayColor];
         [self.contentView addSubview:headB];
         
-        NSMutableArray* arr = [[NSMutableArray alloc]init];
-        for (int i = 0; i < 9; i++) {
-            EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
-            [self.contentView addSubview:a];
-            a.tag = 1000+i;
-            [a addTarget:self action:@selector(loadBagImage:)  forControlEvents:UIControlEventTouchUpInside];
-            [arr addObject:a];
-        }
-        self.imageButtons = arr;
+        UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.itemSize = CGSizeMake(75,75);
+        layout.minimumLineSpacing = 5.0;
+        layout.minimumInteritemSpacing = 5.0;
+        layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        self.imageCollectionV = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        [self.contentView addSubview:_imageCollectionV];
+        _imageCollectionV.backgroundColor = [UIColor clearColor];
+        _imageCollectionV.delegate = self;
+        _imageCollectionV.dataSource = self;
+        [_imageCollectionV registerClass:[ImageCell class] forCellWithReuseIdentifier:@"cell"];
         
         self.timeL = [[UILabel alloc]init];
         _timeL.textColor = [UIColor grayColor];
@@ -169,52 +175,13 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            int originX = 60;
-            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
             origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 160);
             origin+=165;
         }else if(self.dynamic.smallImage.count>6){
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<6; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 240);
             origin+=245;
         }
     }else{
@@ -227,60 +194,18 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            origin-=5;
-            int originX = 60;
-            for (int i = 0; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
             origin+=85;
         }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
-            origin-=5;
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 160);
             origin+=165;
         }else if(self.dynamic.smallImage.count>6){
-            origin-=5;
-            int originX = 60;
-            for (int i = 0; i<3; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 3; i<6; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+80, 75, 75);
-                originX+=80;
-            }
-            originX = 60;
-            for (int i = 6; i<self.dynamic.smallImage.count; i++) {
-                EGOImageButton * a = self.imageButtons[i];
-                a.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[i]]];
-                a.frame = CGRectMake(originX, origin+160, 75, 75);
-                originX+=80;
-            }
+            _imageCollectionV.frame = CGRectMake(60, origin, 240, 240);
             origin+=245;
         }
-       
         self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 255, origin-_msgL.frame.origin.y);
     }
+    [_imageCollectionV reloadData];
     if (self.dynamic.ifIZaned) {
         _zanImageV.image = [UIImage imageNamed:@"zaned"];
     }else{
@@ -325,14 +250,43 @@
         [self.delegate dynamicCellPressZhuangFaButtonAtIndexPath:self.indexPath];
     }
 }
--(void)loadBagImage:(EGOImageButton*)button
+//-(void)loadBagImage:(EGOImageButton*)button
+//{
+//    NSMutableArray* array = [[NSMutableArray alloc]init];
+//    for (EGOImageButton*a in _imageButtons) {
+//        [array addObject:a.currentImage];
+//    }
+//    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
+//        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:button.tag-1000];
+//    }
+//}
+#pragma mark - collection view delegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray* array = [[NSMutableArray alloc]init];
-    for (EGOImageButton*a in _imageButtons) {
-        [array addObject:a.currentImage];
+    for (int i = 0;i<self.dynamic.smallImage.count;i++) {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        ImageCell* cell =(ImageCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        [array addObject:cell.imageV.image];
     }
     if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
-        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:button.tag-1000];
+        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:indexPath.row];
     }
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.dynamic.smallImage.count;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"cell";
+    ImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    cell.imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[indexPath.row]]];
+    return cell;
+    
+}
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
 }
 @end
