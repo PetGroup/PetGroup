@@ -270,6 +270,11 @@
 //    
 //    [self initTwoAudioPlayFrame];
     
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:YES];
+    theEmojiView.delegate = self;
+    [self.view addSubview:theEmojiView];
+    theEmojiView.hidden = YES;
+    
     UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制"action:@selector(copyMsg)];
     UIMenuItem *copyItem2 = [[UIMenuItem alloc] initWithTitle:@"转发"action:@selector(transferMsg)];
     UIMenuItem *copyItem3 = [[UIMenuItem alloc] initWithTitle:@"删除"action:@selector(deleteMsg)];
@@ -329,10 +334,13 @@
             [self autoMovekeyBoard:0];
             ifEmoji = NO;
             [UIView animateWithDuration:0.2 animations:^{
+                [theEmojiView setFrame:CGRectMake(0, theEmojiView.frame.origin.y+260+diffH, 320, 253)];
+                
                 [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260+diffH, 320, 253)];
                 [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260+diffH, 320, emojiBGV.frame.size.height)];
                 [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260+diffH, 320, m_Emojipc.frame.size.height)];
             } completion:^(BOOL finished) {
+                theEmojiView.hidden = YES;
                 [m_EmojiScrollView removeFromSuperview];
                 [emojiBGV removeFromSuperview];
                 [m_Emojipc removeFromSuperview];
@@ -367,6 +375,7 @@
     {
         [self.textView.internalTextView becomeFirstResponder];
         ifEmoji = NO;
+        theEmojiView.hidden = YES;
         [m_EmojiScrollView removeFromSuperview];
         [emojiBGV removeFromSuperview];
         [m_Emojipc removeFromSuperview];
@@ -472,7 +481,7 @@
 {
     [self.textView resignFirstResponder];
     [inPutView setFrame:CGRectMake(0, self.view.frame.size.height-227-inPutView.frame.size.height, 320, inPutView.frame.size.height)];
-    //表情列表如果存在就隐藏
+ /*   //表情列表如果存在就隐藏
     //if (m_EmojiScrollView==nil)
     //{
     //将面板先于工具栏加入视图，避免遮挡
@@ -513,7 +522,9 @@
     [sendEmojiBtn setImage:[UIImage imageNamed:@"btn_03.png"] forState:UIControlStateNormal];
     [emojiBGV addSubview:sendEmojiBtn];
     [sendEmojiBtn addTarget:self action:@selector(sendButton:) forControlEvents:UIControlEventTouchUpInside];
-    
+*/
+    theEmojiView.hidden = NO;
+    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253)];
     [self autoMovekeyBoard:253];
 
 }
@@ -523,6 +534,10 @@
         self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
     }
     
+}
+-(void)emojiSendBtnDo
+{
+    [self sendButton:nil];
 }
 -(void)loadPageControl
 {
@@ -667,10 +682,13 @@
             [self autoMovekeyBoard:0];
             ifEmoji = NO;
             [UIView animateWithDuration:0.2 animations:^{
+                [theEmojiView setFrame:CGRectMake(0, theEmojiView.frame.origin.y+260+diffH, 320, 253)];
+                
                 [m_EmojiScrollView setFrame:CGRectMake(0, m_EmojiScrollView.frame.origin.y+260, 320, 253)];
                 [emojiBGV setFrame:CGRectMake(0, emojiBGV.frame.origin.y+260+diffH, 320, emojiBGV.frame.size.height)];
                 [m_Emojipc setFrame:CGRectMake(0, m_Emojipc.frame.origin.y+260+diffH, 320, m_Emojipc.frame.size.height)];
             } completion:^(BOOL finished) {
+                theEmojiView.hidden = YES;
                 [m_EmojiScrollView removeFromSuperview];
                 [emojiBGV removeFromSuperview];
                 [m_Emojipc removeFromSuperview];
@@ -784,6 +802,7 @@
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {
     ifEmoji = NO;
+    theEmojiView.hidden = YES;
     [m_EmojiScrollView removeFromSuperview];
     [emojiBGV removeFromSuperview];
     [m_Emojipc removeFromSuperview];
@@ -835,10 +854,28 @@
  
 
 }
+-(NSString *)selectedEmoji:(NSString *)ssss
+{
+	if (self.textView.text == nil) {
+		self.textView.text = ssss;
+	}
+	else {
+		self.textView.text = [self.textView.text stringByAppendingString:ssss];
+	}
 
+    return 0;
+}
+-(void)deleteEmojiStr
+{
+    if (self.textView.text.length>=1) {
+        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
+    }
+}
 -(void)addEmojiScrollView
 {
-
+    if (self.textView.text.length>=1) {
+        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
+    }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

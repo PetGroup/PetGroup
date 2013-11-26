@@ -9,14 +9,19 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "Article.h"
+#import "EmojiView.h"
 @protocol EditArticleViewDelegate<NSObject>
 -(void)editArticleViewDidEdit:(Article*)aricle;
 @end
-@interface EditArticleViewController : UIViewController<UITextFieldDelegate>
+@interface EditArticleViewController : UIViewController<UITextFieldDelegate,EmojiViewDelegate>
 {
     float diffH;
     NSAttributedString * attributeStringHH;
-
+    EmojiView * theEmojiView;
+    BOOL ifEmoji;
+    
+    UIButton * emojiBtn;
+    UIButton* imageB;
     
 }
 @property (nonatomic,retain)id <EditArticleViewDelegate> delegate;

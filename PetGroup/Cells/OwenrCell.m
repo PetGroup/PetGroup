@@ -333,7 +333,13 @@
 	{
 		// if the attachment has a hyperlinkURL then this is currently ignored
 		EGOImageButton *imageView = [[EGOImageButton alloc] initWithFrame:frame];
-        imageView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        if (frame.size.width<50) {
+            imageView.backgroundColor = [UIColor clearColor];
+        }
+        else
+        {
+            imageView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        }
 //		imageView.delegate = self;
 		
 		// sets the image if there is one
