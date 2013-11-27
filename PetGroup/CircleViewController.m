@@ -26,7 +26,7 @@
 #import "XMPPHelper.h"
 #import "CircleFooterView.h"
 #import "MJRefresh.h"
-@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate>
+@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate>
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
@@ -49,6 +49,9 @@
 
 @property (nonatomic,retain)MJRefreshFooterView* goodFooter;
 @property (nonatomic,retain)MJRefreshFooterView* hotPintsFooter;
+
+@property (nonatomic,retain)UISearchBar* goodSearchBar;
+@property (nonatomic,retain)UISearchBar* hotPintsSearchBar;
 
 @property (nonatomic,retain)AttentionDataSource* attentionDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
@@ -208,6 +211,22 @@
     self.hotPintsFooter = [[MJRefreshFooterView alloc] init];
     _hotPintsFooter.delegate = self;
     _hotPintsFooter.scrollView = self.hotPintsV;
+    
+    self.goodSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    _goodSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    _goodSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _goodSearchBar.placeholder = @"搜索精华帖";
+    self.goodV.tableHeaderView = _goodSearchBar;
+    _goodV.contentOffset = CGPointMake(0, 44);
+    _goodSearchBar.delegate = self;
+    
+    self.hotPintsSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    _hotPintsSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    _hotPintsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _hotPintsSearchBar.placeholder = @"搜索最新帖";
+    self.hotPintsV.tableHeaderView = _hotPintsSearchBar;
+    _hotPintsV.contentOffset = CGPointMake(0, 44);
+    _hotPintsSearchBar.delegate = self;
     
     self.appDel = [[UIApplication sharedApplication] delegate];
 }
@@ -431,9 +450,17 @@
 {
     [_goodArticleDS reloadDataSuccess:^{
         [self.goodV reloadData];
-        [_goodrefreshView endRefresh];
+        [_goodrefreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.goodV.contentOffset = CGPointMake(0, 44);
+            }];
+        }];
     } failure:^{
-        [_goodrefreshView endRefresh];
+        [_goodrefreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.goodV.contentOffset = CGPointMake(0, 44);
+            }];
+        }];
     }];
 }
 -(void)loadMoreGoodArticleData
@@ -450,9 +477,17 @@
 {
     [_publishArticleDS reloadDataSuccess:^{
         [self.hotPintsV reloadData];
-        [_refreshView endRefresh];
+        [_refreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.hotPintsV.contentOffset = CGPointMake(0, 44);
+            }];
+        }];
     } failure:^{
-        [_refreshView endRefresh];
+        [_refreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.hotPintsV.contentOffset = CGPointMake(0, 44);
+            }];
+        }];
     }];
 }
 -(void)loadMoreHotPintsData
@@ -485,6 +520,14 @@
 //        notiBgV.hidden = YES;
     }
 
+}
+#pragma mark - searchBar
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    SearchViewController* searchVC = [[SearchViewController alloc]init];
+    [self.navigationController pushViewController:searchVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+    return NO;
 }
 #pragma mark - xmpp delegate
 -(void)newCommentReceived:(NSDictionary *)theDict
