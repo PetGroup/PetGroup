@@ -48,7 +48,7 @@ typedef void (^SRRefreshBlock)(SRRefreshView* sender);
 
 //as the name, called when loading over.
 - (void)endRefresh;
-
+- (void)endRefreshFinish:(void(^)())finish;
 // init default is 32
 - (id)initWithHeight:(CGFloat)height;
 

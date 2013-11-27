@@ -279,7 +279,30 @@
         }
     }
 }
-
+- (void)endRefreshFinish:(void(^)())finish
+{
+    if (self.loading) {
+        //_notSetFrame = YES;
+        //        [self performSelector:@selector(restore)
+        //                   withObject:nil
+        //                   afterDelay:0];
+        _slime.toPoint = _slime.startPoint;
+        [UIView transitionWithView:_activityIndicatorView
+                          duration:0.3f
+                           options:(UIViewAnimationOptions)UIViewAnimationCurveEaseIn
+                        animations:^
+         {
+             _activityIndicatorView.layer.transform = CATransform3DRotate(
+                                                                          CATransform3DMakeScale(0.01f, 0.01f, 0.1f), -M_PI, 0, 0, 1);
+         } completion:^(BOOL finished)
+         {
+             self.loading = NO;
+             _slime.state = SRSlimeStateNormal;
+             finish();
+         }];
+    }
+    _oldLength = 0;
+}
 - (void)endRefresh
 {
     if (self.loading) {
