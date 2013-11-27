@@ -594,11 +594,19 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    [_slimeView performSelector:@selector(endRefresh)
+    [self performSelector:@selector(endRefresh)
                      withObject:nil afterDelay:2
                         inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+    
 }
-
+-(void)endRefresh
+{
+    [_slimeView endRefreshFinish:^{
+        [UIView animateWithDuration:0.3 animations:^{
+            self.messageTable.contentOffset = CGPointMake(0, 44);
+        }];
+    }];
+}
 -(void)getMyUserInfoFromNet
 {
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
