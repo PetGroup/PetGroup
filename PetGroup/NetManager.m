@@ -64,6 +64,41 @@ NSString * gen_uuid()
     }];
 }
 
+
++(void)requestWithURLStrNoController:(NSString *)urlStr Parameters:(NSDictionary *)parameters success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                 failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSMutableDictionary * parameters2 = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    NSString * theChannel = [[NSUserDefaults standardUserDefaults] objectForKey:@"theChannel"];
+    [parameters2 setObject:theChannel?theChannel:@"1" forKey:@"channel"];
+    [parameters2 setObject:gen_uuid() forKey:@"sn"];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlStr]];
+    [httpClient setParameterEncoding:AFFormURLParameterEncoding];
+    [httpClient postPath:@"" parameters:parameters2 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                if ([dict objectForKey:@"entity"]) {
+                    failure(operation,[dict objectForKey:@"entity"]);
+                }
+                else
+                    failure(operation,nil);
+            }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+            failure(operation,error);
+        
+    }];
+}
+
+
 //post请求，通用失败提示
 +(void)requestWithURLStr:(NSString *)urlStr Parameters:(NSDictionary *)parameters TheController:(UIViewController *)controller success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
 {
