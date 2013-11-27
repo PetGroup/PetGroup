@@ -212,6 +212,8 @@
 {
     if ([[TempData sharedInstance] returnLat]&&[[TempData sharedInstance] returnLon]) {
         NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+        [dic setObject:@"7" forKey:@"sort"];
+        [dic setObject:@"5000" forKey:@"radius"];
         [dic setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"page"];
         [dic setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLat]] forKey:@"latitude"];
         [dic setObject:[NSString stringWithFormat:@"%f",[[TempData sharedInstance] returnLon]] forKey:@"longitude"];
@@ -223,6 +225,7 @@
     }else{
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许《宠物圈》获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alertView show];
+        [hud hide:YES];
     }
 }
 @end

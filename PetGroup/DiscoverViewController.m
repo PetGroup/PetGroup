@@ -26,7 +26,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nameArray = @[@"附近的人",@"宠物周边",@"发现美图",@"宠物百科",@"养宠经验"];
+        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
     }
     return self;
 }
@@ -89,9 +89,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 3){
-        return 2;
-    }
     return 1;
 }
 
