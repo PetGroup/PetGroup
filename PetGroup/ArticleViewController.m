@@ -141,7 +141,7 @@
             showB.userInteractionEnabled = NO;
         }
         if (self.floor!=0) {
-            self.pageNo = _floor/20;
+            self.pageNo = (_floor-1)/20;
         }else{
             self.pageNo = 0;
         }
