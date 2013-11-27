@@ -52,19 +52,20 @@
     
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"收到的消息"];
+    [titleLabel setText:@"通知"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
     UIButton * clearBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    clearBtn.frame = CGRectMake(245, 5+diffH, 70, 34);
-    [clearBtn setTitle:@"清空" forState:UIControlStateNormal];
-    if (diffH==0.0f) {
-        [clearBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-        [clearBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-    }
+    clearBtn.frame = CGRectMake(210, 5+diffH, 120, 34);
+    [clearBtn setTitle:@"全部设为已读" forState:UIControlStateNormal];
+    [clearBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+//    if (diffH==0.0f) {
+//        [clearBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+//        [clearBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+//    }
     [clearBtn addTarget:self action:@selector(clearAll) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:clearBtn];
     
@@ -73,6 +74,8 @@
     self.notiTableV.dataSource = self;
     self.notiTableV.delegate = self;
     [self.view addSubview:self.notiTableV];
+    
+    [DataStoreManager blankMsgUnreadCountForUser:@"123456789"];
     
     self.appDel = [[UIApplication sharedApplication] delegate];
     // Uncomment the following line to preserve selection between presentations.
@@ -86,8 +89,10 @@
     self.appDel.xmppHelper.commentDelegate = self;
     [self readNewNoti];
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [DataStoreManager blankMsgUnreadCountForUser:@"123456789"];
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
     NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     [defaultUserD setObject:self.notiArray forKey:notiKey];
@@ -125,8 +130,15 @@
 {
     AudioServicesPlayAlertSound(1003);
     [self.notiArray insertObject:theDict atIndex:0];
+    if (self.notiArray.count>50) {
+        [self.notiArray removeLastObject];
+    }
     self.notiTableV.hidden = NO;
     [self.notiTableV reloadData];
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    [defaultUserD setObject:self.notiArray forKey:notiKey];
+    [defaultUserD synchronize];
 }
 
 
@@ -137,8 +149,9 @@
 }
 -(void)clearAll
 {
-    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"确定要清空所有未读消息吗" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
-    [alert show];
+//    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"确定要清空所有未读消息吗" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
+//    [alert show];
+    [self makeAllReaded];
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -149,6 +162,19 @@
         [defaultUserD synchronize];
         [self readNewNoti];
     }
+}
+-(void)makeAllReaded
+{
+    for (int i = 0; i<self.notiArray.count;i++) {
+        NSMutableDictionary * tempDict = [NSMutableDictionary dictionaryWithDictionary:self.notiArray[i]];
+        [tempDict setObject:@"yes" forKey:@"ifRead"];
+        [self.notiArray replaceObjectAtIndex:i withObject:tempDict];
+    }
+    [self.notiTableV reloadData];
+    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+    [defaultUserD setObject:self.notiArray forKey:notiKey];
+    [defaultUserD synchronize];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -204,6 +230,11 @@
     // Configure the cell...
     cell.nameLabel.text = [cDict objectForKey:@"fromNickname"];
     cell.timeLabel.text = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[cDict objectForKey:@"time" ]];
+    if ([[cDict objectForKey:@"ifRead"] isEqualToString:@"no"]) {
+        cell.dotImageV.hidden = NO;
+    }
+    else
+        cell.dotImageV.hidden = YES;
 //    if ([[cDict objectForKey:@"contentType"] isEqualToString:@"dynamic"]) {
 //        cell.contentLabel.text = [cDict objectForKey:@"content"];
 //        if ([[cDict objectForKey:@"replyContent"] isEqualToString:@"iszan"]) {
@@ -247,6 +278,18 @@
             cell.contentLabel.text = [cDict objectForKey:@"content"];
         }
     }
+    if ([[cDict objectForKey:@"ifRead"] isEqualToString:@"no"]) {
+        cell.dotImageV.hidden = NO;
+        cell.nameLabel.textColor = [UIColor blackColor];
+        cell.replyLabel.textColor = [UIColor blackColor];
+        cell.contentLabel.textColor = [UIColor blackColor];
+    }
+    else{
+        cell.dotImageV.hidden = YES;
+        cell.nameLabel.textColor = [UIColor grayColor];
+        cell.replyLabel.textColor = [UIColor grayColor];
+        cell.contentLabel.textColor = [UIColor grayColor];
+    }
     //计算实际frame大小，并将label的frame变成实际大小
     
     
@@ -285,7 +328,9 @@
         odVC.dynamic.dynamicID = tempID;
         [self.navigationController pushViewController:odVC animated:YES];
     }
-    [self.notiArray removeObjectAtIndex:indexPath.row];
+    NSMutableDictionary * tempDict = [NSMutableDictionary dictionaryWithDictionary:self.notiArray[indexPath.row]];
+    [tempDict setObject:@"yes" forKey:@"ifRead"];
+    [self.notiArray replaceObjectAtIndex:indexPath.row withObject:tempDict];
     [self.notiTableV reloadData];
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
     NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];

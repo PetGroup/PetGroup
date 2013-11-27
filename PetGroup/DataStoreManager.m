@@ -68,6 +68,23 @@
     else if ([sendertype isEqualToString:SUBSCRIBEDACCOUNT]){
         
     }
+    else if ([sendertype isEqualToString:SYSTEMNOTIFICATION]){
+        [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+            
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",@"123456789"];
+            
+            DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+            if (!thumbMsgs)
+                thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+            thumbMsgs.sender = @"123456789";
+            thumbMsgs.senderNickname = @"圈子通知";
+            thumbMsgs.msgContent = msgContent;
+            thumbMsgs.sendTime = sendTime;
+            thumbMsgs.senderType = sendertype;
+            int unread = [thumbMsgs.unRead intValue];
+            thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+        }];
+    }
 }
 +(void)storeMyMessage:(NSDictionary *)message
 {
@@ -489,6 +506,9 @@
 }
 +(NSString *)queryNickNameForUser:(NSString *)userName
 {
+    if ([userName isEqualToString:@"123456789"]) {
+        return @"圈子通知";
+    }
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
     if (dFriend) {
@@ -503,6 +523,9 @@
 }
 +(NSString *)queryFirstHeadImageForUser:(NSString *)userName
 {
+    if ([userName isEqualToString:@"123456789"]) {
+        return @"no";
+    }
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
     if (dFriend.headImgID) {

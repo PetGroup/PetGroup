@@ -309,6 +309,7 @@
         NSLog(@"theDict%@",dict);
         if ([type isEqualToString:@"chat"]) {
             if ([msgtype isEqualToString:@"normalchat"]||!msgtype) {
+                [dict setObject:@"normalchat" forKey:@"msgType"];
                 [dict setObject:msgTime  forKey:@"time"];
                 [self.chatDelegate newMessageReceived:dict];
             }
@@ -334,11 +335,18 @@
                         if ([[[message attributeForName:@"contentType"] stringValue] isEqualToString:@"dynamic"]) {
                             [dict setObject:[NSString stringWithFormat:@"在动态中评论了你:%@",msg] forKey:@"replyContent"];
                             [dict setObject:@"no" forKey:@"floor"];
+                            [dict setObject:[NSString stringWithFormat:@"%@在动态中评论了你:%@",[[message attributeForName:@"fromNickname"] stringValue],msg] forKey:@"msg"];
+//                            [dict setObject:@"123456789@chongwuquan.com" forKey:@"sender"];
+                            [self.chatDelegate newMessageReceived:dict];
                         }
                         else
                         {
                             [dict setObject:msg forKey:@"floor"];
                             [dict setObject:[NSString stringWithFormat:@"在帖子《%@》%d楼中评论了你",[[message attributeForName:@"content"] stringValue],[msg intValue]+1] forKey:@"replyContent"];
+                            
+                            [dict setObject:[NSString stringWithFormat:@"%@在帖子《%@》%d楼中评论了你",[[message attributeForName:@"fromNickname"] stringValue],[[message attributeForName:@"content"] stringValue],[msg intValue]+1] forKey:@"msg"];
+//                            [dict setObject:@"123456789@chongwuquan.com" forKey:@"sender"];
+                            [self.chatDelegate newMessageReceived:dict];
                         }
                         
                     }
@@ -346,7 +354,11 @@
                     {
                         [dict setObject:@"赞了你的动态" forKey:@"replyContent"];
                         [dict setObject:@"no" forKey:@"floor"];
+                        [dict setObject:[NSString stringWithFormat:@"%@赞了你的动态",[[message attributeForName:@"fromNickname"] stringValue]] forKey:@"msg"];
+//                        [dict setObject:@"123456789@chongwuquan.com" forKey:@"sender"];
+                        [self.chatDelegate newMessageReceived:dict];
                     }
+                    [dict setObject:@"no" forKey:@"ifRead"];
                     [self.commentDelegate newCommentReceived:dict];
                 }
                 else if ([msgtype isEqualToString:@"zanPeople"]){

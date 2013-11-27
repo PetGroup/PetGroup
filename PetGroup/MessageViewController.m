@@ -164,26 +164,26 @@
 //        else
 //            [self.customTabBarController removeNotificatonOfIndex:4];
         
-        [self readNewNoti];
+//        [self readNewNoti];
     }
 
     
 }
--(void)readNewNoti
-{
-    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
-    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
-    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
-    if (tempNewNotiArray) {
-        if (tempNewNotiArray.count>0) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:4];
-        }
-        else{
-            [self.customTabBarController removeNotificatonOfIndex:4];
-        }
-    }
-    
-}
+//-(void)readNewNoti
+//{
+//    NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+//    NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
+//    NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
+//    if (tempNewNotiArray) {
+//        if (tempNewNotiArray.count>0) {
+//            [self.customTabBarController notificationWithNumber:YES AndTheNumber:tempNewNotiArray.count OrDot:NO WithButtonIndex:4];
+//        }
+//        else{
+//            [self.customTabBarController removeNotificatonOfIndex:4];
+//        }
+//    }
+//    
+//}
 
 //-(void)tempMakeSomeData
 //{
@@ -286,18 +286,21 @@
     if (tempNewNotiArray) {
         newNotiArray = [NSMutableArray arrayWithArray:tempNewNotiArray];
         [newNotiArray insertObject:theDict atIndex:0];
+        if (newNotiArray.count>50) {
+            [newNotiArray removeLastObject];
+        }
     }
     else
         newNotiArray = [NSMutableArray arrayWithObject:theDict];
     AudioServicesPlayAlertSound(1003);
     [defaultUserD setObject:newNotiArray forKey:notiKey];
     [defaultUserD synchronize];
-    if (newNotiArray.count>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:4];
-    }
-    else{
-        [self.customTabBarController removeNotificatonOfIndex:4];
-    }
+//    if (newNotiArray.count>0) {
+//        [self.customTabBarController notificationWithNumber:YES AndTheNumber:newNotiArray.count OrDot:NO WithButtonIndex:4];
+//    }
+//    else{
+//        [self.customTabBarController removeNotificatonOfIndex:4];
+//    }
 }
 
 -(void)requestOneStateByStateID:(NSString *)theID WithDict:(NSDictionary *)theDict
@@ -358,7 +361,7 @@
     if (![DataStoreManager ifHaveThisFriend:sender]) {
         [self requestPeopleInfoWithName:sender ForType:1 Msg:nil];
     }
-    AudioServicesPlayAlertSound(1007);
+    
     [self storeNewMessage:messageContent];
     [self displayMsgsForDefaultView];
 }
@@ -375,7 +378,16 @@
 
 -(void)storeNewMessage:(NSDictionary *)messageContent
 {
-    [DataStoreManager storeNewMsgs:messageContent senderType:COMMONUSER];
+    NSString * type = [messageContent objectForKey:@"msgType"];
+    type = type?type:@"notype";
+    if ([type isEqualToString:@"reply"]||[type isEqualToString:@"zanDynamic"]) {
+        [DataStoreManager storeNewMsgs:messageContent senderType:SYSTEMNOTIFICATION];
+    }
+    else if([type isEqualToString:@"normalchat"])
+    {
+        AudioServicesPlayAlertSound(1007);
+        [DataStoreManager storeNewMsgs:messageContent senderType:COMMONUSER];
+    }
 //    NSRange range = [[messageContent objectForKey:@"sender"] rangeOfString:@"@"];
 //    NSString * sender = [[messageContent objectForKey:@"sender"] substringToIndex:range.location];
 }
@@ -435,7 +447,11 @@
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
         NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]];
-        cell.headImageV.imageURL = theUrl;
+        if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
+            [cell.headImageV setImage:[UIImage imageNamed:@"noti.png"]];
+        }
+        else
+            cell.headImageV.imageURL = theUrl;
 //        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]]];
         if ([[allMsgUnreadArray objectAtIndex:theIndex] intValue]>0) {
             cell.unreadCountLabel.hidden = NO;
@@ -461,7 +477,11 @@
     else
     {
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
-        cell.headImageV.imageURL = theUrl;
+        if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
+            [cell.headImageV setImage:[UIImage imageNamed:@"noti.png"]];
+        }
+        else
+            cell.headImageV.imageURL = theUrl;
 //        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]]];
         if ([[allMsgUnreadArray objectAtIndex:indexPath.row] intValue]>0) {
             cell.unreadCountLabel.hidden = NO;
@@ -500,6 +520,12 @@
             [self.customTabBarController hidesTabBar:YES animated:YES];
             return;
         }
+        if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
+            NotificationViewController * notiV = [[NotificationViewController alloc] init];
+            [self.navigationController pushViewController:notiV animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+            return;
+        }
         KKChatController * kkchat = [[KKChatController alloc] init];
         kkchat.chatWithUser = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"];
         kkchat.nickName = [allNickNameArray objectAtIndex:theIndex];
@@ -516,6 +542,12 @@
         [self.navigationController pushViewController:friq animated:YES];
         [searchDisplay setActive:NO animated:NO];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        return;
+    }
+    if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
+        NotificationViewController * notiV = [[NotificationViewController alloc] init];
+        [self.navigationController pushViewController:notiV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
         return;
     }

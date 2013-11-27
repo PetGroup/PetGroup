@@ -67,6 +67,7 @@
 #define PUBLICACCOUNT  @"publicAccount"
 #define SUBSCRIBEDACCOUNT  @"subscribedAccount"
 #define SAYHELLOS @"sayhellos"
+#define SYSTEMNOTIFICATION @"systemnoti"
 
 #define NormalRequestTimeout  60.0f
 
