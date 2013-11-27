@@ -35,7 +35,7 @@
 {
     [super viewDidLoad];
     self.hidesBottomBarWhenPushed = YES;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
     

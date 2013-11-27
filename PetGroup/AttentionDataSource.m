@@ -11,6 +11,7 @@
 #import "CircleClassify.h"
 #import "TempData.h"
 #import "CircleClassify.h"
+#import "CircleEntity.h"
 @interface AttentionDataSource()
 
 @end
@@ -107,69 +108,12 @@
         failure();
     }];
 }
-#pragma mark - collection view data source
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+#pragma mark - table view data source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-//        if (indexPath.section == 0) {
-//            static NSString *headIdentifier = @"friendHeader";
-//            FriendHeaderView* friendHeader= [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headIdentifier forIndexPath:indexPath];
-//            friendHeader.delegate = self.myController;
-//            return friendHeader;
-//        }else{
-            static NSString *headIdentifier = @"header";
-             HeaderView* header= [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headIdentifier forIndexPath:indexPath];
-            header.titleL.text =((CircleClassify*)self.dataSourceArray[indexPath.section]).name;
-            return header;
-//        }
-        
-    }
-    if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        static NSString *footIdentifier = @"footer";
-        FooterView* footer = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:footIdentifier forIndexPath:indexPath];
-        if (indexPath.section==0) {
-            if (((CircleClassify*)self.dataSourceArray[0]).circleArray.count<=4) {
-                footer.unfoldB.hidden = YES;
-            }else{
-                footer.unfoldB.hidden = NO;
-            }
-        }else{
-            if (((CircleClassify*)self.dataSourceArray[indexPath.section]).circleArray.count<=2) {
-                footer.unfoldB.hidden = YES;
-            }else{
-                footer.unfoldB.hidden = NO;
-            }
-        }
-        if (((CircleClassify*)self.dataSourceArray[indexPath.section]).zhankai) {
-            [footer.unfoldB setBackgroundImage:[UIImage imageNamed:@"shouqi"] forState:UIControlStateNormal];
-        }else{
-            [footer.unfoldB setBackgroundImage:[UIImage imageNamed:@"zhankai"] forState:UIControlStateNormal];
-        }
-        footer.delegate = self.myController;
-        footer.indexPath = indexPath;
-        return footer;
-    }
-    return nil;
-}
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-//    if (section == 0) {
-//        return 0;//隐藏朋友圈
-//    }else
-        if(section == 0){
+    if(section == 0){
         CircleClassify* classify =self.dataSourceArray[0];
-        if (classify.zhankai) {
-            return classify.circleArray.count;
-        }else{
-            if (classify.circleArray.count>3) {
-                return 4;
-            }else{
-                if (classify.circleArray.count==0) {
-                    return 1;
-                }
-                return classify.circleArray.count+1;
-            }
-        }
+        return classify.circleArray.count+1;
     }else{
         CircleClassify* classify = self.dataSourceArray[section];
         if (classify.zhankai) {
@@ -183,67 +127,31 @@
         }
     }
 }
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            static NSString *identifier = @"friend";
-            FriendCircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-            return cell;
+            cell.textLabel.text = @"朋友圈";
         }else{
-            static NSString *cellIdentifier = @"cell";
-            CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-            CircleClassify* classify = self.dataSourceArray[indexPath.section];
-            cell.entity = classify.circleArray[indexPath.row-1];
-            [cell layoutSubviews];
-            return cell;
+            cell.textLabel.text = ((CircleEntity*)((CircleClassify*)self.dataSourceArray[0]).circleArray[indexPath.row-1]).name;
         }
     }else{
-        static NSString *cellIdentifier = @"cell";
-        CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-        CircleClassify* classify = self.dataSourceArray[indexPath.section];
-        cell.entity = classify.circleArray[indexPath.row];
-        [cell layoutSubviews];
-        return cell;
+        cell.textLabel.text = ((CircleEntity*)((CircleClassify*)self.dataSourceArray[indexPath.section]).circleArray[indexPath.row]).name;
     }
-//    if (indexPath.section!=0) {
-//        if (indexPath.section==0) {
-//            CircleClassify* classify = self.dataSourceArray[0];
-//            if (classify.circleArray.count==0) {
-//                static NSString *identifier = @"place";
-//                PlaceHolderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-//                cell.placeHolderString = @"您还没有关注圈子，快去关注自己感兴趣的圈子吧";
-//                [cell layoutSubviews];
-//                return cell;
-//            }
-//        }
-//        static NSString *cellIdentifier = @"cell";
-//        CircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-//        CircleClassify* classify = self.dataSourceArray[indexPath.section];
-//        cell.entity = classify.circleArray[indexPath.row];
-//        [cell layoutSubviews];
-//        return cell;
-//    }else{
-//        if (self.dynamicArray.count>0) {
-//            static NSString *identifier = @"friend";
-//            FriendCircleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-//            cell.dynamic = self.dynamicArray[0];
-//            [cell layoutSubviews];
-//            return cell;
-//        }else{
-//            static NSString *identifier = @"place";
-//            PlaceHolderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-//            cell.placeHolderString = @"您的朋友圈里还没又人发布动态,快来发布自己的动态或去添加好友";
-//            [cell layoutSubviews];
-//            return cell;
-//        }
-
-//    }
-    
+    return cell;
 }
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.dataSourceArray.count;
 }
-
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return ((CircleClassify*)self.dataSourceArray[section]).name;
+}
 @end

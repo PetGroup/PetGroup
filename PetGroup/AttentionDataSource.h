@@ -7,15 +7,9 @@
 //
 
 #import "DataSource.h"
-#import "CircleCell.h"
-#import "FriendCircleCell.h"
-#import "FriendHeaderView.h"
-#import "HeaderView.h"
-#import "FooterView.h"
-#import "PlaceHolderCell.h"
-@interface AttentionDataSource : DataSource<UICollectionViewDataSource>
+@interface AttentionDataSource : DataSource<UITableViewDataSource>
 @property (nonatomic,retain)NSMutableArray* dynamicArray;
-@property (nonatomic,assign)UIViewController<FooterViewDelegate,FriendHeaderViewDelegate>* myController;
+@property (nonatomic,assign)UIViewController<UITableViewDelegate>* myController;
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 -(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

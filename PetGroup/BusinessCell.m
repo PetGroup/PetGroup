@@ -30,10 +30,10 @@
         _nameLabel=[[UILabel alloc] initWithFrame:CGRectMake(138, 10, 190 , 20)];
         _nameLabel.font=[UIFont boldSystemFontOfSize:14.0];
         [self.contentView addSubview:_nameLabel];
-        self.starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 30, 84,16)];
+        self.starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 33, 84,16)];
         [self.contentView addSubview:_starImage];
         
-        self.reviewCountLabel=[[UILabel alloc] initWithFrame:CGRectMake(230.968, 31.214, 44.374 , 13.123)];
+        self.reviewCountLabel=[[UILabel alloc] initWithFrame:CGRectMake(230.968, 34.214, 44.374 , 13.123)];
         _reviewCountLabel.font=[UIFont systemFontOfSize:11.0];
         [self.contentView addSubview:_reviewCountLabel];
         
@@ -86,8 +86,15 @@
         _starImage.image = [UIImage imageNamed:@"star_16_5.png"];
     }
     _reviewCountLabel.text =[ NSString stringWithFormat:@"评论:%d", self.business.reviewCount ];
-    _addressLabel.text = self.business.adress;
+    NSMutableString *regions = [[NSMutableString alloc]init];
+    for (NSString* a in self.business.regions) {
+        [regions appendString:a];
+        if (![a isEqual:[self.business.regions lastObject]]) {
+            [regions appendString:@"/"];
+        }
+    }
+    _addressLabel.text = regions;
     _categroyLabel.text = [self.business.categories lastObject];
-    _distanceLabel.text=[NSString stringWithFormat:@"距离:%d",self.business.distance];
+    _distanceLabel.text=[NSString stringWithFormat:@"%dm",self.business.distance];
 }
 @end

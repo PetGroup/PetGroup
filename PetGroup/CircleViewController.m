@@ -7,17 +7,11 @@
 //
 
 #import "CircleViewController.h"
-#import "CircleCell.h"
-#import "FriendCircleCell.h"
-#import "FriendHeaderView.h"
-#import "HeaderView.h"
-#import "FooterView.h"
 #import "SRRefreshView.h"
 #import "AttentionDataSource.h"
 #import "GoodArticleDataSource.h"
 #import "NewReplyArticleDataSource.h"
 #import "NewPublishArticleDataSource.h"
-#import "FriendHeaderView.h"
 #import "SearchViewController.h"
 #import "TempData.h"
 #import "CustomTabBar.h"
@@ -30,7 +24,9 @@
 #import "Article.h"
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
-@interface CircleViewController ()<UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UITableViewDelegate,FooterViewDelegate,FriendHeaderViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate>
+#import "CircleFooterView.h"
+#import "MJRefresh.h"
+@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate>
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
@@ -45,11 +41,14 @@
 
 @property (nonatomic,retain)UITableView* goodV;
 @property (nonatomic,retain)UITableView* hotPintsV;
-@property (nonatomic,retain)UICollectionView* attentionV;
+@property (nonatomic,retain)UITableView* attentionV;
 
 @property (nonatomic,retain)SRRefreshView* goodrefreshView;
 @property (nonatomic,retain)SRRefreshView* slimeView;
 @property (nonatomic,retain)SRRefreshView* refreshView;
+
+@property (nonatomic,retain)MJRefreshFooterView* goodFooter;
+@property (nonatomic,retain)MJRefreshFooterView* hotPintsFooter;
 
 @property (nonatomic,retain)AttentionDataSource* attentionDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
@@ -159,19 +158,9 @@
     _goodArticleDS.myController = self;
     [self reloadGoodArticleData];
     
-    UICollectionViewFlowLayout* cv = [[UICollectionViewFlowLayout alloc]init];
-    cv.minimumLineSpacing = 5.0;
-    cv.minimumInteritemSpacing = 5.0;
-    cv.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
-    cv.headerReferenceSize = CGSizeMake(320, 26);
-    cv.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.attentionV = [[UICollectionView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH) collectionViewLayout:cv];
+    self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH)];
     _attentionV.delegate = self;
-    _attentionV.backgroundColor = [UIColor whiteColor];
-    [_attentionV registerClass:[CircleCell class] forCellWithReuseIdentifier:@"cell"];
-    [_attentionV registerClass:[FriendCircleCell class] forCellWithReuseIdentifier:@"friend"];
-    [_attentionV registerClass:[HeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
-    [_attentionV registerClass:[FooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer"];
+    _attentionV.backgroundView = nil;
     [_backGroundV addSubview:_attentionV];
     
     self.attentionDS = [[AttentionDataSource alloc]init];
@@ -211,6 +200,14 @@
     _goodrefreshView.slime.shadowBlur = 4;
     _goodrefreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
     [self.goodV addSubview:_goodrefreshView];
+    
+    self.goodFooter = [[MJRefreshFooterView alloc] init];
+    _goodFooter.delegate = self;
+    _goodFooter.scrollView = self.goodV;
+    
+    self.hotPintsFooter = [[MJRefreshFooterView alloc] init];
+    _hotPintsFooter.delegate = self;
+    _hotPintsFooter.scrollView = self.hotPintsV;
     
     self.appDel = [[UIApplication sharedApplication] delegate];
 }
@@ -277,86 +274,94 @@
 {
     [_backGroundV scrollRectToVisible:CGRectMake(0, 0, 320, _backGroundV.frame.size.height) animated:YES];
 }
+#pragma mark - onceCircleViewController delegate
+-(void)joinOneCircle:(CircleEntity*)circleEntity
+{
+    
+}
+-(void)quitOneCircle:(CircleEntity*)circleEntity
+{
+    
+}
 #pragma mark - table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView == _hotPintsV) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_publishArticleDS.dataSourceArray[indexPath.row]).articleID;
         [self.navigationController pushViewController:articleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
     if (tableView == _goodV) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_goodArticleDS.dataSourceArray[indexPath.row]).articleID;
         [self.navigationController pushViewController:articleVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }
-}
-
-#pragma mark - collection view delegate flow layout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-//    if (indexPath.section == 0) {
-//        return CGSizeMake(310, 70);
-//    }else
-//    if(indexPath.section == 0 &&((CircleClassify*) _attentionDS.dataSourceArray[0]).circleArray.count==0){
-//        return CGSizeMake(310, 70);
-//    }else
-        return CGSizeMake(152.5, 80);
-}
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
-{
-//    if (section == 0) {
-//        return CGSizeZero;
-//    }
-    return CGSizeMake(320, 26);
-}
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-//    if (section == 0) {
-//        return CGSizeMake(320, 62.5);
-//    }
-    return CGSizeMake(320, 26);
-}
-#pragma mark - collection view delegate
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
-            [self.navigationController pushViewController:friendCircleVC animated:YES];
-            [self.customTabBarController hidesTabBar:YES animated:YES];
+    if (tableView == _attentionV) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 0) {
+                FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
+                [self.navigationController pushViewController:friendCircleVC animated:YES];
+                [self.customTabBarController hidesTabBar:YES animated:YES];
+            }else{
+                OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
+                onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row-1];
+                onceCircleVC.delegate = self;
+                [self.navigationController pushViewController:onceCircleVC animated:YES];
+                [self.customTabBarController hidesTabBar:YES animated:YES];
+            }
         }else{
             OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
-            onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row-1];
+            onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
             onceCircleVC.delegate = self;
             [self.navigationController pushViewController:onceCircleVC animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
         }
-    }else{
-        OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
-        onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
-        onceCircleVC.delegate = self;
-        [self.navigationController pushViewController:onceCircleVC animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
     }
 }
-#pragma mark - footer view delegate
--(void)footerView:(FooterView*)footerV didSelectUnfoldBAtIndexPath:(NSIndexPath *)indexPath
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    
-    ((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section]).zhankai = !((CircleClassify*)_attentionDS.dataSourceArray[indexPath.section]).zhankai;
-    [self.attentionV reloadData];
-    
-    
+    if (tableView == _attentionV&&section != 0 && ((CircleClassify*)self.attentionDS.dataSourceArray[section]).circleArray.count>2) {
+        static NSString *cellIdentifier = @"footerView";
+        CircleFooterView * view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
+        if (view == nil) {
+            view = [[CircleFooterView alloc]initWithReuseIdentifier:cellIdentifier];
+            view.delegate = self;
+        }
+        view.section = section;
+        if (!((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai) {
+            [view.button setTitle:@"更多" forState:UIControlStateNormal];
+        }else{
+            [view.button setTitle:@"收起" forState:UIControlStateNormal];
+        }
+        return view;
+    }
+    return nil;
 }
-#pragma mark - header view delegate
--(void)didSelectSearchBAtFriendHeaderView:(FriendHeaderView*)friendHeaderV
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    [self showSearchView];
+    if (tableView == _attentionV && section != 0 && ((CircleClassify*)self.attentionDS.dataSourceArray[section]).circleArray.count>2) {
+        return 20;
+    }
+    return 0;
+}
+#pragma mark - circleFooterView delegate
+-(void)circleFooterViewPressButtonWithIndexPath:(NSInteger)section
+{
+    ((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai = !((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai;
+    [self.attentionV reloadData];
+}
+#pragma mark - MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _goodFooter) {
+        [self loadMoreGoodArticleData];
+    }
+    if (refreshView == _hotPintsFooter) {
+        [self loadMoreHotPintsData];
+    }
 }
 #pragma mark - slimeRefresh delegate
 
@@ -402,10 +407,7 @@
     }
 }
 #pragma mark - load data
--(void)joinOrQuitCircle
-{
-    [self reloadAttentionData];
-}
+#pragma mark -
 -(void)reloadAttentionData
 {
     [_attentionDS reloadDataSuccess:^{
@@ -413,24 +415,6 @@
         [_slimeView endRefresh];
     } failure:^{
         [_slimeView endRefresh];
-    }];
-}
--(void)reloadGoodArticleData
-{
-    [_goodArticleDS reloadDataSuccess:^{
-        [self.goodV reloadData];
-        [_goodrefreshView endRefresh];
-    } failure:^{
-        [_goodrefreshView endRefresh];
-    }];
-}
--(void)reloadHotPintsData
-{
-    [_publishArticleDS reloadDataSuccess:^{
-        [self.hotPintsV reloadData];
-        [_refreshView endRefresh];
-    } failure:^{
-        [_refreshView endRefresh];
     }];
 }
 -(void)loadHistory
@@ -442,7 +426,44 @@
         
     }];
 }
-
+#pragma mark -
+-(void)reloadGoodArticleData
+{
+    [_goodArticleDS reloadDataSuccess:^{
+        [self.goodV reloadData];
+        [_goodrefreshView endRefresh];
+    } failure:^{
+        [_goodrefreshView endRefresh];
+    }];
+}
+-(void)loadMoreGoodArticleData
+{
+    [_goodArticleDS loadMoreDataSuccess:^{
+        [_goodV reloadData];
+        [_goodFooter endRefreshing];
+    } failure:^{
+        [_goodFooter endRefreshing];
+    }];
+}
+#pragma mark -
+-(void)reloadHotPintsData
+{
+    [_publishArticleDS reloadDataSuccess:^{
+        [self.hotPintsV reloadData];
+        [_refreshView endRefresh];
+    } failure:^{
+        [_refreshView endRefresh];
+    }];
+}
+-(void)loadMoreHotPintsData
+{
+    [_publishArticleDS loadMoreDataSuccess:^{
+        [self.hotPintsV reloadData];
+        [_hotPintsFooter endRefreshing];
+    } failure:^{
+        [_hotPintsFooter endRefreshing];
+    }];
+}
 -(void)readNewNoti
 {
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
