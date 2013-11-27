@@ -231,8 +231,8 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
-    self.appDel.xmppHelper.commentDelegate = self;
-    [self readNewNoti];
+//    self.appDel.xmppHelper.commentDelegate = self;
+//    [self readNewNoti];
     if ([[TempData sharedInstance] needChat]) {
         [self.customTabBarController setSelectedPage:1];
         return;
