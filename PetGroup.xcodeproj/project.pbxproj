@@ -633,6 +633,7 @@
 		97A93DD4182CBC1D00D571A5 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC6182CBC1D00D571A5 /* UIImage-Extensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97A93DD7182CBC3900D571A5 /* TextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DD5182CBC3900D571A5 /* TextConfig.m */; };
 		97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */; };
+		97B318BC1845A72D0053919F /* noti.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B318BB1845A72D0053919F /* noti.png */; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97BCF0E41834ACC8006B7C0F /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DB1834ACC8006B7C0F /* Emoji.m */; };
@@ -1648,6 +1649,7 @@
 		97A93DD5182CBC3900D571A5 /* TextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextConfig.m; sourceTree = "<group>"; };
 		97A93DD6182CBC3900D571A5 /* TextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextConfig.h; sourceTree = "<group>"; };
 		97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = writing_picbox_bg.png; sourceTree = "<group>"; };
+		97B318BB1845A72D0053919F /* noti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noti.png; sourceTree = "<group>"; };
 		97B73F6A1827944300064447 /* redCB2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCB2.png; sourceTree = "<group>"; };
 		97B73F6B1827944300064447 /* redpot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redpot2.png; sourceTree = "<group>"; };
 		97BCF0DA1834ACC8006B7C0F /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
@@ -3475,6 +3477,7 @@
 				97F8B489180906260082BC2A /* picBtn.png */,
 				97FE60CE18346DF200CEAF79 /* keyboard.png */,
 				97F8B4811808FF740082BC2A /* audioBtn.png */,
+				97B318BB1845A72D0053919F /* noti.png */,
 				97F764B217F817750063A72E /* newfriend.png */,
 				9736BCDA17C49146007DFE36 /* bubble_01.png */,
 				9736BCDB17C49146007DFE36 /* bubble_02.png */,
@@ -4390,6 +4393,7 @@
 				86BDFC71181E2A9A0089C889 /* bottom_zaned_click.png in Resources */,
 				97CCB6121807889D000BD1BE /* shezhi22.png in Resources */,
 				97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */,
+				97B318BC1845A72D0053919F /* noti.png in Resources */,
 				97D632FD1803F6EA00204363 /* third_common_selected_no.png in Resources */,
 				979546C217BA368F00D05874 /* InfoPlist.strings in Resources */,
 				9765D798181BB5AE0021B36F /* os6normal_05.png in Resources */,

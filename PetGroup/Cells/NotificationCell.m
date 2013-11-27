@@ -25,6 +25,11 @@
 //        [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
         
+        self.dotImageV = [[UIImageView alloc] initWithFrame:CGRectMake(295, 10, 15, 15)];
+        [self.dotImageV setImage:[UIImage imageNamed:@"redpot.png"]];
+        [self.contentView addSubview:self.dotImageV];
+
+        
         self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 35, 100, 20)];
         [self.timeLabel setTextAlignment:NSTextAlignmentLeft];
         [self.timeLabel setFont:[UIFont systemFontOfSize:14]];
