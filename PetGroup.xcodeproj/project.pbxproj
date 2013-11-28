@@ -56,6 +56,8 @@
 		72795B47184450A800BB58E0 /* image9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72795B2C184450A800BB58E0 /* image9.jpg */; };
 		72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795B491844512300BB58E0 /* BeautifulImageCell.m */; };
 		72795B4C18445B9600BB58E0 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795B4B18445B9600BB58E0 /* like.png */; };
+		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
+		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -841,6 +843,10 @@
 		72795B481844512300BB58E0 /* BeautifulImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeautifulImageCell.h; sourceTree = "<group>"; };
 		72795B491844512300BB58E0 /* BeautifulImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeautifulImageCell.m; sourceTree = "<group>"; };
 		72795B4B18445B9600BB58E0 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
+		727BB2F518471D19005A2C44 /* CircleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleCell.h; sourceTree = "<group>"; };
+		727BB2F618471D19005A2C44 /* CircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleCell.m; sourceTree = "<group>"; };
+		727BB2F818473438005A2C44 /* FriendCircleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCircleCell.h; sourceTree = "<group>"; };
+		727BB2F918473438005A2C44 /* FriendCircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCircleCell.m; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		72CAD8B3183C7C7200B1F927 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
@@ -2206,6 +2212,10 @@
 		865FDD281807D8DC005BB088 /* CircleCells */ = {
 			isa = PBXGroup;
 			children = (
+				727BB2F518471D19005A2C44 /* CircleCell.h */,
+				727BB2F618471D19005A2C44 /* CircleCell.m */,
+				727BB2F818473438005A2C44 /* FriendCircleCell.h */,
+				727BB2F918473438005A2C44 /* FriendCircleCell.m */,
 				865FDD4418091883005BB088 /* articleCell.h */,
 				865FDD4518091883005BB088 /* articleCell.m */,
 				8672574F1818C91300624A04 /* OwenrCell.h */,
@@ -3717,8 +3727,8 @@
 				97E25BE717C33E8E007E187D /* Views */,
 				865FDD53180942F2005BB088 /* DataSource */,
 				97E25BE617C329A5007E187D /* Helper */,
-				979546C617BA368F00D05874 /* AppDelegate.h */,
 				979546C717BA368F00D05874 /* AppDelegate.m */,
+				979546C617BA368F00D05874 /* AppDelegate.h */,
 				979546BE17BA368F00D05874 /* Supporting Files */,
 			);
 			path = PetGroup;
@@ -4784,6 +4794,7 @@
 				9795471B17BA36AE00D05874 /* NSRelationshipDescription+MagicalDataImport.m in Sources */,
 				9795471C17BA36AE00D05874 /* NSString+MagicalDataImport.m in Sources */,
 				9795471D17BA36AE00D05874 /* NSManagedObject+MagicalAggregation.m in Sources */,
+				727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */,
 				9795471E17BA36AE00D05874 /* NSManagedObject+MagicalDataImport.m in Sources */,
 				9795471F17BA36AE00D05874 /* NSManagedObject+MagicalFinders.m in Sources */,
 				9795472017BA36AE00D05874 /* NSManagedObject+MagicalRecord.m in Sources */,
@@ -4849,6 +4860,7 @@
 				971C69D518289DEF00832157 /* NoteReply.m in Sources */,
 				9736BAFE17C4892A007DFE36 /* DDAbstractDatabaseLogger.m in Sources */,
 				9736BAFF17C4892A007DFE36 /* DDASLLogger.m in Sources */,
+				727BB2F718471D19005A2C44 /* CircleCell.m in Sources */,
 				9736BB0017C4892A007DFE36 /* DDFileLogger.m in Sources */,
 				9736BB0117C4892A007DFE36 /* DDLog.m in Sources */,
 				9736BB0217C4892A007DFE36 /* DDTTYLogger.m in Sources */,
@@ -5142,8 +5154,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5159,8 +5171,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5177,8 +5189,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -5187,8 +5199,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5198,8 +5210,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -5211,8 +5223,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5221,8 +5233,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -5234,8 +5246,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

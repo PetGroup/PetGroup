@@ -26,6 +26,9 @@
 #import "XMPPHelper.h"
 #import "CircleFooterView.h"
 #import "MJRefresh.h"
+
+#define sectionFooterHeight 30
+
 @interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate>
 {
     UIButton* attentionB;
@@ -162,9 +165,10 @@
     [self reloadGoodArticleData];
     
     self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH)];
-    _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -20, 0);
+    _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -sectionFooterHeight, 0);
     _attentionV.delegate = self;
     _attentionV.backgroundView = nil;
+    _attentionV.rowHeight = 80;
     [_backGroundV addSubview:_attentionV];
     
     self.attentionDS = [[AttentionDataSource alloc]init];
@@ -228,6 +232,13 @@
     self.hotPintsV.tableHeaderView = _hotPintsSearchBar;
     _hotPintsV.contentOffset = CGPointMake(0, 44);
     _hotPintsSearchBar.delegate = self;
+    
+    UIView * dd = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [dd setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+    [_goodSearchBar insertSubview:dd atIndex:1];
+    UIView * cc = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [cc setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+    [_hotPintsSearchBar insertSubview:cc atIndex:1];
     
     self.appDel = [[UIApplication sharedApplication] delegate];
 }
@@ -357,9 +368,9 @@
         }
         view.section = section;
         if (!((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai) {
-            [view.button setTitle:@"更多" forState:UIControlStateNormal];
+            [view.button setTitle:@"+更多" forState:UIControlStateNormal];
         }else{
-            [view.button setTitle:@"收起" forState:UIControlStateNormal];
+            [view.button setTitle:@"-收起" forState:UIControlStateNormal];
         }
         return view;
     }
@@ -368,7 +379,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (tableView == _attentionV && section != 0 && ((CircleClassify*)self.attentionDS.dataSourceArray[section]).circleArray.count>2) {
-        return 20;
+        return sectionFooterHeight;
     }
     return 0;
 }
@@ -410,11 +421,10 @@
     }
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidScroll];
-        CGFloat sectionHeaderHeight = 20; //sectionHeaderHeight
-        if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height<=sectionHeaderHeight&&scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=0) {
+        if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height<=sectionFooterHeight&&scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=0) {
             scrollView.contentInset = UIEdgeInsetsMake(0, 0, -(scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height), 0);
-        } else if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=sectionHeaderHeight) {
-            scrollView.contentInset = UIEdgeInsetsMake(scrollView.contentInset.top, 0, -sectionHeaderHeight, 0);
+        } else if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=sectionFooterHeight) {
+            scrollView.contentInset = UIEdgeInsetsMake(scrollView.contentInset.top, 0, -sectionFooterHeight, 0);
         }
     }
     if(scrollView == _hotPintsV){

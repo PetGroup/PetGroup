@@ -18,7 +18,7 @@
         self.button = [UIButton buttonWithType:UIButtonTypeCustom];
         _button.titleLabel.font = [UIFont systemFontOfSize:14];
         [_button addTarget:self action:@selector(zhankai) forControlEvents:UIControlEventTouchUpInside];
-        _button.frame = CGRectMake(0, 0, 40, 20);
+        _button.frame = CGRectMake(140, 0, 40, 30);
         [_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.contentView addSubview:_button];
     }
