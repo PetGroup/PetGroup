@@ -24,7 +24,16 @@
 //    //把NSlog 输出到文件中 给测试时想着打开即可
 //    [self redirectLogToDocumentFolder];
     
-    
+    if (launchOptions) {
+        //截取apns推送的消息
+        NSDictionary* pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+        NSLog(@"pushInfoStr-->>%@",pushInfo);
+        TempData * td = [TempData sharedInstance];
+        td.needDisplayPushNotification = YES;
+        [[NSUserDefaults standardUserDefaults] setObject:pushInfo forKey:@"RemoteNotification"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+    }
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
@@ -40,11 +49,7 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
-    if (launchOptions) {
-        //截取apns推送的消息
-        NSDictionary* pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-        NSLog(@"pushInfoStr-->>%@",pushInfo);
-    }
+
     return YES;
 }
 -(void)setChannel:(NSString *)theChannel
@@ -89,6 +94,11 @@
 //    [alert show];
 //    
     NSLog(@"uuuuuuuuinfo：%@", userInfo);
+    TempData * td = [TempData sharedInstance];
+    td.needDisplayPushNotification = YES;
+    [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"RemoteNotification"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [_loadingV makeTabbarPresentAViewController:nil];
     
     
 }
@@ -171,6 +181,10 @@
     };
     
     [reach startNotifier];
+    
+    if ([[TempData sharedInstance] ifOpened]){
+        [_loadingV makeTabbarPresentAViewController:nil];
+    }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }

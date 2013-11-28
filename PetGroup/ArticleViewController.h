@@ -12,4 +12,5 @@
 @interface ArticleViewController : UIViewController
 @property (nonatomic,assign)int floor;
 @property (nonatomic,retain)NSString* articleID;
+@property (nonatomic,assign)BOOL shouldDismiss;
 @end
