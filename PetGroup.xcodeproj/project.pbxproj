@@ -628,6 +628,10 @@
 		97A93DD4182CBC1D00D571A5 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DC6182CBC1D00D571A5 /* UIImage-Extensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97A93DD7182CBC3900D571A5 /* TextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 97A93DD5182CBC3900D571A5 /* TextConfig.m */; };
 		97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */; };
+		97AA423A18471CD200EF6F9D /* PetknowledgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423918471CD200EF6F9D /* PetknowledgeViewController.m */; };
+		97AA423D184721A600EF6F9D /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423C184721A600EF6F9D /* CategoryViewController.m */; };
+		97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423F1847321000EF6F9D /* ExperienceListViewController.m */; };
+		97AA42431847322400EF6F9D /* ContentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA42421847322400EF6F9D /* ContentDetailViewController.m */; };
 		97B318BC1845A72D0053919F /* noti.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B318BB1845A72D0053919F /* noti.png */; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
@@ -1634,6 +1638,14 @@
 		97A93DD5182CBC3900D571A5 /* TextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextConfig.m; sourceTree = "<group>"; };
 		97A93DD6182CBC3900D571A5 /* TextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextConfig.h; sourceTree = "<group>"; };
 		97A93DD8182CC35E00D571A5 /* writing_picbox_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = writing_picbox_bg.png; sourceTree = "<group>"; };
+		97AA423818471CD200EF6F9D /* PetknowledgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PetknowledgeViewController.h; sourceTree = "<group>"; };
+		97AA423918471CD200EF6F9D /* PetknowledgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PetknowledgeViewController.m; sourceTree = "<group>"; };
+		97AA423B184721A600EF6F9D /* CategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryViewController.h; sourceTree = "<group>"; };
+		97AA423C184721A600EF6F9D /* CategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryViewController.m; sourceTree = "<group>"; };
+		97AA423E1847321000EF6F9D /* ExperienceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperienceListViewController.h; sourceTree = "<group>"; };
+		97AA423F1847321000EF6F9D /* ExperienceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperienceListViewController.m; sourceTree = "<group>"; };
+		97AA42411847322400EF6F9D /* ContentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentDetailViewController.h; sourceTree = "<group>"; };
+		97AA42421847322400EF6F9D /* ContentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentDetailViewController.m; sourceTree = "<group>"; };
 		97B318BB1845A72D0053919F /* noti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noti.png; sourceTree = "<group>"; };
 		97B73F6A1827944300064447 /* redCB2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redCB2.png; sourceTree = "<group>"; };
 		97B73F6B1827944300064447 /* redpot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redpot2.png; sourceTree = "<group>"; };
@@ -2615,6 +2627,14 @@
 				72795B0318444F5500BB58E0 /* BeautifulImage */,
 				97D501F917C49A0500799BD4 /* NearByViewController.h */,
 				97D501FA17C49A0500799BD4 /* NearByViewController.m */,
+				97AA423818471CD200EF6F9D /* PetknowledgeViewController.h */,
+				97AA423918471CD200EF6F9D /* PetknowledgeViewController.m */,
+				97AA423B184721A600EF6F9D /* CategoryViewController.h */,
+				97AA423C184721A600EF6F9D /* CategoryViewController.m */,
+				97AA42411847322400EF6F9D /* ContentDetailViewController.h */,
+				97AA42421847322400EF6F9D /* ContentDetailViewController.m */,
+				97AA423E1847321000EF6F9D /* ExperienceListViewController.h */,
+				97AA423F1847321000EF6F9D /* ExperienceListViewController.m */,
 				72795B001844470C00BB58E0 /* DiscoverViewController.h */,
 				72795B011844470C00BB58E0 /* DiscoverViewController.m */,
 			);
@@ -4893,6 +4913,7 @@
 				9736BC3817C489F2007DFE36 /* XMPPCoreDataStorage.m in Sources */,
 				9736BC3917C489F2007DFE36 /* XMPPGoogleSharedStatus.m in Sources */,
 				9736BC3A17C489F2007DFE36 /* XMPPProcessOne.m in Sources */,
+				97AA423D184721A600EF6F9D /* CategoryViewController.m in Sources */,
 				9736BC3B17C489F2007DFE36 /* XMPPReconnect.m in Sources */,
 				9736BC3C17C489F2007DFE36 /* XMPPGroupCoreDataStorageObject.m in Sources */,
 				9736BC3D17C489F2007DFE36 /* XMPPResourceCoreDataStorageObject.m in Sources */,
@@ -4995,6 +5016,7 @@
 				9736BCCA17C48B7B007DFE36 /* SRRefreshView.m in Sources */,
 				97A93DD0182CBC1D00D571A5 /* SlideAttachmentCell.m in Sources */,
 				9736BCCB17C48B7B007DFE36 /* SRSlimeView.m in Sources */,
+				97AA423A18471CD200EF6F9D /* PetknowledgeViewController.m in Sources */,
 				9736BCCC17C48B7B007DFE36 /* TempData.m in Sources */,
 				9736BCCD17C48B7B007DFE36 /* UIExpandingTextView.m in Sources */,
 				72795AEE184432B400BB58E0 /* BusinessCell.m in Sources */,
@@ -5004,6 +5026,7 @@
 				9736BCD017C48B7B007DFE36 /* XMPPHelper.m in Sources */,
 				97D501D217C4998300799BD4 /* KKChatController.m in Sources */,
 				86FC764A18209F290025686B /* MJRefreshBaseView.m in Sources */,
+				97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */,
 				97D501FB17C49A0500799BD4 /* NearByViewController.m in Sources */,
 				97D501FE17C49A0F00799BD4 /* ContactsViewController.m in Sources */,
 				97D5020417C49ADF00799BD4 /* PersonalCenterViewController.m in Sources */,
@@ -5051,6 +5074,7 @@
 				86D69D0017C6120D00FFFBDD /* DynamicCell.m in Sources */,
 				86D69D0C17C7265300FFFBDD /* EditDynamicViewController.m in Sources */,
 				86FF42B317CC66D7007F8DE2 /* MessageViewController.m in Sources */,
+				97AA42431847322400EF6F9D /* ContentDetailViewController.m in Sources */,
 				973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */,
 				86EEB14517CF0F36000162E8 /* EGOCache.m in Sources */,
 				86EEB14617CF0F36000162E8 /* EGOImageButton.m in Sources */,

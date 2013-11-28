@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
-@interface WebViewViewController : UIViewController<MBProgressHUDDelegate,UIAlertViewDelegate>
+@interface WebViewViewController : UIViewController<MBProgressHUDDelegate,UIAlertViewDelegate,UIWebViewDelegate>
 {
     MBProgressHUD * hud;
     UIWebView * theWebView;

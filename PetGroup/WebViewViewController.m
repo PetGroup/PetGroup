@@ -50,6 +50,7 @@
 
     theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     theWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    theWebView.delegate = self;
     [theWebView loadRequest:[NSURLRequest requestWithURL:self.addressURL]];
     [self.view addSubview:theWebView];
 

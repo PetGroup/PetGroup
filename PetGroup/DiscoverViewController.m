@@ -10,6 +10,7 @@
 #import "NearByViewController.h"
 #import "DPBusinessListViewController.h"
 #import "PinterestViewController.h"
+#import "PetknowledgeViewController.h"
 #import "TempData.h"
 #import "CustomTabBar.h"
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -119,6 +120,10 @@
         }break;
         case 2:{
             PinterestViewController* pinterestVC = [[PinterestViewController alloc]init];
+            [self.navigationController pushViewController:pinterestVC animated:YES];
+        }break;
+        case 3:{
+            PetknowledgeViewController* pinterestVC = [[PetknowledgeViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
         default:
