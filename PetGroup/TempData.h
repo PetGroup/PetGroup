@@ -23,9 +23,11 @@
     
     BOOL opened;
     NSString * needChatUserName;
+    
 }
 @property (retain,nonatomic)NSString* myUserID;
 @property (assign,nonatomic)BOOL newFriendsReq;
+@property (nonatomic,assign)BOOL needDisplayPushNotification;
 
 + (id)sharedInstance;
 -(void)setOpened:(BOOL)haveOpened;

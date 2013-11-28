@@ -400,11 +400,31 @@
     self.tabBarC = [[CustomTabBar alloc] initWithImages:normalPic AndSelected:selectPic AndControllers:views];
     
     [self presentViewController:self.tabBarC animated:NO completion:^{
+        TempData * td = [TempData sharedInstance];
+        if (td.needDisplayPushNotification) {
+            [self makeTabbarPresentAViewController:nil];
+        }
         
     }];
     
     [splashImageView setImage:nil];
     splashImageView = nil;
+}
+
+-(void)makeTabbarPresentAViewController:(NSDictionary *)dict
+{
+    NSDictionary * infoDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"RemoteNotification"];
+    if (infoDict) {
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = [infoDict objectForKey:@"ID"];
+        articleVC.shouldDismiss = YES;
+        [self.tabBarC presentViewController:articleVC animated:YES completion:^{
+            
+        }];
+    }
+
+    TempData * td = [TempData sharedInstance];
+    td.needDisplayPushNotification = NO;
 }
 
 - (void)didReceiveMemoryWarning

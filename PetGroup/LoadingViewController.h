@@ -22,4 +22,5 @@
 @property (strong,nonatomic) MLNavigationController * NaviMessage, *NaviDynamic,* NaviNearBy, * NaviContacts, * NaviMore ,* NaviRandom;
 -(void)setLabelTitle:(NSString *)title;
 -(void)setMakeLogin;
+-(void)makeTabbarPresentAViewController:(NSDictionary *)dict;
 @end

@@ -46,6 +46,7 @@
         self.replyHighArray =[NSMutableArray array];
         self.floor = 0;
         self.row = 0;
+        self.shouldDismiss = NO;
     }
     return self;
 }
@@ -224,6 +225,12 @@
 }
 -(void)backButton
 {
+    if (self.shouldDismiss) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+        return;
+    }
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
