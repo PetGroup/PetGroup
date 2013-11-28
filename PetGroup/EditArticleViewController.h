@@ -25,6 +25,6 @@
     
 }
 @property (nonatomic,retain)id <EditArticleViewDelegate> delegate;
-@property (nonatomic,retain)NSString* forumId;
-@property (nonatomic,retain)NSString* forumName;
+@property (nonatomic,retain)NSArray* CircleTree;
+@property (nonatomic,retain)NSIndexPath* indexPath;
 @end

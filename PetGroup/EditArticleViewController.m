@@ -19,8 +19,14 @@
 #import "UIImage-Extensions.h"
 #import "NSAttributedString+TextUtil.h"
 #import "TextConfig.h"
-@interface EditArticleViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
+#import "CircleClassify.h"
+#import "CircleEntity.h"
+@interface EditArticleViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 {
+    UILabel *  titleLabel;
+    UIImageView* xialaIV;
+    UIButton* xialaB;
+    
     UIButton* PhotoB;
     UIImageView* deleteIV;
     MBProgressHUD * hud;
@@ -40,6 +46,11 @@
 @property (nonatomic,strong)UIActionSheet* addActionSheet;
 @property (nonatomic,strong)UIActionSheet* deleteActionSheet;
 @property (nonatomic,strong)NSMutableString* imageId;
+@property (nonatomic,retain)NSString* forumId;
+@property (nonatomic,retain)NSString* forumName;
+@property (nonatomic,retain)UIPickerView* circlePV;
+@property (nonatomic,retain)UITextField*circleTF;
+@property (nonatomic,retain)NSArray*circleArray;
 @end
 
 @implementation EditArticleViewController
@@ -64,6 +75,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.forumId = ((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).circleID;
+    self.forumName =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
+    self.circleArray = ((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray;
+    
     UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
     [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
     [self.view addSubview:bgimgV];
@@ -73,12 +88,6 @@
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
-    
-//    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-//    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
-//    [self.view addSubview:backButton];
-//    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.frame = CGRectMake(5, 5+diffH, 70, 34);
@@ -90,13 +99,23 @@
     [cancelBtn addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelBtn];
     
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
+    CGSize size = [self.forumName sizeWithFont:[UIFont systemFontOfSize:18]];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"新话题"];
+    [titleLabel setText:self.forumName];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    xialaIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xiala_bg"]];
+    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
+    [self.view addSubview:xialaIV];
+    
+    xialaB = [UIButton buttonWithType:UIButtonTypeCustom];
+    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
+    [xialaB addTarget:self action:@selector(screen) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:xialaB];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
@@ -149,15 +168,6 @@
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
-//    if (diffH==0.0f) {
-//        tool.image = [UIImage imageNamed:@"table_bg"];
-//    }
-//    else
-//    {
-//        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-//        tool.layer.borderColor = [[UIColor grayColor] CGColor];
-//        tool.layer.borderWidth = 1;
-//    }
     tool.userInteractionEnabled = YES;
 //    _dynamicTV.inputAccessoryView = tool;
     [self.view addSubview:tool];
@@ -179,20 +189,26 @@
     [self.view addSubview:theEmojiView];
     theEmojiView.hidden = YES;
     
-//    self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 95.75+diffH, 200, 20)];
-//    self.placeholderL.font = [UIFont systemFontOfSize:16];
-//    _placeholderL.backgroundColor = [UIColor clearColor];
-//    _placeholderL.textColor = [UIColor grayColor];
-//    _placeholderL.text = @"今天想跟别人说点什么……";
-//    [self.view addSubview:_placeholderL];
-    
-    
     PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
     PhotoB.frame = CGRectMake(13, 195+diffH, 48.5, 48.5);
     [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
     [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     PhotoB.hidden = YES;
- //   [self.view addSubview:PhotoB];
+ 
+    self.circleTF = [[UITextField alloc]init];
+    [self.view addSubview:_circleTF];
+    self.circlePV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
+    _circlePV.dataSource = self;
+    _circlePV.delegate = self;
+    _circlePV.showsSelectionIndicator = YES;
+    _circleTF.inputView = _circlePV;
+    
+    UIToolbar* toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+    toolbar.tintColor = [UIColor blackColor];
+    UIBarButtonItem*rb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didselectCircle)];
+    rb.tintColor = [UIColor blackColor];
+    toolbar.items = @[rb];
+    _circleTF.inputAccessoryView = toolbar;
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
@@ -303,6 +319,24 @@
     
 }
 #pragma mark - button action
+-(void)screen
+{
+    [_circleTF becomeFirstResponder];
+    [_circlePV selectRow:self.indexPath.section inComponent:0 animated:NO];
+    [_circlePV selectRow:self.indexPath.row inComponent:1 animated:NO];
+}
+-(void)didselectCircle
+{
+    [_circleTF resignFirstResponder];
+    self.indexPath = [NSIndexPath indexPathForRow:[_circlePV  selectedRowInComponent:1] inSection:[_circlePV  selectedRowInComponent:0]];
+    self.forumId = ((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).circleID;
+    self.forumName =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
+    CGSize size = [self.forumName sizeWithFont:[UIFont systemFontOfSize:18]];
+    titleLabel.frame = CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height);
+    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
+    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
+    [titleLabel setText:self.forumName];
+}
 -(void)backButton:(UIButton*)button
 {
 //    [[TempData sharedInstance] Panned:NO];
@@ -882,5 +916,32 @@
 {
     CGPoint bottomOffset = CGPointMake(0, _dynamicTV.contentSize.height - _dynamicTV.bounds.size.height);
     [_dynamicTV setContentOffset:bottomOffset animated:YES];
+}
+#pragma mark - UIPicker View delegate and data source
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 2;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component == 0) {
+        return self.CircleTree.count;
+    }
+    return self.circleArray.count;
+}
+- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger) row forComponent:(NSInteger) component
+{
+    if (component == 0) {
+        return ((CircleClassify*)self.CircleTree[row]).name;
+    }
+    return ((CircleEntity*)self.circleArray[row]).name;
+    
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 0) {
+        self.circleArray = ((CircleClassify*)self.CircleTree[row]).circleArray;
+        [pickerView reloadComponent:1];
+    }
 }
 @end

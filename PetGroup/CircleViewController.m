@@ -162,6 +162,7 @@
     [self reloadGoodArticleData];
     
     self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH)];
+    _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -20, 0);
     _attentionV.delegate = self;
     _attentionV.backgroundView = nil;
     [_backGroundV addSubview:_attentionV];
@@ -268,9 +269,12 @@
 -(void)toPublishPage
 {
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
-//    editAVC.forumId = self.circleEntity.circleID;
-//    editAVC.forumName = self.circleEntity.name;
-//    editAVC.delegate = self;
+    editAVC.CircleTree = self.attentionDS.dataSourceArray;
+    if (((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray.count>0) {
+        editAVC.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }else{
+        editAVC.indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+    }
     [self presentViewController:editAVC animated:YES completion:^{
         
     }];
@@ -326,14 +330,16 @@
                 [self.customTabBarController hidesTabBar:YES animated:YES];
             }else{
                 OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
-                onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row-1];
+                onceCircleVC.CircleTree = self.attentionDS.dataSourceArray;
+                onceCircleVC.indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
                 onceCircleVC.delegate = self;
                 [self.navigationController pushViewController:onceCircleVC animated:YES];
                 [self.customTabBarController hidesTabBar:YES animated:YES];
             }
         }else{
             OnceCircleViewController* onceCircleVC = [[OnceCircleViewController alloc]init];
-            onceCircleVC.circleEntity = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
+            onceCircleVC.CircleTree = self.attentionDS.dataSourceArray;
+            onceCircleVC.indexPath = indexPath;
             onceCircleVC.delegate = self;
             [self.navigationController pushViewController:onceCircleVC animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -404,6 +410,12 @@
     }
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidScroll];
+        CGFloat sectionHeaderHeight = 20; //sectionHeaderHeight
+        if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height<=sectionHeaderHeight&&scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=0) {
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, -(scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height), 0);
+        } else if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=sectionHeaderHeight) {
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, -sectionHeaderHeight, 0);
+        }
     }
     if(scrollView == _hotPintsV){
         [_refreshView scrollViewDidScroll];

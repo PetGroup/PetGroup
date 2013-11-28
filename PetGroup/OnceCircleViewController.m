@@ -22,13 +22,14 @@
 #import "ArticleViewController.h"
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
-
+#import "CircleClassify.h"
 @interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate,EditArticleViewDelegate>
 {
     BOOL free;
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
+@property (nonatomic,retain)CircleEntity*circleEntity;
 @property (nonatomic,retain)UILabel* personL;
 @property (nonatomic,retain)UIImageView* screenV;
 @property (nonatomic,retain)UITableView* tableV;
@@ -56,6 +57,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.circleEntity = ((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
@@ -282,8 +284,8 @@
     [self canselScreen];
     free = NO;
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
-    editAVC.forumId = self.circleEntity.circleID;
-    editAVC.forumName = self.circleEntity.name;
+    editAVC.CircleTree = self.CircleTree;
+    editAVC.indexPath = self.indexPath;
     editAVC.delegate = self;
     [self presentViewController:editAVC animated:YES completion:^{
         

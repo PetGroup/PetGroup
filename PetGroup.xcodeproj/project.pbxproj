@@ -2611,6 +2611,8 @@
 		9736BAD317C47537007DFE36 /* NearbyView */ = {
 			isa = PBXGroup;
 			children = (
+				72795ADD1843251B00BB58E0 /* DianpingModule */,
+				72795B0318444F5500BB58E0 /* BeautifulImage */,
 				97D501F917C49A0500799BD4 /* NearByViewController.h */,
 				97D501FA17C49A0500799BD4 /* NearByViewController.m */,
 				72795B001844470C00BB58E0 /* DiscoverViewController.h */,
@@ -4021,8 +4023,6 @@
 		97E25BE717C33E8E007E187D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				72795B0318444F5500BB58E0 /* BeautifulImage */,
-				72795ADD1843251B00BB58E0 /* DianpingModule */,
 				97DB098D17C5AC70000EC195 /* LogAndReg */,
 				97FB034C17E002B5002086D9 /* Setting */,
 				97DB08F117C5A0DC000EC195 /* DetailView */,

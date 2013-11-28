@@ -15,5 +15,6 @@
 @end
 @interface OnceCircleViewController : UIViewController
 @property (nonatomic,assign)id <OnceCircleViewControllerDelegate>delegate;
-@property (nonatomic,retain)CircleEntity*circleEntity;
+@property (nonatomic,retain)NSArray* CircleTree;
+@property (nonatomic,retain)NSIndexPath* indexPath;
 @end
