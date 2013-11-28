@@ -414,7 +414,7 @@
         if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height<=sectionHeaderHeight&&scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=0) {
             scrollView.contentInset = UIEdgeInsetsMake(0, 0, -(scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height), 0);
         } else if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=sectionHeaderHeight) {
-            scrollView.contentInset = UIEdgeInsetsMake(0, 0, -sectionHeaderHeight, 0);
+            scrollView.contentInset = UIEdgeInsetsMake(scrollView.contentInset.top, 0, -sectionHeaderHeight, 0);
         }
     }
     if(scrollView == _hotPintsV){
