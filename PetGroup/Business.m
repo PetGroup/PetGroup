@@ -45,7 +45,7 @@ static char* grades[5]={"一般","尚可","好","很好","非常好"};
     self.couponUrl=[dic objectForKey:@"coupon_url"];
     self.latitude = [[dic objectForKey:@"latitude"]doubleValue];
     self.longitude = [[dic objectForKey:@"longitude"]doubleValue];
-    self.businessID = [[dic objectForKey:@"business_id"] intValue];
+    self.businessID = [dic objectForKey:@"business_id"];
     
 }
 @end

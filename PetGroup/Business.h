@@ -40,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //用于获取其他信息的数据
 //@property(nonatomic ,readonly) NSDictionary* dictionary;
-@property(nonatomic , assign) int businessID;//商户ID
+@property(nonatomic , retain) NSString* businessID;//商户ID
 
 -(id)initWithDictionary:(NSDictionary*)dic;//用dictionary来初始化该类的对象
 -(void)setBusinessWithDictionary:(NSDictionary*)dic;//用于通过dictionary给属性进行负值

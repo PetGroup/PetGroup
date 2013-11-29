@@ -20,7 +20,7 @@ const CGFloat kTMPhotoQuiltViewMargin = 0;
 {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        self.imageView = [[UIImageView alloc]init];
+        self.imageView = [[EGOImageView alloc]init];
         [self addSubview:_imageView];
         self.bottenV = [[UIView alloc]init];
         _bottenV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];

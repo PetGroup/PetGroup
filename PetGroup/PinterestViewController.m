@@ -10,9 +10,18 @@
 #import "TMQuiltView.h"
 #import "BeautifulImageCell.h"
 #import "TempData.h"
-@interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate>
+#import "MJRefresh.h"
+#import "SRRefreshView.h"
+#import "PhotoViewController.h"
+@interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
+{
+    BOOL free;
+}
+@property (nonatomic,assign) int pageNo;
 @property (nonatomic,retain) NSMutableArray* imageArray;
 @property (nonatomic,retain)TMQuiltView *tmQuiltView;
+@property (nonatomic,retain)MJRefreshFooterView* footer;
+@property (nonatomic,retain)SRRefreshView* refreshView;
 @end
 
 @implementation PinterestViewController
@@ -22,11 +31,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.imageArray = [[NSMutableArray alloc]init];
-        for (int i = 0; i<27; i++) {
-            UIImage* image = [UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",i]];
-            [_imageArray addObject:image];
-        }
+        self.imageArray = [NSMutableArray array];
     }
     return self;
 }
@@ -63,13 +68,40 @@
     _tmQuiltView.dataSource = self;
     
     [self.view addSubview:_tmQuiltView];
-    [_tmQuiltView reloadData];
+    
+    self.refreshView = [[SRRefreshView alloc] init];
+    _refreshView.delegate = self;
+    _refreshView.upInset = 0;
+    _refreshView.slimeMissWhenGoingBack = YES;
+    _refreshView.slime.bodyColor = [UIColor colorWithRed:250/255.0 green:128/255.0 blue:010/255.0 alpha:1];
+    _refreshView.slime.skinColor = [UIColor whiteColor];
+    _refreshView.slime.lineWith = 1;
+    _refreshView.slime.shadowBlur = 4;
+    _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.0];
+    
+    [self.tmQuiltView addSubview:_refreshView];
+    
+    self.footer = [[MJRefreshFooterView alloc]init];
+    _footer.delegate = self;
+    _footer.scrollView = self.tmQuiltView;
+    
+    [self reloadData];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    free = YES;
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    if (free) {
+        [_footer free];
+    }
 }
 -(void)backButton
 {
@@ -91,7 +123,8 @@
     {
         cell = [[BeautifulImageCell alloc] initWithReuseIdentifier:identifierStr];
     }
-    cell.imageView.image = _imageArray[indexPath.row];
+    NSString* URLStrng =[NSString stringWithFormat:BaseImageUrl"%@/300",[_imageArray[indexPath.row] objectForKey:@"id"]];
+    cell.imageView.imageURL = [NSURL URLWithString:URLStrng];
     cell.titleL.text = @"1234";
     cell.indexPath = indexPath;
     cell.delegate = self;
@@ -106,16 +139,107 @@
 }
 //单元高度
 - (CGFloat)quiltView:(TMQuiltView *)quiltView heightForCellAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize size = ((UIImage*)self.imageArray[indexPath.row]).size;
-    float height = (size.height / size.width)*152.5;
+    
+    float height = ([[_imageArray[indexPath.row] objectForKey:@"height"] floatValue] / [[_imageArray[indexPath.row] objectForKey:@"width"] floatValue])*152.5;
     return height;
 }
 - (void)quiltView:(TMQuiltView *)quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    free = NO;
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[[_imageArray[indexPath.row] objectForKey:@"id"]] indext:indexPath.row];
+    [self presentViewController:vc animated:NO completion:nil];
 }
 -(void)beautifulImageCellPressZanButtonAtIndexPath:(NSIndexPath*)indexPath
 {
     
+}
+#pragma mark - load
+-(void)reloadData
+{
+    self.pageNo = 0;
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_albums" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getPublicPhotos" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray*array = [responseObject objectForKey:@"data"];
+        [self.imageArray removeAllObjects];
+        if (array.count>0) {
+            self.pageNo++;
+            [self.imageArray addObjectsFromArray:array];
+        }
+        [self.tmQuiltView reloadData];
+        [self.refreshView endRefresh];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.refreshView endRefresh];
+    }];
+}
+-(void)loadMoreData
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:[NSString stringWithFormat:@"%d",_pageNo] forKey:@"pageNo"];
+    [params setObject:@"20" forKey:@"pageSize"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_albums" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getPublicPhotos" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+        NSArray*array = [responseObject objectForKey:@"data"];
+        if (array.count>0) {
+            self.pageNo++;
+            [self.imageArray addObjectsFromArray:array];
+        }
+        [self.tmQuiltView reloadData];
+        [self.footer endRefreshing];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.footer endRefreshing];
+    }];
+}
+#pragma mark - slimeRefresh delegate
+
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    if (refreshView == _refreshView) {
+        [self reloadData];
+    }
+}
+#pragma mark - scroll view delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView == _tmQuiltView){
+        [_refreshView scrollViewDidScroll];
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (scrollView == _tmQuiltView) {
+        [_refreshView scrollViewDidEndDraging];
+    }
+}
+#pragma mark MJRefreshBaseView delegate
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        [self loadMoreData];
+    }
 }
 @end

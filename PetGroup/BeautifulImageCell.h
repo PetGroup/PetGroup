@@ -7,7 +7,7 @@
 //
 #import <UIKit/UIKit.h>
 #import "TMQuiltViewCell.h"
-
+#import "EGOImageView.h"
 @protocol BeautifulImageCellDelegate <NSObject>
 
 -(void)beautifulImageCellPressZanButtonAtIndexPath:(NSIndexPath*)indexPath;
@@ -15,7 +15,7 @@
 @end
 @interface BeautifulImageCell : TMQuiltViewCell
 @property (nonatomic,assign) id<BeautifulImageCellDelegate>delegate;
-@property (nonatomic,retain) UIImageView* imageView;
+@property (nonatomic,retain) EGOImageView* imageView;
 @property (nonatomic,retain) UILabel* titleL;
 @property (nonatomic,retain) NSIndexPath *indexPath;
 @end

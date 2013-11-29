@@ -48,9 +48,17 @@
 {
     NSDictionary* dic =[NSJSONSerialization JSONObjectWithData:self.data options:0 error:nil];
     if ([[dic objectForKey:@"status"] isEqualToString:@"OK"]) {
-        if (_delegate && [_delegate respondsToSelector:@selector(DPNetManagerDidFinishLoading:)]) {
-            [_delegate DPNetManagerDidFinishLoading:[dic objectForKey:@"businesses"]];
+        if ([dic objectForKey:@"businesses"]) {
+            if (_delegate && [_delegate respondsToSelector:@selector(DPNetManagerDidFinishLoading:)]) {
+                [_delegate DPNetManagerDidFinishLoading:[dic objectForKey:@"businesses"]];
+            }
         }
+        if ([dic objectForKey:@"reviews"]) {
+            if (_delegate && [_delegate respondsToSelector:@selector(DPNetManagerDidFinishLoading:)]) {
+                [_delegate DPNetManagerDidFinishLoading:[dic objectForKey:@"reviews"]];
+            }
+        }
+        
     }else{
         if (_delegate &&[self.delegate respondsToSelector:@selector(DPNetManagerdidFailWithError:)]) {
             [self.delegate DPNetManagerdidFailWithError:nil];
