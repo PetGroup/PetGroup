@@ -60,6 +60,7 @@
         _dynamicL.text = _dynamic.msg.string;
     }else
     {
+        _dynamicIV.frame = CGRectZero;
         _dynamicL.frame = CGRectMake(80, 45, 230, 20);
         _dynamicL.text = _dynamic.msg.string;
     }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7219A6581845A29400836883 /* CircleFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7219A6571845A29400836883 /* CircleFooterView.m */; };
+		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
+		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADB1842F84F00BB58E0 /* ImageCell.m */; };
 		72795AE01843274700BB58E0 /* DPNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADF1843274700BB58E0 /* DPNetManager.m */; };
@@ -787,6 +789,10 @@
 		4E86BCF917A44940AF695B2A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7219A6561845A29400836883 /* CircleFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleFooterView.h; sourceTree = "<group>"; };
 		7219A6571845A29400836883 /* CircleFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleFooterView.m; sourceTree = "<group>"; };
+		721E361018482F33002FCA77 /* MyNoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNoteDataSource.h; sourceTree = "<group>"; };
+		721E361118482F33002FCA77 /* MyNoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNoteDataSource.m; sourceTree = "<group>"; };
+		721E361318483A52002FCA77 /* DPBusinessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPBusinessViewController.h; sourceTree = "<group>"; };
+		721E361418483A52002FCA77 /* DPBusinessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPBusinessViewController.m; sourceTree = "<group>"; };
 		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
 		72795ADA1842F84F00BB58E0 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
@@ -2036,6 +2042,8 @@
 			children = (
 				72795AE618432EB600BB58E0 /* DPBusinessListViewController.h */,
 				72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */,
+				721E361318483A52002FCA77 /* DPBusinessViewController.h */,
+				721E361418483A52002FCA77 /* DPBusinessViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -2259,6 +2267,8 @@
 				86993B5F180B956900F61A3F /* NewPublishArticleDataSource.m */,
 				849D3461182B7FBA009376C0 /* MyReplyNoteDataSource.h */,
 				849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */,
+				721E361018482F33002FCA77 /* MyNoteDataSource.h */,
+				721E361118482F33002FCA77 /* MyNoteDataSource.m */,
 				849D345E182B7DE2009376C0 /* MyDynamicDataSource.h */,
 				849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */,
 				86993B6C180BDFCC00F61A3F /* FriendCircleDataSource.h */,
@@ -4912,6 +4922,7 @@
 				9736BB4317C489C6007DFE36 /* NSXMLElement+XMPP.m in Sources */,
 				9736BB5817C489CE007DFE36 /* XMPPElement.m in Sources */,
 				97A93DCC182CBC1D00D571A5 /* FastTextView.m in Sources */,
+				721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */,
 				9765D7A8181BC8E70021B36F /* BHExpandingTextViewInternal.m in Sources */,
 				9736BB5917C489CE007DFE36 /* XMPPIQ.m in Sources */,
 				9736BB5A17C489CE007DFE36 /* XMPPJID.m in Sources */,
@@ -4947,6 +4958,7 @@
 				9736BC4D17C489F2007DFE36 /* XMPPRoomCoreDataStorage.m in Sources */,
 				97A93DD3182CBC1D00D571A5 /* UIFont+TextUtil.m in Sources */,
 				9736BC4E17C489F2007DFE36 /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
+				721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */,
 				9736BC4F17C489F2007DFE36 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				9736BC5017C489F2007DFE36 /* XMPPRoomHybrid.xcdatamodeld in Sources */,
 				9736BC5117C489F2007DFE36 /* XMPPRoomHybridStorage.m in Sources */,

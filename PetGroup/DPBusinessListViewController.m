@@ -14,6 +14,7 @@
 #import "Business.h"
 #import "BusinessCell.h"
 #import "MBProgressHUD.h"
+#import "DPBusinessViewController.h"
 @interface DPBusinessListViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     BOOL free;
@@ -169,7 +170,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     free = NO;
-    
+    DPBusinessViewController*businessVC = [[DPBusinessViewController alloc]init];
+    businessVC.business = self.dataSourceArray[indexPath.row];
+    [self.navigationController pushViewController:businessVC animated:YES];
 }
 #pragma mark - DPNetManager Delegate
 -(void)DPNetManagerDidFinishLoading:(NSArray*)array

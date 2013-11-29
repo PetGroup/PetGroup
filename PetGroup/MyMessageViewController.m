@@ -17,18 +17,21 @@
 #import "HostInfo.h"
 #import "MyDynamicDataSource.h"
 #import "MyReplyNoteDataSource.h"
+#import "MyNoteDataSource.h"
 #import "ArticleViewController.h"
 #import "Article.h"
 @interface MyMessageViewController ()<UITableViewDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
+    UIButton* ICreateB;
     float diffH;
     
     BOOL free;
 }
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MyDynamicDataSource* myDynamicDS;
+@property (nonatomic,retain)MyNoteDataSource* myNoteDS;
 @property (nonatomic,retain)MyReplyNoteDataSource* myReplNOteDS;
 @property (nonatomic,retain)DataSource* presentDS;
 @property (nonatomic,retain)HostInfo* userInfo;
@@ -118,36 +121,29 @@
     [_headV addSubview:whiteV];
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 220, 320, 31.5)];
-    tabIV.image = diffH==0.0f?[UIImage imageNamed:@"table_bg"]:[UIImage imageNamed:@"biaotidd"];
+    tabIV.image = [UIImage imageNamed:@"biaotidd"];
     tabIV.userInteractionEnabled = YES;
     [_headV addSubview:tabIV];
     
     attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (diffH==0.0f) {
-        attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
-    }
-    else
-    {
-        attentionB.frame = CGRectMake(0, 0, 160, 31.5);
-    }
-//    attentionB.frame = CGRectMake(6.5, 2, 153.5, 29.5);
+    attentionB.frame = CGRectMake(0, 0, 106.666, 31.5);
     [attentionB setTitle:@"我的动态" forState:UIControlStateNormal];
     [attentionB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+    UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
     [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
     [tabIV addSubview:attentionB];
     [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
     
+    ICreateB = [UIButton buttonWithType:UIButtonTypeCustom];
+    ICreateB.frame = CGRectMake(106.666, 0, 106.666, 31.5);
+    [ICreateB setTitle:@"我的发表" forState:UIControlStateNormal];
+    [ICreateB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [tabIV addSubview:ICreateB];
+    [ICreateB addTarget:self action:@selector(iCreateAct) forControlEvents:UIControlEventTouchUpInside];
+    
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
     [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    if (diffH==0.0f) {
-        hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
-    }
-    else
-    {
-        hotPintsB.frame = CGRectMake(160, 0, 160, 31.5);
-    }
-//    hotPintsB.frame = CGRectMake(160, 2, 153.5, 29.5);
+    hotPintsB.frame = CGRectMake(106.666*2, 0, 106.666, 31.5);
     [hotPintsB setTitle:@"我的回复" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
@@ -218,14 +214,39 @@
 {
     if (_presentDS != _myDynamicDS) {
         
-        UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+        UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
         [attentionB setBackgroundImage:bgB forState:UIControlStateNormal];
         [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
+        [ICreateB setBackgroundImage:nil forState:UIControlStateNormal];
         self.presentDS = _myDynamicDS;
         _tableV.dataSource = _myDynamicDS;
         [self.tableV reloadData];
     }
     
+}
+-(void)iCreateAct
+{
+    if (!_myNoteDS) {
+        self.myNoteDS = [[MyNoteDataSource alloc]init];
+        _myNoteDS.myController = self;
+        [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
+        [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
+        UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
+        [ICreateB setBackgroundImage:bgB forState:UIControlStateNormal];
+        self.presentDS = _myNoteDS;
+        _tableV.dataSource = _myNoteDS;
+        [self reloadData];
+        return;
+    }
+    if (_presentDS != _myNoteDS) {
+        [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
+        [hotPintsB setBackgroundImage:nil forState:UIControlStateNormal];
+        UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
+        [ICreateB setBackgroundImage:bgB forState:UIControlStateNormal];
+        self.presentDS = _myNoteDS;
+        _tableV.dataSource = _myNoteDS;
+        [self.tableV reloadData];
+    }
 }
 -(void)hotPintsAct
 {
@@ -233,7 +254,8 @@
         self.myReplNOteDS = [[MyReplyNoteDataSource alloc]init];
         _myReplNOteDS.myController = self;
         [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
-        UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+        [ICreateB setBackgroundImage:nil forState:UIControlStateNormal];
+        UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
         [hotPintsB setBackgroundImage:bgB forState:UIControlStateNormal];
         self.presentDS = _myReplNOteDS;
         _tableV.dataSource = _myReplNOteDS;
@@ -241,8 +263,9 @@
         return;
     }
     if (_presentDS != _myReplNOteDS) {
+        [ICreateB setBackgroundImage:nil forState:UIControlStateNormal];
         [attentionB setBackgroundImage:nil forState:UIControlStateNormal];
-        UIImage * bgB = diffH==0.0f?[UIImage imageNamed:@"table_click"]:[UIImage imageNamed:@"biaotibtn_01"];
+        UIImage * bgB = [UIImage imageNamed:@"biaotibtn_01"];
         [hotPintsB setBackgroundImage:bgB forState:UIControlStateNormal];
         self.presentDS = _myReplNOteDS;
         _tableV.dataSource = _myReplNOteDS;

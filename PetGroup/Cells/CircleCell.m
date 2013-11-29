@@ -28,13 +28,13 @@
         self.imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(80, 10, 80, 25)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(80, 10, 180, 25)];
         self.nameL.backgroundColor = [UIColor clearColor];
         self.nameL.textColor = [UIColor blackColor];
         self.nameL.font = [UIFont boldSystemFontOfSize:18];
         [self.contentView addSubview:self.nameL];
         
-        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(250, 10, 80, 20)];
+        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(260, 10, 80, 20)];
         _todayTopicL.backgroundColor = [UIColor clearColor];
         _todayTopicL.textColor = [UIColor grayColor];
         _todayTopicL.font = [UIFont systemFontOfSize:14];
