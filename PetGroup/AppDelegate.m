@@ -28,10 +28,14 @@
         //截取apns推送的消息
         NSDictionary* pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
         NSLog(@"pushInfoStr-->>%@",pushInfo);
-        TempData * td = [TempData sharedInstance];
-        td.needDisplayPushNotification = YES;
-        [[NSUserDefaults standardUserDefaults] setObject:pushInfo forKey:@"RemoteNotification"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSString * infoType = [pushInfo objectForKey:@"type"];
+        if (infoType) {
+            TempData * td = [TempData sharedInstance];
+            td.needDisplayPushNotification = YES;
+            [[NSUserDefaults standardUserDefaults] setObject:pushInfo forKey:@"RemoteNotification"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
         
     }
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -94,12 +98,15 @@
 //    [alert show];
 //    
     NSLog(@"uuuuuuuuinfo：%@", userInfo);
-    TempData * td = [TempData sharedInstance];
-    td.needDisplayPushNotification = YES;
-    [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"RemoteNotification"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [_loadingV makeTabbarPresentAViewController:nil];
-    
+    NSString * infoType = [userInfo objectForKey:@"type"];
+    if (infoType) {
+        TempData * td = [TempData sharedInstance];
+        td.needDisplayPushNotification = YES;
+        [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"RemoteNotification"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [_loadingV makeTabbarPresentAViewController:nil];
+    }
+
     
 }
 
