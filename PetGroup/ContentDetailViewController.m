@@ -29,6 +29,7 @@
     if (self) {
         // Custom initialization
         self.typeName = @"宠物介绍";
+        self.needDismiss = NO;
     }
     return self;
 }
@@ -481,6 +482,12 @@
 }
 -(void)backButton
 {
+    if (self.needDismiss) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+        return;
+    }
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }

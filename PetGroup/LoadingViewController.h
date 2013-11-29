@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MLNavigationController.h"
 #import "LocationManager.h"
-@class ViewController,CustomTabBar,LeveyTabBarController,MessageViewController,DynamicViewController,NearByViewController,ContactsViewController,MoreViewController,LoginViewController,DetailMessageViewController,KKChatController,DiscoverViewController;
+@class ViewController,CustomTabBar,LeveyTabBarController,MessageViewController,DynamicViewController,NearByViewController,ContactsViewController,MoreViewController,LoginViewController,DetailMessageViewController,KKChatController,DiscoverViewController,ContentDetailViewController;
 @interface LoadingViewController : UIViewController<UIAlertViewDelegate>
 {
     UIImageView *splashImageView;

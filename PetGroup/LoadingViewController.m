@@ -15,6 +15,7 @@
 #import "DiscoverViewController.h"
 #import "JSON.h"
 #import "CircleViewController.h"
+#import "ContentDetailViewController.h"
 @interface LoadingViewController ()
 
 @end
@@ -415,12 +416,37 @@
 {
     NSDictionary * infoDict = [[NSUserDefaults standardUserDefaults] objectForKey:@"RemoteNotification"];
     if (infoDict) {
-        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-        articleVC.articleID = [infoDict objectForKey:@"ID"];
-        articleVC.shouldDismiss = YES;
-        [self.tabBarC presentViewController:articleVC animated:YES completion:^{
+        NSString * infoType = [infoDict objectForKey:@"type"];
+        if (infoType) {
+            if ([infoType isEqualToString:@"topic"]) {
+                ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+                articleVC.articleID = [infoDict objectForKey:@"ID"];
+                articleVC.shouldDismiss = YES;
+                [self.tabBarC presentViewController:articleVC animated:YES completion:^{
+                    
+                }];
+            }
+            else if ([infoType isEqualToString:@"webview"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeWebView;
+                cv.needDismiss = YES;
+                cv.addressURL = [infoDict objectForKey:@"ID"];
+                [self.tabBarC presentViewController:cv animated:YES completion:^{
+                    
+                }];
+            }
+            else if ([infoType isEqualToString:@"normalArticle"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeTextView;
+                cv.needDismiss = YES;
+                cv.articleID = [infoDict objectForKey:@"ID"];
+                [self.tabBarC presentViewController:cv animated:YES completion:^{
+                    
+                }];
+            }
             
-        }];
+
+        }
     }
 
     TempData * td = [TempData sharedInstance];

@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "TempData.h"
 #import "LoadingViewController.h"
+@class ContentDetailViewController;
 @class ViewController;
 @class XMPPHelper;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
