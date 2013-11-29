@@ -119,7 +119,7 @@
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
     [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     hotPintsB.frame = CGRectMake(106.666, 0, 106.666, 31.5);
-    [hotPintsB setTitle:@"最新发表" forState:UIControlStateNormal];
+    [hotPintsB setTitle:@"最新" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
