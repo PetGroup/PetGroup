@@ -99,10 +99,11 @@
                 UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:headCellIdentifier ];
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:headCellIdentifier];
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     EGOImageView*businessImageView = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"dianping.png"]];
                     businessImageView.frame = CGRectMake(10, 10, 118.828 , 85.488);
                     [cell.contentView addSubview:businessImageView];
-                    UILabel*nameLabel=[[UILabel alloc] initWithFrame:CGRectMake(138, 10, 190 , 20)];
+                    UILabel*nameLabel=[[UILabel alloc] initWithFrame:CGRectMake(138, 10, 170 , 20)];
                     nameLabel.font=[UIFont boldSystemFontOfSize:14.0];
                     [cell.contentView addSubview:nameLabel];
                     UIImageView*starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 33, 84,16)];
@@ -140,6 +141,7 @@
                 UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:addressCellIdentifier ];
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:addressCellIdentifier];
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.textLabel.font = [UIFont systemFontOfSize:12];
                     cell.textLabel.text = self.business.adress;
                 }
@@ -150,6 +152,7 @@
                 UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:phoneCellIdentifier ];
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:phoneCellIdentifier];
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.textLabel.font = [UIFont systemFontOfSize:12];
                     cell.textLabel.text = self.business.telephone;
                 }
@@ -163,6 +166,7 @@
     UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 //    cell.business = self.dataSourceArray[indexPath.row];
     return cell;

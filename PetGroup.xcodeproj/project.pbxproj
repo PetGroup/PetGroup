@@ -11,6 +11,7 @@
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
+		726BDD4E18499A8000DB320D /* BeautifulImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD4D18499A8000DB320D /* BeautifulImage.m */; };
 		72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADB1842F84F00BB58E0 /* ImageCell.m */; };
 		72795AE01843274700BB58E0 /* DPNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADF1843274700BB58E0 /* DPNetManager.m */; };
 		72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */; };
@@ -768,6 +769,8 @@
 		721E361418483A52002FCA77 /* DPBusinessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPBusinessViewController.m; sourceTree = "<group>"; };
 		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
+		726BDD4C18499A8000DB320D /* BeautifulImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeautifulImage.h; sourceTree = "<group>"; };
+		726BDD4D18499A8000DB320D /* BeautifulImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeautifulImage.m; sourceTree = "<group>"; };
 		72795ADA1842F84F00BB58E0 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
 		72795ADB1842F84F00BB58E0 /* ImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
 		72795ADE1843274700BB58E0 /* DPNetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPNetManager.h; sourceTree = "<group>"; };
@@ -2016,6 +2019,8 @@
 				72795B0F1844502600BB58E0 /* PinterestViewController.m */,
 				72795B481844512300BB58E0 /* BeautifulImageCell.h */,
 				72795B491844512300BB58E0 /* BeautifulImageCell.m */,
+				726BDD4C18499A8000DB320D /* BeautifulImage.h */,
+				726BDD4D18499A8000DB320D /* BeautifulImage.m */,
 				72795B041844500F00BB58E0 /* TMQuiltView */,
 			);
 			name = BeautifulImage;
@@ -4805,6 +4810,7 @@
 				72795AE01843274700BB58E0 /* DPNetManager.m in Sources */,
 				9736BB4317C489C6007DFE36 /* NSXMLElement+XMPP.m in Sources */,
 				9736BB5817C489CE007DFE36 /* XMPPElement.m in Sources */,
+				726BDD4E18499A8000DB320D /* BeautifulImage.m in Sources */,
 				97A93DCC182CBC1D00D571A5 /* FastTextView.m in Sources */,
 				721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */,
 				9765D7A8181BC8E70021B36F /* BHExpandingTextViewInternal.m in Sources */,

@@ -24,6 +24,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.businessImageView = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"dianping.png"]];
         _businessImageView.frame = CGRectMake(10, 10, 118.828 , 85.488);
         [self.contentView addSubview:_businessImageView];
