@@ -21,6 +21,7 @@
         // Custom initialization
         petTypeArray = [[NSArray alloc]initWithObjects:@"狗狗",@"猫咪",@"其他" ,nil];
         self.petTypeDict = [NSDictionary dictionaryWithObjectsAndKeys:[XMLMatcher allDogs],petTypeArray[0],[XMLMatcher allCats],petTypeArray[1],[XMLMatcher allother],petTypeArray[2], nil];
+        self.getPetTypeDict = [NSMutableDictionary dictionary];
 //        self.petBreedArray = [XMLMatcher allDogs];
     }
     return self;
@@ -64,7 +65,61 @@
     self.categoryTableV.dataSource = self;
     self.categoryTableV.backgroundView = nil;
     [self.view addSubview:self.categoryTableV];
+    
+    [self getRootPetKnowledge];
 	// Do any additional setup after loading the view.
+}
+-(void)getRootPetKnowledge
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:@"0" forKey:@"pageNo"];
+    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:@"" forKey:@"pid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getEncyList" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_ency" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"petKnowledge:%@",responseObject);
+        NSArray * typeA = [responseObject objectForKey:@"data"];
+        NSMutableArray * typeAA = [NSMutableArray array];
+        for (NSDictionary * dict in typeA) {
+            [typeAA addObject:[dict objectForKey:@"name"]];
+            [self getChildByPid:dict];
+        }
+        petTypeArray = typeAA;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
+}
+-(void)getChildByPid:(NSDictionary *)pid
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:@"0" forKey:@"pageNo"];
+    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:[pid objectForKey:@"id"] forKey:@"pid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getEncyList" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_ency" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"petKnowledge:%@",responseObject);
+        [self.getPetTypeDict setObject:[responseObject objectForKey:@"data"] forKey:[pid objectForKey:@"name"]];
+        [self.categoryTableV reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 -(void)backButton
 {
@@ -74,7 +129,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.tableType==TableTypePetCategory) {
-        return self.petTypeDict.count;
+        return self.getPetTypeDict.count;
     }
     else if(self.tableType==TableTypePetExperience ){
         return 1;
@@ -85,7 +140,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.tableType==TableTypePetCategory) {
-        return [[self.petTypeDict objectForKey:[petTypeArray objectAtIndex:section]] count];
+        return [[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:section]] count];
     }
     else if(self.tableType==TableTypePetExperience ){
         return self.petTypeDict.count;
@@ -104,7 +159,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if (self.tableType==TableTypePetCategory) {
-        cell.textLabel.text = [[self.petTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [[[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"name"];
     }
     else
         cell.textLabel.text = petTypeArray[indexPath.row];
@@ -121,12 +176,12 @@
     {
         ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
         cv.contentType = contentTypeWebView;
-        UITableViewCell * ddd = [tableView cellForRowAtIndexPath:indexPath];
-        NSString * namePet = ddd.textLabel.text;
-        if ([namePet isEqualToString:@"贵宾/泰迪"]) {
-            namePet = @"泰迪犬";
-        }
-        NSString * sss = [NSString stringWithFormat:@"http://baike.baidu.com/searchword/?word=%@&pic=1&sug=1&enc=utf-8",namePet];
+//        UITableViewCell * ddd = [tableView cellForRowAtIndexPath:indexPath];
+//        NSString * namePet = ddd.textLabel.text;
+//        if ([namePet isEqualToString:@"贵宾/泰迪"]) {
+//            namePet = @"泰迪犬";
+//        }
+        NSString * sss = [[[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"info"];
         cv.addressURL = [NSURL URLWithString:[sss stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [self.navigationController pushViewController:cv animated:YES];
     }

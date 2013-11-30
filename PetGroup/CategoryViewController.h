@@ -19,8 +19,10 @@ typedef  enum
 @interface CategoryViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray * petTypeArray;
+    NSMutableArray * getPetTypeArray;
 }
 @property (nonatomic,strong) NSDictionary * petTypeDict;
+@property (nonatomic,strong) NSMutableDictionary * getPetTypeDict;
 @property (nonatomic,strong) UITableView * categoryTableV;
 @property (assign,nonatomic) TableType tableType;
 @end
