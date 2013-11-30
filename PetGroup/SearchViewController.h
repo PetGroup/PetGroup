@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef  enum
+{
+    searchTypeNew = 0,
+    searchTypeEute,
+    searchTypeInCircle
+}SearchType;
 @interface SearchViewController : UIViewController<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     UILabel * noResultLabel;
 }
 @property (nonatomic,retain)NSString* forumPid;
+@property (nonatomic,assign)SearchType searchType;
 @end

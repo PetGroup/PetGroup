@@ -408,7 +408,7 @@
     if (self.presentDS == _myDynamicDS) {
        return [PersonalDynamicCell heightForRowWithDynamic:self.presentDS.dataSourceArray[indexPath.row]];
     }
-    return 100;
+    return 85;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -431,6 +431,12 @@
     if (_presentDS == _myReplNOteDS) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_myReplNOteDS.dataSourceArray[indexPath.row]).articleID;
+        free = NO;
+        [self.navigationController pushViewController:articleVC animated:YES];
+    }
+    if (_presentDS == _myNoteDS) {
+        ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+        articleVC.articleID = ((Article*)_myNoteDS.dataSourceArray[indexPath.row]).articleID;
         free = NO;
         [self.navigationController pushViewController:articleVC animated:YES];
     }

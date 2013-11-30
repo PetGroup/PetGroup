@@ -133,7 +133,18 @@
     [params setObject:self.notename forKey:@"condition"];
     [params setObject:@"SEARCH" forKey:@"action"];
     [params setObject:@"false" forKey:@"withTop"];
-    [params setObject:self.forumPid forKey:@"forumId"];
+    if (self.searchType==searchTypeInCircle) {
+        [params setObject:self.forumPid forKey:@"forumId"];
+    }
+    else if(self.searchType==searchTypeNew){
+        [params setObject:@"0" forKey:@"forumId"];
+        [params setObject:@"" forKey:@"conditionScope"];
+    }
+    else
+    {
+        [params setObject:@"0" forKey:@"forumId"];
+        [params setObject:@"EUTE" forKey:@"conditionScope"];
+    }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];

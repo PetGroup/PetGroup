@@ -39,7 +39,7 @@
     NSMutableArray * tagPositionArray;
 //    FastTextView *_dynamicTV;
 }
-@property (nonatomic,strong)UITextField* titleTF;
+@property (nonatomic,strong)UITextView* titleTF;
 @property (nonatomic,strong)FastTextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
 @property (nonatomic,strong)NSMutableArray* pictureArray;
@@ -142,12 +142,18 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(22.75, 63.75+diffH, 272.5, 20)];
-    _titleTF.placeholder = @"标题";
-    _titleTF.backgroundColor = [UIColor clearColor];
-    _titleTF.delegate = self;
-    [self.view addSubview:_titleTF];
-    [_titleTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    self.titleTF = [[UITextField alloc]initWithFrame:CGRectMake(22.75, 63.75+diffH, 272.5, 20)];
+//    _titleTF.placeholder = @"标题";
+//    _titleTF.backgroundColor = [UIColor clearColor];
+//    _titleTF.delegate = self;
+//    [self.view addSubview:_titleTF];
+//    [_titleTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    self.titleTF = [[UITextView alloc]initWithFrame:CGRectMake(22.75, 58.75+diffH, 272.5, 30)];
+    self.titleTF.backgroundColor = [UIColor clearColor];
+    self.titleTF.font = [UIFont systemFontOfSize:16];
+    self.titleTF.delegate = self;
+    [self.view addSubview:self.titleTF];
     
     self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
 //    _dynamicTV.backgroundColor = [UIColor clearColor];
@@ -576,6 +582,17 @@
     if (textField.text.length>2&&[[Emoji allEmoji] containsObject:[textField.text substringFromIndex:textField.text.length-2]]) {
         textField.text = [textField.text substringToIndex:textField.text.length-2];
     }
+}
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
+        textView.text = [textView.text substringToIndex:textView.text.length-2];
+    }
+    if (textView.text.length>40)
+    {
+        textView.text=[textView.text substringToIndex:40];
+    }
+    return YES;
 }
 #pragma mark - text view delegate
 - (void)textViewDidChange:(UITextView *)textView

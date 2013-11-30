@@ -163,7 +163,7 @@
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
-    _tableV.rowHeight = 100;
+    _tableV.rowHeight = 85;
     _tableV.tableHeaderView = headView;
     [self.view addSubview:_tableV];
     
@@ -440,6 +440,7 @@
     [self screen];
     free = NO;
     SearchViewController* searchVC = [[SearchViewController alloc]init];
+    searchVC.searchType = searchTypeInCircle;
     searchVC.forumPid = self.circleEntity.circleID;
     [self.navigationController pushViewController:searchVC animated:YES];
 }

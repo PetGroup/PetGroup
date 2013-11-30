@@ -145,7 +145,7 @@
     [self.view addSubview:_backGroundV];
     
     self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, 320, self.view.frame.size.height-124.5-diffH)];
-    _hotPintsV.rowHeight = 100;
+    _hotPintsV.rowHeight = 85;
     _hotPintsV.delegate = self;
     [_backGroundV addSubview:_hotPintsV];
     
@@ -155,7 +155,7 @@
     [self reloadHotPintsData];
     
     self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-124.5-diffH)];
-    _goodV.rowHeight = 100;
+    _goodV.rowHeight = 85;
     _goodV.delegate = self;
     [_backGroundV addSubview:_goodV];
     
@@ -546,9 +546,19 @@
 #pragma mark - searchBar
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    SearchViewController* searchVC = [[SearchViewController alloc]init];
-    [self.navigationController pushViewController:searchVC animated:YES];
-    [self.customTabBarController hidesTabBar:YES animated:YES];
+    if (searchBar==self.hotPintsSearchBar) {
+        SearchViewController* searchVC = [[SearchViewController alloc]init];
+        searchVC.searchType = searchTypeNew;
+        [self.navigationController pushViewController:searchVC animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
+    else if (searchBar==self.goodSearchBar){
+        SearchViewController* searchVC = [[SearchViewController alloc]init];
+        searchVC.searchType = searchTypeEute;
+        [self.navigationController pushViewController:searchVC animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+    }
+
     return NO;
 }
 #pragma mark - xmpp delegate

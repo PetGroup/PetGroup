@@ -19,6 +19,7 @@
     [params setObject:@"SEARCH" forKey:@"action"];
     [params setObject:@"false" forKey:@"withTop"];
     [params setObject:@"0" forKey:@"forumId"];
+    [params setObject:@"ALL" forKey:@"conditionScope"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"I_REPLY" forKey:@"conditionType"];
     [params setObject:@"20" forKey:@"pageSize"];
@@ -56,6 +57,7 @@
     [params setObject:@"SEARCH" forKey:@"action"];
     [params setObject:@"false" forKey:@"withTop"];
     [params setObject:@"0" forKey:@"forumId"];
+    [params setObject:@"ALL" forKey:@"conditionScope"];
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     [params setObject:@"I_REPLY" forKey:@"conditionType"];
