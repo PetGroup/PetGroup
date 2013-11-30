@@ -12,6 +12,8 @@
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		726BDD4E18499A8000DB320D /* BeautifulImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD4D18499A8000DB320D /* BeautifulImage.m */; };
+		726BDD511849B8C900DB320D /* DPReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD501849B8C900DB320D /* DPReplyCell.m */; };
+		726BDD541849BA5D00DB320D /* DPReply.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD531849BA5D00DB320D /* DPReply.m */; };
 		72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADB1842F84F00BB58E0 /* ImageCell.m */; };
 		72795AE01843274700BB58E0 /* DPNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADF1843274700BB58E0 /* DPNetManager.m */; };
 		72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */; };
@@ -771,6 +773,10 @@
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
 		726BDD4C18499A8000DB320D /* BeautifulImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeautifulImage.h; sourceTree = "<group>"; };
 		726BDD4D18499A8000DB320D /* BeautifulImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeautifulImage.m; sourceTree = "<group>"; };
+		726BDD4F1849B8C900DB320D /* DPReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPReplyCell.h; sourceTree = "<group>"; };
+		726BDD501849B8C900DB320D /* DPReplyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPReplyCell.m; sourceTree = "<group>"; };
+		726BDD521849BA5D00DB320D /* DPReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPReply.h; sourceTree = "<group>"; };
+		726BDD531849BA5D00DB320D /* DPReply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPReply.m; sourceTree = "<group>"; };
 		72795ADA1842F84F00BB58E0 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
 		72795ADB1842F84F00BB58E0 /* ImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
 		72795ADE1843274700BB58E0 /* DPNetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPNetManager.h; sourceTree = "<group>"; };
@@ -1973,6 +1979,8 @@
 			children = (
 				72795AE9184347EB00BB58E0 /* Business.h */,
 				72795AEA184347EB00BB58E0 /* Business.m */,
+				726BDD521849BA5D00DB320D /* DPReply.h */,
+				726BDD531849BA5D00DB320D /* DPReply.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1982,6 +1990,8 @@
 			children = (
 				72795AEC184432B400BB58E0 /* BusinessCell.h */,
 				72795AED184432B400BB58E0 /* BusinessCell.m */,
+				726BDD4F1849B8C900DB320D /* DPReplyCell.h */,
+				726BDD501849B8C900DB320D /* DPReplyCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -3673,8 +3683,8 @@
 				97E25BE717C33E8E007E187D /* Views */,
 				865FDD53180942F2005BB088 /* DataSource */,
 				97E25BE617C329A5007E187D /* Helper */,
-				979546C717BA368F00D05874 /* AppDelegate.m */,
 				979546C617BA368F00D05874 /* AppDelegate.h */,
+				979546C717BA368F00D05874 /* AppDelegate.m */,
 				979546BE17BA368F00D05874 /* Supporting Files */,
 			);
 			path = PetGroup;
@@ -4839,6 +4849,7 @@
 				9736BC4417C489F2007DFE36 /* XMPPRoster.m in Sources */,
 				9736BC4517C489F2007DFE36 /* XMPPSystemInputActivityMonitor.m in Sources */,
 				9736BC4617C489F2007DFE36 /* XMPPIQ+JabberRPC.m in Sources */,
+				726BDD541849BA5D00DB320D /* DPReply.m in Sources */,
 				9736BC4717C489F2007DFE36 /* XMPPIQ+JabberRPCResonse.m in Sources */,
 				9736BC4817C489F2007DFE36 /* XMPPJabberRPCModule.m in Sources */,
 				9736BC4917C489F2007DFE36 /* XMPPIQ+LastActivity.m in Sources */,
@@ -5024,6 +5035,7 @@
 				86993B5A180B950C00F61A3F /* GoodArticleDataSource.m in Sources */,
 				86993B5D180B953600F61A3F /* NewReplyArticleDataSource.m in Sources */,
 				86993B60180B956900F61A3F /* NewPublishArticleDataSource.m in Sources */,
+				726BDD511849B8C900DB320D /* DPReplyCell.m in Sources */,
 				86993B68180BD7D000F61A3F /* SearchViewController.m in Sources */,
 				86993B6B180BDDDF00F61A3F /* FriendCircleViewController.m in Sources */,
 				86993B70180CD4FC00F61A3F /* CircleViewController.m in Sources */,
@@ -5080,8 +5092,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5097,8 +5109,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5115,8 +5127,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -5125,8 +5137,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5136,8 +5148,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -5149,8 +5161,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5159,8 +5171,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
@@ -5172,8 +5184,8 @@
 					"\"$(SRCROOT)/PetGroup/UMAnalytics\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "A6F1A70C-9D08-4475-9C29-A5B6FD609AD5";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

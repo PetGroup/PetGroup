@@ -14,7 +14,7 @@
     self = [super init];
     if (self) {
         self.imageID = [NSString stringWithString:[dic objectForKey:@"id"]];
-        self.totalCount = [[dic objectForKey:@"totalCount"] intValue];
+        self.totalCount = [[dic objectForKey:@"totalClick"] intValue];
         self.height = [[dic objectForKey:@"height"] floatValue];
         self.width = [[dic objectForKey:@"width"] floatValue];
     }

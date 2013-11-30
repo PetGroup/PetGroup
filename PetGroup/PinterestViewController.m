@@ -124,9 +124,9 @@
     {
         cell = [[BeautifulImageCell alloc] initWithReuseIdentifier:identifierStr];
     }
-    NSString* URLStrng =[NSString stringWithFormat:BaseImageUrl"%@/300",[_imageArray[indexPath.row] objectForKey:@"id"]];
+    NSString* URLStrng =[NSString stringWithFormat:BaseImageUrl"%@/300",((BeautifulImage*)_imageArray[indexPath.row]).imageID];
     cell.imageView.imageURL = [NSURL URLWithString:URLStrng];
-    cell.titleL.text = @"1234";
+    cell.titleL.text = [NSString stringWithFormat:@"%d",((BeautifulImage*)_imageArray[indexPath.row]).totalCount];
     cell.indexPath = indexPath;
     cell.delegate = self;
     return cell;
@@ -141,18 +141,37 @@
 //单元高度
 - (CGFloat)quiltView:(TMQuiltView *)quiltView heightForCellAtIndexPath:(NSIndexPath *)indexPath {
     
-    float height = ([[_imageArray[indexPath.row] objectForKey:@"height"] floatValue] / [[_imageArray[indexPath.row] objectForKey:@"width"] floatValue])*152.5;
+    float height = (((BeautifulImage*)_imageArray[indexPath.row]).height /((BeautifulImage*)_imageArray[indexPath.row]).width)*152.5;
     return height;
 }
 - (void)quiltView:(TMQuiltView *)quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
     free = NO;
-    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[[_imageArray[indexPath.row] objectForKey:@"id"]] indext:indexPath.row];
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[((BeautifulImage*)_imageArray[indexPath.row]).imageID] indext:indexPath.row];
     [self presentViewController:vc animated:NO completion:nil];
 }
 -(void)beautifulImageCellPressZanButtonAtIndexPath:(NSIndexPath*)indexPath
 {
-    
+    ((BeautifulImage*)_imageArray[indexPath.row]).totalCount++;
+    ((BeautifulImageCell*)[_tmQuiltView cellAtIndexPath:indexPath]).titleL.text = [NSString stringWithFormat:@"%d",((BeautifulImage*)_imageArray[indexPath.row]).totalCount];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:((BeautifulImage*)_imageArray[indexPath.row]).imageID forKey:@"id"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_albums" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"clickPublicPhotos" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 #pragma mark - load
 -(void)reloadData
@@ -178,7 +197,10 @@
         [self.imageArray removeAllObjects];
         if (array.count>0) {
             self.pageNo++;
-            [self.imageArray addObjectsFromArray:array];
+            for (NSDictionary* dic in array) {
+                BeautifulImage* image = [[BeautifulImage alloc]initWithNSDictionary:dic];
+                [self.imageArray addObject:image];
+            }
         }
         [self.tmQuiltView reloadData];
         [self.refreshView endRefresh];
@@ -207,7 +229,10 @@
         NSArray*array = [responseObject objectForKey:@"data"];
         if (array.count>0) {
             self.pageNo++;
-            [self.imageArray addObjectsFromArray:array];
+            for (NSDictionary* dic in array) {
+                BeautifulImage* image = [[BeautifulImage alloc]initWithNSDictionary:dic];
+                [self.imageArray addObject:image];
+            }
         }
         [self.tmQuiltView reloadData];
         [self.footer endRefreshing];
