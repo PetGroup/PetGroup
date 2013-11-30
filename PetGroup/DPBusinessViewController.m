@@ -12,6 +12,9 @@
 #import "EGOImageView.h"
 #import "DPReplyCell.h"
 @interface DPBusinessViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate>
+{
+    float diffH;
+}
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)DPNetManager* netManager;
@@ -35,7 +38,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     self.view.backgroundColor = [UIColor whiteColor];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
@@ -58,6 +61,8 @@
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
     _tableV.delegate = self;
     _tableV.dataSource = self;
+    _tableV.backgroundView = nil;
+    
     [self.view addSubview:_tableV];
     
     [self reloadData];
@@ -113,6 +118,7 @@
                     [cell.contentView addSubview:businessImageView];
                     UILabel*nameLabel=[[UILabel alloc] initWithFrame:CGRectMake(138, 10, 170 , 20)];
                     nameLabel.font=[UIFont boldSystemFontOfSize:16.0];
+                    nameLabel.backgroundColor = [UIColor clearColor];
                     [cell.contentView addSubview:nameLabel];
                     UIImageView*starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 40, 84,16)];
                     [cell.contentView addSubview:starImage];
@@ -167,6 +173,10 @@
                     line.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
                     [cell.contentView addSubview:line];
                     UIButton *telephoneB = [[UIButton alloc]initWithFrame:CGRectMake(270, 10, 50, 20)];
+                    if (!diffH) {
+                        line.frame = CGRectMake(250, 0, 1, 40);
+                        telephoneB.frame = CGRectMake(250, 10, 50, 20);
+                    }
                     [cell.contentView addSubview:telephoneB];
                     [telephoneB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                     [telephoneB setTitle:@"拨打" forState:UIControlStateNormal];
