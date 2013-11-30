@@ -58,7 +58,7 @@
 
 @property (nonatomic,retain)AttentionDataSource* attentionDS;
 @property (nonatomic,retain)GoodArticleDataSource* goodArticleDS;
-@property (nonatomic,retain)NewPublishArticleDataSource* publishArticleDS;
+@property (nonatomic,retain)NewReplyArticleDataSource* publishArticleDS;
 
 @property (strong,nonatomic) AppDelegate * appDel;
 @end
@@ -149,7 +149,7 @@
     _hotPintsV.delegate = self;
     [_backGroundV addSubview:_hotPintsV];
     
-    self.publishArticleDS = [[NewPublishArticleDataSource alloc]init];
+    self.publishArticleDS = [[NewReplyArticleDataSource alloc]init];
     _hotPintsV.dataSource = _publishArticleDS;
     _publishArticleDS.myController = self;
     [self reloadHotPintsData];
