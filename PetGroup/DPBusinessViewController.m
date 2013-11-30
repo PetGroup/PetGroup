@@ -10,6 +10,7 @@
 #import "TempData.h"
 #import "DPNetManager.h"
 #import "EGOImageView.h"
+#import "DPReplyCell.h"
 @interface DPBusinessViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate>
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
@@ -23,6 +24,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.dataSourceArray = [NSMutableArray array];
     }
     return self;
 }
@@ -73,6 +75,10 @@
     [[TempData sharedInstance] Panned:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)callPhoneNo
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.business.telephone]]];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -104,9 +110,9 @@
                     businessImageView.frame = CGRectMake(10, 10, 118.828 , 85.488);
                     [cell.contentView addSubview:businessImageView];
                     UILabel*nameLabel=[[UILabel alloc] initWithFrame:CGRectMake(138, 10, 170 , 20)];
-                    nameLabel.font=[UIFont boldSystemFontOfSize:14.0];
+                    nameLabel.font=[UIFont boldSystemFontOfSize:16.0];
                     [cell.contentView addSubview:nameLabel];
-                    UIImageView*starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 33, 84,16)];
+                    UIImageView*starImage = [[UIImageView alloc]initWithFrame:CGRectMake(138, 40, 84,16)];
                     [cell.contentView addSubview:starImage];
                     businessImageView.imageURL = self.business.sPhotoURL;
                     nameLabel.text = self.business.name;
@@ -142,7 +148,7 @@
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:addressCellIdentifier];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.font = [UIFont systemFontOfSize:12];
+                    cell.textLabel.font = [UIFont systemFontOfSize:14];
                     cell.textLabel.text = self.business.adress;
                 }
                 return cell;
@@ -153,8 +159,16 @@
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:phoneCellIdentifier];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.font = [UIFont systemFontOfSize:12];
+                    cell.textLabel.font = [UIFont systemFontOfSize:14];
                     cell.textLabel.text = self.business.telephone;
+                    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(270, 0, 1, 40)];
+                    line.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+                    [cell.contentView addSubview:line];
+                    UIButton *telephoneB = [[UIButton alloc]initWithFrame:CGRectMake(270, 10, 50, 20)];
+                    [cell.contentView addSubview:telephoneB];
+                    [telephoneB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                    [telephoneB setTitle:@"拨打" forState:UIControlStateNormal];
+                    [telephoneB addTarget:self action:@selector(callPhoneNo) forControlEvents:UIControlEventTouchUpInside];
                 }
                 return cell;
             }break;
@@ -163,12 +177,12 @@
         }
     }
     static NSString *cellIdentifier = @"cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    DPReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[DPReplyCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-//    cell.business = self.dataSourceArray[indexPath.row];
+    cell.reply = self.dataSourceArray[indexPath.row];
     return cell;
 }
 #pragma mark - Table view delegate
@@ -194,13 +208,18 @@
                 break;
         }
     }
-    return 100;
+    return [DPReplyCell heightForRowWithDynamic:self.dataSourceArray[indexPath.row]];
 }
 #pragma mark - DPNetManager Delegate
 -(void)DPNetManagerDidFinishLoading:(NSArray*)array
 {
-    self.dataSourceArray = [NSMutableArray arrayWithArray:array];
-    [self.tableV reloadData];
+    if (array.count>0) {
+        for (NSDictionary* dic in array) {
+            DPReply* reply = [[DPReply alloc]initWithNSDictionary:dic];
+            [_dataSourceArray addObject:reply];
+        }
+         [self.tableV reloadData];
+    }
 }
 -(void)DPNetManagerdidFailWithError:(NSError *)error
 {
