@@ -104,7 +104,8 @@
 
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
-    tabIV.image = [UIImage imageNamed:@"biaotidd"];
+//    tabIV.image = [UIImage imageNamed:@"biaotidd"];
+    tabIV.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
 //    [UIImage imageNamed:@"table_bg"];
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
@@ -145,7 +146,7 @@
     [self.view addSubview:_backGroundV];
     
     self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, 320, self.view.frame.size.height-124.5-diffH)];
-    _hotPintsV.rowHeight = 85;
+    _hotPintsV.rowHeight = 80;
     _hotPintsV.delegate = self;
     [_backGroundV addSubview:_hotPintsV];
     
@@ -155,7 +156,7 @@
     [self reloadHotPintsData];
     
     self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-124.5-diffH)];
-    _goodV.rowHeight = 85;
+    _goodV.rowHeight = 80;
     _goodV.delegate = self;
     [_backGroundV addSubview:_goodV];
     

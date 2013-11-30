@@ -28,40 +28,42 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         // Initialization code
-        self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 45, 45)];
+        self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 38, 38)];
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
+        self.headPhote.layer.cornerRadius = 5;
+        self.headPhote.layer.masksToBounds=YES;
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 60, 50, 20)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 52, 50, 20)];
         _nameL.font = [UIFont systemFontOfSize:14];
         _nameL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_nameL];
         
-        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(65, 10, 228, 20)];
+        self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 228, 20)];
         _titleL.numberOfLines = 0;
         _titleL.font = [UIFont systemFontOfSize:16];
 //        _titleL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_titleL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(65, 60, 100, 20)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(65, 52, 100, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
-        _timeL.textColor = [UIColor grayColor];
+        _timeL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_timeL];
         
-        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 65, 16, 10)];
+        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 57, 16, 10)];
         readI.image = [UIImage imageNamed:@"guanzhu"];
         [self.contentView addSubview:readI];
         
-        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 60, 70, 20)];
+        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 52, 70, 20)];
         _readL.font = [UIFont systemFontOfSize:14];
         _readL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_readL];
         
-        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 65, 16, 10)];
+        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 57, 16, 10)];
         replyI.image = [UIImage imageNamed:@"huifu"];
         [self.contentView addSubview:replyI];
         
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 60, 50, 20)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 52, 50, 20)];
         _replyL.font = [UIFont systemFontOfSize:14];
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
@@ -91,7 +93,7 @@
     _headPhote.imageURL = [NSURL URLWithString: [NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
     _nameL.text = self.article.userName;
     CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(228, 50) lineBreakMode:NSLineBreakByWordWrapping];
-    _titleL.frame = CGRectMake(65, 10, 228, size.height);
+    _titleL.frame = CGRectMake(60, 10, 228, size.height);
     _titleL.text = self.article.name;
     _timeL.text = self.article.ct;
     _readL.text = self.article.clientCount;
