@@ -13,6 +13,7 @@
 #import "MJRefresh.h"
 #import "SRRefreshView.h"
 #import "PhotoViewController.h"
+#import "BeautifulImage.h"
 @interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     BOOL free;
