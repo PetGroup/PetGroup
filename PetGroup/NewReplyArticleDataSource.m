@@ -17,7 +17,9 @@
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:@"NEW_ET" forKey:@"action"];
     [params setObject:@"false" forKey:@"withTop"];
-    [params setObject:self.forumPid forKey:@"forumId"];
+    if (![self.forumPid isEqualToString:@"0"]) {
+        [params setObject:self.forumPid forKey:@"forumId"];
+    }
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
@@ -52,7 +54,10 @@
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setObject:@"NEW_ET" forKey:@"action"];
     [params setObject:@"false" forKey:@"withTop"];
-    [params setObject:self.forumPid forKey:@"forumId"];
+    if (![self.forumPid isEqualToString:@"0"]) {
+        [params setObject:self.forumPid forKey:@"forumId"];
+    }
+    
     [params setObject:[NSString stringWithFormat:@"%d",self.pageNo] forKey:@"pageNo"];
     [params setObject:@"20" forKey:@"pageSize"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
