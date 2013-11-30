@@ -61,6 +61,7 @@
 }
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     _businessImageView.imageURL = self.business.sPhotoURL;
     _nameLabel.text = self.business.name;
     if (self.business.avgRating==0) {

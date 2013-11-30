@@ -24,11 +24,13 @@
     if (self) {
         // Initialization code
         self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
+        _nameL.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:_nameL];
         self.starV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 30,  84,16)];
         [self.contentView addSubview:_starV];
         self.excerptL = [[UILabel alloc]init];
         _excerptL.font = [UIFont systemFontOfSize:14];
+        _excerptL.backgroundColor = [UIColor clearColor];
         _excerptL.numberOfLines = 0;
         [self.contentView addSubview:_excerptL];
     }
@@ -43,6 +45,7 @@
 }
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     _nameL.text = self.reply.nickname;
     if (self.reply.rating==0) {
         _starV.image = [UIImage imageNamed:@"star_16_0.png"];
@@ -70,5 +73,10 @@
     CGSize size = [self.reply.excerpt sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(300, 200) lineBreakMode:NSLineBreakByWordWrapping];
     _excerptL.frame = CGRectMake(10, 50, 300, size.height);
     _excerptL.text = self.reply.excerpt;
+    if (self.contentView.frame.size.width<320) {
+        _nameL.frame = CGRectMake(0, 5, 300, 20);
+        _starV.frame = CGRectMake(0, 30,  84,16);
+        _excerptL.frame = CGRectMake(0, 50, 300, size.height);
+    }
 }
 @end

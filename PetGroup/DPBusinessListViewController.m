@@ -170,6 +170,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     free = NO;
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     DPBusinessViewController*businessVC = [[DPBusinessViewController alloc]init];
     businessVC.business = self.dataSourceArray[indexPath.row];
     [self.navigationController pushViewController:businessVC animated:YES];
