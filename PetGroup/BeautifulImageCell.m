@@ -41,7 +41,7 @@ const CGFloat kTMPhotoQuiltViewMargin = 0;
 - (void)layoutSubviews {
     self.imageView.frame = CGRectInset(self.bounds, kTMPhotoQuiltViewMargin, kTMPhotoQuiltViewMargin);
     CGSize size = [_titleL.text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(150, 20) lineBreakMode:NSLineBreakByWordWrapping];
-    self.titleL.frame = CGRectMake(30 ,self.frame.size.height-size.height-3,size.width,size.height);
+    self.titleL.frame = CGRectMake(30 ,self.frame.size.height-size.height-3,100,size.height);
     zanB.frame = CGRectMake(0, _titleL.frame.origin.y- 10, 30, 30);
     _bottenV.frame = CGRectMake(kTMPhotoQuiltViewMargin, self.bounds.size.height - 30 - kTMPhotoQuiltViewMargin,self.bounds.size.width - 2 * kTMPhotoQuiltViewMargin, 30);
 }
