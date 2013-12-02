@@ -150,7 +150,6 @@
 {
     [_scrollView removeObserver:self forKeyPath:@"contentOffset" context:nil];
 }
-
 #pragma mark 监听UIScrollView的contentOffset属性
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {

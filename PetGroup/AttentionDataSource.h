@@ -7,9 +7,11 @@
 //
 
 #import "DataSource.h"
+#import "CircleCell.h"
+
 @interface AttentionDataSource : DataSource<UITableViewDataSource>
 @property (nonatomic,retain)NSMutableArray* dynamicArray;
-@property (nonatomic,assign)UIViewController<UITableViewDelegate>* myController;
+@property (nonatomic,assign)UIViewController<CircleCellDelegate>* myController;
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
 -(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end
