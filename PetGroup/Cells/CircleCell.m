@@ -24,6 +24,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(5, 5, 70, 70)];
         self.imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
@@ -52,6 +53,7 @@
         
         self.joinB = [UIButton buttonWithType:UIButtonTypeCustom];
         _joinB.frame = CGRectMake(280, 60, 40, 20);
+        [_joinB addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
         [_joinB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.contentView addSubview:_joinB];
     }
@@ -77,5 +79,10 @@
       }else{
         [_joinB setTitle:@"退出" forState:UIControlStateNormal];
       }
+}
+-(void)joinAction{
+    if (self.delegate&& [_delegate respondsToSelector:@selector(circleCellPressJoinBWithIndexPath:)]) {
+        [self.delegate circleCellPressJoinBWithIndexPath:self.indexPath];
+    }
 }
 @end

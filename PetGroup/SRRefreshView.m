@@ -14,8 +14,7 @@
 @interface SRRefreshView()
 
 @property (nonatomic, assign)   BOOL    broken;
-@property (nonatomic, strong)   UIScrollView    *scrollView;
-
+@property (nonatomic, weak)   UIScrollView    *scrollView;
 @end
 
 @implementation SRRefreshView {
@@ -32,9 +31,6 @@
 @synthesize slimeMissWhenGoingBack = _slimeMissWhenGoingBack;
 @synthesize activityIndicationView = _activityIndicatorView;
 
-- (void)dealloc
-{
-}
 
 - (id)initWithFrame:(CGRect)frame
 {

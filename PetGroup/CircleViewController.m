@@ -26,10 +26,10 @@
 #import "XMPPHelper.h"
 #import "CircleFooterView.h"
 #import "MJRefresh.h"
-
+#import "CircleCell.h"
 #define sectionFooterHeight 30
 
-@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate>
+@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate,CircleCellDelegate>
 {
     UIButton* attentionB;
     UIButton* hotPintsB;
@@ -312,11 +312,73 @@
 #pragma mark - onceCircleViewController delegate
 -(void)joinOneCircle:(CircleEntity*)circleEntity
 {
-    
+    [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray addObject:circleEntity];
+    [self.attentionV reloadData];
 }
 -(void)quitOneCircle:(CircleEntity*)circleEntity
 {
-    
+    if ([((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray containsObject:circleEntity]) {
+        [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray removeObject:circleEntity];
+        [self.attentionV reloadData];
+        return;
+    }
+    NSArray* array = [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray mutableCopy];
+    for (CircleEntity* cir  in array) {
+        if (cir.circleID == circleEntity.circleID) {
+            [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray removeObject:cir];
+            [self.attentionV reloadData];
+            break;
+        }
+    }
+}
+#pragma mark - circle cell delegate
+-(void)circleCellPressJoinBWithIndexPath:(NSIndexPath*)indexPath
+{
+    CircleEntity* circle = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
+    circle.atte = !circle.atte;
+    if (circle.atte) {
+        [self joinOneCircle:circle];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:circle.circleID forKey:@"forumId"];
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"attentionForum" forKey:@"method"];
+        [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }else{
+        [self quitOneCircle:circle];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:circle.circleID forKey:@"forumId"];
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+        [body setObject:@"quitForum" forKey:@"method"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
 }
 #pragma mark - table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

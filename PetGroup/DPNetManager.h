@@ -18,7 +18,7 @@
 @end
 @interface DPNetManager : NSObject
 @property(nonatomic,retain)NSString*URlString;
-@property(nonatomic,assign)id<DPNetManagerDelegate>delegate;
+@property(nonatomic,weak)id<DPNetManagerDelegate>delegate;
 
 -(id)initWithURL:(NSString*)URL delegate:(id<DPNetManagerDelegate>)delegate;
 -(void) startUpdateData;

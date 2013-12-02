@@ -21,6 +21,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleGray;
         UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 70, 70)];
         imageV.image = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:imageV];

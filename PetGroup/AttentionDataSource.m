@@ -8,7 +8,6 @@
 
 #import "AttentionDataSource.h"
 #import "Dynamic.h"
-#import "CircleCell.h"
 #import "FriendCircleCell.h"
 #import "CircleClassify.h"
 #import "TempData.h"
@@ -162,6 +161,8 @@
         }
         cell.circle = ((CircleClassify*)self.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
         cell.joinB.hidden = NO;
+        cell.indexPath = indexPath;
+        cell.delegate = self.myController;
         return cell;
     }
     
