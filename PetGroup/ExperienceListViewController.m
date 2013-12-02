@@ -55,15 +55,42 @@
     self.listTableV.dataSource = self;
     self.listTableV.backgroundView = nil;
     [self.view addSubview:self.listTableV];
+    
+    [self getChildList];
 	// Do any additional setup after loading the view.
 }
+-(void)getChildList
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:@"0" forKey:@"pageNo"];
+    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:self.rootID forKey:@"pid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getExperList" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_exper" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"petKnowledge:%@",responseObject);
+        self.listArray = [responseObject objectForKey:@"data"];
+        [self.listTableV reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return self.listArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -75,7 +102,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = @"All of These are Pet Experiences.";
+    cell.textLabel.text = [[self.listArray objectAtIndex:indexPath.row] objectForKey:@"name"];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,7 +110,7 @@
 
     ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
     cv.contentType = contentTypeTextView;
-    cv.articleID = @"D9ED9F4B573E4F9DAA3649EAEE159B1A";
+    cv.articleID = [[self.listArray objectAtIndex:indexPath.row] objectForKey:@"id"];
     [self.navigationController pushViewController:cv animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

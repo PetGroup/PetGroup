@@ -63,6 +63,7 @@
         _textView = [[DTAttributedTextView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
         _textView.shouldDrawImages = NO;
         _textView.shouldDrawLinks = NO;
+        _textView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         _textView.textDelegate = self;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [_textView addGestureRecognizer:tap];
@@ -96,11 +97,11 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:theID forKey:@"noteId"];
+    [params setObject:theID forKey:@"id"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getNoteById" forKey:@"method"];
-    [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+    [body setObject:@"getExperById" forKey:@"method"];
+    [body setObject:@"service.uri.pet_exper" forKey:@"service"];
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
@@ -108,7 +109,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"content"]];
+        _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];

@@ -19,6 +19,7 @@ typedef  enum
 @interface CategoryViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray * petTypeArray;
+    
     NSMutableArray * getPetTypeArray;
 }
 @property (nonatomic,strong) NSDictionary * petTypeDict;

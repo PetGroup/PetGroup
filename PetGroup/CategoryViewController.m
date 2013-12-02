@@ -51,9 +51,12 @@
     titleLabel.backgroundColor=[UIColor clearColor];
     if (self.tableType==TableTypePetCategory) {
         [titleLabel setText:@"宠物品种"];
+        [self getRootPetKnowledge];
     }
     else if (self.tableType==TableTypePetExperience){
+        petTypeArray = [NSArray array];
         [titleLabel setText:@"养宠经验"];
+        [self getRootPetExperience];
     }
     
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -66,7 +69,7 @@
     self.categoryTableV.backgroundView = nil;
     [self.view addSubview:self.categoryTableV];
     
-    [self getRootPetKnowledge];
+    
 	// Do any additional setup after loading the view.
 }
 -(void)getRootPetKnowledge
@@ -98,6 +101,37 @@
     }];
 
 }
+-(void)getRootPetExperience
+{
+    NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [locationDict setObject:@"0" forKey:@"pageNo"];
+    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:@"" forKey:@"pid"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getExperList" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_exper" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:locationDict forKey:@"params"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"petKnowledge:%@",responseObject);
+        petTypeArray = [responseObject objectForKey:@"data"];
+        [self.categoryTableV reloadData];
+//        NSMutableArray * typeAA = [NSMutableArray array];
+//        for (NSDictionary * dict in typeA) {
+//            [typeAA addObject:[dict objectForKey:@"name"]];
+//            [self getChildByPid:dict];
+//        }
+//        petTypeArray = typeAA;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+
 -(void)getChildByPid:(NSDictionary *)pid
 {
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
@@ -143,7 +177,7 @@
         return [[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:section]] count];
     }
     else if(self.tableType==TableTypePetExperience ){
-        return self.petTypeDict.count;
+        return petTypeArray.count;
     }
     else
         return 0;
@@ -162,7 +196,7 @@
         cell.textLabel.text = [[[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"name"];
     }
     else
-        cell.textLabel.text = petTypeArray[indexPath.row];
+        cell.textLabel.text = [petTypeArray[indexPath.row] objectForKey:@"name"];
     
     return cell;
 }
@@ -170,6 +204,7 @@
 {
     if (self.tableType==TableTypePetExperience) {
         ExperienceListViewController * epV = [[ExperienceListViewController alloc] init];
+        epV.rootID = [petTypeArray[indexPath.row] objectForKey:@"id"];
         [self.navigationController pushViewController:epV animated:YES];
     }
     else

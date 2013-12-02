@@ -11,4 +11,6 @@
 #import "TempData.h"
 @interface ExperienceListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView * listTableV;
+@property (nonatomic,strong) NSString * rootID;
+@property (nonatomic,strong) NSArray * listArray;
 @end
