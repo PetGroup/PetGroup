@@ -19,7 +19,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        petTypeArray = [[NSArray alloc]initWithObjects:@"狗狗",@"猫咪",@"其他" ,nil];
+        petTypeArray = [NSArray arrayWithObjects:@"1",@"2",@"3",@"4", nil];
         self.petTypeDict = [NSDictionary dictionaryWithObjectsAndKeys:[XMLMatcher allDogs],petTypeArray[0],[XMLMatcher allCats],petTypeArray[1],[XMLMatcher allother],petTypeArray[2], nil];
         self.getPetTypeDict = [NSMutableDictionary dictionary];
 //        self.petBreedArray = [XMLMatcher allDogs];
@@ -77,7 +77,7 @@
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:@"0" forKey:@"pageNo"];
-    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:@"100" forKey:@"pageSize"];
     [locationDict setObject:@"" forKey:@"pid"];
     [postDict setObject:@"1" forKey:@"channel"];
     [postDict setObject:@"getEncyList" forKey:@"method"];
@@ -91,11 +91,14 @@
         NSLog(@"petKnowledge:%@",responseObject);
         NSArray * typeA = [responseObject objectForKey:@"data"];
         NSMutableArray * typeAA = [NSMutableArray array];
+        
         for (NSDictionary * dict in typeA) {
             [typeAA addObject:[dict objectForKey:@"name"]];
+            
             [self getChildByPid:dict];
         }
         petTypeArray = typeAA;
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -137,7 +140,7 @@
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
     [locationDict setObject:@"0" forKey:@"pageNo"];
-    [locationDict setObject:@"20" forKey:@"pageSize"];
+    [locationDict setObject:@"100" forKey:@"pageSize"];
     [locationDict setObject:[pid objectForKey:@"id"] forKey:@"pid"];
     [postDict setObject:@"1" forKey:@"channel"];
     [postDict setObject:@"getEncyList" forKey:@"method"];
@@ -174,7 +177,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.tableType==TableTypePetCategory) {
-        return [[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:section]] count];
+        NSArray * breedArray = [self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:section]?[petTypeArray objectAtIndex:section]:@" "];
+        if (breedArray) {
+            return [breedArray count];
+        }
+        else
+            return 0;
+        
     }
     else if(self.tableType==TableTypePetExperience ){
         return petTypeArray.count;
@@ -193,7 +202,11 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if (self.tableType==TableTypePetCategory) {
-        cell.textLabel.text = [[[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"name"];
+        NSArray * breedArray = [self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]?[petTypeArray objectAtIndex:indexPath.section]:@" "];
+        if (breedArray) {
+            cell.textLabel.text = [[breedArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+        }
+        
     }
     else
         cell.textLabel.text = [petTypeArray[indexPath.row] objectForKey:@"name"];
