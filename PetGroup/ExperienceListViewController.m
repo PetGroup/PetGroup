@@ -111,6 +111,7 @@
     ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
     cv.contentType = contentTypeTextView;
     cv.articleID = [[self.listArray objectAtIndex:indexPath.row] objectForKey:@"id"];
+    cv.typeName = @"养宠经验";
     [self.navigationController pushViewController:cv animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

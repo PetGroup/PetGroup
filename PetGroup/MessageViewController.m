@@ -822,6 +822,7 @@
 //        self.appDel.xmppHelper.commentDelegate = self;
         titleLabel.text = @"消息";
         [[TempData sharedInstance] setOpened:YES];
+//        [self.appDel.xmppHelper subscribeToServer];
     }fail:^(NSError *result){
         titleLabel.text = @"消息(未连接)"; 
     }];
