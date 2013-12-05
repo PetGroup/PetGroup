@@ -324,7 +324,7 @@
     }
     NSArray* array = [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray mutableCopy];
     for (CircleEntity* cir  in array) {
-        if (cir.circleID == circleEntity.circleID) {
+        if ([cir.circleID isEqualToString:circleEntity.circleID]) {
             [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray removeObject:cir];
             [self.attentionV reloadData];
             break;
