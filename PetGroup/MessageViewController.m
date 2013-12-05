@@ -970,14 +970,14 @@
         allUnread = allUnread+[[allMsgUnreadArray objectAtIndex:i] intValue];
     }
     if (allUnread>0) {
-        [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:1];
+        [self.customTabBarController notificationWithNumber:YES AndTheNumber:allUnread OrDot:NO WithButtonIndex:2];
         if (allUnread>99) {
-            [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:1];
+            [self.customTabBarController notificationWithNumber:YES AndTheNumber:99 OrDot:NO WithButtonIndex:2];
         }
     }
     else
     {
-        [self.customTabBarController removeNotificatonOfIndex:1];
+        [self.customTabBarController removeNotificatonOfIndex:2];
     }
  
 }

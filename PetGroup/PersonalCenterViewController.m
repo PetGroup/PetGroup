@@ -116,7 +116,7 @@
         [[TempData sharedInstance] Panned:YES];
     }
     if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
-        [self.customTabBarController setSelectedPage:1];
+        [self.customTabBarController setSelectedPage:2];
     }
 
 }

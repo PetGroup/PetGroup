@@ -293,6 +293,11 @@
 		9700D3C618502C81003260BC /* tabbar_sel_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3C118502C81003260BC /* tabbar_sel_05.png */; };
 		9700D3C818502D0C003260BC /* topBar1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3C718502D0C003260BC /* topBar1.png */; };
 		9700D3CC1850346A003260BC /* topBar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3CB1850346A003260BC /* topBar2.png */; };
+		9700D3CF18505A51003260BC /* newlogbg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3CD18505A51003260BC /* newlogbg1.png */; };
+		9700D3D018505A51003260BC /* newlogbg2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3CE18505A51003260BC /* newlogbg2.png */; };
+		9700D3D318505B53003260BC /* newloginBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D118505B53003260BC /* newloginBtn.png */; };
+		9700D3D418505B53003260BC /* newreegBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D218505B53003260BC /* newreegBtn.png */; };
+		9700D3D6185061D5003260BC /* newtypein.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D5185061D5003260BC /* newtypein.png */; };
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		970D0A121828911D00C7473E /* EditReplyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 970D0A111828911D00C7473E /* EditReplyViewController.m */; };
 		971020B4182F4E8D00BB28F9 /* backnew.png in Resources */ = {isa = PBXBuildFile; fileRef = 971020B3182F4E8D00BB28F9 /* backnew.png */; };
@@ -1060,6 +1065,11 @@
 		9700D3C118502C81003260BC /* tabbar_sel_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_sel_05.png; sourceTree = "<group>"; };
 		9700D3C718502D0C003260BC /* topBar1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar1.png; sourceTree = "<group>"; };
 		9700D3CB1850346A003260BC /* topBar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar2.png; sourceTree = "<group>"; };
+		9700D3CD18505A51003260BC /* newlogbg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg1.png; sourceTree = "<group>"; };
+		9700D3CE18505A51003260BC /* newlogbg2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg2.png; sourceTree = "<group>"; };
+		9700D3D118505B53003260BC /* newloginBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newloginBtn.png; sourceTree = "<group>"; };
+		9700D3D218505B53003260BC /* newreegBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newreegBtn.png; sourceTree = "<group>"; };
+		9700D3D5185061D5003260BC /* newtypein.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newtypein.png; sourceTree = "<group>"; };
 		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		970D0A101828911D00C7473E /* EditReplyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditReplyViewController.h; sourceTree = "<group>"; };
@@ -3429,6 +3439,11 @@
 		9736BCF717C49146007DFE36 /* log */ = {
 			isa = PBXGroup;
 			children = (
+				9700D3CD18505A51003260BC /* newlogbg1.png */,
+				9700D3CE18505A51003260BC /* newlogbg2.png */,
+				9700D3D118505B53003260BC /* newloginBtn.png */,
+				9700D3D218505B53003260BC /* newreegBtn.png */,
+				9700D3D5185061D5003260BC /* newtypein.png */,
 				86C799411803EAEE00DF89C5 /* third_common_selected_clicked.png */,
 				86C799421803EAEE00DF89C5 /* third_common_selected_no.png */,
 				97DB09D817C5B045000EC195 /* city.txt */,
@@ -4348,10 +4363,12 @@
 				9736BDB417C49146007DFE36 /* brownlong-normal.png in Resources */,
 				9764FF3A1830D02300AA12CD /* pageChange.png in Resources */,
 				9736BDB717C49146007DFE36 /* mysigbg.png in Resources */,
+				9700D3D6185061D5003260BC /* newtypein.png in Resources */,
 				979088CF182DE13F0060A345 /* biaotibtn_01.png in Resources */,
 				97B73F6C1827944300064447 /* redCB2.png in Resources */,
 				9736BDB817C49146007DFE36 /* asigbg.png in Resources */,
 				9736BDBB17C49146007DFE36 /* filterbg.png in Resources */,
+				9700D3CF18505A51003260BC /* newlogbg1.png in Resources */,
 				97E2BD181834E5B600B006AE /* Default-568h@2x.png in Resources */,
 				9736BDBC17C49146007DFE36 /* rightarrow.png in Resources */,
 				9736BDBD17C49146007DFE36 /* selected-big.png in Resources */,
@@ -4483,6 +4500,7 @@
 				86A56A1F180F8191000FD684 /* biaoqing007.png in Resources */,
 				86A56A20180F8191000FD684 /* biaoqing008.png in Resources */,
 				86A56A21180F8191000FD684 /* biaoqing009.png in Resources */,
+				9700D3D018505A51003260BC /* newlogbg2.png in Resources */,
 				86A56A22180F8191000FD684 /* biaoqing010.png in Resources */,
 				86A56A23180F8191000FD684 /* biaoqing011.png in Resources */,
 				86A56A24180F8191000FD684 /* biaoqing012.png in Resources */,
@@ -4491,6 +4509,7 @@
 				86A56A26180F8191000FD684 /* biaoqing014.png in Resources */,
 				86A56A27180F8191000FD684 /* biaoqing015.png in Resources */,
 				86A56A28180F8191000FD684 /* biaoqing016.png in Resources */,
+				9700D3D318505B53003260BC /* newloginBtn.png in Resources */,
 				72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */,
 				86A56A29180F8191000FD684 /* biaoqing017.png in Resources */,
 				86A56A2A180F8191000FD684 /* biaoqing018.png in Resources */,
@@ -4580,6 +4599,7 @@
 				86F324BC18110159004BC4EF /* shaixuan_bg.png in Resources */,
 				86F324C0181101A4004BC4EF /* shaixuan_click.png in Resources */,
 				86F324C1181101A4004BC4EF /* shaixuan_normal.png in Resources */,
+				9700D3D418505B53003260BC /* newreegBtn.png in Resources */,
 				86F324D418112AB6004BC4EF /* search_bg.png in Resources */,
 				86F324D518112AB6004BC4EF /* xiala_bg.png in Resources */,
 				8657D8A118162C0700A21587 /* tianjiazhaopian.png in Resources */,
