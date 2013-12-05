@@ -49,7 +49,7 @@
     [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"multipart/form-data"]];
     
     
-    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
 
@@ -850,7 +850,8 @@
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
     if (diffH==20.0f) {
-        searchBar.backgroundImage = [UIImage imageNamed:@"topBar2.png"];
+        searchBar.backgroundImage = [UIImage imageNamed:@"topBar1.png"];
+        [TopBarBGV setImage:[UIImage imageNamed:@"topBar1.png"]];
         [UIView animateWithDuration:0.3 animations:^{
             [self.messageTable setFrame:CGRectMake(0, 20, 320, self.view.frame.size.height-(49+44+diffH))];
         } completion:^(BOOL finished) {
@@ -872,9 +873,12 @@
 {
     if (diffH==20.0f) {
         [UIView animateWithDuration:0.2 animations:^{
+            [TopBarBGV setImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
             [self.messageTable setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(49+44+diffH))];
         } completion:^(BOOL finished) {
             searchBar.backgroundImage = nil;
+            
+
         }];
     }
 

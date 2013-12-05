@@ -85,6 +85,11 @@ static TempData *sharedInstance=nil;
     return [NSString stringWithFormat:@"@%@",serverDomain];
 }
 
+-(NSString *)getRealDomain
+{
+    return serverDomain;
+}
+
 -(void)setLat:(double)lat Lon:(double)lon
 {
     latitude = lat;

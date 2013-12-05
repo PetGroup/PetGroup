@@ -38,6 +38,7 @@
 -(BOOL)ifNeedConnectChatServer;
 -(NSString *)getServer;
 -(NSString *)getDomain;
+-(NSString *)getRealDomain;
 -(void)SetServer:(NSString *)server TheDomain:(NSString *)domain;
 -(void)setLat:(double)lat Lon:(double)lon;
 -(double)returnLat;

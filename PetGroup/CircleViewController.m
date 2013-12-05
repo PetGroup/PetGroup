@@ -132,7 +132,7 @@
     [tabIV addSubview:goodB];
     
     self.pageV = [[UIView alloc]initWithFrame:CGRectMake(106.666, 29, 106.666, 2.5)];
-    _pageV.backgroundColor = [UIColor orangeColor];
+    _pageV.backgroundColor = [UIColor colorWithRed:0.5 green:0.83 blue:0.4 alpha:1];
     [tabIV addSubview:_pageV];
     
     self.backGroundV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH)];
