@@ -64,12 +64,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
-    self.view.backgroundColor = [UIColor orangeColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height+150)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+//    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height+150)];
+//    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
+//    [self.view addSubview:bgimgV];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -85,10 +85,10 @@
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-    if (diffH==0) {
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-    }
+//    if (diffH==0) {
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+//    }
 
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
@@ -100,125 +100,133 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
-    [nameBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
+    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80+diffH, 300, 108)];
+    [nameBG setImage:[UIImage imageNamed:@"newlogbg1"]];
     [self.view addSubview:nameBG];
     
-    UIImageView * passWordIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 122+diffH, 257.5, 41)];
-    [passWordIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
-    [self.view addSubview:passWordIV];
+//    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
+//    [nameBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
+//    [self.view addSubview:nameBG];
     
-    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 121+diffH, 256.5, 1)];
-    a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
-    [self.view addSubview:a];
+//    UIImageView * passWordIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 122+diffH, 257.5, 41)];
+//    [passWordIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
+//    [self.view addSubview:passWordIV];
+//    
+//    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 121+diffH, 256.5, 1)];
+//    a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
+//    [self.view addSubview:a];
     
-    UIImageView * nickNameIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 190+diffH, 257.5, 41)];
-    [nickNameIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
-    [self.view addSubview:nickNameIV];
-
-    UIImageView * sexIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 260+diffH, 257.5, 41)];
-    [sexIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
-    [self.view addSubview:sexIV];
+    UIImageView * nameBG2 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80+diffH+108+10, 300, 163.5)];
+    [nameBG2 setImage:[UIImage imageNamed:@"newlogbg2"]];
+    [self.view addSubview:nameBG2];
     
+//    UIImageView * nickNameIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 190+diffH, 257.5, 41)];
+//    [nickNameIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
+//    [self.view addSubview:nickNameIV];
+//
+//    UIImageView * sexIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 260+diffH, 257.5, 41)];
+//    [sexIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
+//    [self.view addSubview:sexIV];
+//    
+//    
+//    UIImageView * cityBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 330+diffH, 257.5, 41)];
+//    [cityBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
+//    [self.view addSubview:cityBG];
+//    
+//    UIImageView * ageIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 372+diffH, 257.5, 41)];
+//    [ageIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
+//    [self.view addSubview:ageIV];
+//    
+//    UIImageView * b =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 371+diffH, 256.5, 1)];
+//    b.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
+//    [self.view addSubview:b];
     
-    UIImageView * cityBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 330+diffH, 257.5, 41)];
-    [cityBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
-    [self.view addSubview:cityBG];
-    
-    UIImageView * ageIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 372+diffH, 257.5, 41)];
-    [ageIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
-    [self.view addSubview:ageIV];
-    
-    UIImageView * b =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 371+diffH, 256.5, 1)];
-    b.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
-    [self.view addSubview:b];
-    
-    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(20, 17, 70, 20)];
     nameL.text = @"输入密码";
-    nameL.font = [UIFont systemFontOfSize:13];
+    nameL.font = [UIFont systemFontOfSize:16];
     nameL.backgroundColor = [UIColor clearColor];
     [nameBG addSubview:nameL];
     
-    UILabel* passWordL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* passWordL = [[UILabel alloc]initWithFrame:CGRectMake(20, 71, 70, 20)];
     passWordL.text = @"重复密码";
-    passWordL.font = [UIFont systemFontOfSize:13];
+    passWordL.font = [UIFont systemFontOfSize:16];
     passWordL.backgroundColor = [UIColor clearColor];
-    [passWordIV addSubview:passWordL];
+    [nameBG addSubview:passWordL];
     
-    UILabel* nickNameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* nickNameL = [[UILabel alloc]initWithFrame:CGRectMake(20, 12, 70, 20)];
     nickNameL.text = @"昵称";
-    nickNameL.font = [UIFont systemFontOfSize:13];
+    nickNameL.font = [UIFont systemFontOfSize:16];
     nickNameL.backgroundColor = [UIColor clearColor];
-    [nickNameIV addSubview:nickNameL];
+    [nameBG2 addSubview:nickNameL];
     
-    UILabel* sexL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* sexL = [[UILabel alloc]initWithFrame:CGRectMake(20, 52, 70, 20)];
     sexL.text = @"性别";
-    sexL.font = [UIFont systemFontOfSize:13];
+    sexL.font = [UIFont systemFontOfSize:16];
     sexL.backgroundColor = [UIColor clearColor];
-    [sexIV addSubview:sexL];
+    [nameBG2 addSubview:sexL];
     
-    UILabel* cityL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* cityL = [[UILabel alloc]initWithFrame:CGRectMake(20, 92, 70, 20)];
     cityL.text = @"城市";
-    cityL.font = [UIFont systemFontOfSize:13];
+    cityL.font = [UIFont systemFontOfSize:16];
     cityL.backgroundColor = [UIColor clearColor];
-    [cityBG addSubview:cityL];
+    [nameBG2 addSubview:cityL];
     
-    UILabel* ageL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 70, 20)];
+    UILabel* ageL = [[UILabel alloc]initWithFrame:CGRectMake(20, 133, 70, 20)];
     ageL.text = @"年龄";
-    ageL.font = [UIFont systemFontOfSize:13];
+    ageL.font = [UIFont systemFontOfSize:16];
     ageL.backgroundColor = [UIColor clearColor];
-    [ageIV addSubview:ageL];
+    [nameBG2 addSubview:ageL];
     
-    self.nameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 85+diffH, 175, 30)];
+    self.nameTF = [[UITextField alloc]initWithFrame:CGRectMake(110, 80+diffH+12, 186, 30)];
     _nameTF.placeholder = @"不少于6位且不要过于简单";
     _nameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _nameTF.font = [UIFont systemFontOfSize:13];
+    _nameTF.font = [UIFont systemFontOfSize:15];
     _nameTF.delegate = self;
     _nameTF.secureTextEntry = YES;
     [self.view addSubview:_nameTF];
    
     
-    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 125+diffH, 175, 30)];
+    self.passWordTF = [[UITextField alloc]initWithFrame:CGRectMake(110, 80+diffH+12+54, 186, 30)];
     _passWordTF.placeholder = @"再次输入密码";
     _passWordTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _passWordTF.font = [UIFont systemFontOfSize:13];
+    _passWordTF.font = [UIFont systemFontOfSize:15];
     _passWordTF.delegate = self;
     _passWordTF.secureTextEntry = YES;
     [self.view addSubview:_passWordTF];
     
-    self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 195+diffH, 175, 30)];
-    _nickNameTF.placeholder = @"使用真实姓名方便别人找到你";
+    self.nickNameTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 80+diffH+108+10+7, 175, 30)];
+    _nickNameTF.placeholder = @"输入昵称";
     _nickNameTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _nickNameTF.font = [UIFont systemFontOfSize:13];
+    _nickNameTF.font = [UIFont systemFontOfSize:15];
     _nickNameTF.delegate = self;
     [self.view addSubview:_nickNameTF];
     [self.nickNameTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     manB = [UIButton buttonWithType:UIButtonTypeCustom];
-    manB.frame = CGRectMake(111.25, 270+diffH, 21, 21);
+    manB.frame = CGRectMake(111.25, 80+diffH+108+10+52, 21, 21);
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [manB addTarget:self action:@selector(setSexIsMan) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:manB];
     
     womanB = [UIButton buttonWithType:UIButtonTypeCustom];
-    womanB.frame = CGRectMake(181.25, 270+diffH, 21, 21);
+    womanB.frame = CGRectMake(181.25, 80+diffH+108+10+52, 21, 21);
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [womanB addTarget:self action:@selector(setSexIsWoman) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:womanB];
     
-    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 270+diffH, 20, 20)];
+    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 80+diffH+108+10+52, 20, 20)];
     manL.text = @"男";
     manL.textColor = [UIColor grayColor];
     manL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:manL];
     
-    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 270+diffH, 20, 20)];
+    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 80+diffH+108+10+52, 20, 20)];
     womanL.text = @"女";
     womanL.textColor = [UIColor grayColor];
     womanL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:womanL];
     
-    self.cityTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 340+diffH, 0, 0)];
+    self.cityTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 80+diffH+108+10+92, 0, 0)];
     [self.view addSubview:_cityTF];
     _cityTF.delegate = self;
     self.cityPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, 320, 200)];
@@ -234,7 +242,7 @@
     toolbar.items = @[rb];
     _cityTF.inputAccessoryView = toolbar;
     
-    self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 382+diffH, 0, 0)];
+    self.ageTF = [[UITextField alloc]initWithFrame:CGRectMake(111.25, 80+diffH+108+10+133, 0, 0)];
     [self.view addSubview:_ageTF];
     _ageTF.delegate = self;
     
@@ -253,23 +261,23 @@
     _ageTF.inputAccessoryView = aToolbar;
     
     cityB = [UIButton buttonWithType:UIButtonTypeCustom];
-    cityB.frame = CGRectMake(31.25, 330+diffH, 257.5, 40);
+    cityB.frame = CGRectMake(31.25, 80+diffH+108+10+82, 257.5, 40);
     [self.view addSubview:cityB];
     [cityB addTarget:self action:@selector(selectCity) forControlEvents:UIControlEventTouchUpInside];
     
     ageB = [UIButton buttonWithType:UIButtonTypeCustom];
-    ageB.frame = CGRectMake(31.25, 372+diffH, 257.5, 40);
+    ageB.frame = CGRectMake(31.25, 80+diffH+108+10+123, 257.5, 40);
     [self.view addSubview:ageB];
     [ageB addTarget:self action:@selector(selectAge) forControlEvents:UIControlEventTouchUpInside];
 
     self.cityL = [[UILabel alloc]init];
-    _cityL.frame = CGRectMake(111.25, 340+diffH, 175, 20);
+    _cityL.frame = CGRectMake(111.25, 80+diffH+108+10+92, 175, 20);
     _cityL.backgroundColor = [UIColor clearColor];
     _cityL.textColor = [UIColor grayColor];
     [self.view addSubview:_cityL];
     
     self.ageL = [[UILabel alloc]init];
-    _ageL.frame = CGRectMake(111.25, 382+diffH, 175, 20);
+    _ageL.frame = CGRectMake(111.25, 80+diffH+108+10+133, 175, 20);
     _ageL.backgroundColor = [UIColor clearColor];
     _ageL.textColor = [UIColor grayColor];
     [self.view addSubview:_ageL];

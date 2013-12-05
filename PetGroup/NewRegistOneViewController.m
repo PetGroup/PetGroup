@@ -44,11 +44,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
-    
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+//    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
+//    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
+//    [self.view addSubview:bgimgV];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -62,11 +62,11 @@
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
-    if (diffH==0) {
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-
-    }
+//    if (diffH==0) {
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+//
+//    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
@@ -77,18 +77,18 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
-    [nameBG setImage:[UIImage imageNamed:@"logininputbg.png"]];
+    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80+diffH, 300, 54)];
+    [nameBG setImage:[UIImage imageNamed:@"newtypein"]];
     [self.view addSubview:nameBG];
     
-    UILabel* tishi1L = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 141+diffH, 257.5, 60)];
+    UILabel* tishi1L = [[UILabel alloc]initWithFrame:CGRectMake(15, 141+diffH, 300, 60)];
     tishi1L.text = @"输入您的手机号，免费注册宠物圈，宠物圈不会在任何地方泄露您的电话号码。";
     tishi1L.font = [UIFont systemFontOfSize:15];
     tishi1L.numberOfLines = 0;
     tishi1L.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tishi1L];
     
-    UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(31.25, 221+diffH, 257.5, 40)];
+    UILabel* tishi2 = [[UILabel alloc]initWithFrame:CGRectMake(15, 221+diffH, 257.5, 40)];
     tishi2.text = @"下一步将发送验证码到您的手机上。";
     tishi2.font = [UIFont systemFontOfSize:15];
     tishi2.numberOfLines = 0;
@@ -96,12 +96,12 @@
     [self.view addSubview:tishi2];
     
     readB = [UIButton buttonWithType:UIButtonTypeCustom];
-    readB.frame = CGRectMake(31.25, 288.5+diffH, 15, 15);
+    readB.frame = CGRectMake(15, 288.5+diffH, 15, 15);
     [readB setBackgroundImage:[UIImage imageNamed:@"third_common_selected_clicked"] forState:UIControlStateNormal];
     [readB addTarget:self action:@selector(readUserTreaty) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:readB];
     
-    UILabel* tishi3 = [[UILabel alloc]initWithFrame:CGRectMake(52.25, 285+diffH, 257.5, 20)];
+    UILabel* tishi3 = [[UILabel alloc]initWithFrame:CGRectMake(35, 285+diffH, 257.5, 20)];
     tishi3.text = @"已阅读并同意";
     tishi3.font = [UIFont systemFontOfSize:15];
     tishi3.backgroundColor = [UIColor clearColor];
@@ -117,8 +117,9 @@
     
     UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(userTreaty:)];
     [xieyiL addGestureRecognizer:tap];
-     self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake(42.25, 85+diffH, 245.5, 30)];
+     self.phoneTF = [[UITextField alloc]initWithFrame:CGRectMake(30, 80+diffH+12, 260, 30)];
     _phoneTF.placeholder = @"请输入手机号";
+    [_phoneTF setFont:[UIFont systemFontOfSize:16]];
     _phoneTF.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _phoneTF.keyboardType = UIKeyboardTypeNumberPad;
     [self.view addSubview:_phoneTF];
