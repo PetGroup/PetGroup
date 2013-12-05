@@ -117,7 +117,7 @@
     NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
     XMPPJID *myJID = self.xmppStream.myJID;
     [iq addAttributeWithName:@"from" stringValue:myJID.description];
-    [iq addAttributeWithName:@"to" stringValue:@"pubsub.test.com"];
+    [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
     //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
     [iq addAttributeWithName:@"type" stringValue:@"get"];
     [pubsub addChild:sub];
@@ -134,7 +134,7 @@
     [sub addAttributeWithName:@"node" stringValue:@"princely_musings"];
     [sub addAttributeWithName:@"jid" stringValue:myJID.description];
     [iq addAttributeWithName:@"from" stringValue:myJID.description];
-    [iq addAttributeWithName:@"to" stringValue:@"pubsub.test.com"];
+    [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
     //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
     [iq addAttributeWithName:@"type" stringValue:@"set"];
     [pubsub addChild:sub];

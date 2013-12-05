@@ -77,6 +77,7 @@
     float diffH;
     
     BOOL firstOpen;
+    UIImageView *TopBarBGV;
 }
 
 

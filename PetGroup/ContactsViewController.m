@@ -92,7 +92,7 @@
     
     if (diffH==20.0f) {
         [searchBar setFrame:CGRectMake(0, 20, 320, 64)];
-        searchBar.backgroundImage = [UIImage imageNamed:@"topBar2.png"];
+        searchBar.backgroundImage = [UIImage imageNamed:@"topBar1.png"];
         [UIView animateWithDuration:0.3 animations:^{
             [self.contactsTable setFrame:CGRectMake(0, 64, 320, self.view.frame.size.height-49-44-diffH-44)];
         } completion:^(BOOL finished) {

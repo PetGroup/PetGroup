@@ -50,16 +50,22 @@
     [self.view addSubview:TopBarBGV];
     UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-    [backButton setBackgroundImage:diffH==0.0f?[UIImage imageNamed:@"back2.png"]:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
-    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
+    UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(80, 2+diffH, 160, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [titleLabel setText:self.typeName];
     [self.view addSubview:titleLabel];
+    
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在加载...";
+    [hud show:YES];
     
     if (self.contentType==contentTypeTextView) {
         _textView = [[DTAttributedTextView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
@@ -93,11 +99,7 @@
         
 
     }
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    hud.labelText = @"正在加载...";
-    [hud show:YES];
+
 
 
 	// Do any additional setup after loading the view.
@@ -123,7 +125,8 @@
             [theWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[responseObject objectForKey:@"info"]]]];
         }
         
-//        [hud hide:YES];
+        [hud hide:YES];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
     }];
@@ -166,11 +169,11 @@
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [hud show:YES];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [hud hide:YES];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
     [hud hide:YES];

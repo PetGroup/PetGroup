@@ -41,11 +41,11 @@
 {
 //    self.theController = controller;
     [KGStatusBar showWithStatus:status Controller:controller];
-    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:1.5 ];
 }
 
 + (void)showWithStatus:(NSString*)status Controller:(UIViewController *)controller {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor purpleColor] textColor:[UIColor whiteColor] Controller:controller];
+    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor orangeColor] textColor:[UIColor whiteColor] Controller:controller];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
