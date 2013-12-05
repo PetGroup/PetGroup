@@ -110,6 +110,39 @@
     [self.xmppStream sendElement:iq];
 }
 
+-(void)subscribeToServer
+{
+    NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
+    NSXMLElement * sub = [NSXMLElement elementWithName:@"subscriptions"];
+    NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
+    XMPPJID *myJID = self.xmppStream.myJID;
+    [iq addAttributeWithName:@"from" stringValue:myJID.description];
+    [iq addAttributeWithName:@"to" stringValue:@"pubsub.test.com"];
+    //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
+    [iq addAttributeWithName:@"type" stringValue:@"get"];
+    [pubsub addChild:sub];
+    [iq addChild:pubsub];
+    [self.xmppStream sendElement:iq];
+}
+-(void)realSubscribeToServer
+{
+    NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
+    NSXMLElement * sub = [NSXMLElement elementWithName:@"subscribe"];
+
+    NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
+    XMPPJID *myJID = self.xmppStream.myJID;
+    [sub addAttributeWithName:@"node" stringValue:@"princely_musings"];
+    [sub addAttributeWithName:@"jid" stringValue:myJID.description];
+    [iq addAttributeWithName:@"from" stringValue:myJID.description];
+    [iq addAttributeWithName:@"to" stringValue:@"pubsub.test.com"];
+    //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
+    [iq addAttributeWithName:@"type" stringValue:@"set"];
+    [pubsub addChild:sub];
+    [iq addChild:pubsub];
+    [self.xmppStream sendElement:iq];
+}
+
+
 - (void)updateVCard:(XMPPvCardTemp *)vcard success:(CallBackBlock)thesuccess fail:(CallBackBlockErr)thefail{
     self.success=thesuccess;
     self.fail=thefail;

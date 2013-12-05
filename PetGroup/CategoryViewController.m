@@ -229,6 +229,7 @@
 //        if ([namePet isEqualToString:@"贵宾/泰迪"]) {
 //            namePet = @"泰迪犬";
 //        }
+        cv.typeName = @"宠物百科";
         NSString * sss = [[[self.getPetTypeDict objectForKey:[petTypeArray objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"info"];
         cv.addressURL = [NSURL URLWithString:[sss stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [self.navigationController pushViewController:cv animated:YES];
