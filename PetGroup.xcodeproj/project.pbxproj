@@ -2025,13 +2025,13 @@
 		72795B0318444F5500BB58E0 /* BeautifulImage */ = {
 			isa = PBXGroup;
 			children = (
+				72795B041844500F00BB58E0 /* TMQuiltView */,
 				72795B0E1844502600BB58E0 /* PinterestViewController.h */,
 				72795B0F1844502600BB58E0 /* PinterestViewController.m */,
 				72795B481844512300BB58E0 /* BeautifulImageCell.h */,
 				72795B491844512300BB58E0 /* BeautifulImageCell.m */,
 				726BDD4C18499A8000DB320D /* BeautifulImage.h */,
 				726BDD4D18499A8000DB320D /* BeautifulImage.m */,
-				72795B041844500F00BB58E0 /* TMQuiltView */,
 			);
 			name = BeautifulImage;
 			sourceTree = "<group>";
