@@ -257,6 +257,16 @@
         cell.contentLabel.hidden = YES;
         cell.contentImageV.hidden = YES;
     }
+    else if ([[cDict objectForKey:@"contentType"] isEqualToString:@"notice"]||[[cDict objectForKey:@"contentType"] isEqualToString:@"ency"]||[[cDict objectForKey:@"contentType"] isEqualToString:@"exper"]||[[cDict objectForKey:@"contentType"] isEqualToString:@"bbs_note"]){
+        size = CGSizeMake(250,80);
+        cell.replyLabel.backgroundColor = [UIColor clearColor];
+        CGSize labelsize = [[cDict objectForKey:@"replyContent"] sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:size lineBreakMode:NSLineBreakByCharWrapping];
+        cell.replyLabel.frame = CGRectMake(cell.replyLabel.frame.origin.x, cell.replyLabel.frame.origin.y, 250, labelsize.height);
+        cell.replyBgImageV.frame = CGRectMake(cell.replyLabel.frame.origin.x-5, cell.replyLabel.frame.origin.y-5, 260, labelsize.height+10);
+        cell.replyBgImageV.hidden = NO;
+        cell.contentLabel.hidden = YES;
+        cell.contentImageV.hidden = YES;
+    }
     else
     {
         cell.replyBgImageV.hidden = YES;
@@ -318,6 +328,41 @@
         articleVC.articleID = tempID;
         articleVC.floor = [[self.notiArray[indexPath.row] objectForKey:@"floor"] intValue];
         [self.navigationController pushViewController:articleVC animated:YES];
+
+    }
+    else if([[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"notice"]||[[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"ency"]||[[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"exper"]||[[self.notiArray[indexPath.row] objectForKey:@"contentType"] isEqualToString:@"bbs_note"])
+    {
+        NSDictionary * infoDict = self.notiArray[indexPath.row];
+        NSString * infoType = [infoDict objectForKey:@"contentType"];
+        if (infoType) {
+            if ([infoType isEqualToString:@"bbs_note"]) {
+                ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+                articleVC.articleID = [infoDict objectForKey:@"contentID"];
+                [self.navigationController pushViewController:articleVC animated:YES];
+            }
+            else if ([infoType isEqualToString:@"ency"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeWebView;
+                cv.needRequestURL = YES;
+                cv.articleID = [infoDict objectForKey:@"contentID"];
+                [self.navigationController pushViewController:cv animated:YES];
+            }
+            else if ([infoType isEqualToString:@"exper"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeTextView;
+                cv.articleID = [infoDict objectForKey:@"contentID"];
+                [self.navigationController pushViewController:cv animated:YES];
+            }
+            else if ([infoType isEqualToString:@"notice"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeTextView;
+                cv.isSystemNoti = YES;
+                cv.articleID = [infoDict objectForKey:@"contentID"];
+                [self.navigationController pushViewController:cv animated:YES];
+            }
+            
+            
+        }
 
     }
     else

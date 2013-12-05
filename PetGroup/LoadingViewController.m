@@ -403,7 +403,7 @@
     [self presentViewController:self.tabBarC animated:NO completion:^{
         TempData * td = [TempData sharedInstance];
         if (td.needDisplayPushNotification) {
-            [self makeTabbarPresentAViewController:nil];
+            [self performSelector:@selector(makeTabbarPresentAViewController:) withObject:nil afterDelay:2];
         }
         
     }];
@@ -418,28 +418,39 @@
     if (infoDict) {
         NSString * infoType = [infoDict objectForKey:@"type"];
         if (infoType) {
-            if ([infoType isEqualToString:@"topic"]) {
+            if ([infoType isEqualToString:@"bbs_note"]) {
                 ArticleViewController * articleVC = [[ArticleViewController alloc]init];
-                articleVC.articleID = [infoDict objectForKey:@"ID"];
+                articleVC.articleID = [infoDict objectForKey:@"id"];
                 articleVC.shouldDismiss = YES;
                 [self.tabBarC presentViewController:articleVC animated:YES completion:^{
                     
                 }];
             }
-            else if ([infoType isEqualToString:@"webview"]){
+            else if ([infoType isEqualToString:@"ency"]){
                 ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
                 cv.contentType = contentTypeWebView;
+                cv.needRequestURL = YES;
                 cv.needDismiss = YES;
-                cv.addressURL = [infoDict objectForKey:@"ID"];
+                cv.articleID = [infoDict objectForKey:@"id"];
                 [self.tabBarC presentViewController:cv animated:YES completion:^{
                     
                 }];
             }
-            else if ([infoType isEqualToString:@"normalArticle"]){
+            else if ([infoType isEqualToString:@"exper"]){
                 ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
                 cv.contentType = contentTypeTextView;
                 cv.needDismiss = YES;
-                cv.articleID = [infoDict objectForKey:@"ID"];
+                cv.articleID = [infoDict objectForKey:@"id"];
+                [self.tabBarC presentViewController:cv animated:YES completion:^{
+                    
+                }];
+            }
+            else if ([infoType isEqualToString:@"notice"]){
+                ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+                cv.contentType = contentTypeTextView;
+                cv.needDismiss = YES;
+                cv.isSystemNoti = YES;
+                cv.articleID = [infoDict objectForKey:@"id"];
                 [self.tabBarC presentViewController:cv animated:YES completion:^{
                     
                 }];

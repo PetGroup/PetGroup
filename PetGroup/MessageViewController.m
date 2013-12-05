@@ -383,6 +383,9 @@
     if ([type isEqualToString:@"reply"]||[type isEqualToString:@"zanDynamic"]) {
         [DataStoreManager storeNewMsgs:messageContent senderType:SYSTEMNOTIFICATION];
     }
+    else if ([type isEqualToString:@"notice"]||[type isEqualToString:@"ency"]||[type isEqualToString:@"exper"]||[type isEqualToString:@"bbs_note"]){
+        [DataStoreManager storeNewMsgs:messageContent senderType:SYSTEMNOTIFICATION];
+    }
     else if([type isEqualToString:@"normalchat"])
     {
         AudioServicesPlayAlertSound(1007);
@@ -822,7 +825,8 @@
 //        self.appDel.xmppHelper.commentDelegate = self;
         titleLabel.text = @"消息";
         [[TempData sharedInstance] setOpened:YES];
-//        [self.appDel.xmppHelper subscribeToServer];
+        [self.appDel.xmppHelper checkToServerifSubscibe];
+//        [self.appDel.xmppHelper realSubscribeToServer];
     }fail:^(NSError *result){
         titleLabel.text = @"消息(未连接)"; 
     }];

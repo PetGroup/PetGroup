@@ -77,6 +77,6 @@ typedef enum {
 -(void)getIt;
 -(void)disconnect;
 -(BOOL)sendMessage:(NSXMLElement *)message;
--(void)subscribeToServer;
+-(void)checkToServerifSubscibe;
 -(void)realSubscribeToServer;
 @end

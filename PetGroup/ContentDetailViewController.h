@@ -34,5 +34,7 @@ typedef  enum
 @property (nonatomic,strong)NSString * articleID;
 @property (nonatomic,assign)ContentType contentType;
 @property (nonatomic,assign)BOOL needDismiss;
+@property (nonatomic,assign)BOOL needRequestURL;
+@property (nonatomic,assign)BOOL isSystemNoti;
 @property (strong,nonatomic)NSURL * addressURL;
 @end

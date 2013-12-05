@@ -30,6 +30,8 @@
         // Custom initialization
         self.typeName = @"宠物介绍";
         self.needDismiss = NO;
+        self.needRequestURL = NO;
+        self.isSystemNoti = NO;
     }
     return self;
 }
@@ -78,8 +80,16 @@
         theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
         theWebView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         theWebView.delegate = self;
-        [theWebView loadRequest:[NSURLRequest requestWithURL:self.addressURL]];
         [self.view addSubview:theWebView];
+        if (!self.needRequestURL) {
+            [theWebView loadRequest:[NSURLRequest requestWithURL:self.addressURL]];
+        }
+        else
+        {
+            [self getURLbyID:self.articleID];
+        }
+        
+        
         
 
     }
@@ -92,6 +102,33 @@
 
 	// Do any additional setup after loading the view.
 }
+-(void)getURLbyID:(NSString *)theID
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:theID forKey:@"id"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"getEncyById" forKey:@"method"];
+    [body setObject:@"service.uri.pet_ency" forKey:@"service"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"XXXXXXXXXX%@",responseObject);
+        if ([responseObject objectForKey:@"info"]) {
+            [theWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[responseObject objectForKey:@"info"]]]];
+        }
+        
+//        [hud hide:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+    }];
+
+}
 -(void)getArticleByID:(NSString *)theID
 {
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
@@ -100,8 +137,16 @@
     [params setObject:theID forKey:@"id"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
     [body setObject:params forKey:@"params"];
-    [body setObject:@"getExperById" forKey:@"method"];
-    [body setObject:@"service.uri.pet_exper" forKey:@"service"];
+    if (!self.isSystemNoti) {
+        [body setObject:@"getExperById" forKey:@"method"];
+        [body setObject:@"service.uri.pet_exper" forKey:@"service"];
+    }
+    else
+    {
+        [body setObject:@"getNoticeById" forKey:@"method"];
+        [body setObject:@"service.uri.pet_notice" forKey:@"service"];
+    }
+
     [body setObject:@"1" forKey:@"channel"];
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
     [body setObject:@"iphone" forKey:@"imei"];
@@ -109,7 +154,10 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
-        _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
+        if ([responseObject objectForKey:@"info"]) {
+            _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
+        }
+        
         [hud hide:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];

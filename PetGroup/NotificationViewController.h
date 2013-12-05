@@ -12,6 +12,7 @@
 #import "TempData.h"
 #import "ArticleViewController.h"
 #import "OnceDynamicViewController.h"
+#import "ContentDetailViewController.h"
 @class AppDelegate;
 @interface NotificationViewController : UIViewController<UIAlertViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {

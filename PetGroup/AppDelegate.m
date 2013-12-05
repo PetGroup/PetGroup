@@ -23,7 +23,7 @@
 //     [self installUncaughtExceptionHandler];
 //    //把NSlog 输出到文件中 给测试时想着打开即可
 //    [self redirectLogToDocumentFolder];
-    
+    inActive = YES;
     if (launchOptions) {
         //截取apns推送的消息
         NSDictionary* pushInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
@@ -96,20 +96,19 @@
 //    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"通知" message:@"我的信息" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
 //    
 //    [alert show];
-//    
+//
     NSLog(@"uuuuuuuuinfo：%@", userInfo);
     NSString * infoType = [userInfo objectForKey:@"type"];
-    if (infoType) {
+    if (infoType&&!inActive) {
         TempData * td = [TempData sharedInstance];
         td.needDisplayPushNotification = YES;
         [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"RemoteNotification"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [_loadingV makeTabbarPresentAViewController:nil];
+        [_loadingV performSelector:@selector(makeTabbarPresentAViewController:) withObject:nil afterDelay:1];
     }
 
     
 }
-
 
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -120,6 +119,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+    inActive = NO;
     [self.xmppHelper disconnect];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -140,8 +140,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     //暂时注释
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    inActive = YES;
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
@@ -189,9 +190,9 @@
     
     [reach startNotifier];
     
-    if ([[TempData sharedInstance] ifOpened]){
-        [_loadingV makeTabbarPresentAViewController:nil];
-    }
+//    if ([[TempData sharedInstance] ifOpened]){
+//        [_loadingV makeTabbarPresentAViewController:nil];
+//    }
 
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }

@@ -110,7 +110,7 @@
     [self.xmppStream sendElement:iq];
 }
 
--(void)subscribeToServer
+-(void)checkToServerifSubscibe
 {
     NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
     NSXMLElement * sub = [NSXMLElement elementWithName:@"subscriptions"];
@@ -296,6 +296,7 @@
     [self.rosters removeAllObjects];
     if ([@"result" isEqualToString:iq.type]) {
         NSXMLElement *query = iq.childElement;
+//        NSArray * iqChildrenArray = [iq children];
         if ([@"query" isEqualToString:query.name]) {
             NSArray *items = [query children];
             for (NSXMLElement *item in items) {
@@ -311,6 +312,21 @@
                 }
             }
         }
+        else if ([@"pubsub" isEqualToString:query.name]){
+            NSXMLElement *subscriptions = [query elementForName:@"subscriptions"];
+            NSArray * subscriptionArray = [subscriptions children];
+            if (subscriptionArray) {
+                if (subscriptionArray.count>0) {
+                    NSLog(@"subscribed");
+                }
+                else
+                {
+                    NSLog(@"none subscribed");
+                    [self realSubscribeToServer];
+                }
+            }
+            
+        }
         
     }
     return YES;
@@ -321,7 +337,7 @@
     NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
      NSString *msg = @"";
     if (![msgtype isEqualToString:@"zanDynamic"]) {
-         msg=[[message elementForName:@"body"] stringValue];
+        msg=[[message elementForName:@"body"] stringValue]?[[message elementForName:@"body"] stringValue]:@"nocontent";
         NSLog(@"body:=====%@",msg);
     }
     NSString *from = [[message attributeForName:@"from"] stringValue];
@@ -404,6 +420,40 @@
                 
                 //评论，回复，赞，在这里解析，或者通用newMessageReceived，在那个方法里解析dict,赞人赞宠物后面处理...
                 
+            }
+        }
+        else if ([type isEqualToString:@"headline"]){
+            NSXMLElement *items = [[message elementForName:@"event"] elementForName:@"items"];
+            NSArray * itemsArray = [items children];
+            if (itemsArray) {
+                if (itemsArray.count>0) {
+                    NSXMLElement * item = [[itemsArray objectAtIndex:0] elementForName:@"entry"];
+                    if (!item) {
+                        return;
+                    }
+                    NSString * notiType = [[item elementForName:@"type"] stringValue];
+                    NSString * notiID = [[item elementForName:@"id"] stringValue];
+                    NSString * notiContent = [[item elementForName:@"body"] stringValue];
+                    NSString * title = @"";
+                    if ([notiType isEqualToString:@"notice"]) {
+                        title = @"系统通知";
+                    }
+                    else
+                        title = @"小编推荐";
+                    [dict setObject:[NSString stringWithFormat:@"%@:%@",title,notiContent] forKey:@"msg"];
+                    [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+                    [dict setObject:[Common getCurrentTime] forKey:@"time"];
+                    [dict setObject:notiType forKey:@"contentType"];
+                    [dict setObject:notiType forKey:@"msgType"];
+                    [dict setObject:notiContent forKey:@"replyContent"];
+                    [dict setObject:notiID forKey:@"contentID"];
+                    [dict setObject:title forKey:@"fromNickname"];
+                    [dict setObject:@"no" forKey:@"fromHeadImg"];
+                    [dict setObject:@"no" forKey:@"ifRead"];
+                    [self.chatDelegate newMessageReceived:dict];
+                    [self.commentDelegate newCommentReceived:dict];
+                    
+                }
             }
         }
         

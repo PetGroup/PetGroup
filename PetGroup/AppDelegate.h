@@ -14,6 +14,9 @@
 @class ViewController;
 @class XMPPHelper;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+{
+    BOOL inActive;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) LoadingViewController * loadingV;
