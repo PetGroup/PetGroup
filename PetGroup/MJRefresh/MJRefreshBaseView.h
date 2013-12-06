@@ -74,7 +74,7 @@ typedef void (^BeginRefreshingBlock)(MJRefreshBaseView *refreshView);
 // 代理
 @property (nonatomic, weak) id<MJRefreshBaseViewDelegate> delegate;
 // 设置要显示的父控件
-@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, weak) UIScrollView *scrollView;
 
 // 是否正在刷新
 @property (nonatomic, readonly, getter=isRefreshing) BOOL refreshing;

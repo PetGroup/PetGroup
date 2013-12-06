@@ -26,8 +26,6 @@
     UIButton* hotPintsB;
     UIButton* ICreateB;
     float diffH;
-    
-    BOOL free;
 }
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MyDynamicDataSource* myDynamicDS;
@@ -43,7 +41,10 @@
 @end
 
 @implementation MyMessageViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,16 +53,6 @@
         self.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
     }
     return self;
-}
--(void)viewWillAppear:(BOOL)animated
-{
-    free = YES;
-}
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-    }
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -298,7 +289,6 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
                 //                    [self presentModalViewController:imagePicker animated:YES];
-                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -319,7 +309,6 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
                 //                    [self presentModalViewController:imagePicker animated:YES];
-                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -419,7 +408,6 @@
         if ([[[TempData sharedInstance] getMyUserID]isEqualToString:self.userInfo.userId]) {
                odVC.delegate = self;
            }
-        free = NO;
         [self.navigationController pushViewController:odVC animated:YES];
 //        NSMutableString* noteId = [NSMutableString  stringWithString:((Dynamic*)self.myDynamicDS.dataSourceArray[indexPath.row]).transmitUrl];
 //        [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
@@ -431,13 +419,11 @@
     if (_presentDS == _myReplNOteDS) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_myReplNOteDS.dataSourceArray[indexPath.row]).articleID;
-        free = NO;
         [self.navigationController pushViewController:articleVC animated:YES];
     }
     if (_presentDS == _myNoteDS) {
         ArticleViewController * articleVC = [[ArticleViewController alloc]init];
         articleVC.articleID = ((Article*)_myNoteDS.dataSourceArray[indexPath.row]).articleID;
-        free = NO;
         [self.navigationController pushViewController:articleVC animated:YES];
     }
 }
@@ -445,7 +431,6 @@
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
-    free = NO;
     [self presentViewController:vc animated:NO completion:nil];
 }
 #pragma mark - dynamic list reload data

@@ -17,9 +17,7 @@
 #import "HostInfo.h"
 #import "ArticleViewController.h"
 @interface SomeOneDynamicViewController ()<UITableViewDelegate,UITableViewDataSource,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
-{
-    BOOL free;
-}
+
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)NSMutableArray* dataSourceArray;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
@@ -31,7 +29,10 @@
 @end
 
 @implementation SomeOneDynamicViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -147,16 +148,6 @@
     
     [self reloadData];
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    free = YES;
-}
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-    }
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -188,7 +179,6 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
                 //                    [self presentModalViewController:imagePicker animated:YES];
-                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -209,7 +199,6 @@
             if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
                 imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
                 //                    [self presentModalViewController:imagePicker animated:YES];
-                free = NO;
                 [self presentViewController:imagePicker animated:YES completion:^{
                     
                 }];
@@ -300,7 +289,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     OnceDynamicViewController * odVC = [[OnceDynamicViewController alloc]init];
     odVC.dynamic = self.dataSourceArray[indexPath.row];
@@ -336,7 +324,6 @@
 #pragma mark - dynamic cell delegate
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
-    free = NO;
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
     [self presentViewController:vc animated:NO completion:nil];
 }

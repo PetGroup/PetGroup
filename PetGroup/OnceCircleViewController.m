@@ -25,7 +25,6 @@
 #import "CircleClassify.h"
 @interface OnceCircleViewController ()<UITableViewDelegate,BHExpandingTextViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate,EditArticleViewDelegate>
 {
-    BOOL free;
     UIButton* joinB;
     hotPintsDataSource* hotPintsDS;
 }
@@ -42,7 +41,10 @@
 @end
 
 @implementation OnceCircleViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -244,16 +246,6 @@
     [self.tableV addSubview:_refreshView];
     
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    free = YES;
-}
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-    }
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -282,7 +274,6 @@
 -(void)updateSelfMassage
 {
     [self canselScreen];
-    free = NO;
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
     editAVC.CircleTree = self.CircleTree;
     editAVC.indexPath = self.indexPath;
@@ -438,7 +429,6 @@
 -(void)showSearchView
 {
     [self screen];
-    free = NO;
     SearchViewController* searchVC = [[SearchViewController alloc]init];
     searchVC.searchType = searchTypeInCircle;
     searchVC.forumPid = self.circleEntity.circleID;
@@ -448,7 +438,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self canselScreen];
-    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)hotPintsDS.dataSourceArray[indexPath.row]).articleID;
