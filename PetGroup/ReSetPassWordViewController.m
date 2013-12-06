@@ -37,9 +37,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -53,8 +51,10 @@
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-    [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    if (diffH==0) {
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
+        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
+    }
     [nextB addTarget:self action:@selector(numberIsUser) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
@@ -65,34 +65,28 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 80+diffH, 257.5, 41)];
-    [nameBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
+    UIImageView * nameBG = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80+diffH, 300, 108)];
+    [nameBG setImage:[UIImage imageNamed:@"newlogbg1"]];
     [self.view addSubview:nameBG];
     
-    UIImageView * passWordIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 122+diffH, 257.5, 41)];
-    [passWordIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
-    [self.view addSubview:passWordIV];
-    
-    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 121+diffH, 256.5, 1)];
-    a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
-    [self.view addSubview:a];
-    
-    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(5, 10, 70, 20)];
+    UILabel* nameL = [[UILabel alloc]initWithFrame:CGRectMake(33.25, 100+diffH, 70, 20)];
     nameL.text = @"中国+86";
-    nameL.font = [UIFont systemFontOfSize:13];
+    nameL.font = [UIFont systemFontOfSize:18];
     nameL.backgroundColor = [UIColor clearColor];
-    [nameBG addSubview:nameL];
+    [self.view addSubview:nameL];
     
-    self.phoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(33.25, 129.5+diffH, 257.5, 25)];
+    self.phoneNoTF = [[UITextField alloc]initWithFrame:CGRectMake(33.25, 150+diffH, 257.5, 25)];
     _phoneNoTF.placeholder = @"请输入手机号";
     [self.view addSubview:_phoneNoTF];
     _phoneNoTF.keyboardType = UIKeyboardTypeNumberPad;
-    
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"正在发送，请稍后";
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+     [_phoneNoTF becomeFirstResponder];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

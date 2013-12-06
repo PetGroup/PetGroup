@@ -41,9 +41,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];

@@ -31,9 +31,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -50,33 +48,35 @@
     heheIV.image = [UIImage imageNamed:@"chenggong"];
     [self.view addSubview:heheIV];
     
-    UILabel* tishiL1 = [[UILabel alloc]initWithFrame:CGRectMake(20, 150+diffH, 250, 30)];
+    UILabel* tishiL1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 150+diffH, 320, 30)];
     tishiL1.text = @"恭喜你，你已经注册成功！";
-    tishiL1.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
+    tishiL1.font = [UIFont boldSystemFontOfSize:16];
     tishiL1.backgroundColor = [UIColor clearColor];
+    tishiL1.textAlignment = NSTextAlignmentCenter;
+    tishiL1.textColor = [UIColor orangeColor];
     [self.view addSubview:tishiL1];
     
-    UILabel* tishiL2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 190+diffH, 280, 60)];
+    UILabel* tishiL2 = [[UILabel alloc]initWithFrame:CGRectMake(20, 220+diffH, 280, 90)];
     tishiL2.text = @"快去选择你的宠物，并且给你和你的宠物设置一个高端大气上档次的头像吧，可以更好地与宠友们交流。";
     tishiL2.backgroundColor = [UIColor clearColor];
     tishiL2.numberOfLines = 0;
     [self.view addSubview:tishiL2];
     
     UIButton * laterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [laterBtn setBackgroundImage:[UIImage imageNamed:@"denglu_normal.png"] forState:UIControlStateNormal];
-    [laterBtn setFrame:CGRectMake(32, 320+diffH, 110, 41)];
+    [laterBtn setBackgroundImage:[UIImage imageNamed:@"newreegBtn"] forState:UIControlStateNormal];
+    [laterBtn setFrame:CGRectMake(10, 360+diffH, 300, 40)];
     [self.view addSubview:laterBtn];
     [laterBtn setTitle:@"以后再说" forState:UIControlStateNormal];
-    [laterBtn setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
+    [laterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     laterBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
     [laterBtn addTarget:self action:@selector(laterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     UIButton * goBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [goBtn setBackgroundImage:[UIImage imageNamed:@"zhuce_normal.png"] forState:UIControlStateNormal];
-    [goBtn setFrame:CGRectMake(152, 320+diffH, 136, 41)];
+    [goBtn setBackgroundImage:[UIImage imageNamed:@"newloginBtn"] forState:UIControlStateNormal];
+    [goBtn setFrame:CGRectMake(10, 310+diffH, 300, 40)];
     [self.view addSubview:goBtn];
     goBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
     [goBtn setTitle:@"现在去完善" forState:UIControlStateNormal];
-    [goBtn setTitleColor:[UIColor brownColor] forState:UIControlStateNormal];
+    [goBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [goBtn addTarget:self action:@selector(goBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     hud = [[MBProgressHUD alloc] initWithView:self.view];

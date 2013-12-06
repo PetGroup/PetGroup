@@ -54,9 +54,7 @@
 	// Do any additional setup after loading the view.
     
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -87,10 +85,11 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(100, 70+diffH, 120, 20)];
-    tishiL.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(0, 70+diffH, 320, 20)];
+    tishiL.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
+    tishiL.textAlignment = NSTextAlignmentCenter;
     tishiL.backgroundColor = [UIColor clearColor];
-    tishiL.textColor = [UIColor whiteColor];
+    tishiL.textColor = [UIColor blackColor];
     tishiL.text = @"填写宠物资料";
     [self.view addSubview:tishiL];
     
@@ -115,59 +114,47 @@
         default:
             break;
     }
-    UIImageView * typeBG = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 290+diffH, 257.5, 41)];
-    [typeBG setImage:[UIImage imageNamed:@"shurukuang_top"]];
+    UIImageView * typeBG = [[UIImageView alloc] initWithFrame:CGRectMake(10, 250+diffH, 300, 123)];
+    [typeBG setImage:[UIImage imageNamed:@"newlogbg3"]];
     [self.view addSubview:typeBG];
     
-    UIImageView * ageIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 332+diffH, 257.5, 41)];
-    [ageIV setImage:[UIImage imageNamed:@"shurukuang_bottom"]];
-    [self.view addSubview:ageIV];
-    
-    UIImageView * a =  [[UIImageView alloc] initWithFrame:CGRectMake(31.75, 331+diffH, 256.5, 1)];
-    a.image = [UIImage imageNamed:@"shurukuang_jiangexian"];
-    [self.view addSubview:a];
-    
-    UIImageView * sexIV = [[UIImageView alloc] initWithFrame:CGRectMake(31.25, 240+diffH, 257.5, 41)];
-    [sexIV setImage:[UIImage imageNamed:@"logininputbg.png"]];
-    [self.view addSubview:sexIV];
-    
-    UILabel* typeL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 20)];
+    UILabel* typeL = [[UILabel alloc]initWithFrame:CGRectMake(41.25, 300 + diffH, 40, 20)];
     typeL.text = @"品种";
-    typeL.font = [UIFont systemFontOfSize:13];
+    typeL.font = [UIFont systemFontOfSize:16];
     typeL.backgroundColor = [UIColor clearColor];
-    [typeBG addSubview:typeL];
+    [self.view addSubview:typeL];
     
-    UILabel* ageL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 20)];
+    UILabel* ageL = [[UILabel alloc]initWithFrame:CGRectMake(41.25, 342 + diffH, 40, 20)];
     ageL.text = @"年龄";
-    ageL.font = [UIFont systemFontOfSize:13];
+    ageL.font = [UIFont systemFontOfSize:16];
     ageL.backgroundColor = [UIColor clearColor];
-    [ageIV addSubview:ageL];
+    [self.view addSubview:ageL];
     
-    UILabel* sexL = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 40, 20)];
+    UILabel* sexL = [[UILabel alloc]initWithFrame:CGRectMake(41.25, 260 + diffH, 40, 20)];
     sexL.text = @"性别";
-    sexL.font = [UIFont systemFontOfSize:13];
+    sexL.font = [UIFont systemFontOfSize:16];
     sexL.backgroundColor = [UIColor clearColor];
-    [sexIV addSubview:sexL];
+    [self.view addSubview:sexL];
     
     manB = [UIButton buttonWithType:UIButtonTypeCustom];
-    manB.frame = CGRectMake(111.25, 250+diffH, 21, 21);
+    manB.frame = CGRectMake(111.25, 260+diffH, 21, 21);
     [manB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [manB addTarget:self action:@selector(setSexIsMan) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:manB];
     
     womanB = [UIButton buttonWithType:UIButtonTypeCustom];
-    womanB.frame = CGRectMake(181.25, 250+diffH, 21, 21);
+    womanB.frame = CGRectMake(181.25, 260+diffH, 21, 21);
     [womanB setBackgroundImage:[UIImage imageNamed:@"singleSelectBtn-normal"] forState:UIControlStateNormal];
     [womanB addTarget:self action:@selector(setSexIsWoman) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:womanB];
     
-    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 250+diffH, 20, 20)];
+    UILabel* manL = [[UILabel alloc]initWithFrame:CGRectMake(137.25, 260+diffH, 20, 20)];
     manL.text = @"公";
     manL.textColor = [UIColor grayColor];
     manL.backgroundColor = [UIColor clearColor];
     [self.view addSubview:manL];
     
-    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 250+diffH, 20, 20)];
+    UILabel* womanL = [[UILabel alloc]initWithFrame:CGRectMake(207.25, 260+diffH, 20, 20)];
     womanL.text = @"母";
     womanL.textColor = [UIColor grayColor];
     womanL.backgroundColor = [UIColor clearColor];

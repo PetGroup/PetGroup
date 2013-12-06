@@ -38,9 +38,7 @@
     self.navigationController.navigationBarHidden =YES;
     
     float diffH = [Common diffHeight:self];
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
-    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -63,41 +61,42 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UILabel* a = [[UILabel alloc]initWithFrame:CGRectMake(100, 80+diffH, 120, 20)];
+    UILabel* a = [[UILabel alloc]initWithFrame:CGRectMake(0, 80+diffH, 320, 20)];
     a.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+    a.textAlignment = NSTextAlignmentCenter;
     a.backgroundColor = [UIColor clearColor];
-    a.textColor = [UIColor whiteColor];
-    a.text = @"请选择您的爱宠";
+    a.textColor = [UIColor blackColor];
+    a.text = @"请选择您的爱宠类型";
     [self.view addSubview:a];
     
-    UIImageView * yuanIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 125+diffH, 280, 280)];
-    yuanIV.image = [UIImage imageNamed:@"xuanzechongwu-bg"];
-    yuanIV.userInteractionEnabled = YES;
-    [self.view addSubview:yuanIV];
+//    UIImageView * yuanIV = [[UIImageView alloc]initWithFrame:CGRectMake(20, 125+diffH, 280, 280)];
+//    yuanIV.image = [UIImage imageNamed:@"xuanzechongwu-bg"];
+//    yuanIV.userInteractionEnabled = YES;
+//    [self.view addSubview:yuanIV];
     
     dogB = [UIButton buttonWithType:UIButtonTypeCustom];
     [dogB addTarget:self action:@selector(selectDog) forControlEvents:UIControlEventTouchUpInside];
     [dogB setBackgroundImage:[UIImage imageNamed:@"dog_normal"] forState:UIControlStateNormal];
-    dogB.frame = CGRectMake(15, 15, 120, 120);
-    [yuanIV addSubview:dogB];
+    dogB.frame = CGRectMake(35, 140+diffH, 120, 120);
+    [self.view addSubview:dogB];
     
     catB = [UIButton buttonWithType:UIButtonTypeCustom];
     [catB addTarget:self action:@selector(selectCat) forControlEvents:UIControlEventTouchUpInside];
     [catB setBackgroundImage:[UIImage imageNamed:@"cat_normal"] forState:UIControlStateNormal];
-    catB.frame = CGRectMake(145, 15, 120, 120);
-    [yuanIV addSubview:catB];
+    catB.frame = CGRectMake(165, 140+diffH, 120, 120);
+    [self.view addSubview:catB];
     
     otherB = [UIButton buttonWithType:UIButtonTypeCustom];
     [otherB addTarget:self action:@selector(selectOther) forControlEvents:UIControlEventTouchUpInside];
     [otherB setBackgroundImage:[UIImage imageNamed:@"qita_normal"] forState:UIControlStateNormal];
-    otherB.frame = CGRectMake(15, 145, 120, 120);
-    [yuanIV addSubview:otherB];
+    otherB.frame = CGRectMake(35, 270+diffH, 120, 120);
+    [self.view addSubview:otherB];
     
     noneB = [UIButton buttonWithType:UIButtonTypeCustom];
     [noneB addTarget:self action:@selector(selectNone) forControlEvents:UIControlEventTouchUpInside];
     [noneB setBackgroundImage:[UIImage imageNamed:@"no_normal"] forState:UIControlStateNormal];
-    noneB.frame = CGRectMake(145, 145, 120, 120);
-    [yuanIV addSubview:noneB];
+    noneB.frame = CGRectMake(165, 270+diffH, 120, 120);
+    [self.view addSubview:noneB];
 }
 
 - (void)didReceiveMemoryWarning
