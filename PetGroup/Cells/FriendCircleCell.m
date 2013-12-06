@@ -54,6 +54,7 @@
 }
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
     if (self.dynamic.smallImage.count>0) {
         _dynamicIV.frame = CGRectMake(80, 40, 30, 30);
         _dynamicIV.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[0]]];

@@ -109,8 +109,9 @@ static MLNavigationController *mlNavigationController;
         [self.screenShotsList addObject:temp];
     }
     
-    
+    [self.recognizer setEnabled:NO];
     [super pushViewController:viewController animated:animated];
+    [self performSelector:@selector(setGestureEnableYES) withObject:nil afterDelay:0.3];
 }
 
 // override the pop method
