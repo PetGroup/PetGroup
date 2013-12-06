@@ -15,9 +15,7 @@
 #import "PhotoViewController.h"
 #import "BeautifulImage.h"
 @interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
-{
-    BOOL free;
-}
+
 @property (nonatomic,assign) int pageNo;
 @property (nonatomic,retain) NSMutableArray* imageArray;
 @property (nonatomic,retain)TMQuiltView *tmQuiltView;
@@ -26,7 +24,10 @@
 @end
 
 @implementation PinterestViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -94,10 +95,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    free = YES;
-}
 -(void)viewDidDisappear:(BOOL)animated
 {
     if (free) {
@@ -146,7 +143,6 @@
 }
 - (void)quiltView:(TMQuiltView *)quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    free = NO;
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[((BeautifulImage*)_imageArray[indexPath.row]).imageID] indext:indexPath.row];
     [self presentViewController:vc animated:NO completion:nil];
 }

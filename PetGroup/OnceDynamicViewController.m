@@ -25,7 +25,6 @@
     UIImageView * inputbg;
     UIView * inPutView;
     BOOL request;
-    BOOL free;
 }
 @property (strong,nonatomic) NSMutableArray* zanPonsenArrey;
 @property (strong,nonatomic) NSMutableString* zanPonsen;
@@ -47,7 +46,10 @@
 @end
 
 @implementation OnceDynamicViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -195,7 +197,6 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    free = YES;
     switch (self.onceDynamicViewControllerStyle) {
         case OnceDynamicViewControllerStyleNome:{
             
@@ -208,12 +209,6 @@
         }break;
         default:
             break;
-    }
-}
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
     }
 }
 -(void)getStateByID
@@ -612,7 +607,6 @@
     }
     if (indexPath.section == 0) {
         if (self.dynamic.transmitUrl&&![self.dynamic.transmitUrl isEqualToString:@""]) {
-            free = NO;
             NSMutableString* noteId = [NSMutableString  stringWithString:self.dynamic.transmitUrl];
             [noteId deleteCharactersInRange:[noteId rangeOfString:@"bbsNoteId_"]];
             NSLog(@"%@",noteId);
@@ -651,7 +645,6 @@
 #pragma mark - dynmic delegate
 -(void)dynamicCellPressNameButtonOrHeadButton
 {
-    free = NO;
     if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
         SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
         sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
@@ -668,7 +661,6 @@
 }
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
 {
-    free = NO;
     if ([((Reply*)self.resultArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
         SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];
         sodVC.userInfo = [[HostInfo alloc]initWithNewHostInfo:[DataStoreManager queryMyInfo] PetsArray:nil];
@@ -685,7 +677,6 @@
 }
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray *)smallImageArray andImageIDArray:(NSArray *)idArray indext:(int)indext
 {
-    free = NO;
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
     [self presentViewController:vc animated:NO completion:nil];
 }

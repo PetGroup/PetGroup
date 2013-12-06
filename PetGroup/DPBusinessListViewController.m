@@ -17,7 +17,6 @@
 #import "DPBusinessViewController.h"
 @interface DPBusinessListViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
-    BOOL free;
     MBProgressHUD* hud;
 }
 @property (nonatomic,retain)UITableView* tableV;
@@ -29,6 +28,10 @@
 @end
 
 @implementation DPBusinessListViewController
+- (void)dealloc
+{
+    [_footer free];
+}
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -99,17 +102,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)viewDidAppear:(BOOL)animated
-{
-    free = YES;
-}
--(void)viewWillDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-        [self.netManager cancel];
-    }
-}
 #pragma mark - button action
 -(void)backButton
 {
@@ -169,7 +161,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     DPBusinessViewController*businessVC = [[DPBusinessViewController alloc]init];
     businessVC.business = self.dataSourceArray[indexPath.row];

@@ -17,7 +17,6 @@
 {
     UISearchBar * asearchBar;
     UISearchDisplayController * searchDisplay;
-    BOOL free;
 }
 @property (strong,nonatomic) UITableView * resultTable;
 @property (strong,nonatomic) MJRefreshFooterView *footer;
@@ -27,7 +26,10 @@
 @end
 
 @implementation SearchViewController
-
+- (void)dealloc
+{
+    [_footer free];
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -40,16 +42,6 @@
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
-}
--(void)viewWillAppear:(BOOL)animated
-{
-    free = YES;
-}
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-    }
 }
 - (void)viewDidLoad
 {
@@ -208,7 +200,6 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    free = NO;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
