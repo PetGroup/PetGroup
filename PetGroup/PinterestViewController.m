@@ -95,12 +95,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(void)viewDidDisappear:(BOOL)animated
-{
-    if (free) {
-        [_footer free];
-    }
-}
 -(void)backButton
 {
     [[TempData sharedInstance] Panned:NO];
