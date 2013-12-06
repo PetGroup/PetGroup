@@ -52,7 +52,7 @@
     backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
     [backButton setBackgroundImage:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
     [self.view addSubview:backButton];
-    [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
+    [backButton addTarget:self action:@selector(backToLastPage) forControlEvents:UIControlEventTouchUpInside];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(80, 2+diffH, 160, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -61,11 +61,7 @@
     [titleLabel setText:self.typeName];
     [self.view addSubview:titleLabel];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.delegate = self;
-    hud.labelText = @"正在加载...";
-    [hud show:YES];
+   
     
     if (self.contentType==contentTypeTextView) {
         _textView = [[DTAttributedTextView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
@@ -99,13 +95,18 @@
         
 
     }
-
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在加载...";
+    
 
 
 	// Do any additional setup after loading the view.
 }
 -(void)getURLbyID:(NSString *)theID
 {
+    [hud show:YES];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
@@ -134,6 +135,7 @@
 }
 -(void)getArticleByID:(NSString *)theID
 {
+    [hud show:YES];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
@@ -217,6 +219,10 @@
     }
 	
 	
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
 }
 
 - (NSAttributedString *)_attributedStringForSnippetUsingiOS6Attributes:(BOOL)useiOS6Attributes String:(NSString *)contentStr
@@ -532,7 +538,7 @@
 		NSLog(@"%d: '%@' word: '%@'", tappedIndex, tappedChar, word);
 	}
 }
--(void)backButton
+-(void)backToLastPage
 {
     if (self.needDismiss) {
         [self dismissViewControllerAnimated:YES completion:^{
