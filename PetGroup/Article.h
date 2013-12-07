@@ -19,5 +19,6 @@
 @property (nonatomic,retain) NSString* ct;
 @property (nonatomic,assign) BOOL isEute;
 @property (nonatomic,assign) BOOL isTop;
+@property (nonatomic,assign) BOOL haveImage;
 - (id)initWithDictionnary:(NSDictionary*)info;
 @end

@@ -42,7 +42,8 @@
         self.titleL = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 228, 20)];
         _titleL.numberOfLines = 0;
         _titleL.font = [UIFont systemFontOfSize:16];
-//        _titleL.textColor = [UIColor grayColor];
+        _titleL.lineBreakMode = NSLineBreakByCharWrapping;
+//        _titleL.backgroundColor = [UIColor grayColor];
         [self.contentView addSubview:_titleL];
         
         self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(65, 52, 100, 20)];
@@ -68,13 +69,11 @@
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
         
-        self.goodI = [[UIImageView alloc]initWithFrame:CGRectMake(298, 0, 22, 22)];
-        _goodI.image = [UIImage imageNamed:@"jinghua"];
+        self.goodI = [[UIImageView alloc]init];
         _goodI.hidden = YES;
         [self.contentView addSubview:_goodI];
         
-        self.topI = [[UIImageView alloc]initWithFrame:CGRectMake(298, 0, 22, 22)];
-        _topI.image = [UIImage imageNamed:@"zhiding"];
+        self.topI = [[UIImageView alloc]init];
         _topI.hidden = YES;
         [self.contentView addSubview:_topI];
     }
@@ -92,19 +91,48 @@
     [super layoutSubviews];
     _headPhote.imageURL = [NSURL URLWithString: [NSString stringWithFormat:BaseImageUrl"%@",self.article.headImage]];
     _nameL.text = self.article.userName;
-    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(228, 50) lineBreakMode:NSLineBreakByWordWrapping];
-    _titleL.frame = CGRectMake(60, 10, 228, size.height);
+    CGSize size = [self.article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(240, 50) lineBreakMode:NSLineBreakByCharWrapping];
+    _titleL.frame = CGRectMake(60, 10, 240, size.height);
     _titleL.text = self.article.name;
+//    _titleL.lineBreakMode = NSLineBreakByCharWrapping;
     _timeL.text = self.article.ct;
     _readL.text = self.article.clientCount;
     _replyL.text = self.article.replyCount;
-    if (_article.isTop) {
+    CGPoint lastPoint;
+    CGSize sz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
+    
+    CGSize linesSz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(_titleL.frame.size.width, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
+    if(sz.width <= linesSz.width) //判断是否折行
+    {
+        lastPoint = CGPointMake(_titleL.frame.origin.x + sz.width, _titleL.frame.origin.y);
+    }
+    else
+    {
+        lastPoint = CGPointMake(_titleL.frame.origin.x + (int)sz.width % (int)linesSz.width,linesSz.height - 10);
+    }
+    if (_article.haveImage) {
         _topI.hidden = NO;
+//        _topI.image = [UIImage imageNamed:@"zhiding"];
+        _topI.backgroundColor = [UIColor redColor];
+        if (lastPoint.x > 280) {
+            lastPoint = CGPointMake(60, lastPoint.y + 22);
+        }
+        _topI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
+        lastPoint = CGPointMake(lastPoint.x + 22, lastPoint.y);
+        if (lastPoint.x > 300) {
+            lastPoint = CGPointMake(60, lastPoint.y + 22);
+        }
     }else{
         _topI.hidden = YES;
     }
-    if (_article.isEute) {
+    if (_article.isTop) {
         _goodI.hidden = NO;
+        _goodI.image = [UIImage imageNamed:@"zhiding"];
+        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
+    }else if (_article.isEute) {
+        _goodI.hidden = NO;
+        _goodI.image = [UIImage imageNamed:@"jinghua"];
+        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
     }else{
         _goodI.hidden = YES;
     }

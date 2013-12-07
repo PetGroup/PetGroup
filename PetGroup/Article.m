@@ -14,7 +14,6 @@
     self = [super init];
     if (self) {
         self.articleID = [info objectForKey:@"id"];
-        self.name = [info objectForKey:@"name"];
 //        self.content = [info objectForKey:@"content"];
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
@@ -25,7 +24,17 @@
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
         self.headImage = arr[0];
         self.ct =[Common noteCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];//发布时间
-        
+        if ([[info objectForKey:@"type"] isEqualToString:@"img"]) {
+            self.haveImage = 1;
+        }else{
+            self.haveImage = 0;
+        }
+        NSString* str = [info objectForKey:@"name"];
+        if ((self.haveImage||self.isTop||self.isEute)&&str.length>26) {
+            self.name = [NSString stringWithFormat:@"%@%@",[str substringToIndex:26],@"..."];
+        }else{
+            self.name = str;
+        }
     }
     return self;
 }
