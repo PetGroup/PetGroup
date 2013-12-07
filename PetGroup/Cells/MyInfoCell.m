@@ -33,9 +33,9 @@
         [self.signatureLabel setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:self.signatureLabel];
         
-        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(286, 28.7, 8.5, 12.5)];
-        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
-        [self.contentView addSubview:arrow];
+//        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(286, 28.7, 8.5, 12.5)];
+//        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
+//        [self.contentView addSubview:arrow];
         
     }
     return self;

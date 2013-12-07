@@ -37,7 +37,7 @@
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
     self.view.backgroundColor = [UIColor blackColor];
-//    diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
 
     sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
 	//设置委托
@@ -45,7 +45,7 @@
 	sc.delegate=self;
     //设置背景颜色
 	sc.backgroundColor=[UIColor blackColor];
-    [sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height)];
+    [sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height-diffH)];
 //    sc.alpha = 0.96;
     for (int i=1; i<=5; i++) {
 		//图片命名加拓展名
@@ -142,13 +142,13 @@
 -(void)timerDown:(NSTimer*)aTimer
 {
     if (sc.contentOffset.x > 960) {
-        sc.contentOffset = CGPointMake(0, 0);
+        sc.contentOffset = CGPointMake(0, -diffH);
         float a=sc.contentOffset.x;
         int page=floor((a-320/2)/320)+1;
         m_Emojipc.currentPage=page;
         return;
     }
-    sc.contentOffset = CGPointMake(sc.contentOffset.x + 320, 0);
+    sc.contentOffset = CGPointMake(sc.contentOffset.x + 320, -diffH);
     float a=sc.contentOffset.x;
 	int page=floor((a-320/2)/320)+1;
 	m_Emojipc.currentPage=page;
@@ -173,7 +173,7 @@
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (sc.contentOffset.x > 1280) {
-        sc.contentOffset = CGPointMake(0, 0);
+        sc.contentOffset = CGPointMake(0, -diffH);
         return;
     }
     if (timer != nil) {

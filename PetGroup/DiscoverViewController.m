@@ -16,6 +16,7 @@
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)NSArray*nameArray;
+@property (nonatomic,retain)NSArray*iconNameArray;
 @end
 
 @implementation DiscoverViewController
@@ -28,6 +29,7 @@
     if (self) {
         // Custom initialization
         self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
+        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
     }
     return self;
 }
@@ -92,17 +94,33 @@
 {
     return 1;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    static NSString *cellIdentifier = @"cell1";
+    MoreCell *cell = (MoreCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = _nameArray[indexPath.row+indexPath.section];
+
+//    if (cell == nil) {@property (strong,nonatomic) UIImageView * notiBgV;
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+//        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    cell.headImageV.image = [UIImage imageNamed:_iconNameArray[indexPath.section]];
+    [cell.headImageV setFrame:CGRectMake(10, 7.5, 35, 35)];
+//    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
+    cell.titleLabel.text = _nameArray[indexPath.row+indexPath.section];
+//    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [cell.titleLabel setFrame:CGRectMake(60, 15, 100, 20)];
+    [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
+    
     return cell;
 }
 #pragma mark - Table view delegate

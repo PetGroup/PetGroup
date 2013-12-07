@@ -13,4 +13,5 @@
 @property (strong,nonatomic) UILabel * titleLabel;
 @property (strong,nonatomic) UILabel * unreadCountLabel;
 @property (strong,nonatomic) UIImageView * notiBgV;
+@property (strong,nonatomic) UIImageView * arrow;
 @end

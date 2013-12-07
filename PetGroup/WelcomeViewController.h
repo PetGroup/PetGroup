@@ -10,7 +10,7 @@
 
 @interface WelcomeViewController : UIViewController<UIScrollViewDelegate>
 {
-//    float diffH;
+    float diffH;
     UIPageControl * m_Emojipc;
 }
 @end

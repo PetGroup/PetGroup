@@ -186,6 +186,7 @@
             if (cell == nil) {
                 cell = [[MyInfoCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
             }
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
 
@@ -245,11 +246,12 @@
             
             MoreCell *cell = (MoreCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
             if (cell == nil) {
-                cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+                cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:Cell];
             }
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             if (indexPath.section==2) {
-                [cell.headImageV setImage:[UIImage imageNamed:@"dyn.png"]];
+                [cell.headImageV setImage:[UIImage imageNamed:@"dongtai.png"]];
                 cell.titleLabel.text = @"我的动态";
                 if (unreadComment>0) {
                     cell.notiBgV.hidden = NO;
@@ -262,7 +264,7 @@
             }
             else
             {
-                [cell.headImageV setImage:[UIImage imageNamed:@"shezhi22.png"]];
+                [cell.headImageV setImage:[UIImage imageNamed:@"shezhi.png"]];
                 cell.titleLabel.text = @"设置";
             }
             

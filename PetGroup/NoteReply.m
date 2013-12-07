@@ -21,7 +21,7 @@
         self.headImage = arr[0];
         self.userName = [info objectForKey:@"nickname"];
         self.ct = [Common noteContentCurrentTime:[Common getCurrentTime] AndMessageTime:[info objectForKey:@"ct"]];
-        self.content = [NoteReply _attributedStringForSnippetUsingiOS6Attributes:NO String:[info objectForKey:@"content"]];
+        self.content = [NoteReply _attributedStringForSnippetUsingiOS6Attributes:NO String:[info objectForKey:@"content"]?[info objectForKey:@"content"]:@"    "];
         self.state = [info objectForKey:@"state"];
         self.seq = [info objectForKey:@"seq"];
     }

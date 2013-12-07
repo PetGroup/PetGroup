@@ -39,9 +39,9 @@
         self.notiBgV.hidden = YES;
 
         
-        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 12.7, 8.5, 12.5)];
-        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
-        [self.contentView addSubview:arrow];
+//        self.arrow = [[UIImageView alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width-30, 12.7, 8.5, 12.5)];
+//        [self.arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
+//        [self.contentView addSubview:self.arrow];
     }
     return self;
 }
