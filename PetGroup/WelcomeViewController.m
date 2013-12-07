@@ -37,7 +37,7 @@
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
     self.view.backgroundColor = [UIColor blackColor];
-    diffH = [Common diffHeight:self];
+//    diffH = [Common diffHeight:self];
 
     sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
 	//设置委托
@@ -121,7 +121,7 @@
 	//设置当前页,为第一张，索引为零
 	m_Emojipc.currentPage=0;
 	//添加事件处理，btn点击
-	[m_Emojipc addTarget:self action:@selector(pagePressed:) forControlEvents:UIControlEventTouchUpInside];
+//	[m_Emojipc addTarget:self action:@selector(pagePressed:) forControlEvents:UIControlEventTouchUpInside];
 	//将pc添加到视图上
 	[self.view addSubview:m_Emojipc];
 }

@@ -43,6 +43,9 @@
 		72CAD8BF183C7DBA00B1F927 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8BD183C7DBA00B1F927 /* libopencore-amrnb.a */; };
 		72CAD8C0183C7DBA00B1F927 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8BE183C7DBA00B1F927 /* libopencore-amrwb.a */; };
 		72F78C3F18516F4F0007892B /* newlogbg3.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C3E18516F4F0007892B /* newlogbg3.png */; };
+		72F78C431852D3B60007892B /* replyB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C401852D3B60007892B /* replyB.png */; };
+		72F78C441852D3B60007892B /* zanB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C411852D3B60007892B /* zanB.png */; };
+		72F78C451852D3B60007892B /* zhuanfaB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C421852D3B60007892B /* zhuanfaB.png */; };
 		785C20548B42418D82CF7FFC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D25B313ED94E54A59AB8E2 /* libPods.a */; };
 		849D3460182B7DE2009376C0 /* MyDynamicDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */; };
 		849D3463182B7FBA009376C0 /* MyReplyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 849D3462182B7FBA009376C0 /* MyReplyNoteDataSource.m */; };
@@ -827,6 +830,9 @@
 		72CAD8BD183C7DBA00B1F927 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		72CAD8BE183C7DBA00B1F927 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
 		72F78C3E18516F4F0007892B /* newlogbg3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg3.png; sourceTree = "<group>"; };
+		72F78C401852D3B60007892B /* replyB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = replyB.png; sourceTree = "<group>"; };
+		72F78C411852D3B60007892B /* zanB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zanB.png; sourceTree = "<group>"; };
+		72F78C421852D3B60007892B /* zhuanfaB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zhuanfaB.png; sourceTree = "<group>"; };
 		78D25B313ED94E54A59AB8E2 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		849D345E182B7DE2009376C0 /* MyDynamicDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDynamicDataSource.h; sourceTree = "<group>"; };
 		849D345F182B7DE2009376C0 /* MyDynamicDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDynamicDataSource.m; sourceTree = "<group>"; };
@@ -2127,6 +2133,9 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				72F78C401852D3B60007892B /* replyB.png */,
+				72F78C411852D3B60007892B /* zanB.png */,
+				72F78C421852D3B60007892B /* zhuanfaB.png */,
 				84BD196018348B6D004D51F2 /* page_right.png */,
 				84BD196118348B6D004D51F2 /* page_left.png */,
 				84BD195A1834881A004D51F2 /* pagenum_bg.png */,
@@ -4413,6 +4422,7 @@
 				97E2BD181834E5B600B006AE /* Default-568h@2x.png in Resources */,
 				9736BDBC17C49146007DFE36 /* rightarrow.png in Resources */,
 				9736BDBD17C49146007DFE36 /* selected-big.png in Resources */,
+				72F78C441852D3B60007892B /* zanB.png in Resources */,
 				9736BDBE17C49146007DFE36 /* selected-s.png in Resources */,
 				9736BDBF17C49146007DFE36 /* selectednormal-big.png in Resources */,
 				9736BDC017C49146007DFE36 /* selectednormal-s.png in Resources */,
@@ -4486,6 +4496,7 @@
 				86D69CEE17C5EFC800FFFBDD /* toubuhuakuaibeijing.png in Resources */,
 				86D69CEF17C5EFC800FFFBDD /* toubuhuakuaibtn.png in Resources */,
 				86D69CF317C6045000FFFBDD /* touxiangbeijing.png in Resources */,
+				72F78C451852D3B60007892B /* zhuanfaB.png in Resources */,
 				97FB83E91852C22B00F5F8F8 /* start_text_02.png in Resources */,
 				9765D7AD181BEABC0021B36F /* mail.png in Resources */,
 				86D69D0717C703C700FFFBDD /* tanchuanniu_bg.png in Resources */,
@@ -4604,6 +4615,7 @@
 				97FB83EF1852C2B700F5F8F8 /* start_bg_03.png in Resources */,
 				97FB83FA1852C31F00F5F8F8 /* start_text_05.png in Resources */,
 				86A56A54180F8191000FD684 /* biaoqing060.png in Resources */,
+				72F78C431852D3B60007892B /* replyB.png in Resources */,
 				86A56A55180F8191000FD684 /* biaoqing061.png in Resources */,
 				86A56A56180F8191000FD684 /* biaoqing062.png in Resources */,
 				9700D3BB18502B2B003260BC /* tabbar04.png in Resources */,

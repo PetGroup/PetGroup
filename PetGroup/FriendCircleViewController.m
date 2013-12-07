@@ -92,6 +92,7 @@
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
     _tableV.delegate = self;
     _tableV.dataSource = self.friendCircleDS;
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableV];
     

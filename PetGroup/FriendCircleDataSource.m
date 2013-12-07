@@ -95,10 +95,10 @@
 {
     if ([[self.replyCountDic allKeys] containsObject:dynamicID]) {
         if ([[self.replyCountDic objectForKey:dynamicID] intValue]!= 0) {
-            return [self.replyCountDic objectForKey:dynamicID];
+            return [NSString stringWithFormat:@"       %@",[self.replyCountDic objectForKey:dynamicID]];
         }
     }
-    return @"回复";
+    return @"       回复";
 }
 -(void)saveReplyNumberDic:(Dynamic*)dynamic
 {
