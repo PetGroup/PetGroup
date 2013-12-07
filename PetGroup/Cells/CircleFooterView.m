@@ -21,6 +21,9 @@
         _button.frame = CGRectMake(140, 0, 40, 30);
         [_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.contentView addSubview:_button];
+        UIView * bview = [[UIView alloc]init];
+        bview.backgroundColor = [UIColor whiteColor];
+        self.backgroundView = bview;
     }
     return self;
 }

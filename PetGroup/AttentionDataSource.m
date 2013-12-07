@@ -172,8 +172,5 @@
 {
     return self.dataSourceArray.count;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return ((CircleClassify*)self.dataSourceArray[section]).name;
-}
+
 @end

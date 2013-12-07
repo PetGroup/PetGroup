@@ -25,6 +25,7 @@
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "CircleFooterView.h"
+#import "CircleHeaderView.h"
 #import "MJRefresh.h"
 #import "CircleCell.h"
 #define sectionFooterHeight 30
@@ -420,6 +421,19 @@
         }
     }
 }
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (tableView == _attentionV) {
+        static NSString *cellIdentifier = @"headerView";
+        CircleHeaderView * view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:cellIdentifier];
+        if (view == nil) {
+            view = [[CircleHeaderView alloc]initWithReuseIdentifier:cellIdentifier];
+        }
+        view.titleL.text = ((CircleClassify*)self.attentionDS.dataSourceArray[section]).name;
+        return view;
+    }
+    return nil;
+}
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (tableView == _attentionV&&section != 0 && ((CircleClassify*)self.attentionDS.dataSourceArray[section]).circleArray.count>2) {
@@ -438,6 +452,13 @@
         return view;
     }
     return nil;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView == _attentionV) {
+        return 30;
+    }
+    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {

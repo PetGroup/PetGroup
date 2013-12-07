@@ -42,6 +42,7 @@
 		72CAD8BB183C7DB300B1F927 /* libidn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B8183C7DB300B1F927 /* libidn.a */; };
 		72CAD8BF183C7DBA00B1F927 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8BD183C7DBA00B1F927 /* libopencore-amrnb.a */; };
 		72CAD8C0183C7DBA00B1F927 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8BE183C7DBA00B1F927 /* libopencore-amrwb.a */; };
+		72EFC36F18530C4900A2B746 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EFC36E18530C4900A2B746 /* CircleHeaderView.m */; };
 		72F78C3F18516F4F0007892B /* newlogbg3.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C3E18516F4F0007892B /* newlogbg3.png */; };
 		72F78C431852D3B60007892B /* replyB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C401852D3B60007892B /* replyB.png */; };
 		72F78C441852D3B60007892B /* zanB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C411852D3B60007892B /* zanB.png */; };
@@ -829,6 +830,8 @@
 		72CAD8B9183C7DB300B1F927 /* stringprep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringprep.h; sourceTree = "<group>"; };
 		72CAD8BD183C7DBA00B1F927 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
 		72CAD8BE183C7DBA00B1F927 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		72EFC36D18530C4900A2B746 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
+		72EFC36E18530C4900A2B746 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		72F78C3E18516F4F0007892B /* newlogbg3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg3.png; sourceTree = "<group>"; };
 		72F78C401852D3B60007892B /* replyB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = replyB.png; sourceTree = "<group>"; };
 		72F78C411852D3B60007892B /* zanB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zanB.png; sourceTree = "<group>"; };
@@ -2189,6 +2192,8 @@
 				8672575A1819197700624A04 /* FollowerCell.m */,
 				7219A6561845A29400836883 /* CircleFooterView.h */,
 				7219A6571845A29400836883 /* CircleFooterView.m */,
+				72EFC36D18530C4900A2B746 /* CircleHeaderView.h */,
+				72EFC36E18530C4900A2B746 /* CircleHeaderView.m */,
 			);
 			name = CircleCells;
 			sourceTree = "<group>";
@@ -5063,6 +5068,7 @@
 				72795AEB184347EB00BB58E0 /* Business.m in Sources */,
 				865FDD5618094329005BB088 /* DataSource.m in Sources */,
 				86993B51180B88B500F61A3F /* AttentionDataSource.m in Sources */,
+				72EFC36F18530C4900A2B746 /* CircleHeaderView.m in Sources */,
 				86993B54180B937500F61A3F /* hotPintsDataSource.m in Sources */,
 				86993B5A180B950C00F61A3F /* GoodArticleDataSource.m in Sources */,
 				86993B5D180B953600F61A3F /* NewReplyArticleDataSource.m in Sources */,
