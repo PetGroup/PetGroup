@@ -25,34 +25,34 @@
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleGray;
-        self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(5, 5, 70, 70)];
+        self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
         self.imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_imageV];
         
-        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(80, 10, 180, 25)];
+        self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 180, 20)];
         self.nameL.backgroundColor = [UIColor clearColor];
         self.nameL.textColor = [UIColor blackColor];
         self.nameL.font = [UIFont boldSystemFontOfSize:18];
         [self.contentView addSubview:self.nameL];
         
-        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(260, 10, 80, 20)];
+        self.todayTopicL = [[UILabel alloc]initWithFrame:CGRectMake(200, 40, 80, 20)];
         _todayTopicL.backgroundColor = [UIColor clearColor];
         _todayTopicL.textColor = [UIColor grayColor];
-        _todayTopicL.font = [UIFont systemFontOfSize:14];
+        _todayTopicL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_todayTopicL];
-        self.topicL = [[UILabel alloc]initWithFrame:CGRectMake(80, 50, 80, 20)];
+        self.topicL = [[UILabel alloc]initWithFrame:CGRectMake(70, 40, 80, 20)];
         _topicL.backgroundColor = [UIColor clearColor];
-        _topicL.font = [UIFont systemFontOfSize:14];
+        _topicL.font = [UIFont systemFontOfSize:12];
         _topicL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_topicL];
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(160, 50, 80, 20)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(130, 40, 80, 20)];
         _replyL.backgroundColor = [UIColor clearColor];
-        _replyL.font = [UIFont systemFontOfSize:14];
+        _replyL.font = [UIFont systemFontOfSize:12];
         _replyL.textColor = [UIColor grayColor];
         [self.contentView addSubview:_replyL];
         
         self.joinB = [UIButton buttonWithType:UIButtonTypeCustom];
-        _joinB.frame = CGRectMake(280, 60, 40, 20);
+        _joinB.frame = CGRectMake(260, 10, 40, 40);
         [_joinB addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
         [_joinB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.contentView addSubview:_joinB];
@@ -75,9 +75,9 @@
     _topicL.text = [NSString stringWithFormat:@"话题:%@",self.circle.totalCount];
     _replyL.text = [NSString stringWithFormat:@"回复:%@",self.circle.totalReply];
     if (!self.circle.atte) {
-        [_joinB setTitle:@"加入" forState:UIControlStateNormal];
+        [_joinB setBackgroundImage:[UIImage imageNamed:@"joinB"] forState:UIControlStateNormal];
       }else{
-        [_joinB setTitle:@"退出" forState:UIControlStateNormal];
+        [_joinB setBackgroundImage:[UIImage imageNamed:@"quitB"] forState:UIControlStateNormal];
       }
 }
 -(void)joinAction{

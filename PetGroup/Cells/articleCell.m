@@ -112,12 +112,11 @@
     }
     if (_article.haveImage) {
         _topI.hidden = NO;
-//        _topI.image = [UIImage imageNamed:@"zhiding"];
-        _topI.backgroundColor = [UIColor redColor];
+        _topI.image = [UIImage imageNamed:@"havepic"];
         if (lastPoint.x > 280) {
-            lastPoint = CGPointMake(60, lastPoint.y + 22);
+            lastPoint = CGPointMake(60, lastPoint.y + 20);
         }
-        _topI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
+        _topI.frame = CGRectMake(lastPoint.x, lastPoint.y-2, 22, 22);
         lastPoint = CGPointMake(lastPoint.x + 22, lastPoint.y);
         if (lastPoint.x > 300) {
             lastPoint = CGPointMake(60, lastPoint.y + 22);
@@ -127,12 +126,12 @@
     }
     if (_article.isTop) {
         _goodI.hidden = NO;
-        _goodI.image = [UIImage imageNamed:@"zhiding"];
-        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
+        _goodI.image = [UIImage imageNamed:@"ding"];
+        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 18, 18);
     }else if (_article.isEute) {
         _goodI.hidden = NO;
-        _goodI.image = [UIImage imageNamed:@"jinghua"];
-        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 22, 22);
+        _goodI.image = [UIImage imageNamed:@"jing"];
+        _goodI.frame = CGRectMake(lastPoint.x, lastPoint.y, 18, 18);
     }else{
         _goodI.hidden = YES;
     }

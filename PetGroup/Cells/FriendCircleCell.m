@@ -22,11 +22,11 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleGray;
-        UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 70, 70)];
+        UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
         imageV.image = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:imageV];
         
-        UILabel*nameL = [[UILabel alloc]initWithFrame:CGRectMake(80, 10, 80, 25)];
+        UILabel*nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 80, 20)];
         nameL.text = @"好友动态";
         nameL.backgroundColor = [UIColor clearColor];
         nameL.textColor = [UIColor blackColor];
@@ -56,14 +56,14 @@
 {
     [super layoutSubviews];
     if (self.dynamic.smallImage.count>0) {
-        _dynamicIV.frame = CGRectMake(80, 40, 30, 30);
+        _dynamicIV.frame = CGRectMake(70, 35, 30, 30);
         _dynamicIV.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.dynamic.smallImage[0]]];
-        _dynamicL.frame = CGRectMake(115, 45, 200, 20);
+        _dynamicL.frame = CGRectMake(105, 40, 200, 20);
         _dynamicL.text = _dynamic.msg.string;
     }else
     {
         _dynamicIV.frame = CGRectZero;
-        _dynamicL.frame = CGRectMake(80, 45, 230, 20);
+        _dynamicL.frame = CGRectMake(70, 40, 230, 20);
         _dynamicL.text = _dynamic.msg.string;
     }
 }

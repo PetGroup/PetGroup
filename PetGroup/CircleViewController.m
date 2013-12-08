@@ -30,8 +30,9 @@
 #import "CircleCell.h"
 #define sectionFooterHeight 30
 
-@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate,CircleCellDelegate>
+@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate,CircleCellDelegate,UIAlertViewDelegate>
 {
+    CircleEntity* circle ;
     UIButton* attentionB;
     UIButton* hotPintsB;
     UIButton* goodB;
@@ -170,7 +171,7 @@
     _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -sectionFooterHeight, 0);
     _attentionV.delegate = self;
     _attentionV.backgroundView = nil;
-    _attentionV.rowHeight = 80;
+    _attentionV.rowHeight = 70;
     [_backGroundV addSubview:_attentionV];
     
     self.attentionDS = [[AttentionDataSource alloc]init];
@@ -335,9 +336,9 @@
 #pragma mark - circle cell delegate
 -(void)circleCellPressJoinBWithIndexPath:(NSIndexPath*)indexPath
 {
-    CircleEntity* circle = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
-    circle.atte = !circle.atte;
-    if (circle.atte) {
+    circle = ((CircleClassify*)self.attentionDS.dataSourceArray[indexPath.section]).circleArray[indexPath.row];
+    if (!circle.atte) {
+        circle.atte = !circle.atte;
         [self joinOneCircle:circle];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
@@ -359,6 +360,15 @@
             
         }];
     }else{
+        UIAlertView* quitAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"您确认要取消关注该圈子？" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确认", nil];
+        [quitAlertV show];
+    }
+}
+#pragma mark - alert view delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        circle.atte = !circle.atte;
         [self quitOneCircle:circle];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
