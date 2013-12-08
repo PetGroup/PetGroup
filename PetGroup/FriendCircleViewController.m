@@ -72,7 +72,7 @@
     [self.view addSubview:titleLabel];
     
     UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 3+diffH, 35, 33);
+    publishButton.frame=CGRectMake(278, 7+diffH, 35, 33);
     [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
