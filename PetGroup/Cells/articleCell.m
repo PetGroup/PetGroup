@@ -46,27 +46,30 @@
 //        _titleL.backgroundColor = [UIColor grayColor];
         [self.contentView addSubview:_titleL];
         
-        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(65, 52, 100, 20)];
+        self.timeL = [[UILabel alloc]initWithFrame:CGRectMake(65, 52, 70, 20)];
         _timeL.font = [UIFont systemFontOfSize:14];
         _timeL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_timeL];
         
-        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 57, 16, 10)];
-        readI.image = [UIImage imageNamed:@"guanzhu"];
-        [self.contentView addSubview:readI];
+//        UIImageView* readI = [[UIImageView alloc]initWithFrame:CGRectMake(170, 57, 16, 10)];
+//        readI.image = [UIImage imageNamed:@"guanzhu"];
+//        [self.contentView addSubview:readI];
         
-        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(189, 52, 70, 20)];
+        self.readL = [[UILabel alloc]initWithFrame:CGRectMake(135, 52, 80, 20)];
         _readL.font = [UIFont systemFontOfSize:14];
-        _readL.textColor = [UIColor grayColor];
+        _readL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
+//        [_readL setBackgroundColor:[UIColor blueColor]];
         [self.contentView addSubview:_readL];
         
-        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 57, 16, 10)];
-        replyI.image = [UIImage imageNamed:@"huifu"];
-        [self.contentView addSubview:replyI];
+//        UIImageView* replyI = [[UIImageView alloc]initWithFrame:CGRectMake(256, 57, 16, 10)];
+//        replyI.image = [UIImage imageNamed:@"huifu"];
+//        [self.contentView addSubview:replyI];
         
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(275, 52, 50, 20)];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(225, 52, 80, 20)];
         _replyL.font = [UIFont systemFontOfSize:14];
-        _replyL.textColor = [UIColor grayColor];
+//        _replyL.backgroundColor = [UIColor redColor];
+        [_replyL setTextAlignment:NSTextAlignmentRight];
+        _replyL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_replyL];
         
         self.goodI = [[UIImageView alloc]init];
@@ -96,8 +99,8 @@
     _titleL.text = self.article.name;
 //    _titleL.lineBreakMode = NSLineBreakByCharWrapping;
     _timeL.text = self.article.ct;
-    _readL.text = self.article.clientCount;
-    _replyL.text = self.article.replyCount;
+    _readL.text = self.article.circleName;
+    _replyL.text =[NSString stringWithFormat:@"%@/%@",self.article.replyCount,self.article.clientCount];
     CGPoint lastPoint;
     CGSize sz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
     
