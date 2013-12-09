@@ -13,6 +13,7 @@
 @property (nonatomic,retain) NSString* name;
 //@property (nonatomic,retain) NSMutableAttributedString* content;
 @property (nonatomic,retain) NSString* clientCount;
+@property (nonatomic,retain) NSString* circleName;
 @property (nonatomic,retain) NSString* replyCount;
 @property (nonatomic,retain) NSString* userName;
 @property (nonatomic,retain) NSString* headImage;
