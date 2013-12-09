@@ -26,6 +26,8 @@
 @property (nonatomic,retain)EGOImageView* imageV;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
+
+@property (nonatomic,retain)UIView * firstView;
 @end
 
 @implementation FriendCircleViewController
@@ -158,6 +160,15 @@
     _footer.scrollView = self.tableV;
     
     [self reloadData];
+    
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:@"25PetFirstLoadFrirndCircleView"]) {
+        [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
+        [defaults synchronize];
+        self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
+        _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+        [self.view addSubview:_firstView];
+    }
 }
 - (void)didReceiveMemoryWarning
 {

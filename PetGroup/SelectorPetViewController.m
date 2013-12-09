@@ -76,26 +76,26 @@
     
     dogB = [UIButton buttonWithType:UIButtonTypeCustom];
     [dogB addTarget:self action:@selector(selectDog) forControlEvents:UIControlEventTouchUpInside];
-    [dogB setBackgroundImage:[UIImage imageNamed:@"dog_normal"] forState:UIControlStateNormal];
-    dogB.frame = CGRectMake(35, 140+diffH, 120, 120);
+    [dogB setBackgroundImage:[UIImage imageNamed:@"gougou"] forState:UIControlStateNormal];
+    dogB.frame = CGRectMake(40, 140+diffH, 120, 120);
     [self.view addSubview:dogB];
     
     catB = [UIButton buttonWithType:UIButtonTypeCustom];
     [catB addTarget:self action:@selector(selectCat) forControlEvents:UIControlEventTouchUpInside];
-    [catB setBackgroundImage:[UIImage imageNamed:@"cat_normal"] forState:UIControlStateNormal];
-    catB.frame = CGRectMake(165, 140+diffH, 120, 120);
+    [catB setBackgroundImage:[UIImage imageNamed:@"maomi"] forState:UIControlStateNormal];
+    catB.frame = CGRectMake(160, 140+diffH, 120, 120);
     [self.view addSubview:catB];
     
     otherB = [UIButton buttonWithType:UIButtonTypeCustom];
     [otherB addTarget:self action:@selector(selectOther) forControlEvents:UIControlEventTouchUpInside];
-    [otherB setBackgroundImage:[UIImage imageNamed:@"qita_normal"] forState:UIControlStateNormal];
-    otherB.frame = CGRectMake(35, 270+diffH, 120, 120);
+    [otherB setBackgroundImage:[UIImage imageNamed:@"qita"] forState:UIControlStateNormal];
+    otherB.frame = CGRectMake(40, 260+diffH, 120, 120);
     [self.view addSubview:otherB];
     
     noneB = [UIButton buttonWithType:UIButtonTypeCustom];
     [noneB addTarget:self action:@selector(selectNone) forControlEvents:UIControlEventTouchUpInside];
-    [noneB setBackgroundImage:[UIImage imageNamed:@"no_normal"] forState:UIControlStateNormal];
-    noneB.frame = CGRectMake(165, 270+diffH, 120, 120);
+    [noneB setBackgroundImage:[UIImage imageNamed:@"weiyang"] forState:UIControlStateNormal];
+    noneB.frame = CGRectMake(160, 260+diffH, 120, 120);
     [self.view addSubview:noneB];
 }
 
@@ -126,34 +126,34 @@
 -(void)selectDog
 {
     self.petType = PetTypeStyleDog;
-    [dogB setBackgroundImage:[UIImage imageNamed:@"dog_click"] forState:UIControlStateNormal];
-    [catB setBackgroundImage:[UIImage imageNamed:@"cat_normal"] forState:UIControlStateNormal];
-    [otherB setBackgroundImage:[UIImage imageNamed:@"qita_normal"] forState:UIControlStateNormal];
-    [noneB setBackgroundImage:[UIImage imageNamed:@"no_normal"] forState:UIControlStateNormal];
+    [dogB setBackgroundImage:[UIImage imageNamed:@"gougou_click"] forState:UIControlStateNormal];
+    [catB setBackgroundImage:[UIImage imageNamed:@"maomi"] forState:UIControlStateNormal];
+    [otherB setBackgroundImage:[UIImage imageNamed:@"qita"] forState:UIControlStateNormal];
+    [noneB setBackgroundImage:[UIImage imageNamed:@"weiyang"] forState:UIControlStateNormal];
     
 }
 -(void)selectCat
 {
     self.petType = PetTypeStyleCat;
-    [dogB setBackgroundImage:[UIImage imageNamed:@"dog_normal"] forState:UIControlStateNormal];
-    [catB setBackgroundImage:[UIImage imageNamed:@"cat_click"] forState:UIControlStateNormal];
-    [otherB setBackgroundImage:[UIImage imageNamed:@"qita_normal"] forState:UIControlStateNormal];
-    [noneB setBackgroundImage:[UIImage imageNamed:@"no_normal"] forState:UIControlStateNormal];
+    [dogB setBackgroundImage:[UIImage imageNamed:@"gougou"] forState:UIControlStateNormal];
+    [catB setBackgroundImage:[UIImage imageNamed:@"maomi_click"] forState:UIControlStateNormal];
+    [otherB setBackgroundImage:[UIImage imageNamed:@"qita"] forState:UIControlStateNormal];
+    [noneB setBackgroundImage:[UIImage imageNamed:@"weiyang"] forState:UIControlStateNormal];
 }
 -(void)selectOther
 {
     self.petType = PetTypeStyleOther;
-    [dogB setBackgroundImage:[UIImage imageNamed:@"dog_normal"] forState:UIControlStateNormal];
-    [catB setBackgroundImage:[UIImage imageNamed:@"cat_normal"] forState:UIControlStateNormal];
+    [dogB setBackgroundImage:[UIImage imageNamed:@"gougou"] forState:UIControlStateNormal];
+    [catB setBackgroundImage:[UIImage imageNamed:@"maomi"] forState:UIControlStateNormal];
     [otherB setBackgroundImage:[UIImage imageNamed:@"qita_click"] forState:UIControlStateNormal];
-    [noneB setBackgroundImage:[UIImage imageNamed:@"no_normal"] forState:UIControlStateNormal];
+    [noneB setBackgroundImage:[UIImage imageNamed:@"weiyang"] forState:UIControlStateNormal];
 }
 -(void)selectNone
 {
     self.petType = PetTypeStyleNone;
-    [dogB setBackgroundImage:[UIImage imageNamed:@"dog_normal"] forState:UIControlStateNormal];
-    [catB setBackgroundImage:[UIImage imageNamed:@"cat_normal"] forState:UIControlStateNormal];
-    [otherB setBackgroundImage:[UIImage imageNamed:@"qita_normal"] forState:UIControlStateNormal];
-    [noneB setBackgroundImage:[UIImage imageNamed:@"no_click"] forState:UIControlStateNormal];
+    [dogB setBackgroundImage:[UIImage imageNamed:@"gougou"] forState:UIControlStateNormal];
+    [catB setBackgroundImage:[UIImage imageNamed:@"maomi"] forState:UIControlStateNormal];
+    [otherB setBackgroundImage:[UIImage imageNamed:@"qita"] forState:UIControlStateNormal];
+    [noneB setBackgroundImage:[UIImage imageNamed:@"weiyang_click"] forState:UIControlStateNormal];
 }
 @end
