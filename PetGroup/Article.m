@@ -18,7 +18,7 @@
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
         self.userName = [info objectForKey:@"nickname"];
-        self.circleName = @"什么什么圈";
+        self.circleName = @"  ";
 //        self.headImage = [info objectForKey:@"userIcon"];
         self.isEute = [[info objectForKey:@"isEute"]boolValue];
         self.isTop = [[info objectForKey:@"isTop"] boolValue];
