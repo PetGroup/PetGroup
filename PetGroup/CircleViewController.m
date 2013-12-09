@@ -41,7 +41,7 @@
     float diffH;
 }
 @property (nonatomic,retain)NSString* myUserID;
-@property (nonatomic,retain)UIView* pageV;
+@property (nonatomic,retain)UIImageView* pageV;
 @property (nonatomic,retain)UIScrollView* backGroundV;
 
 @property (nonatomic,retain)UITableView* goodV;
@@ -63,6 +63,8 @@
 @property (nonatomic,retain)NewReplyArticleDataSource* publishArticleDS;
 
 @property (strong,nonatomic) AppDelegate * appDel;
+
+@property (nonatomic,retain) UIView * firstView;
 @end
 
 @implementation CircleViewController
@@ -105,41 +107,38 @@
     [self.view addSubview:nextB];
 
     
-    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 31.5)];
-//    tabIV.image = [UIImage imageNamed:@"biaotidd"];
+    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 46.5)];
+    tabIV.image = [UIImage imageNamed:@"scroll_bg"];
     tabIV.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.87 alpha:1];
 //    [UIImage imageNamed:@"table_bg"];
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
     
+    self.pageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 9, 100, 30)];
+    _pageV.image = [UIImage imageNamed:@"scrollTable_bg"];
+    [tabIV addSubview:_pageV];
+    
     attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionB.frame = CGRectMake(106.666*2, 0, 106.666, 31.5);
+    attentionB.frame = CGRectMake(210, 10, 100, 26);
     [attentionB setTitle:@"关注" forState:UIControlStateNormal];
-    [attentionB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [tabIV addSubview:attentionB];
     [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
     
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
-    [hotPintsB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    hotPintsB.frame = CGRectMake(106.666, 0, 106.666, 31.5);
+    hotPintsB.frame = CGRectMake(110, 10, 100, 26);
     [hotPintsB setTitle:@"最新" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
     goodB = [UIButton buttonWithType:UIButtonTypeCustom];
-    [goodB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    goodB.frame = CGRectMake(0, 0, 106.666, 31.5);
+    goodB.frame = CGRectMake(10, 10, 100,26);
     [goodB setTitle:@"精华" forState:UIControlStateNormal];
     [goodB addTarget:self action:@selector(changeDataSource) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:goodB];
     
-    self.pageV = [[UIView alloc]initWithFrame:CGRectMake(106.666, 29, 106.666, 2.5)];
-    _pageV.backgroundColor = [UIColor colorWithRed:0.5 green:0.83 blue:0.4 alpha:1];
-    [tabIV addSubview:_pageV];
-    
-    self.backGroundV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 75.5+diffH, 320, self.view.frame.size.height-124.5-diffH)];
+    self.backGroundV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 90.5+diffH, 320, self.view.frame.size.height-139.5-diffH)];
     _backGroundV.delegate = self;
-    _backGroundV.contentSize = CGSizeMake(960, self.view.frame.size.height-124.5-diffH);
+    _backGroundV.contentSize = CGSizeMake(960, self.view.frame.size.height-139.5-diffH);
     _backGroundV.contentOffset = CGPointMake(320, 0);
     _backGroundV.pagingEnabled=YES;
 	_backGroundV.showsHorizontalScrollIndicator=NO;
@@ -147,7 +146,7 @@
     _backGroundV.bounces = NO;
     [self.view addSubview:_backGroundV];
     
-    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, 320, self.view.frame.size.height-124.5-diffH)];
+    self.hotPintsV = [[UITableView alloc]initWithFrame:CGRectMake(320, 0, 320, self.view.frame.size.height-139.5-diffH)];
     _hotPintsV.rowHeight = 80;
     _hotPintsV.delegate = self;
     [_backGroundV addSubview:_hotPintsV];
@@ -157,7 +156,7 @@
     _publishArticleDS.myController = self;
     [self reloadHotPintsData];
     
-    self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-124.5-diffH)];
+    self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-139.5-diffH)];
     _goodV.rowHeight = 80;
     _goodV.delegate = self;
     [_backGroundV addSubview:_goodV];
@@ -167,7 +166,7 @@
     _goodArticleDS.myController = self;
     [self reloadGoodArticleData];
     
-    self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-124.5-diffH)];
+    self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-139.5-diffH)];
     _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -sectionFooterHeight, 0);
     _attentionV.delegate = self;
     _attentionV.backgroundView = nil;
@@ -244,6 +243,16 @@
     [_hotPintsSearchBar insertSubview:cc atIndex:1];
     
     self.appDel = [[UIApplication sharedApplication] delegate];
+    
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:@"25PetFirstLoadCircleView"]) {
+        [defaults setObject:@"25PetFirstLoadCircleView" forKey:@"25PetFirstLoadCircleView"];
+        [defaults synchronize];
+        _backGroundV.contentOffset = CGPointMake(640, 0);
+        self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
+        _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
+        [self.view addSubview:_firstView];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -511,7 +520,20 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView == _backGroundV) {
-        _pageV.frame = CGRectMake((scrollView.contentOffset.x/320)*106.666, 29, 106.666, 2.5);
+        _pageV.frame = CGRectMake(10+(scrollView.contentOffset.x/320)*100, 9, 100, 30);
+        if (_pageV.frame.origin.x == 10) {
+            [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            [goodB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }if (_pageV.frame.origin.x == 110) {
+            [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            [hotPintsB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        }if (_pageV.frame.origin.x == 210) {
+            [attentionB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        }
     }
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidScroll];
