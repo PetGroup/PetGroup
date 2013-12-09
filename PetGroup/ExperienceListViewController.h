@@ -9,8 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "ContentDetailViewController.h"
 #import "TempData.h"
-@interface ExperienceListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+#import "MJRefresh.h"
+#import "SRRefreshView.h"
+@interface ExperienceListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
+{
+    int thePage;
+    BOOL canLoadMore;
+}
 @property (nonatomic,strong) UITableView * listTableV;
 @property (nonatomic,strong) NSString * rootID;
-@property (nonatomic,strong) NSArray * listArray;
+@property (nonatomic,strong) NSMutableArray * listArray;
+@property (strong,nonatomic) MJRefreshFooterView *footer;
+@property (nonatomic,retain)SRRefreshView* refreshView;
 @end

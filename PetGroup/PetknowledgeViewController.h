@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "TempData.h"
 #import "CategoryViewController.h"
+#import "MoreCell.h"
 @interface PetknowledgeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     NSArray * categoryArray;
+    NSArray * categoryImgNameArray;
 }
 @property (nonatomic,strong) UITableView * categoryTableV;
 @end

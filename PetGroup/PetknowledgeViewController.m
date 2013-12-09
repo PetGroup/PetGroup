@@ -20,6 +20,7 @@
     if (self) {
         // Custom initialization
         categoryArray = [NSArray arrayWithObjects:@"宠物品种",@"养宠经验", nil];
+        categoryImgNameArray = [NSArray arrayWithObjects:@"petBreed.png",@"petKnowledge.png", nil];
     }
     return self;
 }
@@ -70,17 +71,32 @@
 {
     return 1;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    static NSString *cellIdentifier = @"cell1";
+    MoreCell *cell = (MoreCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = [categoryArray objectAtIndex:indexPath.section];
+    
+    //    if (cell == nil) {@property (strong,nonatomic) UIImageView * notiBgV;
+    //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    //        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    cell.headImageV.image = [UIImage imageNamed:categoryImgNameArray[indexPath.section]];
+    [cell.headImageV setFrame:CGRectMake(10, 7.5, 35, 35)];
+    //    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
+    cell.titleLabel.text = categoryArray[indexPath.row+indexPath.section];
+    //    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [cell.titleLabel setFrame:CGRectMake(60, 15, 100, 20)];
+
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

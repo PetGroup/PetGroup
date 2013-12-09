@@ -19,11 +19,18 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        thePage = 0;
+        canLoadMore = YES;
+        self.listArray = [NSMutableArray array];
     }
     return self;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
+}
+- (void)dealloc
+{
+    [_footer free];
 }
 - (void)viewDidLoad
 {
@@ -56,14 +63,75 @@
     self.listTableV.backgroundView = nil;
     [self.view addSubview:self.listTableV];
     
+    self.footer = [[MJRefreshFooterView alloc] init];
+    _footer.delegate = self;
+    _footer.scrollView = self.listTableV;
+    
+    self.refreshView = [[SRRefreshView alloc] init];
+    _refreshView.delegate = self;
+    _refreshView.upInset = 0;
+    _refreshView.slimeMissWhenGoingBack = YES;
+    _refreshView.slime.bodyColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    _refreshView.slime.skinColor = [UIColor whiteColor];
+    _refreshView.slime.lineWith = 1;
+    _refreshView.slime.shadowBlur = 4;
+    _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    
+    [self.listTableV addSubview:_refreshView];
+    
     [self getChildList];
 	// Do any additional setup after loading the view.
+}
+- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
+{
+    if (refreshView == _footer) {
+        if (canLoadMore) {
+            [self getChildList];
+        }
+        else
+        {
+            [self performSelector:@selector(makeFooterEnd) withObject:nil afterDelay:1];
+        }
+        
+        return;
+    }
+}
+-(void)makeFooterEnd
+{
+    [_footer endRefreshing];
+}
+#pragma mark - slimeRefresh delegate
+
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    thePage = 0;
+    [self.listArray removeAllObjects];
+    if (refreshView == _refreshView) {
+        [self getChildList];
+    }
+}
+#pragma mark - scroll view delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView == _listTableV){
+        [_refreshView scrollViewDidScroll];
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (scrollView == _listTableV) {
+        [_refreshView scrollViewDidEndDraging];
+    }
 }
 -(void)getChildList
 {
     NSMutableDictionary * locationDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
-    [locationDict setObject:@"0" forKey:@"pageNo"];
+    [locationDict setObject:[NSString stringWithFormat:@"%d",thePage] forKey:@"pageNo"];
     [locationDict setObject:@"20" forKey:@"pageSize"];
     [locationDict setObject:self.rootID forKey:@"pid"];
     [postDict setObject:@"1" forKey:@"channel"];
@@ -76,10 +144,22 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"petKnowledge:%@",responseObject);
-        self.listArray = [responseObject objectForKey:@"data"];
-        [self.listTableV reloadData];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([[responseObject objectForKey:@"data"] count]>=20) {
+            canLoadMore = YES;
+            thePage++;
+        }
+        else
+        {
+            canLoadMore = NO;
+        }
+        [self.listArray addObjectsFromArray:[responseObject objectForKey:@"data"]];
         
+        [self.listTableV reloadData];
+        [_refreshView endRefresh];
+        [_footer endRefreshing];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [_refreshView endRefresh];
+        [_footer endRefreshing];
     }];
     
 }
