@@ -68,7 +68,10 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+//    UIImageView* headV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
+//    headV.image = [UIImage imageNamed:@"dianpingziyuan"];
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH)];
+//    _tableV.tableFooterView = headV;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.rowHeight = 100;
