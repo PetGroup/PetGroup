@@ -26,7 +26,7 @@
 //        self.headImageV.layer.cornerRadius = 5;
 //        self.headImageV.layer.masksToBounds=YES;
         [bgV addSubview:self.headImageV];
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 150, 20)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 190, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
         [bgV addSubview:self.nameLabel];
@@ -37,8 +37,8 @@
 //        self.sigBgImgV.alpha = 0.6;
 //        [bgV addSubview:self.sigBgImgV];
         
-        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 30, 108.5, 20)];
-        [self.signatureLabel setTextColor:[UIColor clearColor]];
+        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 50, 190, 20)];
+        [self.signatureLabel setTextColor:[UIColor grayColor]];
         [self.signatureLabel setFont:[UIFont systemFontOfSize:14]];
 //        [self.signatureLabel setAdjustsFontSizeToFitWidth:YES];
         [self.signatureLabel setBackgroundColor:[UIColor clearColor]];
@@ -51,7 +51,7 @@
         
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
         
-        self.genderImgV = [[UIImageView alloc] initWithFrame:CGRectMake(240, 15, 12, 12)];
+        self.genderImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 35, 10, 10)];
         [bgV addSubview:self.genderImgV];
         //[self.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
        
@@ -63,19 +63,20 @@
 //        [bgV addSubview:lineLabel];
 //        [lineLabel setBackgroundColor:[UIColor clearColor]];
         
-        self.distLabel = [[UILabel alloc] initWithFrame:CGRectMake(260, 10, 55, 20)];
-        [self.distLabel setTextAlignment:NSTextAlignmentRight];
+        self.distLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 30, 120, 20)];
+        [self.distLabel setTextAlignment:NSTextAlignmentLeft];
         [self.distLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.distLabel setTextColor:[UIColor orangeColor]];
+        [self.distLabel setTextColor:[UIColor grayColor]];
+        [self.distLabel setFont:[UIFont systemFontOfSize:14]];
         [bgV addSubview:self.distLabel];
         [self.distLabel setBackgroundColor:[UIColor clearColor]];
 
-        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(306, 48.7, 8.5, 12.5)];
-        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
-        [bgV addSubview:arrow];
+//        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(306, 48.7, 8.5, 12.5)];
+//        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
+//        [bgV addSubview:arrow];
         [bgV addSubview:self.signatureLabel];
         
-        self.petOneImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 40, 30, 30)];
+        self.petOneImgV = [[UIImageView alloc] initWithFrame:CGRectMake(270, 10, 40, 40)];
         [bgV addSubview:self.petOneImgV];
         self.petOneImgV.hidden = YES;
 //        self.petOneImgV.layer.cornerRadius = 3;
@@ -84,11 +85,11 @@
         self.petTwoImgV = [[UIImageView alloc] initWithFrame:CGRectMake(80, 40, 30, 30)];
         [bgV addSubview:self.petTwoImgV];
         
-        self.petLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 63, 200, 20)];
-        [self.petLabel setTextAlignment:NSTextAlignmentLeft];
+        self.petLabel = [[UILabel alloc] initWithFrame:CGRectMake(270, 50, 40, 20)];
+        [self.petLabel setTextAlignment:NSTextAlignmentCenter];
         [self.petLabel setTextColor:[UIColor grayColor]];
-        [self.petLabel setFont:[UIFont systemFontOfSize:14]];
-        [self.petLabel setAdjustsFontSizeToFitWidth:YES];
+        [self.petLabel setFont:[UIFont systemFontOfSize:11]];
+//        [self.petLabel setAdjustsFontSizeToFitWidth:YES];
         [bgV addSubview:self.petLabel];
         [self.petLabel setBackgroundColor:[UIColor clearColor]];
     }

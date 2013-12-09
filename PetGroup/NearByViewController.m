@@ -450,18 +450,19 @@
             cell.petOneImgV.hidden = NO;
             NSArray * head = [self imageToURL:petInfo.headImgArray];
             [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"cat.png"]];
-            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
-            if (tempPetArray.count==1) {
-                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
-            }
-            else
-                [cell.petLabel setText:[NSString stringWithFormat:@"%@等%d个宠物",petInfo.petNickname,tempPetArray.count]];
+//            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+//            if (tempPetArray.count==1) {
+//                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
+//            }
+//            else
+                [cell.petLabel setText:[NSString stringWithFormat:@"%d个宠物",tempPetArray.count]];
         }
         else
         {
-            cell.petOneImgV.hidden = YES;
-            [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
-            [cell.petLabel setText:@"用户暂时还没有宠物呢"];
+            cell.petOneImgV.hidden = NO;
+            [cell.petOneImgV setImage:[UIImage imageNamed:@"nopet.png"]];
+//            [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
+            [cell.petLabel setText:@" "];
         }
         int dist = [[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"] intValue];
         NSString *distf;
@@ -487,7 +488,7 @@
             else
                 distf = [NSString stringWithFormat:@"%dm",dist];
         }
-        [cell.distLabel setText:distf];
+        [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"birthdate"],distf]];
 
         return cell;
     }else{
@@ -528,14 +529,14 @@
             else
                 distf = [NSString stringWithFormat:@"%dm",dist];
         }
-        [cell.distLabel setText:distf];
         NSString* sigStr = [pet objectForKey:@"trait"];
         NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
         NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
+        [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[pet objectForKey:@"birthdate"],distf]];
         cell.petOneImgV.hidden = NO;
         [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
-        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
-        [cell.petLabel setText:[NSString stringWithFormat:@"[主人]%@",[theDict objectForKey:@"nickname"]]];
+//        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+        [cell.petLabel setText:[NSString stringWithFormat:@"%@",[theDict objectForKey:@"nickname"]]];
         
         NSString * petGender = [pet objectForKey:@"gender"];
         if ([petGender isEqualToString:@"male"]) {
@@ -555,7 +556,7 @@
         }else{
             [cell.signatureLabel setText:@"这只宠物很平凡"];
         }
-        [cell.signatureLabel setText:[[pet objectForKey:@"trait"] isKindOfClass:[NSNull class]]?@"":[pet objectForKey:@"trait"]];
+//        [cell.signatureLabel setText:[[pet objectForKey:@"trait"] isKindOfClass:[NSNull class]]?@"":[pet objectForKey:@"trait"]];
         return cell;
     }
 }
