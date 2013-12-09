@@ -114,24 +114,27 @@
     tabIV.userInteractionEnabled = YES;
     [self.view addSubview:tabIV];
     
-    self.pageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 9, 100, 30)];
+    self.pageV = [[UIImageView alloc]initWithFrame:CGRectMake(12, 11, 96, 25)];
     _pageV.image = [UIImage imageNamed:@"scrollTable_bg"];
     [tabIV addSubview:_pageV];
     
     attentionB = [UIButton buttonWithType:UIButtonTypeCustom];
     attentionB.frame = CGRectMake(210, 10, 100, 26);
+    attentionB.titleLabel.font = [UIFont systemFontOfSize:14];
     [attentionB setTitle:@"关注" forState:UIControlStateNormal];
     [tabIV addSubview:attentionB];
     [attentionB addTarget:self action:@selector(attentionAct) forControlEvents:UIControlEventTouchUpInside];
     
     hotPintsB = [UIButton buttonWithType:UIButtonTypeCustom];
     hotPintsB.frame = CGRectMake(110, 10, 100, 26);
+    hotPintsB.titleLabel.font = [UIFont systemFontOfSize:14];
     [hotPintsB setTitle:@"最新" forState:UIControlStateNormal];
     [tabIV addSubview:hotPintsB];
     [hotPintsB addTarget:self action:@selector(hotPintsAct) forControlEvents:UIControlEventTouchUpInside];
     
     goodB = [UIButton buttonWithType:UIButtonTypeCustom];
     goodB.frame = CGRectMake(10, 10, 100,26);
+    goodB.titleLabel.font = [UIFont systemFontOfSize:14];
     [goodB setTitle:@"精华" forState:UIControlStateNormal];
     [goodB addTarget:self action:@selector(changeDataSource) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:goodB];
@@ -520,16 +523,16 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView == _backGroundV) {
-        _pageV.frame = CGRectMake(10+(scrollView.contentOffset.x/320)*100, 9, 100, 30);
-        if (_pageV.frame.origin.x == 10) {
+        _pageV.frame = CGRectMake(12+(scrollView.contentOffset.x/320)*100, 11, 96, 25);
+        if (_pageV.frame.origin.x == 12) {
             [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        }if (_pageV.frame.origin.x == 110) {
+        }if (_pageV.frame.origin.x == 112) {
             [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        }if (_pageV.frame.origin.x == 210) {
+        }if (_pageV.frame.origin.x == 212) {
             [attentionB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
