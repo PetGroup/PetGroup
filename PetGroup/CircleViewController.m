@@ -28,9 +28,11 @@
 #import "CircleHeaderView.h"
 #import "MJRefresh.h"
 #import "CircleCell.h"
+
+#import "UserGuidCell.h"
 #define sectionFooterHeight 30
 
-@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate,CircleCellDelegate,UIAlertViewDelegate>
+@interface CircleViewController ()<UITableViewDelegate,SRRefreshDelegate,OnceCircleViewControllerDelegate,CircleFooterViewDelegate,MJRefreshBaseViewDelegate,UISearchBarDelegate,CircleCellDelegate,UIAlertViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,EditArticleViewDelegate>
 {
     CircleEntity* circle ;
     UIButton* attentionB;
@@ -39,6 +41,8 @@
     
     UILabel * numberLabel;
     float diffH;
+    
+    BOOL needGuidance;
 }
 @property (nonatomic,retain)NSString* myUserID;
 @property (nonatomic,retain)UIImageView* pageV;
@@ -65,6 +69,9 @@
 @property (strong,nonatomic) AppDelegate * appDel;
 
 @property (nonatomic,retain) UIView * firstView;
+@property (nonatomic,retain) NSMutableArray* allCircleArray;
+@property (nonatomic,retain) NSMutableArray* myCircleArray;
+@property (nonatomic,retain) NSMutableArray* autoCircleArray;
 @end
 
 @implementation CircleViewController
@@ -74,6 +81,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        needGuidance = NO;
     }
     return self;
 }
@@ -249,15 +257,67 @@
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"25PetFirstLoadCircleView"]) {
-        [defaults setObject:@"25PetFirstLoadCircleView" forKey:@"25PetFirstLoadCircleView"];
-        [defaults synchronize];
+//        [defaults setObject:@"25PetFirstLoadCircleView" forKey:@"25PetFirstLoadCircleView"];
+//        [defaults synchronize];
+        needGuidance = YES;
         _backGroundV.contentOffset = CGPointMake(640, 0);
-        self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
-        _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
-        [self.view addSubview:_firstView];
     }
 }
-
+- (void)buildGuidView
+{
+    self.firstView = [[UIView alloc]initWithFrame:[[UIApplication sharedApplication] keyWindow].frame];
+    _firstView.backgroundColor = [UIColor clearColor];
+    UIView* bgV = [[UIView alloc]initWithFrame:_firstView.frame];
+    bgV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    [_firstView addSubview:bgV];
+    UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(17.5, 44+diffH, 285, 345)];
+    imageV.image = [UIImage imageNamed:@"circle_bg"];
+    [bgV addSubview:imageV];
+    UILabel* titleL = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 285, 20)];
+    titleL.backgroundColor = [UIColor clearColor];
+    titleL.textAlignment = NSTextAlignmentCenter;
+    titleL.text = @"请选择关注的圈子";
+    [imageV addSubview:titleL];
+    UICollectionViewFlowLayout* cv = [[UICollectionViewFlowLayout alloc]init];
+    cv.itemSize = CGSizeMake(71,88);
+    cv.minimumLineSpacing = 5.0;
+    cv.minimumInteritemSpacing = 5.0;
+    //        cv.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+    cv.scrollDirection = UICollectionViewScrollDirectionVertical;
+    UICollectionView* collectionV = [[UICollectionView alloc]initWithFrame:CGRectMake(49, 74+diffH, 223, 300) collectionViewLayout:cv];
+    [collectionV registerClass:[UserGuidCell class] forCellWithReuseIdentifier:@"cell"];
+    collectionV.backgroundColor = [UIColor clearColor];
+    collectionV.showsVerticalScrollIndicator = NO;
+    collectionV.delegate = self;
+    collectionV.dataSource = self;
+    [bgV addSubview:collectionV];
+    
+    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [nextB setBackgroundImage:[UIImage imageNamed:@"guid_next_one"] forState:UIControlStateNormal];
+    nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
+    [nextB addTarget:self action:@selector(buildGuidTwoView) forControlEvents:UIControlEventTouchUpInside];
+    [bgV addSubview:nextB];
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:_firstView];
+}
+- (void)buildGuidData
+{
+    if (!_allCircleArray) {
+        self.allCircleArray = [NSMutableArray array];
+        for (int i = 1; i < self.attentionDS.dataSourceArray.count; i++) {
+            for (CircleEntity* cir in ((CircleClassify*)self.attentionDS.dataSourceArray[i]).circleArray) {
+                [_allCircleArray addObject:cir];
+            }
+            
+        }
+    }
+    if (!_autoCircleArray) {
+        self.autoCircleArray = [((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray mutableCopy];
+    }
+    if (!_myCircleArray) {
+        self.myCircleArray = [NSMutableArray array];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -284,7 +344,14 @@
         return;
     }
 }
-
+#pragma mark - edit article view delegate
+-(void)editArticleViewDidEdit:(Article*)aricle
+{
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = aricle.articleID;
+    [self.navigationController pushViewController:articleVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
 #pragma mark - button action
 -(void)next
 {
@@ -295,6 +362,7 @@
 -(void)toPublishPage
 {
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
+    editAVC.delegate = self;
     editAVC.CircleTree = self.attentionDS.dataSourceArray;
     if (((CircleClassify*)self.attentionDS.dataSourceArray[0]).circleArray.count>0) {
         editAVC.indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -572,6 +640,10 @@
 {
     [_attentionDS reloadDataSuccess:^{
         [self.attentionV reloadData];
+        if (needGuidance) {
+            [self buildGuidData];
+            [self buildGuidView];
+        }
         [_slimeView endRefresh];
     } failure:^{
         [_slimeView endRefresh];
@@ -709,5 +781,139 @@
         [self.customTabBarController removeNotificatonOfIndex:4];
 //        notiBgV.hidden = YES;
     }
+}
+#pragma mark - collectionView
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UserGuidCell * cell = (UserGuidCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    CircleEntity* cir = _allCircleArray[indexPath.row];
+    if (cell.canCancel) {
+        if ([_myCircleArray containsObject:cir]) {
+            cell.bgView.image = [UIImage imageNamed:@"circle_normal"];
+            [_myCircleArray removeObject:cir];
+        }else{
+            cell.bgView.image = [UIImage imageNamed:@"circle_click"];
+            [_myCircleArray addObject:cir];
+        }
+    }
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.allCircleArray.count;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"cell";
+    UserGuidCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    CircleEntity* cir = self.allCircleArray[indexPath.row];
+    cell.logeV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",cir.imageID]];
+    cell.titleL.text = cir.name;
+    cell.canCancel = YES;
+    cell.bgView.image = [UIImage imageNamed:@"circle_normal"];
+    for (CircleEntity* autoCir in _autoCircleArray) {
+        if ([autoCir.circleID isEqualToString:cir.circleID]) {
+            cell.bgView.image = [UIImage imageNamed:@"circle_click"];
+            cell.canCancel = NO;
+            break;
+        }
+    }
+    for (CircleEntity* autoCir in _myCircleArray) {
+        if ([autoCir.circleID isEqualToString:cir.circleID]) {
+            cell.bgView.image = [UIImage imageNamed:@"circle_click"];
+            break;
+        }
+    }
+    return cell;
+}
+#pragma mark - guid action
+-(void)jionCircles
+{
+    for (CircleEntity*cir in _myCircleArray) {
+        [self joinOneCircle:cir];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:cir.circleID forKey:@"forumId"];
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"attentionForum" forKey:@"method"];
+        [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+        }];
+    }
+}
+-(void)buildGuidTwoView
+{   [self jionCircles];
+    for (UIView* view in _firstView.subviews) {
+        [view removeFromSuperview];
+    }
+    UIView* headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, diffH+74+46.5)];
+    headV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    [_firstView addSubview:headV];
+    UIView* footV = [[UIView alloc]initWithFrame:CGRectMake(0, diffH+214+46.5, 320, 500)];
+    footV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    [_firstView addSubview:footV];
+    UIImageView* alertImageV = [[UIImageView alloc]initWithFrame:CGRectMake(150, 220, 142.5, 158)];
+    alertImageV.image = [UIImage imageNamed:@"alert"];
+    [_firstView addSubview:alertImageV];
+    
+    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [nextB setBackgroundImage:[UIImage imageNamed:@"guid_next_one"] forState:UIControlStateNormal];
+    nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
+    [nextB addTarget:self action:@selector(buildGuidThreeView) forControlEvents:UIControlEventTouchUpInside];
+    [_firstView addSubview:nextB];
+}
+-(void)buildGuidThreeView
+{
+    for (UIView* view in _firstView.subviews) {
+        [view removeFromSuperview];
+    }
+    UIView* bgV = [[UIView alloc]initWithFrame:CGRectMake(100, 0, 220, _firstView.frame.size.height)];
+    bgV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+    [_firstView addSubview:bgV];
+    UIImageView * alertImageV = [[UIImageView alloc]initWithFrame:CGRectMake(50, 220, 155, 110)];
+    alertImageV.image = [UIImage imageNamed:@"alert_two"];
+    [bgV addSubview:alertImageV];
+    UISwipeGestureRecognizer* rightGR = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(scrollToNewView)];
+    rightGR.direction  = UISwipeGestureRecognizerDirectionRight;
+    [_firstView addGestureRecognizer:rightGR];
+    
+}
+-(void)scrollToNewView
+{
+    [UIView animateWithDuration:0.3 animations:^{
+         _backGroundV.contentOffset = CGPointMake(320, 0);
+    } completion:^(BOOL finished) {
+        [((UIGestureRecognizer*)_firstView.gestureRecognizers[0]) addTarget:self action:@selector(scrollToGoodView)];
+        for (UIView* view in _firstView.subviews) {
+            [view removeFromSuperview];
+        }
+        UIView* bgV = [[UIView alloc]initWithFrame:CGRectMake(100, 0, 220, _firstView.frame.size.height)];
+        bgV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
+        [_firstView addSubview:bgV];
+        UIImageView * alertImageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 220, 220, 110)];
+        alertImageV.image = [UIImage imageNamed:@"alert_three"];
+        [bgV addSubview:alertImageV];
+        
+    }];
+    [((UIGestureRecognizer*)_firstView.gestureRecognizers[0]) removeTarget:self action:@selector(scrollToNewView)];
+}
+-(void)scrollToGoodView
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        _backGroundV.contentOffset = CGPointMake(0, 0);
+    } completion:^(BOOL finished) {
+        [_firstView removeFromSuperview];
+        needGuidance = NO;
+    }];
 }
 @end

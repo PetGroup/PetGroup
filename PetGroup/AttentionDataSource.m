@@ -75,42 +75,42 @@
                 [self.dataSourceArray addObject:a];
             }
         }
-        success();
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure();
-    }];
-    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
-    [dic setObject:@"0" forKey:@"pageNo"];
-    [dic setObject:@"1" forKey:@"pageSize"];
-    NSMutableDictionary* dic2 = [NSMutableDictionary dictionary];
-    [dic2 setObject:@"service.uri.pet_states" forKey:@"service"];
-    [dic2 setObject:dic forKey:@"params"];
-    [dic2 setObject:@"getAllFriendStates" forKey:@"method"];
-    [dic2 setObject:@"1" forKey:@"channel"];
-    [dic2 setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [dic2 setObject:@"iphone" forKey:@"imei"];
-    [dic2 setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [dic2 setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:dic2 TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        NSArray*array = responseObject;
-        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:array forKey:MyFriendDynamic];
-        [defaults synchronize];
-        [self.dynamicArray removeAllObjects];
-        if (array.count>0) {
-            for (NSDictionary*a in array) {
-                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+        NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+        [dic setObject:@"0" forKey:@"pageNo"];
+        [dic setObject:@"1" forKey:@"pageSize"];
+        NSMutableDictionary* dic2 = [NSMutableDictionary dictionary];
+        [dic2 setObject:@"service.uri.pet_states" forKey:@"service"];
+        [dic2 setObject:dic forKey:@"params"];
+        [dic2 setObject:@"getAllFriendStates" forKey:@"method"];
+        [dic2 setObject:@"1" forKey:@"channel"];
+        [dic2 setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [dic2 setObject:@"iphone" forKey:@"imei"];
+        [dic2 setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [dic2 setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:dic2 TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            NSArray*array = responseObject;
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:array forKey:MyFriendDynamic];
+            [defaults synchronize];
+            [self.dynamicArray removeAllObjects];
+            if (array.count>0) {
+                for (NSDictionary*a in array) {
+                    Dynamic* b = [[Dynamic alloc]initWithNSDictionary:a];
+                    [self.dynamicArray addObject:b];
+                }
+            }else{
+                Dynamic* b = [[Dynamic alloc]initWithNSDictionary:@{@"msg": @"您还没有好友,快来朋友圈发布动态吧!"}];
                 [self.dynamicArray addObject:b];
             }
-        }else{
-            Dynamic* b = [[Dynamic alloc]initWithNSDictionary:@{@"msg": @"您还没有好友,快来朋友圈发布动态吧!"}];
-            [self.dynamicArray addObject:b];
-        }
-        success();
+            success();
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure();
+        }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure();
     }];
+    
 }
 #pragma mark - table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
