@@ -15,6 +15,9 @@
 {
     int clicked;
     MBProgressHUD * hud;
+    
+    BOOL haveHostImg;
+    BOOL havePetImg;
 }
 @property (nonatomic,strong)NSString* hostIMG;
 @property (nonatomic,strong)NSString* petIMG;
@@ -30,6 +33,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        haveHostImg = NO;
+        havePetImg = NO;
     }
     return self;
 }
@@ -67,6 +72,7 @@
     UILabel * hostLael = [[UILabel alloc] initWithFrame:CGRectMake(10, 70+diffH, 295, 30)];
     [hostLael setText:@"上传真实头像，拉近真实的距离"];
     [hostLael setBackgroundColor:[UIColor clearColor]];
+    [hostLael setTextColor:[UIColor darkGrayColor]];
     [hostLael setFont:[UIFont boldSystemFontOfSize:18]];
     [self.view addSubview:hostLael];
     
@@ -81,7 +87,7 @@
     [self.view addSubview:_hostPhoto];
     
     UILabel* hostL = [[UILabel alloc]initWithFrame:CGRectMake(7, 85, 96, 17)];
-    hostL.text = @"主淫头像";
+    hostL.text = @"主人头像";
     hostL.font = [UIFont boldSystemFontOfSize:13];
     hostL.textAlignment = NSTextAlignmentCenter;
     hostL.textColor = [UIColor whiteColor];
@@ -90,16 +96,16 @@
     
     UIButton * tpic1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [tpic1 setFrame:CGRectMake(160, 117+diffH, 115, 30)];
-    [tpic1 setImage:[UIImage imageNamed:@"xiangche-normal"] forState:UIControlStateNormal];
-    [tpic1 setImage:[UIImage imageNamed:@"xiangche-click"] forState:UIControlStateHighlighted];
+    [tpic1 setImage:[UIImage imageNamed:@"takepic.png"] forState:UIControlStateNormal];
+//    [tpic1 setImage:[UIImage imageNamed:@"xiangche-click"] forState:UIControlStateHighlighted];
     [tpic1 setTag:1];
     [tpic1 addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tpic1];
     
     UIButton * tpic2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [tpic2 setFrame:CGRectMake(160, 182+diffH, 115, 30)];
-    [tpic2 setImage:[UIImage imageNamed:@"paizhao-normal"] forState:UIControlStateNormal];
-    [tpic2 setImage:[UIImage imageNamed:@"paizhao-click"] forState:UIControlStateHighlighted];
+    [tpic2 setImage:[UIImage imageNamed:@"choosegallery.png"] forState:UIControlStateNormal];
+//    [tpic2 setImage:[UIImage imageNamed:@"paizhao-click"] forState:UIControlStateHighlighted];
     [tpic2 setTag:2];
     [tpic2 addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tpic2];
@@ -114,6 +120,7 @@
     }else{
         UILabel * petLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 230+diffH, 295, 30)];
         [petLabel setText:@"爱宠的真实头像，方便小伙伴找到它"];
+        [petLabel setTextColor:[UIColor darkGrayColor]];
         [petLabel setBackgroundColor:[UIColor clearColor]];
         [petLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.view addSubview:petLabel];
@@ -137,17 +144,17 @@
         [_petPhoto addSubview:petL];
         
         UIButton * tpic21 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [tpic21 setFrame:CGRectMake(160, 280+diffH, 115, 30)];
-        [tpic21 setImage:[UIImage imageNamed:@"xiangche-normal"] forState:UIControlStateNormal];
-        [tpic21 setImage:[UIImage imageNamed:@"xiangche-click"] forState:UIControlStateHighlighted];
+        [tpic21 setFrame:CGRectMake(160, 280+diffH, 114, 30)];
+        [tpic21 setImage:[UIImage imageNamed:@"takepic.png"] forState:UIControlStateNormal];
+//        [tpic21 setImage:[UIImage imageNamed:@"xiangche-click"] forState:UIControlStateHighlighted];
         [tpic21 setTag:21];
         [tpic21 addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:tpic21];
         
         UIButton * tpic22 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [tpic22 setFrame:CGRectMake(160, 340+diffH, 115, 30)];
-        [tpic22 setImage:[UIImage imageNamed:@"paizhao-normal"] forState:UIControlStateNormal];
-        [tpic22 setImage:[UIImage imageNamed:@"paizhao-click"] forState:UIControlStateHighlighted];
+        [tpic22 setFrame:CGRectMake(160, 340+diffH, 114, 30)];
+        [tpic22 setImage:[UIImage imageNamed:@"choosegallery.png"] forState:UIControlStateNormal];
+//        [tpic22 setImage:[UIImage imageNamed:@"paizhao-click"] forState:UIControlStateHighlighted];
         [tpic22 setTag:22];
         [tpic22 addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:tpic22];
@@ -322,19 +329,19 @@
 -(void)next
 {
     if (self.petType == PetTypeStyleNone) {
-        if ([_hostPhoto.image isEqual:[UIImage imageNamed:@"zhuren"]]) {
+        if (!haveHostImg) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
             return;
         }
         [self uploadUserImage];
     }else{
-        if ([_hostPhoto.image isEqual:[UIImage imageNamed:@"zhuren"]]) {
+        if (!haveHostImg) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
             return;
         }
-        if ([_petPhoto.image isEqual:[UIImage imageNamed:@"chongwu"]]) {
+        if (!havePetImg) {
             UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
             [alert show];
             return;
@@ -395,10 +402,12 @@
     UIImage*headImage = [info objectForKey:UIImagePickerControllerEditedImage];
     if (clicked==1||clicked==2) {
         [_hostPhoto setImage:headImage];
+        haveHostImg = YES;
     }
     else
     {
         [_petPhoto setImage:headImage];
+        havePetImg = YES;
     }
     
 }

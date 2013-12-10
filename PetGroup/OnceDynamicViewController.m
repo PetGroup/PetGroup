@@ -77,6 +77,13 @@
 	// Do any additional setup after loading the view.
     diffH = [Common diffHeight:self];
     
+    
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+    _tableV.delegate = self;
+    _tableV.dataSource = self;
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:_tableV];
+    
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -100,12 +107,7 @@
     [moveButton setBackgroundImage:[UIImage imageNamed:@"gengduoxinxi"] forState:UIControlStateNormal];
     [moveButton addTarget:self action:@selector(showActionShoot) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:moveButton];
-    
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
-    _tableV.delegate = self;
-    _tableV.dataSource = self;
-    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.view addSubview:_tableV];
+
     
     if (self.needRequestDyn) {
         [self getStateByID];
@@ -243,6 +245,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView * alertV = [[UIAlertView alloc]initWithTitle:nil message:@"该动态不存在或已被删除" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        alertV.tag = 99;
         [alertV show];
     }];
 
@@ -379,8 +382,8 @@
     [_inputTF becomeFirstResponder];
     assessOrPraise = 1;
     self.inputTF.placeholder = [NSString stringWithFormat:@"评论:%@",self.dynamic.nickName];
-    NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
-    [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
+//    [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 -(void)zhuanfaAction//转发
 {
@@ -388,8 +391,8 @@
     [_inputTF becomeFirstResponder];
     assessOrPraise = 2;
     self.inputTF.placeholder = @"转发至我的动态";
-    NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
-    [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    NSIndexPath*index = [NSIndexPath indexPathForRow:0 inSection:0];
+//    [_tableV scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 -(void)didInput
 {
@@ -433,7 +436,15 @@
                 [self.resultArray addObject:reply];
                 [self.tableV reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
+                if ([[error domain] isEqualToString:@"noEntity"]) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"操作失败，可能动态已经被删除了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
+                }
+                else
+                {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
+                }
             }];
         }break;
         case 2:{
@@ -497,7 +508,15 @@
                     [self.delegate dynamicListAddOneDynamic:dynamic];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
+                if ([[error domain] isEqualToString:@"noEntity"]) {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"操作失败，可能动态已经被删除了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
+                }
+                else
+                {
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网络错误" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    [alert show];
+                }
             }];
         }break;
         case 3:{
@@ -603,6 +622,11 @@
 {
     if (_inputTF.isFirstResponder) {
         [_inputTF resignFirstResponder];
+        [UIView animateWithDuration:0.3 animations:^{
+            [_tableV setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+        } completion:^(BOOL finished) {
+            
+        }];
         return;
     }
     if (indexPath.section == 0) {
@@ -635,7 +659,21 @@
 }
 -(void)replyOneReplyWithIndexPath:(NSIndexPath *)indexPath
 {
-//    [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    UITableViewCell * cell = [_tableV cellForRowAtIndexPath:indexPath];
+    NSLog(@"cell_Frame:%f,%f,%f,%f;self view frame height:%f",cell.frame.origin.x,cell.frame.origin.y,cell.frame.size.width,cell.frame.size.height,self.view.frame.size.height);
+//    UIView * uu = [[UIView alloc] initWithFrame:CGRectMake(0, cell.frame.origin.y, 20, 20)];
+//    [uu setBackgroundColor:[UIColor redColor]];
+//    [self.view addSubview:uu];
+//    return;
+    if (cell.frame.origin.y+44+diffH>self.view.frame.size.height-253) {
+        [UIView animateWithDuration:0.3 animations:^{
+            [_tableV setFrame:CGRectMake(0, -(cell.frame.origin.y+44+diffH-253), 320, self.view.frame.size.height-93-diffH)];
+        } completion:^(BOOL finished) {
+            [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        }];
+        
+    }
+    
     assessOrPraise = 1;
     self.pid = ((Reply*)self.resultArray[indexPath.row]).replyID;
     self.puserid = ((Reply*)self.resultArray[indexPath.row]).userID;
@@ -771,6 +809,13 @@
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
             }];
+        }
+
+    }
+    else
+    {
+        if (alertView.tag==99) {
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
 }
@@ -935,6 +980,12 @@
         [self didInput];
         growingTextView.text = @"";
         [growingTextView resignFirstResponder];
+        [UIView animateWithDuration:0.3 animations:^{
+            [_tableV setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+        } completion:^(BOOL finished) {
+            
+        }];
+        
         return YES;
     }
     if (growingTextView.text.length<1) {
@@ -946,6 +997,11 @@
     [self didInput];
     growingTextView.text = @"";
     [growingTextView resignFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        [_tableV setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+    } completion:^(BOOL finished) {
+        
+    }];
     return YES;
 }
 #pragma mark - Responding to keyboard events

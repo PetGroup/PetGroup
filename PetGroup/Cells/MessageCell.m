@@ -21,7 +21,7 @@
 //        self.headImageV.layer.cornerRadius = 5;
 //        self.headImageV.layer.masksToBounds=YES;
         [self.contentView addSubview:self.headImageV];
-        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7.5, 50, 50)];
         [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
         [self.contentView addSubview:bgbgV];
         self.notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(38, 0, 28, 22)];

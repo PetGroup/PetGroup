@@ -551,6 +551,8 @@
 		973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */; };
 		9758124B1856B0470059D0FD /* quitB.png in Resources */ = {isa = PBXBuildFile; fileRef = 975812491856B0470059D0FD /* quitB.png */; };
 		9758124C1856B0470059D0FD /* joinB.png in Resources */ = {isa = PBXBuildFile; fileRef = 9758124A1856B0470059D0FD /* joinB.png */; };
+		9758124F1856C8B50059D0FD /* choosegallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 9758124D1856C8B50059D0FD /* choosegallery.png */; };
+		975812501856C8B50059D0FD /* takepic.png in Resources */ = {isa = PBXBuildFile; fileRef = 9758124E1856C8B50059D0FD /* takepic.png */; };
 		9764FF381830C53E00AA12CD /* replyBottom_03.png in Resources */ = {isa = PBXBuildFile; fileRef = 9764FF371830C53E00AA12CD /* replyBottom_03.png */; };
 		9764FF3A1830D02300AA12CD /* pageChange.png in Resources */ = {isa = PBXBuildFile; fileRef = 9764FF391830D02300AA12CD /* pageChange.png */; };
 		9765D7A8181BC8E70021B36F /* BHExpandingTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9765D7A6181BC8E70021B36F /* BHExpandingTextViewInternal.m */; };
@@ -674,10 +676,6 @@
 		97DB09BD17C5B037000EC195 /* chongwu.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB099E17C5B037000EC195 /* chongwu.png */; };
 		97DB09BE17C5B037000EC195 /* daanniu_click.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB099F17C5B037000EC195 /* daanniu_click.png */; };
 		97DB09BF17C5B037000EC195 /* daanniu_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09A017C5B037000EC195 /* daanniu_normal.png */; };
-		97DB09C617C5B037000EC195 /* paizhao-click.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09A717C5B037000EC195 /* paizhao-click.png */; };
-		97DB09C717C5B037000EC195 /* paizhao-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09A817C5B037000EC195 /* paizhao-normal.png */; };
-		97DB09CD17C5B037000EC195 /* xiangche-click.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09AE17C5B037000EC195 /* xiangche-click.png */; };
-		97DB09CE17C5B037000EC195 /* xiangche-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09AF17C5B037000EC195 /* xiangche-normal.png */; };
 		97DB09CF17C5B037000EC195 /* xuanzechongwu-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09B017C5B037000EC195 /* xuanzechongwu-bg.png */; };
 		97DB09D017C5B037000EC195 /* xuanzegou.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09B117C5B037000EC195 /* xuanzegou.png */; };
 		97DB09D117C5B037000EC195 /* xuanzemao.png in Resources */ = {isa = PBXBuildFile; fileRef = 97DB09B217C5B037000EC195 /* xuanzemao.png */; };
@@ -1523,6 +1521,8 @@
 		973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsReqsViewController.m; sourceTree = "<group>"; };
 		975812491856B0470059D0FD /* quitB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quitB.png; sourceTree = "<group>"; };
 		9758124A1856B0470059D0FD /* joinB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = joinB.png; sourceTree = "<group>"; };
+		9758124D1856C8B50059D0FD /* choosegallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choosegallery.png; sourceTree = "<group>"; };
+		9758124E1856C8B50059D0FD /* takepic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = takepic.png; sourceTree = "<group>"; };
 		9764FF371830C53E00AA12CD /* replyBottom_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = replyBottom_03.png; sourceTree = "<group>"; };
 		9764FF391830D02300AA12CD /* pageChange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pageChange.png; sourceTree = "<group>"; };
 		9765D7A5181BC8E70021B36F /* BHExpandingTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BHExpandingTextViewInternal.h; sourceTree = "<group>"; };
@@ -1747,10 +1747,6 @@
 		97DB099E17C5B037000EC195 /* chongwu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chongwu.png; sourceTree = "<group>"; };
 		97DB099F17C5B037000EC195 /* daanniu_click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = daanniu_click.png; sourceTree = "<group>"; };
 		97DB09A017C5B037000EC195 /* daanniu_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = daanniu_normal.png; sourceTree = "<group>"; };
-		97DB09A717C5B037000EC195 /* paizhao-click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paizhao-click.png"; sourceTree = "<group>"; };
-		97DB09A817C5B037000EC195 /* paizhao-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paizhao-normal.png"; sourceTree = "<group>"; };
-		97DB09AE17C5B037000EC195 /* xiangche-click.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xiangche-click.png"; sourceTree = "<group>"; };
-		97DB09AF17C5B037000EC195 /* xiangche-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xiangche-normal.png"; sourceTree = "<group>"; };
 		97DB09B017C5B037000EC195 /* xuanzechongwu-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xuanzechongwu-bg.png"; sourceTree = "<group>"; };
 		97DB09B117C5B037000EC195 /* xuanzegou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xuanzegou.png; sourceTree = "<group>"; };
 		97DB09B217C5B037000EC195 /* xuanzemao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xuanzemao.png; sourceTree = "<group>"; };
@@ -3567,11 +3563,9 @@
 				97DB099E17C5B037000EC195 /* chongwu.png */,
 				97DB099F17C5B037000EC195 /* daanniu_click.png */,
 				97DB09A017C5B037000EC195 /* daanniu_normal.png */,
-				97DB09A717C5B037000EC195 /* paizhao-click.png */,
-				97DB09A817C5B037000EC195 /* paizhao-normal.png */,
-				97DB09AE17C5B037000EC195 /* xiangche-click.png */,
-				97DB09AF17C5B037000EC195 /* xiangche-normal.png */,
 				97DB09B017C5B037000EC195 /* xuanzechongwu-bg.png */,
+				9758124D1856C8B50059D0FD /* choosegallery.png */,
+				9758124E1856C8B50059D0FD /* takepic.png */,
 				97DB09B117C5B037000EC195 /* xuanzegou.png */,
 				97DB09B217C5B037000EC195 /* xuanzemao.png */,
 				97DB09B317C5B037000EC195 /* xuanzeqita.png */,
@@ -4427,6 +4421,7 @@
 				86A56A75180F81C3000FD684 /* audioBtn.png in Resources */,
 				72D7B93318555D4D0048FAE2 /* weiyang.png in Resources */,
 				86BDFC71181E2A9A0089C889 /* bottom_zaned_click.png in Resources */,
+				9758124F1856C8B50059D0FD /* choosegallery.png in Resources */,
 				72F78C3F18516F4F0007892B /* newlogbg3.png in Resources */,
 				97CCB6121807889D000BD1BE /* shezhi22.png in Resources */,
 				97D632FC1803F6EA00204363 /* third_common_selected_clicked.png in Resources */,
@@ -4555,12 +4550,8 @@
 				97DB09BF17C5B037000EC195 /* daanniu_normal.png in Resources */,
 				97FB83DD1852C1BF00F5F8F8 /* start_reg.png in Resources */,
 				9700D3C518502C81003260BC /* tabbar_sel_04.png in Resources */,
-				97DB09C617C5B037000EC195 /* paizhao-click.png in Resources */,
-				97DB09C717C5B037000EC195 /* paizhao-normal.png in Resources */,
 				97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */,
 				72795AFB1844456C00BB58E0 /* star_16_3.png in Resources */,
-				97DB09CD17C5B037000EC195 /* xiangche-click.png in Resources */,
-				97DB09CE17C5B037000EC195 /* xiangche-normal.png in Resources */,
 				97DB09CF17C5B037000EC195 /* xuanzechongwu-bg.png in Resources */,
 				97DB09D017C5B037000EC195 /* xuanzegou.png in Resources */,
 				86BDFC72181E2A9A0089C889 /* bottom_zaned_normal.png in Resources */,
@@ -4613,6 +4604,7 @@
 				865FDD4D180920D3005BB088 /* jinghua.png in Resources */,
 				865FDD4E180920D3005BB088 /* zhiding.png in Resources */,
 				865FDD5118092F1B005BB088 /* jiaru.png in Resources */,
+				975812501856C8B50059D0FD /* takepic.png in Resources */,
 				865FDD5218092F1B005BB088 /* yijiaru.png in Resources */,
 				865FDD5818094F34005BB088 /* jiaru2.png in Resources */,
 				86993B75180CE54D00F61A3F /* ren.png in Resources */,
