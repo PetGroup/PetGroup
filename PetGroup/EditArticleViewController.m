@@ -170,7 +170,7 @@
     _dynamicTV.backgroundColor=[UIColor clearColor];
 
     [self.view addSubview:_dynamicTV];
-    [_titleTF becomeFirstResponder];
+//    [_titleTF becomeFirstResponder];
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
@@ -220,6 +220,8 @@
     [self.view addSubview:hud];
     hud.delegate = self;
     hud.labelText = @"正在为您发布...";
+    
+    [self screen];
 }
 
 - (void)didReceiveMemoryWarning

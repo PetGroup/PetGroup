@@ -104,9 +104,8 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    thePage = 0;
-    [self.listArray removeAllObjects];
     if (refreshView == _refreshView) {
+        thePage = 0;
         [self getChildList];
     }
 }
@@ -144,6 +143,9 @@
     [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"petKnowledge:%@",responseObject);
+        if (thePage == 0) {
+            [self.listArray removeAllObjects];
+        }
         if ([[responseObject objectForKey:@"data"] count]>=20) {
             canLoadMore = YES;
             thePage++;
