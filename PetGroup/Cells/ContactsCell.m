@@ -22,9 +22,12 @@
         [bgV addSubview:self.backgroudImageV];
         self.headImageV = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         self.headImageV.backgroundColor = [UIColor whiteColor];
-        self.headImageV.layer.cornerRadius = 5;
-        self.headImageV.layer.masksToBounds=YES;
+//        self.headImageV.layer.cornerRadius = 5;
+//        self.headImageV.layer.masksToBounds=YES;
         [bgV addSubview:self.headImageV];
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
+        [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
+        [bgV addSubview:bgbgV];
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 20, 100, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
@@ -32,12 +35,12 @@
 //        [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
 
-        self.sigBgImgV = [[UIImageView alloc] initWithFrame:CGRectMake(165, 15, 145, 30)];
+        self.sigBgImgV = [[UIImageView alloc] initWithFrame:CGRectMake(165, 15, 135, 30)];
         self.sigBgImgV.alpha = 0.6;
         [self.sigBgImgV setImage:[UIImage imageNamed:@"asigbg.png"]];
         [bgV addSubview:self.sigBgImgV];
         
-        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 15, 140, 30)];
+        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 15, 130, 30)];
         [self.signatureLabel setTextColor:[UIColor grayColor]];
         [self.signatureLabel setFont:[UIFont systemFontOfSize:14]];
 //        [self.signatureLabel setAdjustsFontSizeToFitWidth:YES];

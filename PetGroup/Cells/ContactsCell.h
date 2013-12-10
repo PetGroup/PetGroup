@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 #import "EGOImageView.h"
 @interface ContactsCell : UITableViewCell
 @property (strong,nonatomic) UIImageView * backgroudImageV;

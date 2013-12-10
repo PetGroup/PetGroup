@@ -31,8 +31,11 @@
         self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 38, 38)];
         _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
         [self.contentView addSubview:_headPhote];
-        self.headPhote.layer.cornerRadius = 5;
-        self.headPhote.layer.masksToBounds=YES;
+//        self.headPhote.layer.cornerRadius = 5;
+//        self.headPhote.layer.masksToBounds=YES;
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 38, 38)];
+        [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
+        [self.contentView addSubview:bgbgV];
         
         self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(10, 52, 50, 20)];
         _nameL.font = [UIFont systemFontOfSize:14];

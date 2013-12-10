@@ -18,9 +18,12 @@
         self.contentView.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1];
         self.headImageV = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 7.5, 50, 50)];
         self.headImageV.backgroundColor = [UIColor clearColor];
-        self.headImageV.layer.cornerRadius = 5;
-        self.headImageV.layer.masksToBounds=YES;
+//        self.headImageV.layer.cornerRadius = 5;
+//        self.headImageV.layer.masksToBounds=YES;
         [self.contentView addSubview:self.headImageV];
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 50)];
+        [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
+        [self.contentView addSubview:bgbgV];
         self.notiBgV = [[UIImageView alloc] initWithFrame:CGRectMake(38, 0, 28, 22)];
         float diffH = [Common diffHeight:nil];
         [self.notiBgV setImage:diffH==0.0f?[UIImage imageNamed:@"redCB.png"]:[UIImage imageNamed:@"redCB2.png"]];

@@ -130,7 +130,7 @@
     if (timer != nil) {
         [timer invalidate];
     }
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
 }
 
 
@@ -179,7 +179,7 @@
     if (timer != nil) {
         [timer invalidate];
     }
-    timer = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

@@ -17,9 +17,12 @@
         // Initialization code
         self.headImageV = [[EGOImageButton alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         self.headImageV.backgroundColor = [UIColor whiteColor];
-        self.headImageV.layer.cornerRadius = 5;
-        self.headImageV.layer.masksToBounds=YES;
+//        self.headImageV.layer.cornerRadius = 5;
+//        self.headImageV.layer.masksToBounds=YES;
         [self.contentView addSubview:self.headImageV];
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
+        [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
+        [self.contentView addSubview:bgbgV];
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 100, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:18]];

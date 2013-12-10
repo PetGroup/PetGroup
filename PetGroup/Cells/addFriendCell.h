@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 #import "EGOImageButton.h"
 @interface addFriendCell : UITableViewCell
 @property (strong,nonatomic) EGOImageButton * headImageV;
