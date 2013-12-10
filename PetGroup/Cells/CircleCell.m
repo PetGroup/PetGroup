@@ -52,7 +52,7 @@
         [self.contentView addSubview:_replyL];
         
         self.joinB = [UIButton buttonWithType:UIButtonTypeCustom];
-        _joinB.frame = CGRectMake(270, 10, 30, 30);
+        _joinB.frame = CGRectMake(260, 0, 50, 50);
         [_joinB addTarget:self action:@selector(joinAction) forControlEvents:UIControlEventTouchUpInside];
         [_joinB setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.contentView addSubview:_joinB];
