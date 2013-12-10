@@ -562,6 +562,12 @@
 {
     ((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai = !((CircleClassify*)self.attentionDS.dataSourceArray[section]).zhankai;
     [self.attentionV reloadData];
+    //取消Footer粘性
+    if (_attentionV.contentSize.height-_attentionV.contentOffset.y-_attentionV.frame.size.height<=sectionFooterHeight&&_attentionV.contentSize.height-_attentionV.contentOffset.y-_attentionV.frame.size.height>=0) {
+        _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -(_attentionV.contentSize.height-_attentionV.contentOffset.y-_attentionV.frame.size.height), 0);
+    } else if (_attentionV.contentSize.height-_attentionV.contentOffset.y-_attentionV.frame.size.height>=sectionFooterHeight) {
+        _attentionV.contentInset = UIEdgeInsetsMake(_attentionV.contentInset.top, 0, -sectionFooterHeight, 0);
+    }
 }
 #pragma mark - MJRefreshBaseView delegate
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
@@ -608,6 +614,7 @@
     }
     if (scrollView == _attentionV) {
         [_slimeView scrollViewDidScroll];
+        //取消Footer粘性
         if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height<=sectionFooterHeight&&scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=0) {
             scrollView.contentInset = UIEdgeInsetsMake(0, 0, -(scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height), 0);
         } else if (scrollView.contentSize.height-scrollView.contentOffset.y-scrollView.frame.size.height>=sectionFooterHeight) {
