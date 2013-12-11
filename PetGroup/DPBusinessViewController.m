@@ -7,6 +7,7 @@
 //
 
 #import "DPBusinessViewController.h"
+#import "WebViewViewController.h"
 #import "TempData.h"
 #import "DPNetManager.h"
 #import "EGOImageView.h"
@@ -117,6 +118,7 @@
                 if (cell == nil) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:headCellIdentifier];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     EGOImageView*businessImageView = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"dianping.png"]];
                     businessImageView.frame = CGRectMake(10, 10, 118.828 , 85.488);
                     [cell.contentView addSubview:businessImageView];
@@ -205,7 +207,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        WebViewViewController* web = [[WebViewViewController alloc]init];
+        web.addressURL = [NSURL URLWithString:self.business.businessUrl];
+        [self presentViewController:web animated:YES completion:^{
+            
+        }];
+    }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

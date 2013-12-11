@@ -28,8 +28,9 @@
 @property (retain,nonatomic)NSString* myUserID;
 @property (assign,nonatomic)BOOL newFriendsReq;
 @property (nonatomic,assign)BOOL needDisplayPushNotification;
+@property (nonatomic,assign)BOOL changeUser;
 
-+ (id)sharedInstance;
++ (TempData*)sharedInstance;
 -(void)setOpened:(BOOL)haveOpened;
 -(BOOL)ifOpened;
 -(void)Panned:(BOOL)pan;

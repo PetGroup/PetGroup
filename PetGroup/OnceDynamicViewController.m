@@ -124,28 +124,24 @@
     [self.view addSubview:bottomIV];
     
     UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
-    zanB.frame = CGRectMake(10, 9, 94.5, 31);
+    zanB.frame = CGRectMake(0, 0, 320/3, 49);
     if (self.dynamic.ifIZaned) {
         [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_normal"] forState:UIControlStateNormal];
-        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_click"] forState:UIControlStateHighlighted];
     }else{
         [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
-        [zanB setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
     }
     [zanB addTarget:self action:@selector(zanAction:) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zanB];
     
     UIButton * replyB = [UIButton buttonWithType:UIButtonTypeCustom];
-    replyB.frame = CGRectMake(114.5, 9, 94.5, 31);
+    replyB.frame = CGRectMake(320/3, 0, 320/3, 49);
     [replyB setBackgroundImage:[UIImage imageNamed:@"bottom_pl_normal"] forState:UIControlStateNormal];
-    [replyB setBackgroundImage:[UIImage imageNamed:@"bottom_pl_click"] forState:UIControlStateHighlighted];
     [replyB addTarget:self action:@selector(replyAction) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:replyB];
     
     UIButton * zhuanfaB = [UIButton buttonWithType:UIButtonTypeCustom];
-    zhuanfaB.frame = CGRectMake(215, 9, 94.5, 31);
+    zhuanfaB.frame = CGRectMake(640/3, 0, 320/3, 49);
     [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"bottom_zf_normal"] forState:UIControlStateNormal];
-    [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"bottom_zf_click"] forState:UIControlStateHighlighted];
     [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:zhuanfaB];
     
@@ -263,7 +259,6 @@
         self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
         self.dynamic.countZan++;
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_normal"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zaned_click"] forState:UIControlStateHighlighted];
         if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
             [self.zanPonsenArrey insertObject:@"我" atIndex:0];
             if (self.zanPonsenArrey.count>0&&self.zanPonsenArrey.count<5) {
@@ -292,9 +287,9 @@
         self.dynamic.ifIZaned = !self.dynamic.ifIZaned;
         self.dynamic.countZan--;
         [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_normal"] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:@"bottom_zan_click"] forState:UIControlStateHighlighted];
         if (self.dynamic.countZan==0) {
             self.zanPonsen = nil;
+            [self.zanPonsenArrey removeObject:@"我"];
         }else
         {
             if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {

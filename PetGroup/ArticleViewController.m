@@ -96,7 +96,6 @@
     
     UIImageView* bottomIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
     bottomIV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-//    bottomIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
     bottomIV.userInteractionEnabled = YES;
     [self.view addSubview:bottomIV];
     

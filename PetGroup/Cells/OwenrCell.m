@@ -111,12 +111,8 @@
         [self.contentView addSubview:_locationL];
         
         self.buttonIV = [[UIImageView alloc]init];
-        float diffH = [Common diffHeight:nil];
-        if (diffH==0.0f) {
-            self.buttonIV.image = [UIImage imageNamed:@"dibuanniu_bg"];
-        }
-        else
-            self.buttonIV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        self.buttonIV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+            
         
         _buttonIV.userInteractionEnabled = YES;
         [self.contentView addSubview:_buttonIV];

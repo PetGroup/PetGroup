@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #define APP_KEY @"30376663"
 #define APP_SECRET @"5896365496984c9d915763481f62ed58"
+
+//#define APP_KEY @"01628871"
+//#define APP_SECRET @"e82f7e4ee9fd42e9a1e275510d18cbbe"
 @class DPNetManager;
 
 @protocol DPNetManagerDelegate <NSObject>
