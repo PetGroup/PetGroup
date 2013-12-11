@@ -22,4 +22,5 @@
 @property (nonatomic,assign) BOOL isTop;
 @property (nonatomic,assign) BOOL haveImage;
 - (id)initWithDictionnary:(NSDictionary*)info;
+-(void)donnotNeedDisplayForumName;
 @end

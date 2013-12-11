@@ -1347,18 +1347,38 @@
 #pragma mark KKMessageDelegate
 -(void)newMessageReceived:(NSDictionary *)messageCotent{
     
-    AudioServicesPlayAlertSound(1003);
+    
     
     
     NSRange range = [[messageCotent objectForKey:@"sender"] rangeOfString:@"@"];
     NSString * sender = [[messageCotent objectForKey:@"sender"] substringToIndex:range.location];
-     [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
-    if ([sender isEqualToString:self.chatWithUser]) {
-        [messages addObject:messageCotent];
-        [self normalMsgToFinalMsg];
-        [self.tView reloadData];
-        if (messages.count>0) {
-            [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    
+    NSString * type = [messageCotent objectForKey:@"msgType"];
+    type = type?type:@"notype";
+    if ([type isEqualToString:@"reply"]||[type isEqualToString:@"zanDynamic"]) {
+        AudioServicesPlayAlertSound(1003);
+        [DataStoreManager storeNewMsgs:messageCotent senderType:SYSTEMNOTIFICATION];
+    }
+    else if ([type isEqualToString:@"notice"]||[type isEqualToString:@"ency"]||[type isEqualToString:@"exper"]||[type isEqualToString:@"bbs_note"]){
+        AudioServicesPlayAlertSound(1003);
+        [DataStoreManager storeNewMsgs:messageCotent senderType:SYSTEMNOTIFICATION];
+    }
+    else if([type isEqualToString:@"normalchat"])
+    {
+        [DataStoreManager storeNewMsgs:messageCotent senderType:COMMONUSER];
+        if ([sender isEqualToString:self.chatWithUser]) {
+            [messages addObject:messageCotent];
+            [self normalMsgToFinalMsg];
+            [self.tView reloadData];
+            if (messages.count>0) {
+                [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            }
+            AudioServicesPlayAlertSound(1003);
+        }
+        else
+        {
+            AudioServicesPlayAlertSound(1007);
         }
     }
     

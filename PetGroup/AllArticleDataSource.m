@@ -36,6 +36,7 @@
         if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 Article* a = [[Article alloc]initWithDictionnary:dic];
+                [a donnotNeedDisplayForumName];
                 [self.dataSourceArray addObject:a];
             }
         }
@@ -71,6 +72,7 @@
         if (array.count > 0) {
             for (NSDictionary* dic in array) {
                 Article* a = [[Article alloc]initWithDictionnary:dic];
+                [a donnotNeedDisplayForumName];
                 [self.dataSourceArray addObject:a];
             }
         }

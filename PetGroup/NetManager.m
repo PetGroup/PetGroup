@@ -53,8 +53,10 @@ NSString * gen_uuid()
                 if ([dict objectForKey:@"entity"]) {
                     failure(operation,[dict objectForKey:@"entity"]);
                 }
-                else
-                    failure(operation,nil);
+                else{
+                    NSError * errors = [[NSError alloc] initWithDomain:@"noEntity" code:111 userInfo:nil];
+                    failure(operation,errors);
+                }
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
