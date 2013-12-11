@@ -424,14 +424,15 @@
             cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
         //[cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
-        if (![[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
-            NSString * imgStr = [self getFistHeadImg:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"]];
-            
-            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
-        }
+
         [cell.nameLabel setText:[[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"]];
         NSString* sigStr = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"signature"];
         NSString * gender = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"gender"];
+        if (![[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
+            NSString * imgStr = [self getFistHeadImg:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"]];
+            
+            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[gender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
+        }
         if ([gender isEqualToString:@"male"]) {
             [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
         }
@@ -449,7 +450,7 @@
             PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
             cell.petOneImgV.hidden = NO;
             NSArray * head = [self imageToURL:petInfo.headImgArray];
-            [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"cat.png"]];
+            [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
 //            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
 //            if (tempPetArray.count==1) {
 //                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
@@ -503,7 +504,7 @@
         NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
 //        [cell.headImageV setImage:[UIImage imageNamed:@"placeholder.png"]];
         NSString * petImgStr = [self getFistHeadImg:[pet objectForKey:@"img"]];
-        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"cat.png"]];
+        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
         [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
         int dist = [[self.petDistanceArray objectAtIndex:indexPath.row] intValue];
         NSString *distf;
@@ -534,7 +535,8 @@
         NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
         [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[pet objectForKey:@"birthdate"],distf]];
         cell.petOneImgV.hidden = NO;
-        [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[UIImage imageNamed:@"moren_people.png"]];
+        NSString * hostGender = [theDict objectForKey:@"gender"];
+        [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[hostGender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
 //        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
         [cell.petLabel setText:[NSString stringWithFormat:@"%@",[theDict objectForKey:@"nickname"]]];
         

@@ -74,6 +74,7 @@
         }
     }
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 	// Do any additional setup after loading the view.
     diffH = [Common diffHeight:self];
     
@@ -665,14 +666,15 @@
 //    [uu setBackgroundColor:[UIColor redColor]];
 //    [self.view addSubview:uu];
 //    return;
-    if (cell.frame.origin.y+44+diffH>self.view.frame.size.height-253) {
-        [UIView animateWithDuration:0.3 animations:^{
-            [_tableV setFrame:CGRectMake(0, -(cell.frame.origin.y+44+diffH-253), 320, self.view.frame.size.height-93-diffH)];
-        } completion:^(BOOL finished) {
-            [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        }];
-        
-    }
+//    [_tableV setFrame:CGRectMake(0, -253, 320, self.view.frame.size.height-44-diffH)];
+//    if (cell.frame.origin.y+44+diffH>self.view.frame.size.height-253) {
+//        [UIView animateWithDuration:0.3 animations:^{
+//            [_tableV setFrame:CGRectMake(0, -(cell.frame.origin.y+44+diffH-253), 320, self.view.frame.size.height-93-diffH)];
+//        } completion:^(BOOL finished) {
+//            [_tableV scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//        }];
+//        
+//    }
     
     assessOrPraise = 1;
     self.pid = ((Reply*)self.resultArray[indexPath.row]).replyID;

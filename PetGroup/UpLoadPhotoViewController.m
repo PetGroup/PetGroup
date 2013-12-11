@@ -83,7 +83,11 @@
     [self.view addSubview:bg1];
     
     self.hostPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(20, 110+diffH, 110, 110)];
-    [_hostPhoto setImage:[UIImage imageNamed:@"zhuren"]];
+    if ([[self.petDic objectForKey:@"gender"] isEqualToString:@"male"]) {
+        [_hostPhoto setImage:[UIImage imageNamed:@"placeholderman"]];
+    }
+    else
+        [_hostPhoto setImage:[UIImage imageNamed:@"placeholderwoman"]];
     [self.view addSubview:_hostPhoto];
     
     UILabel* hostL = [[UILabel alloc]initWithFrame:CGRectMake(7, 85, 96, 17)];
@@ -132,7 +136,7 @@
         [self.view addSubview:bg2];
         
         self.petPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(20, 270+diffH, 110, 110)];
-        [_petPhoto setImage:[UIImage imageNamed:@"chongwu"]];
+        [_petPhoto setImage:[UIImage imageNamed:@"placeholderpet"]];
         [self.view addSubview:_petPhoto];
         
         UILabel* petL = [[UILabel alloc]initWithFrame:CGRectMake(7, 85, 96, 17)];
