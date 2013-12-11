@@ -296,7 +296,12 @@
     nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
     [nextB addTarget:self action:@selector(buildGuidTwoView) forControlEvents:UIControlEventTouchUpInside];
     [bgV addSubview:nextB];
-    
+    if(!iPhone5)
+    {
+        imageV.frame = CGRectMake(17.5, diffH, 285, 345);
+        collectionV.frame = CGRectMake(49, 34+diffH, 223, 300);
+        nextB.frame = CGRectMake(95, 354+diffH, 130, 57);
+    }
 //    [[[UIApplication sharedApplication] keyWindow] addSubview:_firstView];
     [self.view addSubview:_firstView];
 }
@@ -878,6 +883,9 @@
     nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
     [nextB addTarget:self action:@selector(buildGuidThreeView) forControlEvents:UIControlEventTouchUpInside];
     [_firstView addSubview:nextB];
+    if (!iPhone5) {
+        nextB.frame = CGRectMake(95, 44+diffH, 130, 57);
+    }
 }
 -(void)buildGuidThreeView
 {

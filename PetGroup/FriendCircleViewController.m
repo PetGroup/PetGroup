@@ -165,7 +165,7 @@
     if (![defaults objectForKey:@"25PetFirstLoadFrirndCircleView"]) {
         [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
         [defaults synchronize];
-        self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
+        self.firstView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
         _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
         [self.view addSubview:_firstView];
         UIImageView * guidImageV = [[UIImageView alloc]initWithFrame:CGRectMake(190, -20+diffH, 132.5, 196.5)];
