@@ -91,8 +91,10 @@
     [self.view addSubview:xialaB];
     
     UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 3+diffH, 35, 33);
-    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+    publishButton.frame = CGRectMake(240, 0+diffH, 80, 44);
+    [publishButton setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [publishButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [publishButton setTitle:@"新话题" forState:UIControlStateNormal];
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
     

@@ -112,7 +112,7 @@
     nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
     [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
     [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [nextB setTitle:@"发布" forState:UIControlStateNormal];
+    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
 

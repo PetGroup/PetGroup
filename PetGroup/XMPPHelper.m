@@ -35,6 +35,7 @@
     self.xmppRoster = [[XMPPRoster alloc] initWithRosterStorage:self.xmppRosterMemoryStorage];
     [self.xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
     [self.xmppRoster activate:self.xmppStream];
+    [self.xmppRoster setAutoFetchRoster:NO];
     self.xmppStream.enableBackgroundingOnSocket = YES;
 }
 - (void)goOnline {
