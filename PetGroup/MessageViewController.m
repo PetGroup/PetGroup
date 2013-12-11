@@ -778,7 +778,7 @@
 //    if (![file_manager fileExistsAtPath:openImgPath]) {
 //        [self downloadImageWithID:openImgId Type:@"open" PicName:nil];
 //    }
-//    [self getMyUserInfoFromNet];
+    [self getMyUserInfoFromNet];
     [self logInToChatServer];
 }
 -(void)downloadImageWithID:(NSString *)imageId Type:(NSString *)theType PicName:(NSString *)picName
