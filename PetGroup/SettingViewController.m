@@ -155,6 +155,7 @@
 //        [userDefault removeObjectForKey:MyDynamic];
 //        [userDefault synchronize];
         [app.xmppHelper disconnect];
+        [TempData sharedInstance].changeUser = YES;
         [self.navigationController popViewControllerAnimated:NO];
     }
 }
@@ -187,7 +188,6 @@
         [[EGOCache globalCache] clearCache];
         NSFileManager *file_manager = [NSFileManager defaultManager];
         NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
-        [TempData sharedInstance].changeUser = YES;
         [file_manager removeItemAtPath:path error:nil];
     }
 }
