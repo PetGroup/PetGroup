@@ -14,6 +14,8 @@
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
+		72676AE01857FE3E00EE5967 /* adddynamic.png in Resources */ = {isa = PBXBuildFile; fileRef = 72676ADF1857FE3E00EE5967 /* adddynamic.png */; };
+		72676AE21857FE6D00EE5967 /* guid.png in Resources */ = {isa = PBXBuildFile; fileRef = 72676AE11857FE6D00EE5967 /* guid.png */; };
 		726BDD4E18499A8000DB320D /* BeautifulImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD4D18499A8000DB320D /* BeautifulImage.m */; };
 		726BDD511849B8C900DB320D /* DPReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD501849B8C900DB320D /* DPReplyCell.m */; };
 		726BDD541849BA5D00DB320D /* DPReply.m in Sources */ = {isa = PBXBuildFile; fileRef = 726BDD531849BA5D00DB320D /* DPReply.m */; };
@@ -813,6 +815,8 @@
 		721E361418483A52002FCA77 /* DPBusinessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DPBusinessViewController.m; sourceTree = "<group>"; };
 		7224769318279418000E3D05 /* AriticleContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AriticleContent.h; sourceTree = "<group>"; };
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
+		72676ADF1857FE3E00EE5967 /* adddynamic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adddynamic.png; sourceTree = "<group>"; };
+		72676AE11857FE6D00EE5967 /* guid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guid.png; sourceTree = "<group>"; };
 		726BDD4C18499A8000DB320D /* BeautifulImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeautifulImage.h; sourceTree = "<group>"; };
 		726BDD4D18499A8000DB320D /* BeautifulImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeautifulImage.m; sourceTree = "<group>"; };
 		726BDD4F1849B8C900DB320D /* DPReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPReplyCell.h; sourceTree = "<group>"; };
@@ -2162,6 +2166,7 @@
 		72D7B93A1856C5060048FAE2 /* Guidance */ = {
 			isa = PBXGroup;
 			children = (
+				72676AE11857FE6D00EE5967 /* guid.png */,
 				72D7B94818570DAC0048FAE2 /* alert_three.png */,
 				72D7B94918570DAC0048FAE2 /* alert_two.png */,
 				72D7B93B1856C5D70048FAE2 /* circle_bg.png */,
@@ -3749,6 +3754,7 @@
 				9736BD6A17C49146007DFE36 /* tianjia.png */,
 				9736BD6B17C49146007DFE36 /* topBG.png */,
 				86D69CEA17C5EFC200FFFBDD /* fabu.png */,
+				72676ADF1857FE3E00EE5967 /* adddynamic.png */,
 				86D69CEB17C5EFC400FFFBDD /* toubuhuakuaibeijing.png */,
 				86D69CEC17C5EFC600FFFBDD /* toubuhuakuaibtn.png */,
 			);
@@ -4543,6 +4549,7 @@
 				9736BDBC17C49146007DFE36 /* rightarrow.png in Resources */,
 				9736BDBD17C49146007DFE36 /* selected-big.png in Resources */,
 				72D7B9391855A52A0048FAE2 /* dianpingziyuan.png in Resources */,
+				72676AE21857FE6D00EE5967 /* guid.png in Resources */,
 				72D7B93218555D4D0048FAE2 /* weiyang_click.png in Resources */,
 				97FB84061852FA0000F5F8F8 /* shezhi.png in Resources */,
 				72F78C441852D3B60007892B /* zanB.png in Resources */,
@@ -4681,6 +4688,7 @@
 				86A56A24180F8191000FD684 /* biaoqing012.png in Resources */,
 				9700D3BA18502B2B003260BC /* tabbar03.png in Resources */,
 				86A56A25180F8191000FD684 /* biaoqing013.png in Resources */,
+				72676AE01857FE3E00EE5967 /* adddynamic.png in Resources */,
 				86A56A26180F8191000FD684 /* biaoqing014.png in Resources */,
 				86A56A27180F8191000FD684 /* biaoqing015.png in Resources */,
 				86A56A28180F8191000FD684 /* biaoqing016.png in Resources */,

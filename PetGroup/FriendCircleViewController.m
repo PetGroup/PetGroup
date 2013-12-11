@@ -74,8 +74,8 @@
     [self.view addSubview:titleLabel];
     
     UIButton *publishButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    publishButton.frame=CGRectMake(278, 7+diffH, 35, 33);
-    [publishButton setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+    publishButton.frame=CGRectMake(270, 0+diffH, 46, 45);
+    [publishButton setBackgroundImage:[UIImage imageNamed:@"adddynamic"] forState:UIControlStateNormal];
     [publishButton addTarget:self action:@selector(updateSelfMassage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:publishButton];
     
@@ -163,11 +163,16 @@
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"25PetFirstLoadFrirndCircleView"]) {
-        [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
-        [defaults synchronize];
+//        [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
+//        [defaults synchronize];
         self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
         _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
         [self.view addSubview:_firstView];
+        UIImageView * guidImageV = [[UIImageView alloc]initWithFrame:CGRectMake(190, -20+diffH, 132.5, 196.5)];
+        guidImageV.image = [UIImage imageNamed:@"guid"];
+        [_firstView addSubview:guidImageV];
+        UITapGestureRecognizer* tapGR = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(cancelGuid)];
+        [_firstView addGestureRecognizer:tapGR];
     }
 }
 - (void)didReceiveMemoryWarning
@@ -176,6 +181,10 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)cancelGuid
+{
+    [_firstView removeFromSuperview];
+}
 -(void)headAct
 {
     SomeOneDynamicViewController* sodVC = [[SomeOneDynamicViewController alloc]init];

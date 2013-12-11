@@ -106,21 +106,9 @@
     
     EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 80, 80)];
     imageV.layer.cornerRadius = 5;
-    imageV.backgroundColor = self.circleEntity.theColor;
-//    imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
-//    imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.circleEntity.imageID]];
+    imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
+    imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.circleEntity.imageID]];
     [headView addSubview:imageV];
-    
-    UILabel *bigLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
-    bigLabel.backgroundColor = [UIColor clearColor];
-    bigLabel.textAlignment = NSTextAlignmentCenter;
-    //        [self.replyLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [bigLabel setNumberOfLines:0];
-    bigLabel.font = [UIFont boldSystemFontOfSize:25];
-    [bigLabel setTextColor:[UIColor whiteColor]];
-    //        self.bigLabel.text = @"苏格兰折耳猫";
-    [headView addSubview:bigLabel];
-    bigLabel.text = self.circleEntity.name;
     
     UILabel * nameL = [[UILabel alloc]initWithFrame:CGRectMake(100, 20, 100, 20)];
     nameL.backgroundColor = [UIColor clearColor];
