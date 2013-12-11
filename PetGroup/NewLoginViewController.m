@@ -188,6 +188,8 @@
         [alert show];
         return;
     }
+    [_PhoneNoTF resignFirstResponder];
+    [_passWordTF resignFirstResponder];
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
