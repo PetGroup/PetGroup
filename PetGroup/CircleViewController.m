@@ -109,8 +109,10 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(278, 7+diffH, 35, 33);
-    [nextB setBackgroundImage:[UIImage imageNamed:@"fabu"] forState:UIControlStateNormal];
+    nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [nextB setTitle:@"发布" forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
 

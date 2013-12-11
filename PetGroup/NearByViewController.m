@@ -65,8 +65,12 @@
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *filterButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    filterButton.frame=CGRectMake(275, 5+diffH, 45, 32.5);
-    [filterButton setBackgroundImage:[UIImage imageNamed:@"shaixuan.png"] forState:UIControlStateNormal];
+//    filterButton.frame=CGRectMake(275, 5+diffH, 45, 32.5);
+//    [filterButton setBackgroundImage:[UIImage imageNamed:@"shaixuan.png"] forState:UIControlStateNormal];
+    filterButton.frame = CGRectMake(240, 0+diffH, 80, 44);
+    [filterButton setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [filterButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [filterButton setTitle:@"筛选" forState:UIControlStateNormal];
     [self.view addSubview:filterButton];
     [filterButton addTarget:self action:@selector(filterButtonDo:) forControlEvents:UIControlEventTouchUpInside];
     

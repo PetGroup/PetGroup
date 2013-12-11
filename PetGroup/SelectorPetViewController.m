@@ -44,7 +44,9 @@
     [self.view addSubview:TopBarBGV];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
+    nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [nextB setTitle:@"下一步" forState:UIControlStateNormal];
 //    if (diffH==0) {
 //        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];

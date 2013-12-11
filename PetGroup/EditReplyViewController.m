@@ -84,8 +84,10 @@
 //    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(5, 5+diffH, 70, 34);
+    cancelBtn.frame = CGRectMake(-3, 0+diffH, 80, 44);
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
 //    if (diffH==0.0f) {
 //        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
 //        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
@@ -102,7 +104,9 @@
     [self.view addSubview:titleLabel];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(245, 5+diffH, 70, 34);
+    nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
 //    if (diffH==0.0f) {
 //        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
