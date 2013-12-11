@@ -18,6 +18,6 @@
 -(void)setGestureEnableNO;
 -(void)setGestureEnableYES;
 @end
-@interface UIViewController (MLNavigationControllerSupport)
-@property(nonatomic, retain ,readonly) MLNavigationController *mlNavigationController;
-@end
+//@interface UIViewController (MLNavigationControllerSupport)
+//@property(nonatomic, retain ,readonly) MLNavigationController *mlNavigationController;
+//@end

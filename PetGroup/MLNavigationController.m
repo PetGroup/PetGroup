@@ -28,13 +28,17 @@
 @property (nonatomic,assign) BOOL isMoving;
 
 @end
-static MLNavigationController *mlNavigationController;
-@implementation UIViewController (MLNavigationControllerSupport)
-- (MLNavigationController *)mlNavigationController
-{
-    return mlNavigationController;
-}
-@end
+//static MLNavigationController *mlNavigationController;
+//@implementation UIViewController (MLNavigationControllerSupport)
+////- (MLNavigationController *)setMlNavigationController
+////{
+////    return mlNavigationController;
+////}
+//- (MLNavigationController *)mlNavigationController
+//{
+//    return mlNavigationController;
+//}
+//@end
 @implementation MLNavigationController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,7 +49,7 @@ static MLNavigationController *mlNavigationController;
         
         self.screenShotsList = [[[NSMutableArray alloc]initWithCapacity:2]autorelease];
         self.canDragBack = YES;
-        mlNavigationController = self;
+//        mlNavigationController = self;
     }
     return self;
 }

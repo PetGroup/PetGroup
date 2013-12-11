@@ -83,6 +83,7 @@
 
 @property (strong,nonatomic) UITableView * messageTable;
 @property (strong,nonatomic) AppDelegate * appDel;
+@property (strong,nonatomic) MLNavigationController * mlNavigationController;
 
 -(void)logInToServer;
 -(void)logInToChatServer;

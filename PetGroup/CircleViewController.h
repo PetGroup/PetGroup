@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NotificationViewController.h"
+@class MLNavigationController;
 @interface CircleViewController : UIViewController
-
+@property (nonatomic,strong) MLNavigationController * mlNavigationController;
 @end

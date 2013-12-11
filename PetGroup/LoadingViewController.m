@@ -370,7 +370,7 @@
 {
     CircleViewController* circleVC = [[CircleViewController alloc]init];
     self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:circleVC];
-
+    circleVC.mlNavigationController = self.NaviDynamic;
     
 //    DynamicViewController * dynamicV = [[DynamicViewController alloc] init];
 //    self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:dynamicV];
@@ -385,6 +385,7 @@
     //为什么message放最后，因为message页面需要滑动删除cell，与MLNavigationController的手势冲突，放在最后一个当修改的时候才能修改到最后一个的页面，如果其他页面也需要这功能，暂时没想到好办法，在写一个类似于MLNavigationController的类吧...
     messageV = [[MessageViewController alloc] init];
     self.NaviMessage = [[MLNavigationController alloc] initWithRootViewController:messageV];
+    messageV.mlNavigationController = self.NaviMessage;
     
     self.NaviMessage.delegate = (id)self;
     self.NaviDynamic.delegate = (id)self;
