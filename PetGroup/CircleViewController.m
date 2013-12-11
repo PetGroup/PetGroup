@@ -337,8 +337,8 @@
         [self reloadGoodArticleData];
         [self reloadHotPintsData];
         _attentionV.contentOffset = CGPointMake(0, 0);
-        _goodV.contentOffset = CGPointMake(0, 0);
-        _hotPintsV.contentOffset = CGPointMake(0, 0);
+        _goodV.contentOffset = CGPointMake(0, 44);
+        _hotPintsV.contentOffset = CGPointMake(0, 44);
         [TempData sharedInstance].changeUser = NO;
         _backGroundV.contentOffset = CGPointMake(320, 0);
         
