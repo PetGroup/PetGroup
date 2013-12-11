@@ -505,7 +505,7 @@
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 if ([[error domain] isEqualToString:@"noEntity"]) {
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"操作失败，可能动态已经被删除了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"操作失败" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
                     [alert show];
                 }
                 else

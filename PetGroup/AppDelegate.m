@@ -46,6 +46,7 @@
     [self setChannel:@"1"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     // Override point for customization after application launch.
     self.loadingV = [[LoadingViewController alloc] init];
     self.window.rootViewController = self.loadingV;
