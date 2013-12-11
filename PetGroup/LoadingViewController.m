@@ -433,6 +433,7 @@
             else if ([infoType isEqualToString:@"ency"]){
                 ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
                 cv.contentType = contentTypeWebView;
+                cv.typeName = @"宠物介绍";
                 cv.needRequestURL = YES;
                 cv.needDismiss = YES;
                 cv.articleID = [infoDict objectForKey:@"id"];
@@ -443,6 +444,7 @@
             else if ([infoType isEqualToString:@"exper"]){
                 ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
                 cv.contentType = contentTypeTextView;
+                cv.typeName = @"养宠经验";
                 cv.needDismiss = YES;
                 cv.articleID = [infoDict objectForKey:@"id"];
                 [self.tabBarC presentViewController:cv animated:YES completion:^{
@@ -452,6 +454,7 @@
             else if ([infoType isEqualToString:@"notice"]){
                 ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
                 cv.contentType = contentTypeTextView;
+                cv.typeName = @"通知";
                 cv.needDismiss = YES;
                 cv.isSystemNoti = YES;
                 cv.articleID = [infoDict objectForKey:@"id"];
