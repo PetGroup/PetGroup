@@ -157,7 +157,7 @@
         [alert show];
     }];
     [reGetB setTitle:@"重新发送验证码（60s）" forState:UIControlStateNormal];
-    reGetB.userInteractionEnabled = NO;
+    reGetB.enabled = NO;
     if (timer != nil) {
         [timer invalidate];
     }
@@ -169,8 +169,9 @@
     [reGetB setTitle:[NSString  stringWithFormat: @"重新发送验证码（%ds）",i]forState:UIControlStateNormal];
     if (i < 1) {
         [timer invalidate];
-        reGetB.userInteractionEnabled = YES;
+        reGetB.enabled = YES;
         i = 60;
+        [reGetB setTitle:@"重新发送验证码" forState:UIControlStateNormal];
         
     }
 }

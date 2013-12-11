@@ -187,6 +187,7 @@
         [[EGOCache globalCache] clearCache];
         NSFileManager *file_manager = [NSFileManager defaultManager];
         NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+        [TempData sharedInstance].changeUser = YES;
         [file_manager removeItemAtPath:path error:nil];
     }
 }

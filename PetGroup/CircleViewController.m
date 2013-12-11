@@ -252,7 +252,7 @@
     UIView * cc = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [cc setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
     [_hotPintsSearchBar insertSubview:cc atIndex:1];
-    
+    [TempData sharedInstance].changeUser = NO;
     self.appDel = [[UIApplication sharedApplication] delegate];
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -296,7 +296,12 @@
     nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
     [nextB addTarget:self action:@selector(buildGuidTwoView) forControlEvents:UIControlEventTouchUpInside];
     [bgV addSubview:nextB];
-    
+    if(!iPhone5)
+    {
+        imageV.frame = CGRectMake(17.5, diffH, 285, 345);
+        collectionV.frame = CGRectMake(49, 34+diffH, 223, 300);
+        nextB.frame = CGRectMake(95, 354+diffH, 130, 57);
+    }
 //    [[[UIApplication sharedApplication] keyWindow] addSubview:_firstView];
     [self.view addSubview:_firstView];
 }
@@ -325,10 +330,11 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-//    if (![self.myUserID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
-//        [self reloadAttentionData];
-//        self.myUserID =[[TempData sharedInstance] getMyUserID];
-//    }
+    if ([TempData sharedInstance].changeUser) {
+        [self reloadAttentionData];
+        [TempData sharedInstance].changeUser = NO;
+        _backGroundV.contentOffset = CGPointMake(320, 0);
+    }
     if ([[TempData sharedInstance] ifPanned]) {
         [self.customTabBarController hidesTabBar:NO animated:NO];
     }
@@ -878,6 +884,9 @@
     nextB.frame = CGRectMake(95, 394+diffH, 130, 57);
     [nextB addTarget:self action:@selector(buildGuidThreeView) forControlEvents:UIControlEventTouchUpInside];
     [_firstView addSubview:nextB];
+    if (!iPhone5) {
+        nextB.frame = CGRectMake(95, 44+diffH, 130, 57);
+    }
 }
 -(void)buildGuidThreeView
 {
