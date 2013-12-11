@@ -334,8 +334,14 @@
 {
     if ([TempData sharedInstance].changeUser) {
         [self reloadAttentionData];
+        [self reloadGoodArticleData];
+        [self reloadHotPintsData];
+        _attentionV.contentOffset = CGPointMake(0, 0);
+        _goodV.contentOffset = CGPointMake(0, 0);
+        _hotPintsV.contentOffset = CGPointMake(0, 0);
         [TempData sharedInstance].changeUser = NO;
         _backGroundV.contentOffset = CGPointMake(320, 0);
+        
     }
     if ([[TempData sharedInstance] ifPanned]) {
         [self.customTabBarController hidesTabBar:NO animated:NO];
