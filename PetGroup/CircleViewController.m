@@ -257,15 +257,14 @@
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"25PetFirstLoadCircleView"]) {
-//        [defaults setObject:@"25PetFirstLoadCircleView" forKey:@"25PetFirstLoadCircleView"];
-//        [defaults synchronize];
         needGuidance = YES;
         _backGroundV.contentOffset = CGPointMake(640, 0);
     }
 }
 - (void)buildGuidView
 {
-    self.firstView = [[UIView alloc]initWithFrame:[[UIApplication sharedApplication] keyWindow].frame];
+    [self.mlNavigationController setGestureEnableNO];
+    self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
     _firstView.backgroundColor = [UIColor clearColor];
     UIView* bgV = [[UIView alloc]initWithFrame:_firstView.frame];
     bgV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];
@@ -298,7 +297,8 @@
     [nextB addTarget:self action:@selector(buildGuidTwoView) forControlEvents:UIControlEventTouchUpInside];
     [bgV addSubview:nextB];
     
-    [[[UIApplication sharedApplication] keyWindow] addSubview:_firstView];
+//    [[[UIApplication sharedApplication] keyWindow] addSubview:_firstView];
+    [self.view addSubview:_firstView];
 }
 - (void)buildGuidData
 {
@@ -919,8 +919,12 @@
     [UIView animateWithDuration:0.3 animations:^{
         _backGroundV.contentOffset = CGPointMake(0, 0);
     } completion:^(BOOL finished) {
+        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:@"25PetFirstLoadCircleView" forKey:@"25PetFirstLoadCircleView"];
+        [defaults synchronize];
         [_firstView removeFromSuperview];
         needGuidance = NO;
+        [self.mlNavigationController setGestureEnableYES];
     }];
 }
 @end

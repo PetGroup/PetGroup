@@ -163,8 +163,8 @@
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"25PetFirstLoadFrirndCircleView"]) {
-//        [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
-//        [defaults synchronize];
+        [defaults setObject:@"25PetFirstLoadFrirndCircleView" forKey:@"25PetFirstLoadFrirndCircleView"];
+        [defaults synchronize];
         self.firstView = [[UIView alloc]initWithFrame:self.view.frame];
         _firstView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4];
         [self.view addSubview:_firstView];

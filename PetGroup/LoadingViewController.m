@@ -387,6 +387,7 @@
     self.NaviMessage = [[MLNavigationController alloc] initWithRootViewController:messageV];
     
     self.NaviMessage.delegate = (id)self;
+    self.NaviDynamic.delegate = (id)self;
     self.NaviMessage.navigationBarHidden = YES;
     self.NaviNearBy.navigationBarHidden = YES;
     self.NaviContacts.navigationBarHidden = YES;
