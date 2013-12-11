@@ -210,12 +210,14 @@
 //        NSRange range=[dede rangeOfString:@"authenticationToken"];
 //        if (range.location!=NSNotFound) {
         NSDictionary* dic = responseObject;
+        
             [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:self.PhoneNoTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [SFHFKeychainUtils storeUsername:PASSWORD andPassword:_passWordTF.text forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
             [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
             [DataStoreManager storeMyUserID:[[dic objectForKey:@"authenticationToken"] objectForKey:@"userid"]];
             [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
+        NSLog(@"LOGIN DIC:%@,USER:%@,PHONRNUM:%@",dic,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil],self.PhoneNoTF.text);
 //            [self dismissModalViewControllerAnimated:YES];
         [self dismissViewControllerAnimated:NO completion:^{
             

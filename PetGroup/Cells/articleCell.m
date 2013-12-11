@@ -29,7 +29,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         // Initialization code
         self.headPhote = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 38, 38)];
-        _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
+        _headPhote.placeholderImage = [UIImage imageNamed:@"placeholderman"];
         [self.contentView addSubview:_headPhote];
 //        self.headPhote.layer.cornerRadius = 5;
 //        self.headPhote.layer.masksToBounds=YES;

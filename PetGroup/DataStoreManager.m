@@ -16,6 +16,7 @@
     [MagicalRecord cleanUp];
     [MagicalRecord setDefaultModelNamed:[NSString stringWithFormat:@"%@.momd",modelName]];
     [MagicalRecord setupCoreDataStackWithStoreNamed:[NSString stringWithFormat:@"%@.sqlite",dataBaseName]];
+    NSLog(@"default database:%@,%@",dataBaseName,modelName);
 }
 #pragma mark - 存储消息相关
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype

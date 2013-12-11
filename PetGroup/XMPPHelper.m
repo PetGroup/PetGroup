@@ -290,27 +290,27 @@
 //	roster = [sender sortedUsersByAvailabilityName];
 }
 - (BOOL)xmppStream:(XMPPStream *)sender didReceiveIQ:(XMPPIQ *)iq {
-    if (!self.rosters) {
-        self.rosters = [NSMutableArray array];
-    }
-    [self.rosters removeAllObjects];
+//    if (!self.rosters) {
+//        self.rosters = [NSMutableArray array];
+//    }
+//    [self.rosters removeAllObjects];
     if ([@"result" isEqualToString:iq.type]) {
         NSXMLElement *query = iq.childElement;
 //        NSArray * iqChildrenArray = [iq children];
         if ([@"query" isEqualToString:query.name]) {
-            NSArray *items = [query children];
-            for (NSXMLElement *item in items) {
-                NSString *jid = [item attributeStringValueForName:@"jid"];
-                NSRange range = [jid rangeOfString:@"@"];
-                NSString * sender = [jid substringToIndex:range.location];
-               // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
-                if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]||[[item attributeStringValueForName:@"subscription"] isEqualToString:@"to"]) {
-                    [self.rosters addObject:sender];
-//                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
-//                    [DataStoreManager addFriendToLocal:sender];
-                    //[DataStoreManager saveUserInfo:dict];
-                }
-            }
+//            NSArray *items = [query children];
+//            for (NSXMLElement *item in items) {
+//                NSString *jid = [item attributeStringValueForName:@"jid"];
+//                NSRange range = [jid rangeOfString:@"@"];
+//                NSString * sender = [jid substringToIndex:range.location];
+//               // XMPPJID *xmppJID = [XMPPJID jidWithString:jid];
+//                if ([[item attributeStringValueForName:@"subscription"] isEqualToString:@"both"]||[[item attributeStringValueForName:@"subscription"] isEqualToString:@"to"]) {
+//                    [self.rosters addObject:sender];
+////                    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:sender,@"username", nil];
+////                    [DataStoreManager addFriendToLocal:sender];
+//                    //[DataStoreManager saveUserInfo:dict];
+//                }
+//            }
         }
         else if ([@"pubsub" isEqualToString:query.name]){
             NSXMLElement *subscriptions = [query elementForName:@"subscriptions"];

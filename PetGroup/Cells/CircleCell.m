@@ -26,7 +26,7 @@
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         self.imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
-        self.imageV.placeholderImage = [UIImage imageNamed:@"headbg"];
+        self.imageV.placeholderImage = [UIImage imageNamed:@"circleplaceholder"];
         [self.contentView addSubview:_imageV];
         
         self.nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 180, 20)];

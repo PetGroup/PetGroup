@@ -142,11 +142,15 @@
     [headView addSubview:_personL];
     
     joinB = [UIButton buttonWithType:UIButtonTypeCustom];
-    joinB.frame = CGRectMake(240, 60, 71, 21);
+    joinB.frame = CGRectMake(230, 58, 71, 28);
+    [joinB.titleLabel setFont:[UIFont systemFontOfSize:15]];
     if (self.circleEntity.atte) {
-        [joinB setBackgroundImage:[UIImage imageNamed:@"yijiaru"] forState:UIControlStateNormal];
+        [joinB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
+        [joinB setTitle:@"已关注" forState:UIControlStateNormal];
+        [joinB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     }else{
-        [joinB setBackgroundImage:[UIImage imageNamed:@"jiaru"] forState:UIControlStateNormal];
+        [joinB setBackgroundImage:[UIImage imageNamed:@"scrollTable_bg"] forState:UIControlStateNormal];
+        [joinB setTitle:@"关注" forState:UIControlStateNormal];
     }
     [joinB addTarget:self action:@selector(joinOnceCircle) forControlEvents:UIControlEventTouchUpInside];
     [headView addSubview:joinB];
@@ -276,7 +280,9 @@
     self.circleEntity.atte = !self.circleEntity.atte;
     if (self.circleEntity.atte) {
         _personL.text = [NSString stringWithFormat:@"%d人",++self.circleEntity.totalAtte];
-        [joinB setBackgroundImage:[UIImage imageNamed:@"yijiaru"] forState:UIControlStateNormal];
+        [joinB setBackgroundImage:[UIImage imageNamed:@"toubuhuakuaibtn"] forState:UIControlStateNormal];
+        [joinB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [joinB setTitle:@"已关注" forState:UIControlStateNormal];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
         NSMutableDictionary* params = [NSMutableDictionary dictionary];
@@ -298,7 +304,9 @@
             
         }];
     }else{
-        [joinB setBackgroundImage:[UIImage imageNamed:@"jiaru"] forState:UIControlStateNormal];
+        [joinB setBackgroundImage:[UIImage imageNamed:@"scrollTable_bg"] forState:UIControlStateNormal];
+        [joinB setTitle:@"关注" forState:UIControlStateNormal];
+        [joinB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _personL.text = [NSString stringWithFormat:@"%d人",--self.circleEntity.totalAtte];
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);

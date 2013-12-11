@@ -23,7 +23,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
-        imageV.image = [UIImage imageNamed:@"headbg"];
+        imageV.image = [UIImage imageNamed:@"fdy"];
         [self.contentView addSubview:imageV];
         
         UILabel*nameL = [[UILabel alloc]initWithFrame:CGRectMake(70, 10, 80, 20)];

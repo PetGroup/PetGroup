@@ -623,7 +623,7 @@
     [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self saveMyInfo:responseObject];
-        [self getFriendByHttp];
+        
         [self getMyPetInfoFromNet];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -688,8 +688,9 @@
         for (NSDictionary * dict in petsArray) {
             [DataStoreManager storeOnePetInfo:dict];
         }
+        [self getFriendByHttp];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [self getFriendByHttp];
     }];
 }
 
