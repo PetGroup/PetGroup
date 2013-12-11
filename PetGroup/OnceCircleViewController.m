@@ -258,6 +258,9 @@
     }
     [hotPintsDS.dataSourceArray insertObject:aricle atIndex:index];
     [self.tableV reloadData];
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = aricle.articleID;
+    [self.navigationController pushViewController:articleVC animated:NO];
 }
 #pragma mark - button action
 -(void)backButton
