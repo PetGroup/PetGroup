@@ -142,8 +142,8 @@
 {
     //暂时注释
     inActive = YES;
-//    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-//    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification

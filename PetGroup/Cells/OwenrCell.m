@@ -80,7 +80,7 @@
         
         self.headPhote = [[EGOImageButton alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
         [_headPhote addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
-        _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
+        _headPhote.placeholderImage = [UIImage imageNamed:@"placeholderman"];
         [self.contentView addSubview:_headPhote];
         
         self.textView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0, 0, 320, 10)];
