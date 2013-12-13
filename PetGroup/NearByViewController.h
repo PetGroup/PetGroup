@@ -16,7 +16,7 @@
 #import "UIScrollView+SVInfiniteScrolling.h"
 #import "PersonDetailViewController.h"
 #import "PetDetailViewController.h"
-@interface NearByViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate,SRRefreshDelegate>{
+@interface NearByViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,MBProgressHUDDelegate,SRRefreshDelegate,UIPickerViewDataSource,UIPickerViewDelegate>{
     UIView * filterPage;
     UIView * filterBGV;
     UIButton * showPetBtn;
@@ -42,6 +42,12 @@
     UILabel * noResultLabel;
     
     float diffH;
+    
+    UIView * newfilterView;
+    NSArray * petkindArray;
+    
+    UIView * chooseRegionV;
+    UIPickerView *kindPV;
     
 }
 @property (strong,nonatomic) UITableView * messageTable;

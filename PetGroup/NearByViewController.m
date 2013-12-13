@@ -42,6 +42,7 @@
         self.nearbyArray = [NSMutableArray array];
         self.appearPetArray = [NSMutableArray array];
         self.petDistanceArray = [NSMutableArray array];
+        petkindArray = [NSArray arrayWithObjects:@"所有",@"狗狗",@"猫咪",@"其它", nil];
     }
     return self;
 }
@@ -84,6 +85,7 @@
     self.titleLabel = titleLabel;
     
     self.messageTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
+    self.messageTable.tag = 100;
     [self.view addSubview:self.messageTable];
     self.messageTable.dataSource = self;
     self.messageTable.delegate = self;
@@ -384,186 +386,219 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView==self.petTypeTable) {
-        return self.petArray.count;
+    if (tableView.tag==100) {
+        if (tableView==self.petTypeTable) {
+            return self.petArray.count;
+        }
+        if (!personOrPet) {
+            return self.appearPetArray.count;
+        }
+        //    if (!personOrPet) {
+        //        return self.appearPetArray.count;
+        //    }
+        return self.nearbyArray.count;
     }
-    if (!personOrPet) {
-        return self.appearPetArray.count;
-    }
-//    if (!personOrPet) {
-//        return self.appearPetArray.count;
-//    }
-    return self.nearbyArray.count;
+    else
+        return 4;
+
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.petTypeTable) {
-        return 30;
+    if (tableView.tag==100) {
+        if (tableView==self.petTypeTable) {
+            return 30;
+        }
+        return 80;
     }
-    return 80;
+    else
+        return 45;
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.petTypeTable) {
-        static NSString *identifier = @"petCell";
+    if (tableView.tag==100) {
+        if (tableView==self.petTypeTable) {
+            static NSString *identifier = @"petCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            if (indexPath.row==0) {
+                cell.textLabel.text = @"所有";
+            }
+            else
+                cell.textLabel.text = self.petArray[indexPath.row-1];
+            [cell.textLabel setAdjustsFontSizeToFitWidth:YES];
+            [cell.textLabel setTextColor:[UIColor grayColor]];
+            return cell;
+        }else if(personOrPet){
+            static NSString *identifier = @"userCell";
+            NearByCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (cell == nil) {
+                cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            //[cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
+            
+            [cell.nameLabel setText:[[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"]];
+            NSString* sigStr = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"signature"];
+            NSString * gender = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"gender"];
+            if (![[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
+                NSString * imgStr = [self getFistHeadImg:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"]];
+                
+                [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[gender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
+            }
+            if ([gender isEqualToString:@"male"]) {
+                [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
+            }
+            else
+                [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
+            if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
+                [cell.signatureLabel setText:sigStr];
+            }else{
+                [cell.signatureLabel setText:@"该用户没有设置签名"];
+            }
+            
+            NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"];
+            
+            if (tempPetArray) {
+                PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
+                cell.petOneImgV.hidden = NO;
+                NSArray * head = [self imageToURL:petInfo.headImgArray];
+                [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
+                //            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+                //            if (tempPetArray.count==1) {
+                //                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
+                //            }
+                //            else
+                [cell.petLabel setText:[NSString stringWithFormat:@"%d个宠物",tempPetArray.count]];
+            }
+            else
+            {
+                cell.petOneImgV.hidden = NO;
+                [cell.petOneImgV setImage:[UIImage imageNamed:@"nopet.png"]];
+                //            [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
+                [cell.petLabel setText:@" "];
+            }
+            int dist = [[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"] intValue];
+            NSString *distf;
+            if (dist>=1000) {
+                int aa = dist/1000;
+                float dd = (float)dist/1000;
+                if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
+                    distf = [NSString stringWithFormat:@"%d.5km",aa];
+                }
+                else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
+                {
+                    distf = [NSString stringWithFormat:@"%dkm",aa];
+                }
+                else
+                    distf = [NSString stringWithFormat:@"%dkm",aa+1];
+            }
+            else
+            {
+                dist = ((int)(dist/100)+1)*100;
+                if (dist==1000) {
+                    distf = [NSString stringWithFormat:@"1km"];
+                }
+                else
+                    distf = [NSString stringWithFormat:@"%dm",dist];
+            }
+            [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"birthdate"],distf]];
+            
+            return cell;
+        }else{
+            static NSString *identifier = @"petCell";
+            
+            NearByCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            if (cell == nil) {
+                cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
+            //        [cell.headImageV setImage:[UIImage imageNamed:@"placeholder.png"]];
+            NSString * petImgStr = [self getFistHeadImg:[pet objectForKey:@"img"]];
+            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
+            [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
+            int dist = [[self.petDistanceArray objectAtIndex:indexPath.row] intValue];
+            NSString *distf;
+            if (dist>=1000) {
+                int aa = dist/1000;
+                float dd = (float)dist/1000;
+                if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
+                    distf = [NSString stringWithFormat:@"%d.5km",aa];
+                }
+                else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
+                {
+                    distf = [NSString stringWithFormat:@"%dkm",aa];
+                }
+                else
+                    distf = [NSString stringWithFormat:@"%dkm",aa+1];
+            }
+            else
+            {
+                dist = ((int)(dist/100)+1)*100;
+                if (dist==1000) {
+                    distf = [NSString stringWithFormat:@"1km"];
+                }
+                else
+                    distf = [NSString stringWithFormat:@"%dm",dist];
+            }
+            NSString* sigStr = [pet objectForKey:@"trait"];
+            NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
+            NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
+            [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[pet objectForKey:@"birthdate"],distf]];
+            cell.petOneImgV.hidden = NO;
+            NSString * hostGender = [theDict objectForKey:@"gender"];
+            [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[hostGender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
+            //        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
+            [cell.petLabel setText:[NSString stringWithFormat:@"%@",[theDict objectForKey:@"nickname"]]];
+            
+            NSString * petGender = [pet objectForKey:@"gender"];
+            if ([petGender isEqualToString:@"male"]) {
+                [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
+            }
+            else if([petGender isEqualToString:@"female"]){
+                [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
+            }
+            else
+            {
+                [cell.genderImgV setImage:nil];
+            }
+            
+            
+            if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
+                [cell.signatureLabel setText:[pet objectForKey:@"trait"]];
+            }else{
+                [cell.signatureLabel setText:@"这只宠物很平凡"];
+            }
+            //        [cell.signatureLabel setText:[[pet objectForKey:@"trait"] isKindOfClass:[NSNull class]]?@"":[pet objectForKey:@"trait"]];
+            return cell;
+        }
+
+    }
+    else
+    {
+        static NSString *identifier = @"petCellssss";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         if (indexPath.row==0) {
-            cell.textLabel.text = @"所有";
+            cell.accessoryType = UITableViewCellAccessoryNone;
         }
         else
-            cell.textLabel.text = self.petArray[indexPath.row-1];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.text = petkindArray[indexPath.row];
+        cell.detailTextLabel.text = @"ssssss";
         [cell.textLabel setAdjustsFontSizeToFitWidth:YES];
         [cell.textLabel setTextColor:[UIColor grayColor]];
         return cell;
-    }else if(personOrPet){
-        static NSString *identifier = @"userCell";
-        NearByCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (cell == nil) {
-            cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        //[cell.headImageV setImage:[UIImage imageNamed:@"moren_people.png"]];
 
-        [cell.nameLabel setText:[[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"] isKindOfClass:[NSNull class]]?@"123":[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"nickname"]];
-        NSString* sigStr = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"signature"];
-        NSString * gender = [[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"gender"];
-        if (![[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"] isKindOfClass:[NSNull class]] ) {
-            NSString * imgStr = [self getFistHeadImg:[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"img"]];
-            
-            [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,imgStr]] placeholderImage:[gender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
-        }
-        if ([gender isEqualToString:@"male"]) {
-            [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
-        }
-        else
-            [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
-        if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
-            [cell.signatureLabel setText:sigStr];
-        }else{
-            [cell.signatureLabel setText:@"该用户没有设置签名"];
-        }
-        
-        NSArray * tempPetArray = [[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"];
-        
-        if (tempPetArray) {
-            PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[tempPetArray objectAtIndex:0]];
-            cell.petOneImgV.hidden = NO;
-            NSArray * head = [self imageToURL:petInfo.headImgArray];
-            [cell.petOneImgV setImageWithURL:[NSURL URLWithString:head.count>0?[head objectAtIndex:0]:BaseImageUrl] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
-//            [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
-//            if (tempPetArray.count==1) {
-//                [cell.petLabel setText:[NSString stringWithFormat:@"%@ %d个宠物",petInfo.petNickname,tempPetArray.count]];
-//            }
-//            else
-                [cell.petLabel setText:[NSString stringWithFormat:@"%d个宠物",tempPetArray.count]];
-        }
-        else
-        {
-            cell.petOneImgV.hidden = NO;
-            [cell.petOneImgV setImage:[UIImage imageNamed:@"nopet.png"]];
-//            [cell.petLabel setFrame:CGRectMake(80, 50, 200, 20)];
-            [cell.petLabel setText:@" "];
-        }
-        int dist = [[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"distance"] intValue];
-        NSString *distf;
-        if (dist>=1000) {
-            int aa = dist/1000;
-            float dd = (float)dist/1000;
-            if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
-                distf = [NSString stringWithFormat:@"%d.5km",aa];
-            }
-            else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
-            {
-                distf = [NSString stringWithFormat:@"%dkm",aa];
-            }
-            else
-                distf = [NSString stringWithFormat:@"%dkm",aa+1];
-        }
-        else
-        {
-            dist = ((int)(dist/100)+1)*100;
-            if (dist==1000) {
-                distf = [NSString stringWithFormat:@"1km"];
-            }
-            else
-                distf = [NSString stringWithFormat:@"%dm",dist];
-        }
-        [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] objectForKey:@"birthdate"],distf]];
-
-        return cell;
-    }else{
-        static NSString *identifier = @"petCell";
-
-        NearByCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        if (cell == nil) {
-            cell = [[NearByCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        NSDictionary* pet = [self.appearPetArray objectAtIndex:indexPath.row];
-//        [cell.headImageV setImage:[UIImage imageNamed:@"placeholder.png"]];
-        NSString * petImgStr = [self getFistHeadImg:[pet objectForKey:@"img"]];
-        [cell.headImageV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,petImgStr]] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
-        [cell.nameLabel setText:[pet objectForKey:@"nickname"]];
-        int dist = [[self.petDistanceArray objectAtIndex:indexPath.row] intValue];
-        NSString *distf;
-        if (dist>=1000) {
-            int aa = dist/1000;
-            float dd = (float)dist/1000;
-            if (dd-(float)aa<0.5&&dd-(float)aa>0.2) {
-                distf = [NSString stringWithFormat:@"%d.5km",aa];
-            }
-            else if (dd-(float)aa>=0&&dd-(float)aa<=0.2)
-            {
-                distf = [NSString stringWithFormat:@"%dkm",aa];
-            }
-            else
-                distf = [NSString stringWithFormat:@"%dkm",aa+1];
-        }
-        else
-        {
-            dist = ((int)(dist/100)+1)*100;
-            if (dist==1000) {
-                distf = [NSString stringWithFormat:@"1km"];
-            }
-            else
-                distf = [NSString stringWithFormat:@"%dm",dist];
-        }
-        NSString* sigStr = [pet objectForKey:@"trait"];
-        NSDictionary * theDict = [self getUserInfoByUserId:[pet objectForKey:@"userid"]];
-        NSString * hostImgStr = [self getFistHeadImg:[theDict objectForKey:@"img"]];
-        [cell.distLabel setText:[NSString stringWithFormat:@"| %@ | %@",[pet objectForKey:@"birthdate"],distf]];
-        cell.petOneImgV.hidden = NO;
-        NSString * hostGender = [theDict objectForKey:@"gender"];
-        [cell.petOneImgV setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,hostImgStr]] placeholderImage:[hostGender isEqualToString:@"male"]?[UIImage imageNamed:@"placeholderman"]:[UIImage imageNamed:@"placeholderwoman"]];
-//        [cell.petLabel setFrame:CGRectMake(115, 50, 200, 20)];
-        [cell.petLabel setText:[NSString stringWithFormat:@"%@",[theDict objectForKey:@"nickname"]]];
-        
-        NSString * petGender = [pet objectForKey:@"gender"];
-        if ([petGender isEqualToString:@"male"]) {
-            [cell.genderImgV setImage:[UIImage imageNamed:@"manicon.png"]];
-        }
-        else if([petGender isEqualToString:@"female"]){
-            [cell.genderImgV setImage:[UIImage imageNamed:@"womenicon.png"]];
-        }
-        else
-        {
-            [cell.genderImgV setImage:nil];
-        }
-        
-
-        if (![sigStr isKindOfClass:[NSNull class]]&&![sigStr isEqualToString:@""]) {
-            [cell.signatureLabel setText:[pet objectForKey:@"trait"]];
-        }else{
-            [cell.signatureLabel setText:@"这只宠物很平凡"];
-        }
-//        [cell.signatureLabel setText:[[pet objectForKey:@"trait"] isKindOfClass:[NSNull class]]?@"":[pet objectForKey:@"trait"]];
-        return cell;
     }
 }
 -(NSArray *)imageToURL:(NSArray *)imageArray;
@@ -582,81 +617,116 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (tableView==self.petTypeTable) {
-        [UIView animateWithDuration:0.3 animations:^(void){
-            [self.petTypeTable setFrame:CGRectMake(30+95+15, 208.5, 59*2+15, 0)];
-        }];
-//        [postDict setObject:[NSNumber numberWithInt:[self.typeArray[indexPath.row] intValue]] forKey:@"type"];
-        NSNumber* a = 0;
-        switch (petType) {
-            case 5:{
-                
-                if (indexPath.row==0) {
-                    a = [NSNumber numberWithInt:2];
-                    [petCat setTitle:@"所有" forState:UIControlStateNormal];
-                }
-                else
-                {
-                    a = [XMLMatcher typeWithString1:@"Cat" andString2:self.petArray[indexPath.row-1]];
-                    [petCat setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
-                }
-                [petDog setTitle:@"狗" forState:UIControlStateNormal];
-                [petOther setTitle:@"其他" forState:UIControlStateNormal];
-            }break;
-            case 6:{
-                
-                if (indexPath.row==0) {
-                    a=[NSNumber numberWithInt:1];
-                    [petDog setTitle:@"所有" forState:UIControlStateNormal];
-                }
-                else
-                {
-                    a = [XMLMatcher typeWithString1:@"Dog" andString2:self.petArray[indexPath.row-1]];
-                    [petDog setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
-                }
-                [petCat setTitle:@"猫" forState:UIControlStateNormal];
-                [petOther setTitle:@"其他" forState:UIControlStateNormal];
-            }break;
-            case 7:{
-                
-                if (indexPath.row==0) {
-                    a = [NSNumber numberWithInt:3];
-                    [petOther setTitle:@"所有" forState:UIControlStateNormal];
-                }
-                else
-                {
-                    a = [XMLMatcher typeWithString1:@"Other" andString2:self.petArray[indexPath.row-1]];
-                    [petOther setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
-                }
-                [petDog setTitle:@"狗" forState:UIControlStateNormal];
-                [petCat setTitle:@"猫" forState:UIControlStateNormal];
-            }break;
+    if (tableView.tag==100) {
+        if (tableView==self.petTypeTable) {
+            [UIView animateWithDuration:0.3 animations:^(void){
+                [self.petTypeTable setFrame:CGRectMake(30+95+15, 208.5, 59*2+15, 0)];
+            }];
+            //        [postDict setObject:[NSNumber numberWithInt:[self.typeArray[indexPath.row] intValue]] forKey:@"type"];
+            NSNumber* a = 0;
+            switch (petType) {
+                case 5:{
+                    
+                    if (indexPath.row==0) {
+                        a = [NSNumber numberWithInt:2];
+                        [petCat setTitle:@"所有" forState:UIControlStateNormal];
+                    }
+                    else
+                    {
+                        a = [XMLMatcher typeWithString1:@"Cat" andString2:self.petArray[indexPath.row-1]];
+                        [petCat setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
+                    }
+                    [petDog setTitle:@"狗" forState:UIControlStateNormal];
+                    [petOther setTitle:@"其他" forState:UIControlStateNormal];
+                }break;
+                case 6:{
+                    
+                    if (indexPath.row==0) {
+                        a=[NSNumber numberWithInt:1];
+                        [petDog setTitle:@"所有" forState:UIControlStateNormal];
+                    }
+                    else
+                    {
+                        a = [XMLMatcher typeWithString1:@"Dog" andString2:self.petArray[indexPath.row-1]];
+                        [petDog setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
+                    }
+                    [petCat setTitle:@"猫" forState:UIControlStateNormal];
+                    [petOther setTitle:@"其他" forState:UIControlStateNormal];
+                }break;
+                case 7:{
+                    
+                    if (indexPath.row==0) {
+                        a = [NSNumber numberWithInt:3];
+                        [petOther setTitle:@"所有" forState:UIControlStateNormal];
+                    }
+                    else
+                    {
+                        a = [XMLMatcher typeWithString1:@"Other" andString2:self.petArray[indexPath.row-1]];
+                        [petOther setTitle:self.petArray[indexPath.row-1] forState:UIControlStateNormal];
+                    }
+                    [petDog setTitle:@"狗" forState:UIControlStateNormal];
+                    [petCat setTitle:@"猫" forState:UIControlStateNormal];
+                }break;
+                default:
+                    break;
+            }
+            theType = [NSString stringWithFormat:@"%@",a];
+            
+        }
+        else if(personOrPet)
+        {
+            PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+            HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] PetsArray:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"]];
+            detailV.hostInfo = hostInfo;
+            [self.navigationController pushViewController:detailV animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }else{
+            PetDetailViewController * petDetailV = [[PetDetailViewController alloc] init];
+            PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[self.appearPetArray objectAtIndex:indexPath.row]];
+            petDetailV.petInfo = petInfo;
+            NSDictionary * uDict = [self getUserInfoByUserId:[[self.appearPetArray objectAtIndex:indexPath.row] objectForKey:@"userid"]];
+            if (uDict) {
+                HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:uDict PetsArray:nil];
+                petDetailV.hostInfo = hostInfo;
+            }
+            [self.navigationController pushViewController:petDetailV animated:YES];
+            //        [self.customTabBarController hidesTabBar:YES animated:YES];    
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else
+    {
+        switch (indexPath.row) {
+            case 0:
+                break;
+            case 1:
+            {
+                self.petArray = [XMLMatcher allDogs];
+                [kindPV reloadAllComponents];
+                [self showPicker];
+            }
+                break;
+            case 2:
+            {
+                self.petArray = [XMLMatcher allCats];
+                [kindPV reloadAllComponents];
+                [self showPicker];
+            }
+                break;
+            case 3:
+            {
+                self.petArray = [XMLMatcher allother];
+                [kindPV reloadAllComponents];
+                [self showPicker];
+            }
+                break;
             default:
                 break;
         }
-        theType = [NSString stringWithFormat:@"%@",a];
         
+ 
     }
-    else if(personOrPet)
-    {
-        PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
-        HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"user"] PetsArray:[[self.nearbyArray objectAtIndex:indexPath.row] objectForKey:@"petList"]];
-        detailV.hostInfo = hostInfo;
-        [self.navigationController pushViewController:detailV animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
-    }else{
-        PetDetailViewController * petDetailV = [[PetDetailViewController alloc] init];
-        PetInfo * petInfo = [[PetInfo alloc] initWithPetInfo:[self.appearPetArray objectAtIndex:indexPath.row]];
-        petDetailV.petInfo = petInfo;
-        NSDictionary * uDict = [self getUserInfoByUserId:[[self.appearPetArray objectAtIndex:indexPath.row] objectForKey:@"userid"]];
-        if (uDict) {
-            HostInfo * hostInfo = [[HostInfo alloc] initWithNewHostInfo:uDict PetsArray:nil];
-            petDetailV.hostInfo = hostInfo;
-        }
-        [self.navigationController pushViewController:petDetailV animated:YES];
-//        [self.customTabBarController hidesTabBar:YES animated:YES];    
-    }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
 }
 -(void)makeDistanceArray
 {
@@ -706,6 +776,7 @@
 -(void)filterButtonDo:(id)sender
 {
     [self showFilterPage];
+//    [self addNewFilterView];
 }
 -(void)showFilterPage
 {
@@ -1036,6 +1107,165 @@
     }
     else
         return @"no";
+}
+-(void)addNewFilterView
+{
+    newfilterView = [[UIView alloc] initWithFrame:CGRectMake(0, diffH, 320, self.view.frame.size.height-diffH)];
+    [self.view addSubview:newfilterView];
+    UIImageView * topimagev = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [topimagev setImage:[UIImage imageNamed:@"topBar1"]];
+    [newfilterView addSubview:topimagev];
+    UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(-3, 0, 80, 44);
+    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelBtn setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+    [cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [cancelBtn addTarget:self action:@selector(cancelFilter) forControlEvents:UIControlEventTouchUpInside];
+    [newfilterView addSubview:cancelBtn];
+    
+    UIView * bottomV = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 320, newfilterView.frame.size.height-44)];
+    [bottomV setBackgroundColor:[UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1]];
+    [newfilterView addSubview:bottomV];
+    
+    UILabel * hostGenderL = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 100, 20)];
+    [hostGenderL setBackgroundColor:[UIColor clearColor]];
+    [hostGenderL setText:@"主人性别"];
+    [bottomV addSubview:hostGenderL];
+    
+    UISegmentedControl * segC = [[UISegmentedControl alloc] initWithItems:@[@"全部",@"男",@"女"]];
+    [segC setFrame:CGRectMake(20, 45, 280, 35)];
+    [segC setSegmentedControlStyle:UISegmentedControlStyleBar];
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor],UITextAttributeTextColor, nil];
+    [segC setTitleTextAttributes:dic forState:UIControlStateNormal];
+    [segC setTintColor:[UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1]];
+    [segC setSelectedSegmentIndex:0];
+    [bottomV addSubview:segC];
+    
+    UILabel * petKindL = [[UILabel alloc] initWithFrame:CGRectMake(15, 105, 100, 20)];
+    [petKindL setBackgroundColor:[UIColor clearColor]];
+    [petKindL setText:@"宠物种类"];
+    [bottomV addSubview:petKindL];
+    
+//    UIImageView * nameBG2 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 135, 300, 163.5)];
+//    [nameBG2 setImage:[UIImage imageNamed:@"newlogbg2"]];
+//    [bottomV addSubview:nameBG2];
+    UITableView * categoryTableV;
+    if (diffH==0) {
+        categoryTableV = [[UITableView alloc]initWithFrame:CGRectMake(11, 137, 298, 180) style:UITableViewStyleGrouped];
+    }
+    else
+        categoryTableV = [[UITableView alloc]initWithFrame:CGRectMake(11, 137, 298, 180) style:UITableViewStylePlain];
+    categoryTableV.tag = 101;
+    categoryTableV.delegate = self;
+    categoryTableV.dataSource = self;
+    categoryTableV.backgroundView = nil;
+    [bottomV addSubview:categoryTableV];
+    
+    UIButton * hostBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [hostBtn setFrame:CGRectMake(25, 340, 121.5, 35)];
+    [hostBtn setBackgroundImage:[UIImage imageNamed:@"filterBtn"] forState:UIControlStateNormal];
+    [hostBtn setTitle:@"显示主人" forState:UIControlStateNormal];
+    [bottomV addSubview:hostBtn];
+    
+    UIButton * petBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [petBtn setFrame:CGRectMake(176.5, 340, 121.5, 35)];
+    [petBtn setBackgroundImage:[UIImage imageNamed:@"filterBtn"] forState:UIControlStateNormal];
+    [petBtn setTitle:@"显示宠物" forState:UIControlStateNormal];
+    [bottomV addSubview:petBtn];
+    
+//    UILabel* nickNameL = [[UILabel alloc]initWithFrame:CGRectMake(20, 12, 70, 20)];
+//    nickNameL.text = @"全部";
+//    nickNameL.font = [UIFont systemFontOfSize:16];
+//    nickNameL.backgroundColor = [UIColor clearColor];
+//    [nameBG2 addSubview:nickNameL];
+//    
+//    UILabel* sexL = [[UILabel alloc]initWithFrame:CGRectMake(20, 52, 70, 20)];
+//    sexL.text = @"猫";
+//    sexL.font = [UIFont systemFontOfSize:16];
+//    sexL.backgroundColor = [UIColor clearColor];
+//    [nameBG2 addSubview:sexL];
+//    
+//    UILabel* cityL = [[UILabel alloc]initWithFrame:CGRectMake(20, 92, 70, 20)];
+//    cityL.text = @"狗";
+//    cityL.font = [UIFont systemFontOfSize:16];
+//    cityL.backgroundColor = [UIColor clearColor];
+//    [nameBG2 addSubview:cityL];
+//    
+//    UILabel* ageL = [[UILabel alloc]initWithFrame:CGRectMake(20, 133, 70, 20)];
+//    ageL.text = @"其它";
+//    ageL.font = [UIFont systemFontOfSize:16];
+//    ageL.backgroundColor = [UIColor clearColor];
+//    [nameBG2 addSubview:ageL];
+
+    UIToolbar* toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180-44, 320, 44)];
+    toolbar.tintColor = [UIColor blackColor];
+    UIBarButtonItem*rb = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(didselectPetKind)];
+    rb.tintColor = [UIColor blackColor];
+    toolbar.items = @[rb];
+    
+    chooseRegionV = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+    chooseRegionV.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:chooseRegionV];
+    [chooseRegionV addSubview:toolbar];
+    
+    
+    kindPV = [[UIPickerView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-180, 320, 200)];
+    kindPV.showsSelectionIndicator = YES;
+    kindPV.dataSource = self;
+    kindPV.delegate = self;
+    
+    [chooseRegionV addSubview:kindPV];
+}
+-(void)didselectPetKind
+{
+    [UIView animateWithDuration:0.3 animations:^{
+//        if (iPhone5) {
+//            //            [self.profileTableV setFrame:CGRectMake(0, -70, 320, self.view.frame.size.height-44)];
+//        }
+//        else
+            //            [self.profileTableV setFrame:CGRectMake(0, -150, 320, self.view.frame.size.height-44)];
+            [chooseRegionV setFrame:CGRectMake(0, self.view.frame.size.height, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+-(void)showPicker
+{
+    [UIView animateWithDuration:0.3 animations:^{
+//        if (iPhone5) {
+////            [self.profileTableV setFrame:CGRectMake(0, -70, 320, self.view.frame.size.height-44)];
+//        }
+//        else
+//            [self.profileTableV setFrame:CGRectMake(0, -150, 320, self.view.frame.size.height-44)];
+        [chooseRegionV setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    } completion:^(BOOL finished) {
+        
+    }];
+
+}
+
+#pragma mark - UIPicker View delegate and data source
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.petArray.count;
+}
+- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger) row forComponent:(NSInteger) component
+{
+    return self.petArray[row];
+    
+}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
+}
+
+-(void)cancelFilter
+{
+    [newfilterView removeFromSuperview];
 }
 - (void)didReceiveMemoryWarning
 {
