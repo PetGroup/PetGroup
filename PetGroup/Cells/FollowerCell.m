@@ -52,7 +52,7 @@ typedef  enum
         
         self.headPhote = [[EGOImageButton alloc]initWithFrame:CGRectMake(10, 10, 50, 50)];
         [_headPhote addTarget:self action:@selector(PersonDetail) forControlEvents:UIControlEventTouchUpInside];
-        _headPhote.placeholderImage = [UIImage imageNamed:@"headbg"];
+        _headPhote.placeholderImage = [UIImage imageNamed:@"placeholderman"];
         [self.contentView addSubview:_headPhote];
         
         self.nameB = [UIButton buttonWithType:UIButtonTypeCustom];
