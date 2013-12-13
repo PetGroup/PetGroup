@@ -14,7 +14,7 @@
 #import "SRRefreshView.h"
 #import "PhotoViewController.h"
 #import "BeautifulImage.h"
-@interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
+@interface PinterestViewController ()<TMQuiltViewDataSource,TMQuiltViewDelegate,BeautifulImageCellDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,PhotoViewControllerDelegate>
 
 @property (nonatomic,assign) int pageNo;
 @property (nonatomic,retain) NSMutableArray* imageArray;
@@ -137,7 +137,13 @@
 }
 - (void)quiltView:(TMQuiltView *)quiltView didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[((BeautifulImage*)_imageArray[indexPath.row]).imageID] indext:indexPath.row];
+//    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:@[((BeautifulImageCell*)[quiltView cellAtIndexPath:indexPath]).imageView.image] images:@[((BeautifulImage*)_imageArray[indexPath.row]).imageID] indext:indexPath.row];
+    NSMutableArray * idArray = [NSMutableArray array];
+    for (BeautifulImage* image in _imageArray) {
+        [idArray addObject:image.imageID];
+    }
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:nil images:idArray indext:indexPath.row];
+    vc.delegate = self;
     [self presentViewController:vc animated:NO completion:nil];
 }
 -(void)beautifulImageCellPressZanButtonAtIndexPath:(NSIndexPath*)indexPath
@@ -257,5 +263,32 @@
     if (refreshView == _footer) {
         [self loadMoreData];
     }
+}
+#pragma mark - PhotoViewControllerDelegate
+-(void)zanButtonActionWithPage:(int)page
+{
+    ((BeautifulImage*)_imageArray[page]).totalCount++;
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:((BeautifulImage*)_imageArray[page]).imageID forKey:@"id"];
+    NSMutableDictionary* body = [NSMutableDictionary dictionary];
+    [body setObject:@"service.uri.pet_albums" forKey:@"service"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"clickPublicPhotos" forKey:@"method"];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+}
+-(NSString*)titleLableTextWithPage:(int)page
+{
+    return [NSString stringWithFormat:@"%d",((BeautifulImage*)_imageArray[page]).totalCount];
 }
 @end

@@ -7,9 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol PhotoViewControllerDelegate <NSObject>
+
+-(void)zanButtonActionWithPage:(int)page;
+-(NSString*)titleLableTextWithPage:(int)page;
+
+@end
 
 @interface PhotoViewController : UIViewController
 @property (nonatomic,strong)NSArray* imgIDArray;
 @property (nonatomic,assign)int indext;
+@property (nonatomic,assign)id<PhotoViewControllerDelegate>delegate;
 - (id)initWithSmallImages:(NSArray*)sImages images:(NSArray*)images indext:(int)indext;
 @end
