@@ -13,6 +13,8 @@
 @property (nonatomic,retain)UIScrollView* sc;
 @property (nonatomic,retain)UIImage* myimage;
 @property (nonatomic,retain)NSArray* smallImageArray;
+@property (nonatomic,retain)UILabel* titleL;
+@property (nonatomic,assign)int page;
 @end
 
 @implementation PhotoViewController
@@ -32,6 +34,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    _sc.delegate = self;
     _sc.backgroundColor = [UIColor blackColor];
     _sc.pagingEnabled=YES;
     _sc.showsHorizontalScrollIndicator=NO;
@@ -42,6 +45,7 @@
     [self.view addSubview:_sc];
     for (int i = 0;i < self.imgIDArray.count;i++) {
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(i*320, 0, 320, _sc.frame.size.height)];
+        subSC.tag = 1000+i;
         EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(110,(_sc.frame.size.height-100)/2 , 100, 100)];
         imageV.placeholderImage = _smallImageArray[i];
         [subSC addSubview:imageV];
@@ -50,19 +54,6 @@
         [act startAnimating];
         [subSC addSubview:act];
         imageV.delegate = self;
-        NSRange range=[self.imgIDArray[i] rangeOfString:@"<local>"];
-        if (range.location!=NSNotFound) {
-            //        self.viewPhoto.image =
-            NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
-            NSString  *openImgPath = [NSString stringWithFormat:@"%@/%@",path,[self.imgIDArray[i] substringFromIndex:7]];
-            NSData * nsData= [NSData dataWithContentsOfFile:openImgPath];
-            UIImage * openPic= [UIImage imageWithData:nsData];
-            imageV.image = openPic;
-            [self imageViewLoadedImage:imageV];
-        }
-        else
-            imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.imgIDArray[i]]];
-//            self.viewPhoto.imageURL = [NSURL URLWithString:url];
         
         subSC.maximumZoomScale = 2.0;
         subSC.bouncesZoom = NO;
@@ -78,8 +69,23 @@
         [imageV addGestureRecognizer:longPress];
         
         [tapOne requireGestureRecognizerToFail:tapTwo];
+        if (self.delegate) {
+            UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
+            [zanB setBackgroundImage:[UIImage imageNamed:@"zanDatu"] forState:UIControlStateNormal];
+            zanB.frame = CGRectMake(150, self.view.frame.size.height - 60, 44, 43);
+            [zanB addTarget:self action:@selector(zanButtinAction) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:zanB];
+            UIImageView* bgView = [[UIImageView alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height - 50, 62, 20)];
+            bgView.image = [UIImage imageNamed:@"like_bg"];
+            [self.view addSubview:bgView];
+            _titleL = [[UILabel alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height - 50, 62, 20)];
+            _titleL.textColor = [UIColor whiteColor];
+            _titleL.textAlignment = NSTextAlignmentCenter;
+            [self.view addSubview:_titleL];
+        }
         
     }
+    [self scrollViewDidEndDecelerating:_sc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,6 +127,15 @@
         [act showInView:longPress.view];
     }
 }
+-(void)zanButtinAction
+{
+    if ([self.delegate respondsToSelector:@selector(zanButtonActionWithPage:)]) {
+        [_delegate zanButtonActionWithPage:self.page];
+    }
+    if ([self.delegate respondsToSelector:@selector(titleLableTextWithPage:)]) {
+        _titleL.text = [_delegate titleLableTextWithPage:self.page];
+    }
+}
 #pragma mark - actionsheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -151,9 +166,35 @@
 }
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
-    CGSize size = ((UIView*)scrollView.subviews[0]).frame.size;
-    if (scrollView.frame.size.height>size.height) {
-        ((UIView*)scrollView.subviews[0]).frame = CGRectMake(0, (scrollView.frame.size.height-size.height)/2, size.width, size.height);
+    if (scrollView!=_sc) {
+        CGSize size = ((UIView*)scrollView.subviews[0]).frame.size;
+        if (scrollView.frame.size.height>size.height) {
+            ((UIView*)scrollView.subviews[0]).frame = CGRectMake(0, (scrollView.frame.size.height-size.height)/2, size.width, size.height);
+        }
+    }
+}
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView == _sc) {
+        float a=scrollView.contentOffset.x;
+        _page=floor((a-320/2)/320)+1;
+        
+        EGOImageView* imageV = (EGOImageView*)[_sc viewWithTag:_page+1000].subviews[0];
+        NSRange range=[self.imgIDArray[_page] rangeOfString:@"<local>"];
+        if (range.location!=NSNotFound) {
+            NSString *path = [RootDocPath stringByAppendingPathComponent:@"tempImage"];
+            NSString  *openImgPath = [NSString stringWithFormat:@"%@/%@",path,[self.imgIDArray[_page] substringFromIndex:7]];
+            NSData * nsData= [NSData dataWithContentsOfFile:openImgPath];
+            UIImage * openPic= [UIImage imageWithData:nsData];
+            imageV.image = openPic;
+            [self imageViewLoadedImage:imageV];
+        }
+        else{
+            imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",self.imgIDArray[_page]]];
+        }
+        if ([self.delegate respondsToSelector:@selector(titleLableTextWithPage:)]) {
+            _titleL.text = [_delegate titleLableTextWithPage:self.page];
+        }
     }
 }
 #pragma mark - EGOImageView delegate
