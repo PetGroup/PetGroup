@@ -9,8 +9,8 @@
 #import "UIImage-Extensions.h"
 #import <Accelerate/Accelerate.h>
 
-CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
-CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
+CGFloat DegreesToRadians2(CGFloat degrees) {return degrees * M_PI / 180;};
+CGFloat RadiansToDegrees2(CGFloat radians) {return radians * 180/M_PI;};
 
 @implementation UIImage (CS_Extensions)
 
@@ -477,14 +477,14 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
 
 - (UIImage *)imageRotatedByRadians:(CGFloat)radians
 {
-	return [self imageRotatedByDegrees:RadiansToDegrees(radians)];
+	return [self imageRotatedByDegrees:RadiansToDegrees2(radians)];
 }
 
 - (UIImage *)imageRotatedByDegrees:(CGFloat)degrees 
 {   
 	// calculate the size of the rotated view's containing box for our drawing space
 	UIView *rotatedViewBox = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.size.width, self.size.height)];
-	CGAffineTransform t = CGAffineTransformMakeRotation(DegreesToRadians(degrees));
+	CGAffineTransform t = CGAffineTransformMakeRotation(DegreesToRadians2(degrees));
 	rotatedViewBox.transform = t;
 	CGSize rotatedSize = rotatedViewBox.frame.size;
 	[rotatedViewBox release];
@@ -497,7 +497,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
 	CGContextTranslateCTM(bitmap, rotatedSize.width/2, rotatedSize.height/2);
 	
 	//   // Rotate the image context
-	CGContextRotateCTM(bitmap, DegreesToRadians(degrees));
+	CGContextRotateCTM(bitmap, DegreesToRadians2(degrees));
 	
 	// Now, draw the rotated/scaled image into the context
 	CGContextScaleCTM(bitmap, 1.0, -1.0);

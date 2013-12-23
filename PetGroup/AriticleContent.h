@@ -11,6 +11,7 @@
 @interface AriticleContent : NSObject
 @property (nonatomic,retain) NSString* articleID;
 @property (nonatomic,retain) NSString* name;
+@property (nonatomic,retain) NSString* contentStr;
 @property (nonatomic,retain) NSAttributedString* content;
 @property (nonatomic,retain) NSString* clientCount;
 @property (nonatomic,retain) NSString* replyCount;//回复数
