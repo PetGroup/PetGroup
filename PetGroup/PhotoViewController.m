@@ -46,11 +46,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    self.sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+    _sc.delegate = self;
+    _sc.backgroundColor = [UIColor blackColor];
+    _sc.pagingEnabled=YES;
+    _sc.showsHorizontalScrollIndicator=NO;
+    _sc.showsVerticalScrollIndicator=NO;
+    _sc.bounces = NO;
+    _sc.contentOffset = CGPointMake(self.indext*320, 0);
+    _sc.contentSize = CGSizeMake(320*self.imgIDArray.count, _sc.frame.size.height);
+    [self.view addSubview:_sc];
     if (self.oneImage) {
         self.view.backgroundColor = [UIColor blackColor];
-        CGSize size = _oneImage.size;
         UIImageView * imageV = [[UIImageView alloc]init];
-        imageV.frame = CGRectMake(0, (self.view.frame.size.height - 320*(size.height/size.width))/2, 320, 320*(size.height/size.width));
+        imageV.frame = CGRectMake(110,(_sc.frame.size.height-100)/2 , 100, 100);
         imageV.image = _oneImage;
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
         subSC.tag = 1000;
@@ -61,7 +71,7 @@
         subSC.maximumZoomScale = 2.0;
         subSC.bouncesZoom = NO;
         subSC.delegate = self;
-        [self.view addSubview:subSC];
+        [_sc addSubview:subSC];
         UITapGestureRecognizer* tapOne = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapOne:)];
         tapOne.numberOfTapsRequired = 1;
         [imageV addGestureRecognizer:tapOne];
@@ -74,17 +84,6 @@
         [tapOne requireGestureRecognizerToFail:tapTwo];
         return;
     }
-	// Do any additional setup after loading the view.
-    self.sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-    _sc.delegate = self;
-    _sc.backgroundColor = [UIColor blackColor];
-    _sc.pagingEnabled=YES;
-    _sc.showsHorizontalScrollIndicator=NO;
-    _sc.showsVerticalScrollIndicator=NO;
-    _sc.bounces = NO;
-    _sc.contentOffset = CGPointMake(self.indext*320, 0);
-    _sc.contentSize = CGSizeMake(320*self.imgIDArray.count, _sc.frame.size.height);
-    [self.view addSubview:_sc];
     for (int i = 0;i < self.imgIDArray.count;i++) {
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(i*320, 0, 320, _sc.frame.size.height)];
         subSC.tag = 1000+i;
@@ -120,7 +119,7 @@
         UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
         [zanB setBackgroundImage:[UIImage imageNamed:@"zanDatu"] forState:UIControlStateNormal];
         zanB.frame = CGRectMake(180, self.view.frame.size.height - 62, 44, 43);
-        [zanB addTarget:self action:@selector(zanButtinAction) forControlEvents:UIControlEventTouchUpInside];
+        [zanB addTarget:self action:@selector(zanButtinAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:zanB];
         
         _titleL = [[UILabel alloc]initWithFrame:CGRectMake(210, self.view.frame.size.height - 50, 52, 20)];
@@ -139,6 +138,24 @@
         _shareView.delegate = self;
     }
     [self scrollViewDidEndDecelerating:_sc];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (_oneImage) {
+        CGSize size = _oneImage.size;
+        float a = 0;
+        if (self.view.frame.size.height > 320*(size.height/size.width)) {
+            a = self.view.frame.size.height - 320*(size.height/size.width);
+        }
+        CGRect rect = CGRectMake(0, a/2, 320, 320*(size.height/size.width));
+        [UIView animateWithDuration:0.3 animations:^{
+            ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).frame = rect;
+        }completion:^(BOOL finished) {
+            if (a) {
+                ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).contentSize = CGSizeMake(320, 320*(size.height/size.width));
+            }
+        }];
+    }
 }
 -(void)shareTheArticle
 {
@@ -183,8 +200,20 @@
         [act showInView:longPress.view];
     }
 }
--(void)zanButtinAction
+-(void)zanButtinAction:(UIButton*)sender
 {
+    sender.enabled = NO;
+    UIImageView * dingShow = [[UIImageView alloc] initWithFrame:CGRectMake(210, self.titleL.frame.origin.y, 50, 25)];
+    [dingShow setImage:[UIImage imageNamed:@"dingShow.png"]];
+    [self.view addSubview:dingShow];
+    [dingShow setAlpha:1];
+    [UIView animateWithDuration:0.5 animations:^{
+        [dingShow setFrame:CGRectMake(dingShow.frame.origin.x-22.5, dingShow.frame.origin.y-25, 100, 50)];
+    } completion:^(BOOL finished) {
+        [dingShow setFrame:CGRectMake(dingShow.frame.origin.x+12.5, dingShow.frame.origin.y+25, 50, 25)];
+        [dingShow removeFromSuperview];
+        sender.enabled = YES;
+    }];
     if ([self.delegate respondsToSelector:@selector(zanButtonActionWithPage:)]) {
         [_delegate zanButtonActionWithPage:self.page];
     }
