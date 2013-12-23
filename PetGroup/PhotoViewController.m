@@ -279,13 +279,14 @@
 -(void)sharePlatformViewPressButtonWithIntage:(NSInteger)integer
 {
     NSString* imageURL = [NSString stringWithFormat:BaseImageUrl"%@",self.imgIDArray[_page]];
+    NSString* editString = @"我在《宠物圈》看到一张有意思的图片分享给你~~~";
     switch (integer) {
         case 1:{
             NSLog(@"新浪");
             EditShareContentViewController* editVC = [[EditShareContentViewController alloc]init];
             editVC.shareStyle = shareStyleSineWeiBo;
-//            editVC.contentString = editString;
-//            editVC.imageUrl = imageURL;
+            editVC.contentString = editString;
+            editVC.imageUrl = imageURL;
             editVC.delegate = _shareView;
             [self presentViewController:editVC animated:YES completion:nil];
         }break;
@@ -293,8 +294,8 @@
             NSLog(@"腾讯");
             EditShareContentViewController* editVC = [[EditShareContentViewController alloc]init];
             editVC.shareStyle = shareStyleTencentWeiBo;
-//            editVC.contentString = editString;
-//            editVC.imageUrl = imageURL;
+            editVC.contentString = editString;
+            editVC.imageUrl = imageURL;
             editVC.delegate = _shareView;
             [self presentViewController:editVC animated:YES completion:nil];
         }break;
