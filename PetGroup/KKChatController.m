@@ -761,7 +761,7 @@
         [cell.maskContentImgV setFrame:CGRectMake(cell.maskContentImgV.frame.origin.x, cell.maskContentImgV.frame.origin.y, cell.maskContentImgV.frame.size.width, maskH-maskH*bytesE)];
         cell.progressLabel.frame = CGRectMake(cell.bgImageView.frame.origin.x, cell.bgImageView.frame.origin.y+cell.bgImageView.frame.size.height/2-10, cell.bgImageView.frame.size.width, 20);
         cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100];
-        NSLog(@"bytes written:%@,FRame:%f",cell.progressLabel.text,maskH*bytesE);
+        NSLog(@"bytes written:%@,FRame:%f.byteE:%f,Height:%f",cell.progressLabel.text,maskH*bytesE,bytesE,maskH);
 //        cell.messageContentView.textAlignment = NSTextAlignmentCenter;
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
