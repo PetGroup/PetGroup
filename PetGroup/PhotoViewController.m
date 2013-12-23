@@ -59,9 +59,8 @@
     [self.view addSubview:_sc];
     if (self.oneImage) {
         self.view.backgroundColor = [UIColor blackColor];
-        CGSize size = _oneImage.size;
         UIImageView * imageV = [[UIImageView alloc]init];
-        imageV.frame = CGRectMake(0, (self.view.frame.size.height - 320*(size.height/size.width))/2, 320, 320*(size.height/size.width));
+        imageV.frame = CGRectMake(110,(_sc.frame.size.height-100)/2 , 100, 100);
         imageV.image = _oneImage;
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
         subSC.tag = 1000;
@@ -139,6 +138,24 @@
         _shareView.delegate = self;
     }
     [self scrollViewDidEndDecelerating:_sc];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (_oneImage) {
+        CGSize size = _oneImage.size;
+        float a = 0;
+        if (self.view.frame.size.height > 320*(size.height/size.width)) {
+            a = self.view.frame.size.height - 320*(size.height/size.width);
+        }
+        CGRect rect = CGRectMake(0, a/2, 320, 320*(size.height/size.width));
+        [UIView animateWithDuration:0.3 animations:^{
+            ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).frame = rect;
+        }completion:^(BOOL finished) {
+            if (a) {
+                ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).contentSize = CGSizeMake(320, 320*(size.height/size.width));
+            }
+        }];
+    }
 }
 -(void)shareTheArticle
 {
