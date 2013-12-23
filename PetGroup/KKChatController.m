@@ -1302,8 +1302,25 @@
         }
         else if ([msgType isEqualToString:@"img"]){
             readyIndex = tempBtn.tag-1;
-            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
-            NSString * audiofileID = audioFile[0];
+            NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            NSString * imgfileID = imgFile[0];
+            NSString * imgfilePath = [NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,imgfileID];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:imgfilePath] == YES){
+//                PhotoViewController * pv = [[PhotoViewController alloc] initWithPath:imgfilePath];
+//                [self.navigationController presentViewController:pv animated:NO completion:^{
+//                    
+//                }];
+            }
+            else
+            {
+//                NSArray * iA = [NSArray arrayWithObject:imgfileID];
+//                PhotoViewController * pv = [[PhotoViewController alloc] initWithSmallImages:nil images:iA indext:0];
+//                [self.navigationController presentViewController:pv animated:NO completion:^{
+//                    
+//                }];
+            }
+
         }
         else
         {
