@@ -52,7 +52,6 @@
         UIImageView * imageV = [[UIImageView alloc]init];
         imageV.frame = CGRectMake(0, (self.view.frame.size.height - 320*(size.height/size.width))/2, 320, 320*(size.height/size.width));
         imageV.image = _oneImage;
-        [self.view addSubview:imageV];
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
         subSC.tag = 1000;
         [subSC addSubview:imageV];
@@ -62,7 +61,7 @@
         subSC.maximumZoomScale = 2.0;
         subSC.bouncesZoom = NO;
         subSC.delegate = self;
-        [_sc addSubview:subSC];
+        [self.view addSubview:subSC];
         UITapGestureRecognizer* tapOne = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapOne:)];
         tapOne.numberOfTapsRequired = 1;
         [imageV addGestureRecognizer:tapOne];
