@@ -32,6 +32,7 @@
 //#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
 #define BaseUploadImageUrl  @"http://123.178.27.74/pet-file-server/put"
 #define BaseImageUrl  @"http://123.178.27.74/pet-file-server/get/"
+#define BaseDomain @"http://123.178.27.74/"
 
 //#define BaseClientUrl @"http://221.122.114.216/pet-hub/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"
