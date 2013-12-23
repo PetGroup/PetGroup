@@ -149,10 +149,10 @@
         }
         CGRect rect = CGRectMake(0, a/2, 320, 320*(size.height/size.width));
         [UIView animateWithDuration:0.3 animations:^{
-            ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).frame = rect;
+            ((UIImageView*)[_sc viewWithTag:1000].subviews[0]).frame = rect;
         }completion:^(BOOL finished) {
-            if (a) {
-                ((UIScrollView*)[_sc viewWithTag:1000].subviews[0]).contentSize = CGSizeMake(320, 320*(size.height/size.width));
+            if (a == 0) {
+                ((UIScrollView*)[_sc viewWithTag:1000]).contentSize = CGSizeMake(320, 320*(size.height/size.width));
             }
         }];
     }
@@ -293,6 +293,10 @@
 //    imageView.frame = CGRectMake(160,_sc.frame.size.height/2,0,0);
     [UIView animateWithDuration:0.3 animations:^{
         imageView.frame = CGRectMake(0, a, 320, 320*size.height/size.width);
+    }completion:^(BOOL finished) {
+        if (a == 0) {
+            ((UIScrollView*)imageView.superview).contentSize = CGSizeMake(320, 320*(size.height/size.width));
+        }
     }];
     [((UIActivityIndicatorView*)imageView.superview.subviews[1]) stopAnimating];
 }
