@@ -754,13 +754,13 @@
     int imgIndex = messages.count-1;
     indexPathTo = [NSIndexPath indexPathForRow:imgIndex inSection:0];
     KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
-    double maskH = cell.maskContentImgV.frame.size.height;
+    float maskH = cell.maskContentImgV.frame.size.height;
     [NetManager chatUploadImage:theImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"a:%d,b:%lld,c:%lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
-        double bytesE = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
+        float bytesE = (float)((double)totalBytesWritten/(double)totalBytesExpectedToWrite);
         [cell.maskContentImgV setFrame:CGRectMake(cell.maskContentImgV.frame.origin.x, cell.maskContentImgV.frame.origin.y, cell.maskContentImgV.frame.size.width, maskH-maskH*bytesE)];
         cell.progressLabel.frame = CGRectMake(cell.bgImageView.frame.origin.x, cell.bgImageView.frame.origin.y+cell.bgImageView.frame.size.height/2-10, cell.bgImageView.frame.size.width, 20);
-        cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100];
+        cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100.0f];
         NSLog(@"bytes written:%@,FRame:%f.byteE:%f,Height:%f",cell.progressLabel.text,maskH*bytesE,bytesE,maskH);
 //        cell.messageContentView.textAlignment = NSTextAlignmentCenter;
         
@@ -1946,7 +1946,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
 //            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //            [succeful show];
-            
+            self.textView.text = @"";
         });
     });
 
@@ -1971,7 +1971,7 @@
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    self.textView.text = @"";
+    
 }
 -(void)finalSendMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
 {
