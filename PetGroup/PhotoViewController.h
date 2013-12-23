@@ -18,5 +18,6 @@
 @property (nonatomic,strong)NSArray* imgIDArray;
 @property (nonatomic,assign)int indext;
 @property (nonatomic,assign)id<PhotoViewControllerDelegate>delegate;
+- (id)initWithPath:(NSString*)path;
 - (id)initWithSmallImages:(NSArray*)sImages images:(NSArray*)images indext:(int)indext;
 @end
