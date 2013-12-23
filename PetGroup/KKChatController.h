@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "XMPPFramework.h"
@@ -20,8 +21,13 @@
 #import "selectContactPage.h"
 #import "OHASBasicHTMLParser.h"
 #import "EmojiView.h"
+typedef  enum
+{
+    actionSheetMore = 0,
+    actionSheetChoosePic
+}ActionSheetStyle;
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -41,8 +47,8 @@
     NSString * currentID;
     UIImageView * inputbg;
     UIButton * senBtn;
-    int previousTime;
-    int touchTimePre;
+    double previousTime;
+    double touchTimePre;
     int touchTimeFinal;
     NSMutableDictionary * userInfoDict;
     NSMutableDictionary * postDict;
@@ -76,6 +82,12 @@
     float diffH;
     
     UIMenuController * menu;
+    
+    BOOL canSendAudio;
+    NSMutableArray * sendingFileArray;
+    
+    NSString * playWhose;
+    NSString * rootChatImgPath;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;
@@ -91,7 +103,8 @@
 @property (strong,nonatomic) HPGrowingTextView *textView;
 @property (assign,nonatomic) id<StoreMsgDelegate> msgDelegate;
 @property (nonatomic,retain) AVAudioSession *session;
-@property (nonatomic,retain) AVAudioRecorder *recorder;
+@property (nonatomic,retain) AVAudioRecorder *audioRecorder;
+@property (assign,nonatomic) ActionSheetStyle actionSheetStyle;
 - (void)sendButton:(id)sender;
 - (void)closeButton:(id)sender;
 @end

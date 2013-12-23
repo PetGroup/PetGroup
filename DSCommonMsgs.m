@@ -18,5 +18,8 @@
 @dynamic msgType;
 @dynamic msgFilesID;
 @dynamic senTime;
+@dynamic status;
+@dynamic msgID;
+@dynamic readed;
 
 @end

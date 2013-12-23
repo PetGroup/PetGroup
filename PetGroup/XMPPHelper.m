@@ -361,6 +361,13 @@
             if ([msgtype isEqualToString:@"normalchat"]||!msgtype) {
                 [dict setObject:@"normalchat" forKey:@"msgType"];
                 [dict setObject:msgTime  forKey:@"time"];
+                NSString * fileType = [[message attributeForName:@"fileType"] stringValue];
+                [dict setObject:fileType?fileType:@"text" forKey:@"fileType"];
+                if (fileType) {
+                    if (![fileType isEqualToString:@"text"]) {
+                        [dict setObject:@"NO" forKey:@"readed"];
+                    }
+                }
                 [self.chatDelegate newMessageReceived:dict];
             }
             else if ([msgtype isEqualToString:@"sayHello"]){

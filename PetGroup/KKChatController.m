@@ -35,7 +35,7 @@
 @synthesize chatWithUser;
 @synthesize nickName;
 @synthesize session;
-@synthesize recorder;
+@synthesize audioRecorder;
 
 
 - (void)loadView
@@ -59,6 +59,9 @@
     touchTimePre = 0;
     uDefault = [NSUserDefaults standardUserDefaults];
     currentID = [uDefault objectForKey:@"account"];
+    canSendAudio = NO;
+    sendingFileArray = [NSMutableArray array];
+    playWhose = @"myself";
 
     
     NSLog(@"wwwwwww:%@",currentID);
@@ -157,7 +160,7 @@
     
     inPutView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, 320, 50)];
     
-	self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 7, 270, 35)];
+	self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(40, 7, 200, 35)];
     self.textView.isScrollable = NO;
     self.textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
@@ -180,7 +183,7 @@
     UIImage *rawEntryBackground = [UIImage imageNamed:@"chat_input.png"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(10, 7, 270, 35);
+    entryImageView.frame = CGRectMake(40, 7, 200, 35);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIImage *rawBackground = [UIImage imageNamed:@"inputbg.png"];
@@ -198,19 +201,19 @@
     [inPutView addSubview:self.textView];
     
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emojiBtn setFrame:CGRectMake(277, inPutView.frame.size.height-12-36, 45, 45)];
+    [emojiBtn setFrame:CGRectMake(237, inPutView.frame.size.height-12-36, 45, 45)];
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     [inPutView addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-  /**************   语音图片等
+
     
     audioBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
+    [audioBtn setFrame:CGRectMake(-2, inPutView.frame.size.height-12-36, 45, 45)];
     [audioBtn setImage:[UIImage imageNamed:@"audioBtn.png"] forState:UIControlStateNormal];
     [inPutView addSubview:audioBtn];
     [audioBtn addTarget:self action:@selector(audioBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+   
     audioRecordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [audioRecordBtn setFrame:CGRectMake(40, inPutView.frame.size.height-42, 200, 35)];
     [audioRecordBtn setBackgroundImage:[UIImage imageNamed:@"yanzhengma_normal.png"] forState:UIControlStateNormal];
@@ -222,20 +225,20 @@
     [audioRecordBtn addTarget:self action:@selector(buttonUp) forControlEvents:UIControlEventTouchUpInside];
     [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchUpOutside];
     [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchCancel];
-    
+  /**************   语音图片等
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     [inPutView addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+      ********/
     picBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
-    [picBtn setImage:[UIImage imageNamed:@"picBtn.png"] forState:UIControlStateNormal];
+    [picBtn setFrame:CGRectMake(275, inPutView.frame.size.height-12-36, 45, 45)];
+    [picBtn setImage:[UIImage imageNamed:@"picBtnsec.png"] forState:UIControlStateNormal];
     [inPutView addSubview:picBtn];
     [picBtn addTarget:self action:@selector(picBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
    
-   ********/
+
     
 //    senBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
@@ -265,15 +268,20 @@
         [self getUserInfoWithUserName:self.chatWithUser];
     }
 //  语音初始化
-//    rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
-//    self.session = [AVAudioSession sharedInstance];
-//    
-//    [self initTwoAudioPlayFrame];
+    rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
+    rootChatImgPath = [RootDocPath stringByAppendingPathComponent:@"chatImg"];
+    self.session = [AVAudioSession sharedInstance];
+    NSError *err = nil;
+    [self.session setCategory :AVAudioSessionCategoryPlayAndRecord error:&err];
+    
+    [self initTwoAudioPlayFrame];
     
     theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:YES];
     theEmojiView.delegate = self;
     [self.view addSubview:theEmojiView];
     theEmojiView.hidden = YES;
+    
+    [self addRecordAnimation];
     
     UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制"action:@selector(copyMsg)];
     UIMenuItem *copyItem2 = [[UIMenuItem alloc] initWithTitle:@"转发"action:@selector(transferMsg)];
@@ -384,7 +392,11 @@
 }
 -(void)picBtnClicked:(UIButton *)sender
 {
-    [self getAudioFromNet:@"A598A1E1C3AE4796AD8FF97028518C9E"];
+//    [self getAudioFromNet:@"A344636A31B2414699376AF299A6B33F"];
+    UIActionSheet* addActionSheet = [[UIActionSheet alloc]initWithTitle:@"选择发送图片方式" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
+    addActionSheet.tag = actionSheetChoosePic;
+    [addActionSheet showInView:self.view];
+    
 }
 -(void)audioRecordBtnClicked:(UIButton *)sender
 {
@@ -407,29 +419,21 @@
         [animationTwo addObject:img];
     }
 }
--(void)buttonDown
+-(void)addRecordAnimation
 {
-    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
-    beginTime = [[NSDate date] timeIntervalSince1970];
-    NSLog(@"recording voice button touchDown");
-    if (audioplayButton == nil) {
-        audioplayButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        audioplayButton.frame=CGRectMake(80, self.view.frame.size.height/2-80, 160, 160);
-        [audioplayButton setImage:[UIImage imageNamed:@"third_xiemessage_record_icon.png"] forState:UIControlStateNormal];
-        [self.view addSubview:audioplayButton];
-        UILabel * textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 130, 160, 20)];
-        [textLabel setBackgroundColor:[UIColor clearColor]];
-        [textLabel setTextAlignment:NSTextAlignmentCenter];
-        [textLabel setTextColor:[UIColor whiteColor]];
-        [textLabel setFont:[UIFont systemFontOfSize:14]];
-        [textLabel setText:@"手指移出按钮取消说话"];
-        [audioplayButton addSubview:textLabel];
-        
-    }
-    if (recordAnimationIV == nil)
-    {
-        recordAnimationIV=[[UIImageView alloc]initWithFrame:CGRectMake(180, self.view.frame.size.height/2-55, 50, 100)];
-    }
+    audioplayButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    audioplayButton.frame=CGRectMake(80, self.view.frame.size.height/2-80, 160, 160);
+    [audioplayButton setImage:[UIImage imageNamed:@"third_xiemessage_record_icon.png"] forState:UIControlStateNormal];
+    [self.view addSubview:audioplayButton];
+    UILabel * textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 130, 160, 20)];
+    [textLabel setBackgroundColor:[UIColor clearColor]];
+    [textLabel setTextAlignment:NSTextAlignmentCenter];
+    [textLabel setTextColor:[UIColor whiteColor]];
+    [textLabel setFont:[UIFont systemFontOfSize:14]];
+    [textLabel setText:@"手指移出按钮取消说话"];
+    [audioplayButton addSubview:textLabel];
+    audioplayButton.hidden = YES;
+    recordAnimationIV=[[UIImageView alloc]initWithFrame:CGRectMake(180, self.view.frame.size.height/2-55, 50, 100)];
     NSMutableArray *arr=[[NSMutableArray alloc]init] ;
     for(int i=1;i<=24;i++){
         NSString *str=nil;
@@ -437,44 +441,61 @@
         UIImage *img=[UIImage imageNamed:str];
         [arr addObject:img];
     }
+
     recordAnimationIV.animationImages=arr;
     recordAnimationIV.animationDuration=1.0;
     recordAnimationIV.animationRepeatCount=0;
-    [recordAnimationIV startAnimating];
+    
+    recordAnimationIV.hidden = YES;
     [self.view addSubview:recordAnimationIV];
+}
+-(void)showRecordAnimation
+{
+    [recordAnimationIV startAnimating];
+    audioplayButton.hidden = NO;
+    recordAnimationIV.hidden = NO;
+}
+-(void)hideRecordAnimation
+{
+    audioplayButton.hidden = YES;
+    recordAnimationIV.hidden = YES;
+    [recordAnimationIV stopAnimating];
+}
+-(void)buttonDown
+{
+    canSendAudio = NO;
+    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
+    beginTime = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"recording voice button touchDown");
+    [self showRecordAnimation];
+    
     [self beginRecord];
     // beginTime =
 }
 -(void)buttonUp
 {
-    [self stopRecording];
+    
     [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
     if(endTime-beginTime>0.5)
     {
-        
+        canSendAudio = YES;
     }
     else
     {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
+        canSendAudio = NO;
     }
-    [recordAnimationIV stopAnimating];
-    [recordAnimationIV removeFromSuperview];
-    recordAnimationIV = nil;
-    [audioplayButton removeFromSuperview];
-    audioplayButton = nil;
+    [self stopRecording];
+    [self hideRecordAnimation];
 
 }
 -(void)buttonCancel:(UIButton *)sender
 {
     [self stopRecording];
     [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
-    [recordAnimationIV stopAnimating];
-    [recordAnimationIV removeFromSuperview];
-    recordAnimationIV = nil;
-    [audioplayButton removeFromSuperview];
-    audioplayButton = nil;
+    [self hideRecordAnimation];
 }
 
 -(void)showEmojiScrollView
@@ -646,17 +667,119 @@
 -(void)moreOperation
 {
     UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"你要做什么" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除聊天记录" otherButtonTitles: nil];
+    action.tag = actionSheetMore;
     [action showInView:self.view];
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==0) {
-        UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除聊天记录么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
-        delAlert.tag = 112;
-        [delAlert show];
+        if (actionSheet.tag==actionSheetMore) {
+            UIAlertView * delAlert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确定要删除聊天记录么，删除了就不可恢复了" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"删除", nil];
+            delAlert.tag = 112;
+            [delAlert show];
+        }
+        else
+        {
+            UIImagePickerController * imagePicker;
+            if (imagePicker==nil) {
+                imagePicker=[[UIImagePickerController alloc]init];
+                imagePicker.delegate=self;
+//                imagePicker.allowsEditing = YES;
+            }
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                imagePicker.sourceType=UIImagePickerControllerSourceTypeCamera;
+                //                    [self presentModalViewController:imagePicker animated:YES];
+                [self presentViewController:imagePicker animated:YES completion:^{
+                    
+                }];
+            }
+            else {
+                UIAlertView *cameraAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相机" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil];
+                [cameraAlert show];
+            }
+
+        }
+
 
     }
+    else if(buttonIndex==1)
+    {
+        if (actionSheet.tag==actionSheetChoosePic) {
+            UIImagePickerController * imagePicker;
+            if (imagePicker==nil) {
+                imagePicker=[[UIImagePickerController alloc]init];
+                imagePicker.delegate=self;
+//                imagePicker.allowsEditing = YES;
+            }
+            if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+                imagePicker.sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+                //                    [self presentModalViewController:imagePicker animated:YES];
+                [self presentViewController:imagePicker animated:YES completion:^{
+                    
+                }];
+            }
+            else {
+                UIAlertView *libraryAlert=[[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"您的设备不支持相册" delegate:self cancelButtonTitle:@"了解" otherButtonTitles:nil];
+                [libraryAlert show];
+            }
+
+        }
+    }
 }
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+    UIImage*selectImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [self sendingImage:selectImage];
+    //修改相册封面，未完待续
+
+}
+-(void)sendingImage:(UIImage *)theImage
+{
+    UIImage * a = [NetManager compressImageDownToPhoneScreenSize:theImage targetSizeX:80 targetSizeY:80];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:rootChatImgPath] == NO)
+    {
+        [fm createDirectoryAtPath:rootChatImgPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString * imageUUID = gen_uuid();
+    NSString * sendingID = [NSString stringWithFormat:@"%@_%f_%f",imageUUID,a.size.width,a.size.height];
+    //            NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID]];
+    //            [data writeToURL:myRecordPath atomically:YES];
+    [UIImageJPEGRepresentation(a, 0.6) writeToFile:[NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,imageUUID] atomically:YES];
+    [UIImageJPEGRepresentation(theImage, 0.6) writeToFile:[NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,imageUUID] atomically:YES];
+
+
+    [self tempSendFileMsgWithFileID:sendingID MsgID:imageUUID FileType:@"img" Status:@"sending"];
+    int imgIndex = messages.count-1;
+    indexPathTo = [NSIndexPath indexPathForRow:imgIndex inSection:0];
+    KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+    double maskH = cell.maskContentImgV.frame.size.height;
+    [NetManager chatUploadImage:theImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"a:%d,b:%lld,c:%lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
+        double bytesE = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
+        [cell.maskContentImgV setFrame:CGRectMake(cell.maskContentImgV.frame.origin.x, cell.maskContentImgV.frame.origin.y, cell.maskContentImgV.frame.size.width, maskH-maskH*bytesE)];
+        cell.progressLabel.frame = CGRectMake(cell.bgImageView.frame.origin.x, cell.bgImageView.frame.origin.y+cell.bgImageView.frame.size.height/2-10, cell.bgImageView.frame.size.width, 20);
+        cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100];
+        NSLog(@"bytes written:%@,FRame:%f",cell.progressLabel.text,maskH*bytesE);
+//        cell.messageContentView.textAlignment = NSTextAlignmentCenter;
+        
+    } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self finalSendMsgWithFileID:[NSString stringWithFormat:@"%@_%f_%f",responseObject,a.size.width,a.size.height] MsgID:imageUUID FileType:@"img"];
+        [UIImageJPEGRepresentation(a, 0.6) writeToFile:[NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,responseObject] atomically:YES];
+        [UIImageJPEGRepresentation(theImage, 0.6) writeToFile:[NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,responseObject] atomically:YES];
+        cell.progressLabel.text = @"";
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self finalMsgFailedSendWithFileID:sendingID MsgID:imageUUID FileType:@"img"];
+        cell.progressLabel.text = @"";
+    }];
+
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:^{}];
+}
+
 -(void)toContactProfile
 {
     PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
@@ -788,9 +911,9 @@
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
     //    [senBtn setFrame:CGRectMake(282, inPutView.frame.size.height-37.5, 28, 27.5)];
-    [picBtn setFrame:CGRectMake(285, inPutView.frame.size.height-12-27, 25, 27)];
-    [emojiBtn setFrame:CGRectMake(277, inPutView.frame.size.height-12-36, 45, 45)];
-    [audioBtn setFrame:CGRectMake(8, inPutView.frame.size.height-12-27, 25, 27)];
+    [picBtn setFrame:CGRectMake(275, inPutView.frame.size.height-12-36, 45, 45)];
+    [emojiBtn setFrame:CGRectMake(237, inPutView.frame.size.height-12-36, 45, 45)];
+    [audioBtn setFrame:CGRectMake(-2, inPutView.frame.size.height-12-36, 45, 45)];
 }
 
 -(BOOL)growingTextViewShouldReturn:(HPGrowingTextView *)growingTextView
@@ -904,6 +1027,7 @@
     NSMutableDictionary *dict = [messages objectAtIndex:indexPath.row];
     NSString *sender = [dict objectForKey:@"sender"];
     NSString *time = [dict objectForKey:@"time"];
+    NSString *msgType = [dict objectForKey:@"fileType"];
     
     cell.messageContentView.attributedText = [self.finalMessageArray objectAtIndex:indexPath.row];
 
@@ -928,14 +1052,97 @@
         [cell.headBtn setFrame:cell.headImgV.frame];
         
         [cell.headBtn addTarget:self action:@selector(myBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.messageContentView setFrame:CGRectMake(320-size.width - padding-15-10-25, padding*2-10, size.width, size.height)];
-        [cell.bgImageView setFrame:CGRectMake(320-size.width - padding-20-10-25, padding*2-15, size.width+20, size.height+10)];
         [cell.bgImageView setBackgroundImage:bgImage forState:UIControlStateNormal];
-        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchBegin:) forControlEvents:UIControlEventTouchDown];
         [cell.bgImageView setTag:(indexPath.row+1)];
-    }else {
+        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchBegin:) forControlEvents:UIControlEventTouchDown];
+        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
         
+        
+        if ([msgType isEqualToString:@"audio"]) {
+            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            int theDuration = [audioFile[1] intValue]+1;
+            int dW = 220*theDuration/60;
+            float theW = dW>45?(float)dW:45.0f;
+            cell.messageContentView.attributedText = nil;
+            [cell.messageContentView setFrame:CGRectMake(320-theW- padding-15-10-25+3, padding*2-9, 40, 30)];
+            cell.messageContentView.text = [NSString stringWithFormat:@"%d'",theDuration];
+//            cell.messageContentView.backgroundColor = [UIColor redColor];
+            [cell.bgImageView setFrame:CGRectMake(320-theW - padding-20-10-25, padding*2-15, theW+20, 35)];
+            [cell.playAudioImageV setFrame:CGRectMake(320-10-40-35, padding*2-9, 20, 20)];
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+            cell.playAudioImageV.hidden = NO;
+            [cell.activityV setFrame:CGRectMake(320-theW - padding-20-10-25-33, padding*2-15+3, 30, 30)];
+            if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
+                
+                [cell.activityV startAnimating];
+            }
+            else if ([[dict objectForKey:@"status"] isEqualToString:@"sended"]){
+                [cell.activityV stopAnimating];
+                
+            }
+            else
+            {
+                [cell.activityV stopAnimating];
+               
+            }
+            cell.ifRead.hidden = YES;
+            cell.contentImgV.hidden = YES;
+            cell.maskContentImgV.hidden = YES;
+            
+        }
+        else if ([msgType isEqualToString:@"img"]){
+            NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            float imgW = [imgFile[1] floatValue];
+            float imgH = [imgFile[2] floatValue];
+            cell.messageContentView.attributedText = nil;
+            [cell.messageContentView setFrame:CGRectMake(320-imgW- padding-15-10-25+3+10, padding*2-9, 40, 30)];
+            [cell.bgImageView setFrame:CGRectMake(320-imgW - padding-20-10-25-10+10, padding*2-15, imgW+20, imgH+10)];
+            cell.contentImgV.hidden = NO;
+            [cell.contentImgV setFrame:CGRectMake(320-imgW - padding-20-10-25-4.5+10, padding*2-15+5, imgW, imgH)];
+            [cell.activityV setFrame:CGRectMake(320-imgW - padding-20-10-25-10-33+10, padding*2-15+3, 30, 30)];
+            if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
+                [cell.activityV startAnimating];
+                cell.maskContentImgV.hidden = NO;
+                cell.maskContentImgV.backgroundColor = [UIColor blackColor];
+                cell.maskContentImgV.alpha = 0.65;
+                cell.maskContentImgV.frame = cell.contentImgV.frame;
+            }
+            else if ([[dict objectForKey:@"status"] isEqualToString:@"sended"]){
+                [cell.activityV stopAnimating];
+                cell.maskContentImgV.hidden = YES;
+            }
+            else
+            {
+                [cell.activityV stopAnimating];
+                cell.maskContentImgV.hidden = NO;
+                cell.maskContentImgV.frame = cell.contentImgV.frame;
+            }
+
+            NSString *path = [NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,imgFile[0]];
+            UIImage * tempImg = [UIImage imageWithContentsOfFile:path];
+            if (tempImg) {
+                [cell.contentImgV setImage:tempImg];
+            }
+            else
+            {
+                cell.contentImgV.backgroundColor = [UIColor lightGrayColor];
+                cell.contentImgV.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@/%d",imgFile[0],[imgFile[1] intValue]]];
+            }
+            cell.playAudioImageV.hidden = YES;
+            cell.ifRead.hidden = YES;
+//            UIImage * hImg = [
+        }
+        else{
+            cell.ifRead.hidden = YES;
+            cell.contentImgV.hidden = YES;
+            [cell.messageContentView setFrame:CGRectMake(320-size.width - padding-15-10-25, padding*2-10, size.width, size.height)];
+            [cell.bgImageView setFrame:CGRectMake(320-size.width - padding-20-10-25, padding*2-15, size.width+20, size.height+10)];
+            cell.playAudioImageV.hidden = YES;
+            cell.maskContentImgV.hidden = YES;
+
+
+        }
+    }else {
         [cell.headImgV setFrame:CGRectMake(10, padding*2-15, 40, 40)];
         [cell.chattoHeadBtn setFrame:cell.headImgV.frame];
         [cell.chattoHeadBtn addTarget:self action:@selector(chatToBtnClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -943,11 +1150,83 @@
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",self.chatUserImg]];
         cell.headImgV.imageURL = theUrl;
         bgImage = [[UIImage imageNamed:@"bubble_01.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
-        [cell.messageContentView setFrame:CGRectMake(padding+5+45, padding*2-5, size.width, size.height)];
-        [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-10, size.width+20, size.height+10)];
         [cell.bgImageView setBackgroundImage:bgImage forState:UIControlStateNormal];
-        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchBegin:) forControlEvents:UIControlEventTouchDown];
         [cell.bgImageView setTag:(indexPath.row+1)];
+        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchBegin:) forControlEvents:UIControlEventTouchDown];
+        [cell.bgImageView addTarget:self action:@selector(offsetButtonTouchEnd:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([msgType isEqualToString:@"audio"]) {
+            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            int theDuration = [audioFile[1] intValue]+1;
+            int dW = 220*theDuration/60;
+            float theW = dW>45?(float)dW:45.0f;
+            cell.messageContentView.attributedText = nil;
+            [cell.messageContentView setFrame:CGRectMake(padding+5+45+theW-20, padding*2-9+3-3, 40, 30)];
+            cell.messageContentView.text = [NSString stringWithFormat:@"%d'",theDuration];
+            
+            [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-10-2-3, theW+20, 35)];
+            [cell.playAudioImageV setFrame:CGRectMake(padding-10+45+10, padding*2-9+3-3, 20, 20)];
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
+            cell.playAudioImageV.hidden = NO;
+            [cell.activityV setFrame:CGRectMake(padding-10+45+theW+5, padding*2-15+3, 30, 30)];
+            [cell.activityV stopAnimating];
+            if ([[dict objectForKey:@"readed"] isEqualToString:@"NO"]) {
+                cell.ifRead.hidden = NO;
+                [cell.ifRead setFrame:CGRectMake(padding-10+45+theW+23, padding*2-10+11, 15, 15)];
+            }
+            else
+            {
+                cell.ifRead.hidden = YES;
+            }
+            cell.contentImgV.hidden = YES;
+            cell.maskContentImgV.hidden = YES;
+
+        }
+        else if ([msgType isEqualToString:@"img"]){
+            NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            float imgW = [imgFile[1] floatValue];
+            float imgH = [imgFile[2] floatValue];
+            cell.messageContentView.attributedText = nil;
+            [cell.messageContentView setFrame:CGRectMake(padding+5+45+imgW-20, padding*2-9, 40, 30)];
+            [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-15, imgW+20, imgH+10)];
+            cell.contentImgV.hidden = NO;
+            [cell.contentImgV setFrame:CGRectMake(padding-10+45+13, padding*2-15+5, imgW, imgH)];
+            [cell.activityV setFrame:CGRectMake(padding-10+45+imgW+10+5, padding*2-15+3, 30, 30)];
+            if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
+                [cell.activityV startAnimating];
+                cell.maskContentImgV.hidden = NO;
+                cell.maskContentImgV.backgroundColor = [UIColor blackColor];
+                cell.maskContentImgV.alpha = 0.65;
+                cell.maskContentImgV.frame = cell.contentImgV.frame;
+            }
+            else if ([[dict objectForKey:@"status"] isEqualToString:@"sended"]){
+                [cell.activityV stopAnimating];
+                cell.maskContentImgV.hidden = YES;
+            }
+            else
+            {
+                [cell.activityV stopAnimating];
+                cell.maskContentImgV.hidden = NO;
+                cell.maskContentImgV.frame = cell.contentImgV.frame;
+            }
+            
+            cell.contentImgV.backgroundColor = [UIColor lightGrayColor];
+            cell.contentImgV.imageURL =[NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@/%d",imgFile[0],[imgFile[1] intValue]]];
+        
+            cell.playAudioImageV.hidden = YES;
+            cell.ifRead.hidden = YES;
+            //            UIImage * hImg = [
+        }
+
+        else{
+            cell.ifRead.hidden = YES;
+            cell.contentImgV.hidden = YES;
+            [cell.messageContentView setFrame:CGRectMake(padding+5+45, padding*2-5-3, size.width, size.height)];
+            [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-10-3, size.width+20, size.height+10)];
+            cell.playAudioImageV.hidden = YES;
+            cell.maskContentImgV.hidden = YES;
+ 
+        }
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
@@ -979,6 +1258,11 @@
     return cell;
     
 }
+-(NSArray *)getFileIDAndSize:(NSString *)msgBody
+{
+    NSArray *fileArray = [msgBody componentsSeparatedByString:@"_"];
+    return fileArray;
+}
 -(void)chatToBtnClicked
 {
     [self toContactProfile];
@@ -999,8 +1283,32 @@
 }
 -(void)offsetButtonTouchEnd:(UIButton *)sender
 {
-    if ([[NSDate date] timeIntervalSince1970]-touchTimePre>1) {
-        
+    if ([[NSDate date] timeIntervalSince1970]-touchTimePre<0.5) {
+        NSMutableDictionary *dict = [messages objectAtIndex:(tempBtn.tag-1)];
+        NSString *msgType = [dict objectForKey:@"fileType"];
+        if ([msgType isEqualToString:@"audio"]) {
+            readyIndex = tempBtn.tag-1;
+            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            NSString * audiofileID = audioFile[0];
+            NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,audiofileID];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:localRecordPath] == NO){
+                [self getAudioFromNet:audiofileID];
+            }
+            else
+                [self playAudioWithAudioID:audiofileID];
+  
+            
+        }
+        else if ([msgType isEqualToString:@"img"]){
+            readyIndex = tempBtn.tag-1;
+            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            NSString * audiofileID = audioFile[0];
+        }
+        else
+        {
+            
+        }
     }
     NSLog(@"end");
 }
@@ -1211,15 +1519,23 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSMutableDictionary *dict  = [messages objectAtIndex:indexPath.row];
-    NSString *msg = [dict objectForKey:@"msg"];
-    
+//    NSString *msg = [dict objectForKey:@"msg"];
+    NSString *msgType = [dict objectForKey:@"fileType"];
 //    CGSize textSize = {260.0-10-30 , 10000.0};
 //    CGSize size = [msg sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:textSize lineBreakMode:UILineBreakModeWordWrap];
  //   NSAttributedString* attrStr = [self.finalMessageArray objectAtIndex:indexPath.row];
 //    CGSize size = [attrStr sizeConstrainedToSize:CGSizeMake(220, CGFLOAT_MAX)];
     float theH = [[[self.HeightArray objectAtIndex:indexPath.row] objectAtIndex:1] floatValue];
+    if ([msgType isEqualToString:@"audio"]) {
+        theH = 35;
+    }
+    else if([msgType isEqualToString:@"img"]){
+        NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+        float imgH = [imgFile[2] floatValue];
+        theH = imgH;
+    }
     theH += padding*2;
-    
+
     CGFloat height = theH < 65 ? 65 : theH;
     
     return height;
@@ -1485,6 +1801,10 @@
 - (BOOL)beginRecord
 {
     NSLog(@"begin record");
+    [self.session setCategory :AVAudioSessionCategoryPlayAndRecord error:nil];
+    [self.session setActive: YES error: nil];
+    UInt32 doChangeDefault = 1;
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefault), &doChangeDefault);
 	NSError *error;
     [recordSetting setObject:
      [NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
@@ -1509,31 +1829,32 @@
     {
         [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audioRecord.caf",path];
+    NSString * audioUUID = gen_uuid();
+    NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",path,audioUUID];
 
 	NSURL *url = [NSURL fileURLWithPath:localRecordPath];
 	
 	// Create recorder
-	self.recorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
-    [recorder recordForDuration:(NSTimeInterval)60];
-    [recorder prepareToRecord];
-	if (!self.recorder)
+	self.audioRecorder = [[AVAudioRecorder alloc] initWithURL:url settings:settings error:&error];
+    [self.audioRecorder recordForDuration:(NSTimeInterval)60];
+    [self.audioRecorder prepareToRecord];
+	if (!self.audioRecorder)
 	{
 		NSLog(@"Error: %@", [error localizedDescription]);
 		return NO;
 	}
 	// Initialize degate, metering, etc.
-	self.recorder.delegate = self;
-	self.recorder.meteringEnabled = YES;
+	self.audioRecorder.delegate = self;
+	self.audioRecorder.meteringEnabled = YES;
 	
-	if (![self.recorder prepareToRecord])
+	if (![self.audioRecorder prepareToRecord])
 	{
 		NSLog(@"Error: Prepare to record failed");
         
 		return NO;
 	}
 	
-	if (![self.recorder record])
+	if (![self.audioRecorder record])
 	{
 		NSLog(@"Error: Record failed");
         
@@ -1545,44 +1866,63 @@
 {
     NSLog(@"stop record");
 	// This causes the didFinishRecording delegate method to fire
-	[self.recorder stop];
+	[self.audioRecorder stop];
 }
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
 
+    if (!canSendAudio) {
+        return;
+    }
     NSLog(@"stop record delegate do");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         #ifdef NotUseSimulator
-//        NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
-        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audioRecord.caf",rootRecordPath];
-        
+////        NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
+//        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audioRecord.caf",rootRecordPath];
+//        
+////        NSURL *url = [NSURL fileURLWithPath:localRecordPath];
+////        NSString *filePath2 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.amr"];
+////        NSString  *localRecordPath2 = [NSString stringWithFormat:@"%@/audioRecord.amr",rootRecordPath];
+//        
 //        NSURL *url = [NSURL fileURLWithPath:localRecordPath];
-//        NSString *filePath2 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.amr"];
-//        NSString  *localRecordPath2 = [NSString stringWithFormat:@"%@/audioRecord.amr",rootRecordPath];
+////        NSURL *url2 = [NSURL fileURLWithPath:localRecordPath2];
         
-        NSURL *url = [NSURL fileURLWithPath:localRecordPath];
-//        NSURL *url2 = [NSURL fileURLWithPath:localRecordPath2];
-        
-        NSData * data = [NSData dataWithContentsOfURL:url];
+        NSData * data = [NSData dataWithContentsOfURL:recorder.url];
         NSLog(@"LENGTH:%d",[data length]);
         NSData * data1 =EncodeWAVEToAMR(data,1,16);
         NSLog(@"LENGTH2:%d",[data1 length]);
 //        [data1 writeToURL:url2 atomically:YES];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:recorder.url options:nil];
+        CMTime time = asset.duration;
+        double durationInSeconds = CMTimeGetSeconds(time);
+        int duration = (int)durationInSeconds;
+        NSString * audioUUID = [[NSString stringWithFormat:@"%@",recorder.url] substringFromIndex:(rootRecordPath.length+1+7)];
+        audioUUID = [audioUUID substringToIndex:(audioUUID.length-4)];
+        [sendingFileArray addObject:[NSString stringWithFormat:@"%@_%d",audioUUID,duration]];
+        NSString * sendingID = [NSString stringWithFormat:@"%@_%d",audioUUID,duration];
+        [self tempSendFileMsgWithFileID:sendingID MsgID:audioUUID FileType:@"audio" Status:@"sending"];
         
-        [NetManager uploadAudioFileData:data1 WithURLStr:BaseUploadImageUrl AudioName:@"recording.amr" TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-            NSDictionary * dict = [receiveStr JSONValue];
-            if ([dict objectForKey:@"success"]) {
-                NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/audio_%@.caf",rootRecordPath,[dict objectForKey:@"entity"]]];
-                [data writeToURL:myRecordPath atomically:YES];
-            }
-            else
-            {
-                NSLog(@"audioUploadError:%@",[dict objectForKey:@"entity"]);
-            }
-            NSLog(@"audioUploaded:%@",receiveStr);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [NetManager uploadAudioFileData:data1 WithURLStr:BaseUploadImageUrl MsgID:audioUUID AudioID:audioUUID  AudioName:@"recording.amr"  TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject, NSString * theAudioID,NSString *msgID) {
+//            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+//            NSDictionary * dict = [receiveStr JSONValue];
+//            if ([dict objectForKey:@"success"]) {
+            NSString * sendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+//            NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID]];
+//            [data writeToURL:myRecordPath atomically:YES];
+            [data writeToFile:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID] atomically:YES];
+            [self finalSendMsgWithFileID:sendedID MsgID:msgID FileType:@"audio"];
+//            }
+//            else
+//            {
+//                NSLog(@"audioUploadError:%@",[dict objectForKey:@"entity"]);
+//            }
+            NSLog(@"audioUploaded:%@",theAudioID);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error, NSString * theAudioID,NSString * msgID) {
+            NSString * notsendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+            [self finalMsgFailedSendWithFileID:notsendedID MsgID:msgID FileType:@"audio"];
             NSLog(@"audioUploadError:%@",error);
+//            self tempSendFileMsgWithID:<#(NSString *)#> FileType:<#(NSString *)#> Status:<#(NSString *)#>
         }];
         #endif
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1594,14 +1934,134 @@
 
 
 }
+-(void)tempSendFileMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType Status:(NSString *)theStatus
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:msgID forKey:@"msgID"];
+    [dictionary setObject:fileID forKey:@"msg"];
+    [dictionary setObject:@"you" forKey:@"sender"];
+    [dictionary setObject:fileType forKey:@"fileType"];
+    [dictionary setObject:theStatus forKey:@"status"];
+    //加入发送时间
+    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    [messages addObject:dictionary];
+    [self normalMsgToFinalMsg];
+    [DataStoreManager storeMyMessage:dictionary];
+    //重新刷新tableView
+    [self.tView reloadData];
+    if (messages.count>0) {
+        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    self.textView.text = @"";
+}
+-(void)finalSendMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
+{
+    NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+    [body setStringValue:fileID];
+    
+    //生成XML消息文档
+    NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+    //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
+    //消息类型
+    [mes addAttributeWithName:@"type" stringValue:@"chat"];
+    
+    //发送给谁
+    [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+    //   NSLog(@"chatWithUser:%@",chatWithUser);
+    //由谁发送
+    [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+    
+    [mes addAttributeWithName:@"msgtype" stringValue:@"normalchat"];
+    [mes addAttributeWithName:@"fileType" stringValue:fileType];  //如果发送图片音频改这里
+    [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+    
+    //    NSLog(@"from:%@",[[NSUserDefaults standardUserDefaults] stringForKey:USERID]);
+    //组合
+    
+    //        NSXMLElement * kind = [NSXMLElement elementWithName:@"kind"];
+    //        [kind setStringValue:@"chat"];
+    [mes addChild:body];
+    //        [mes addChild:kind];
+    
+    //发送消息
+    
+    // [self.appDel.xmppHelper.xmppStream sendElement:mes];
+    if (![self.appDel.xmppHelper sendMessage:mes]) {
+        [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+        //Do something when send failed...
+        return;
+    }
+    
+    
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    [dictionary setObject:msgID forKey:@"msgID"];
+    [dictionary setObject:fileID forKey:@"msg"];
+    [dictionary setObject:@"you" forKey:@"sender"];
+    [dictionary setObject:fileType forKey:@"fileType"];
+    [dictionary setObject:@"sended" forKey:@"status"];
+
+    //加入发送时间
+    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    int uu = 0;
+    for (int i = 0;i<messages.count;i++) {
+        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
+            uu = i;
+            break;
+        }
+    }
+    [messages replaceObjectAtIndex:uu withObject:dictionary];
+    [self normalMsgToFinalMsg];
+    [DataStoreManager storeMyMessage:dictionary];
+    //重新刷新tableView
+    [self.tView reloadData];
+
+
+}
+-(void)finalMsgFailedSendWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    [dictionary setObject:msgID forKey:@"msgID"];
+    [dictionary setObject:@"" forKey:@"msg"];
+    [dictionary setObject:@"you" forKey:@"sender"];
+    [dictionary setObject:fileType forKey:@"fileType"];
+    [dictionary setObject:@"failed" forKey:@"status"];
+    
+    //加入发送时间
+    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    int uu = 0;
+    for (int i = 0;i<messages.count;i++) {
+        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
+            uu = i;
+            break;
+        }
+    }
+    [messages replaceObjectAtIndex:uu withObject:dictionary];
+    [self normalMsgToFinalMsg];
+    [DataStoreManager storeMyMessage:dictionary];
+    //重新刷新tableView
+    [self.tView reloadData];
+
+}
 -(void)getAudioFromNet:(NSString *)audioID
 {
     #ifdef NotUseSimulator
     [NetManager downloadAudioFileWithURL:BaseImageUrl FileName:audioID TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audio_%@.caf",rootRecordPath,audioID];
+        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,audioID];
         NSData *  wavData = DecodeAMRToWAVE(responseObject);
-        [wavData writeToURL:[NSURL URLWithString:localRecordPath] atomically:YES];
-        [self playAudioWithAudioID:audioID];
+        if ([wavData writeToFile:localRecordPath atomically:YES]) {
+            [self playAudioWithAudioID:audioID];
+        }
+        else
+        {
+            NSLog(@"write failed");
+        }
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -1610,16 +2070,58 @@
 }
 -(void)playAudioWithAudioID:(NSString *)audioID
 {
-    NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audio_%@.caf",rootRecordPath,audioID];
+    NSError *err = nil;
+    [self.session setCategory :AVAudioSessionCategoryPlayback error:&err];
+    NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,audioID];
     audioPlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:localRecordPath] error:nil];
-    audioPlayer.delegate = self;
-    audioPlayer.volume=1.0;
-    [audioPlayer prepareToPlay];
-    [audioPlayer play];
+    if (audioPlayer) {
+        audioPlayer.delegate = self;
+        audioPlayer.volume=1.0;
+        [audioPlayer prepareToPlay];
+        [audioPlayer play];
+    }
+    NSDictionary *dictionary = [messages objectAtIndex:readyIndex];
+    NSMutableDictionary * dDict = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    [dDict setObject:@"YES" forKey:@"readed"];
+    [messages replaceObjectAtIndex:readyIndex withObject:dDict];
+    [self normalMsgToFinalMsg];
+    if ([[dDict objectForKey:@"sender"] isEqualToString:@"you"]) {
+        [DataStoreManager storeMyMessage:dDict];
+    }
+    else
+        [DataStoreManager storeNewMsgs:dDict senderType:COMMONUSER];
+    
+    //重新刷新tableView
+    [self.tView reloadData];
+    indexPathTo = [NSIndexPath indexPathForRow:(tempBtn.tag-1) inSection:0];
+    KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+    if ([[dDict objectForKey:@"sender"] isEqualToString:@"you"]) {
+        cell.playAudioImageV.animationImages = animationTwo;
+    }
+    else
+    {
+        cell.playAudioImageV.animationImages = animationOne;
+    }
+    [cell.playAudioImageV startAnimating];
+//    else
+//    {
+//        [self getAudioFromNet:audioID];
+//    }
+
 
 }
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    indexPathTo = [NSIndexPath indexPathForRow:readyIndex inSection:0];
+    KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+    cell.playAudioImageV.animationImages = nil;
+    [cell.playAudioImageV stopAnimating];
+    NSDictionary *dictionary = [messages objectAtIndex:readyIndex];
+    if ([[dictionary objectForKey:@"sender"] isEqualToString:@"you"]) {
+        [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+    }
+    else
+        [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
     NSLog(@"audio play done!");
 }
 

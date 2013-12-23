@@ -199,6 +199,7 @@ static CustomTabBar *customTabBarController;
 
         }
 	}
+    
     self.selectedIndex = self.currentSelectedIndex;
    // [self.view layoutSubviews];
 }

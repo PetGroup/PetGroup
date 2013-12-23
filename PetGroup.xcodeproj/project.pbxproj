@@ -312,6 +312,7 @@
 		9700D3D318505B53003260BC /* newloginBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D118505B53003260BC /* newloginBtn.png */; };
 		9700D3D418505B53003260BC /* newreegBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D218505B53003260BC /* newreegBtn.png */; };
 		9700D3D6185061D5003260BC /* newtypein.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D5185061D5003260BC /* newtypein.png */; };
+		9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9702BCDE18617EF60002A8E5 /* CoreMedia.framework */; };
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		9709821D185873FF00EFAE07 /* bottom_zan_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821B185873FF00EFAE07 /* bottom_zan_normal.png */; };
 		9709821E185873FF00EFAE07 /* bottom_zaned_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821C185873FF00EFAE07 /* bottom_zaned_normal.png */; };
@@ -723,12 +724,14 @@
 		97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2B17E7E67000674321 /* gengduoxinxi.png */; };
 		97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2D17E7F8E400674321 /* shanchu.png */; };
 		97E3AB3017E81FA000674321 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2F17E81FA000674321 /* placeholder.png */; };
+		97E7390D1860334E004F34BA /* picBtnsec.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E7390C1860334E004F34BA /* picBtnsec.png */; };
 		97E9D17A17D596C2003A4A4C /* NormalPetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17917D596C2003A4A4C /* NormalPetDetailViewController.m */; };
 		97E9D17D17D5B517003A4A4C /* HostInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17C17D5B517003A4A4C /* HostInfoCell.m */; };
 		97E9D18017D5C024003A4A4C /* PetProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D17F17D5C024003A4A4C /* PetProfileCell.m */; };
 		97E9D18317D5D4F9003A4A4C /* MyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E9D18217D5D4F9003A4A4C /* MyInfoCell.m */; };
 		97ED57F8185AA99B00CAE5CA /* filterBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 97ED57F7185AA99B00CAE5CA /* filterBtn.png */; };
 		97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6A18338C2100FD6725 /* Default@2x.png */; };
+		97F55D9018605A9C0001FA3C /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F567C8180E84B000A72604 /* AVFoundation.framework */; };
 		97F764B317F817750063A72E /* newfriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F764B217F817750063A72E /* newfriend.png */; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
@@ -1115,6 +1118,7 @@
 		9700D3D118505B53003260BC /* newloginBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newloginBtn.png; sourceTree = "<group>"; };
 		9700D3D218505B53003260BC /* newreegBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newreegBtn.png; sourceTree = "<group>"; };
 		9700D3D5185061D5003260BC /* newtypein.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newtypein.png; sourceTree = "<group>"; };
+		9702BCDE18617EF60002A8E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		9709821B185873FF00EFAE07 /* bottom_zan_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zan_normal.png; sourceTree = "<group>"; };
@@ -1829,6 +1833,7 @@
 		97E49B0017DD7CA7001ECD09 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSUnreadCount.h; sourceTree = "<group>"; };
 		97E6BF3217CC522A00FFD154 /* DSUnreadCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSUnreadCount.m; sourceTree = "<group>"; };
+		97E7390C1860334E004F34BA /* picBtnsec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picBtnsec.png; sourceTree = "<group>"; };
 		97E9D17817D596C1003A4A4C /* NormalPetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NormalPetDetailViewController.h; sourceTree = "<group>"; };
 		97E9D17917D596C2003A4A4C /* NormalPetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NormalPetDetailViewController.m; sourceTree = "<group>"; };
 		97E9D17B17D5B517003A4A4C /* HostInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfoCell.h; sourceTree = "<group>"; };
@@ -1969,6 +1974,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */,
 				72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */,
 				97E25C1317C345D7007E187D /* AssetsLibrary.framework in Frameworks */,
 				97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */,
@@ -3725,6 +3731,7 @@
 		979546B617BA368F00D05874 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9702BCDE18617EF60002A8E5 /* CoreMedia.framework */,
 				72CAD870183C636800B1F927 /* libz.dylib */,
 				9727937D17D9C86F0001E863 /* libicucore.dylib */,
 				9727937B17D9C8630001E863 /* CoreText.framework */,
@@ -4181,6 +4188,7 @@
 		97F8B48B1809135F0082BC2A /* third_xiemessage_record_ani */ = {
 			isa = PBXGroup;
 			children = (
+				97E7390C1860334E004F34BA /* picBtnsec.png */,
 				97F8B4BE180916850082BC2A /* third_xiemessage_record_icon.png */,
 				97F8B48C180913610082BC2A /* third_xiemessage_record_ani1.png */,
 				97F8B48D180913610082BC2A /* third_xiemessage_record_ani10.png */,
@@ -4556,6 +4564,7 @@
 				975B15D61859603D0074B778 /* biaotidd.png in Resources */,
 				970982231858799C00EFAE07 /* xuanzeqita.png in Resources */,
 				970982241858799C00EFAE07 /* xuanzemao.png in Resources */,
+				97E7390D1860334E004F34BA /* picBtnsec.png in Resources */,
 				86D69D0717C703C700FFFBDD /* tanchuanniu_bg.png in Resources */,
 				97BCF0F11834D6B2006B7C0F /* icon-72.png in Resources */,
 				97FB840B18530E1400F5F8F8 /* topBar8.png in Resources */,
@@ -4791,6 +4800,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97F55D9018605A9C0001FA3C /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,

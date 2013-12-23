@@ -304,23 +304,36 @@ NSString * gen_uuid()
 }
 
 
-+(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  id responseObject))success
-                   failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
++(void)uploadAudioFileData:(NSData *)audioData WithURLStr:(NSString *)urlStr MsgID:(NSString *)msgID AudioID:(NSString *)audioID AudioName:(NSString *)audioName TheController:(UIViewController *)controller Success:(void (^)(AFHTTPRequestOperation *operation,  id responseObject, NSString * theAudioID,NSString *theMsgID))success
+                   failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error, NSString * theAudioID,NSString *theMsgID))failure
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-        [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"audio/amr"];
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"amr",@"fileType",nil];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"amr"];
     }];
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (controller) {
-            success(operation,responseObject);
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
+                success(operation,responseObject,[dict objectForKey:@"entity"],msgID);
+//                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                failure(operation,nil,msgID,msgID);
+            }
+
+            
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (controller) {
-            failure(operation,error);
+            failure(operation,error,msgID,msgID);
         }
     }];
     [httpClient enqueueHTTPRequestOperation:operation];
@@ -338,6 +351,42 @@ NSString * gen_uuid()
     }];
     [operation start];;
 }
++(void)chatUploadImage:(UIImage *)uploadImage WithURLStr:(NSString *)urlStr ImageName:(NSString *)imageName TheController:(UIViewController *)controller Progress:(void (^)(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite))block Success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
+    UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:1136];
+    NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
+    //    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage", nil];
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"N",@"addTopImage", nil];
+    NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
+    }];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setUploadProgressBlock:block];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (controller) {
+            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSDictionary * dict = [receiveStr JSONValue];
+            int status = [[dict objectForKey:@"success"] intValue];
+            if (status==1) {
+                success(operation,[dict objectForKey:@"entity"]);
+            }
+            else
+            {
+                failure(operation,nil);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (controller) {
+            failure(operation,error);
+        }
+    }];
+    [httpClient enqueueHTTPRequestOperation:operation];
+}
+
 //图片压缩 两个方法组合
 +(UIImage*)compressImageDownToPhoneScreenSize:(UIImage*)theImage targetSizeX:(CGFloat) sizeX targetSizeY:(CGFloat) sizeY
 {

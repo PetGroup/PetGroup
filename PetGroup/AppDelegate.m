@@ -201,6 +201,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [MagicalRecord cleanUp];
+    NSLog(@"the application was terminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 -(void)reachabilityChanged:(NSNotification*)note

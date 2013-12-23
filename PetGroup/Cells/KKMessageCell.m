@@ -16,6 +16,10 @@
 @synthesize headImgV;
 @synthesize headBtn,chattoHeadBtn;
 @synthesize ifRead,playAudioImageV;
+@synthesize activityV;
+@synthesize contentImgV;
+@synthesize maskContentImgV;
+@synthesize progressLabel;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -65,14 +69,43 @@
         [self.contentView addSubview:messageContentView];
         NSLog(@"fffff%f",self.frame.size.height);
         
-//        self.ifRead = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
-//        [ifRead setImage:[UIImage imageNamed:@"redpot.png"]];
-//        [self.contentView addSubview:self.ifRead];
+        self.ifRead = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        [ifRead setImage:[UIImage imageNamed:@"redpot.png"]];
+        [self.contentView addSubview:self.ifRead];
+        
+ 
+        
         
         self.playAudioImageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         self.playAudioImageV.animationDuration=1.0;
         self.playAudioImageV.animationRepeatCount=0;
         [self.contentView addSubview:self.playAudioImageV];
+        
+        self.contentImgV = [[EGOImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        self.contentImgV.layer.cornerRadius = 5;
+        self.contentImgV.layer.masksToBounds = YES;
+        [self.contentView addSubview:self.contentImgV];
+        self.contentImgV.hidden = YES;
+        
+        self.maskContentImgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [self.contentView addSubview:self.maskContentImgV];
+        self.maskContentImgV.hidden = YES;
+        self.maskContentImgV.backgroundColor = [UIColor blackColor];
+        self.maskContentImgV.alpha = 0.65;
+        
+        self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 300, 20)];
+        //居中显示
+        self.progressLabel.backgroundColor = [UIColor clearColor];
+        self.progressLabel.textAlignment = NSTextAlignmentCenter;
+//        self.progressLabel.font = [UIFont systemFontOfSize:11.0];
+        //文字颜色
+        self.progressLabel.shadowColor = [UIColor blackColor];
+        self.progressLabel.textColor = [UIColor whiteColor];
+        [self.contentView addSubview:self.progressLabel];
+        
+        self.activityV = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.activityV setFrame:CGRectMake(0, 0, 30, 30)];
+        [self.contentView addSubview:self.activityV];
         
         
     }

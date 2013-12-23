@@ -22,9 +22,23 @@
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype
 {
     NSRange range = [[msg objectForKey:@"sender"] rangeOfString:@"@"];
-    NSString * sender = [[msg objectForKey:@"sender"] substringToIndex:range.location];
+    NSString * sender;
+    if (range.location!=NSNotFound) {
+        sender = [[msg objectForKey:@"sender"] substringToIndex:range.location];
+    }
+    else
+        sender = [msg objectForKey:@"sender"];
+    NSRange range2 = [[msg objectForKey:@"receiver"] rangeOfString:@"@"];
+    NSString * receiver;
+    if (range2.location!=NSNotFound) {
+        receiver = [[msg objectForKey:@"receiver"] substringToIndex:range2.location];
+    }
+    else
+        receiver = [msg objectForKey:@"receiver"];
+//    NSString * receiver = [msg objectForKey:@"receiver"];
     NSString * senderNickname = [msg objectForKey:@"nickname"];
     NSString * msgContent = [msg objectForKey:@"msg"];
+    NSString * fileType = [msg objectForKey:@"fileType"]?[msg objectForKey:@"fileType"]:@"text";
     NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[[msg objectForKey:@"time"] doubleValue]];
 //    NSString * receiver;
 //    if ([msg objectForKey:@"receicer"]) {
@@ -35,12 +49,34 @@
     //普通用户消息存储到DSCommonMsgs和DSThumbMsgs两个表里
     if ([sendertype isEqualToString:COMMONUSER]) {
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
-            DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
-            commonMsg.sender = sender;
-            commonMsg.senderNickname = senderNickname?senderNickname:@"";
-            commonMsg.msgContent = msgContent?msgContent:@"";
-            commonMsg.senTime = sendTime;
-            
+            if ([fileType isEqualToString:@"audio"]||[fileType isEqualToString:@"img"]) {
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"msgContent==[c]%@",msgContent];
+                
+                DSCommonMsgs * commonMsg = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
+                if (!commonMsg)
+                    commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+//                commonMsg.msgID = msgID;
+                commonMsg.readed = [msg objectForKey:@"readed"]?[msg objectForKey:@"readed"]:@"NO";
+                commonMsg.msgType = fileType;
+                commonMsg.sender = sender;
+//                commonMsg.status = theStatus;
+                commonMsg.senderNickname = senderNickname?senderNickname:@"";
+                commonMsg.msgContent = msgContent?msgContent:@"";
+                commonMsg.senTime = sendTime;
+                commonMsg.receiver = receiver;
+                
+                
+            }
+            else{
+                DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+                commonMsg.readed = @"YES";
+                commonMsg.sender = sender;
+                commonMsg.msgType = fileType;
+                commonMsg.senderNickname = senderNickname?senderNickname:@"";
+                commonMsg.msgContent = msgContent?msgContent:@"";
+                commonMsg.senTime = sendTime;
+                commonMsg.receiver = receiver;
+            }
 
             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
             
@@ -49,7 +85,14 @@
                 thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];    
             thumbMsgs.sender = sender;
             thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
-            thumbMsgs.msgContent = msgContent;
+            if ([fileType isEqualToString:@"audio"]) {
+                thumbMsgs.msgContent = @"[语音]";
+            }
+            else if ([fileType isEqualToString:@"img"]){
+                thumbMsgs.msgContent = @"[图片]";
+            }
+            else
+                thumbMsgs.msgContent = msgContent;
             thumbMsgs.sendTime = sendTime;
             thumbMsgs.senderType = sendertype;
             int unread = [thumbMsgs.unRead intValue];
@@ -93,14 +136,37 @@
     NSString * sender = [message objectForKey:@"sender"];
     NSString * senderNickname = [message objectForKey:@"nickname"];
     NSString * msgContent = [message objectForKey:@"msg"];
+    NSString * fileType = [message objectForKey:@"fileType"]?[message objectForKey:@"fileType"]:@"text";
+    NSString * msgID = [message objectForKey:@"msgID"]?[message objectForKey:@"msgID"]:@"1";
+    NSString * theStatus = [message objectForKey:@"status"]?[message objectForKey:@"status"]:@"sended";
     NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[[message objectForKey:@"time"] doubleValue]];
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
-        DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
-        commonMsg.sender = sender;
-        commonMsg.senderNickname = senderNickname?senderNickname:@"";
-        commonMsg.msgContent = msgContent?msgContent:@"";
-        commonMsg.senTime = sendTime;
-        commonMsg.receiver = receicer;
+        if ([fileType isEqualToString:@"audio"]||[fileType isEqualToString:@"img"]) {
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"msgID==[c]%@",msgID];
+            
+            DSCommonMsgs * commonMsg = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
+            if (!commonMsg)
+                commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+            commonMsg.msgID = msgID;
+            commonMsg.readed = @"YES";
+            commonMsg.msgType = fileType;
+            commonMsg.sender = sender;
+            commonMsg.status = theStatus;
+            commonMsg.senderNickname = senderNickname?senderNickname:@"";
+            commonMsg.msgContent = msgContent?msgContent:@"";
+            commonMsg.senTime = sendTime;
+            commonMsg.receiver = receicer;
+
+
+        }
+        else{
+            DSCommonMsgs * commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+            commonMsg.sender = sender;
+            commonMsg.senderNickname = senderNickname?senderNickname:@"";
+            commonMsg.msgContent = msgContent?msgContent:@"";
+            commonMsg.senTime = sendTime;
+            commonMsg.receiver = receicer;
+        }
         
         
         NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",receicer];
@@ -110,7 +176,14 @@
             thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
         thumbMsgs.sender = receicer;
         thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
-        thumbMsgs.msgContent = msgContent;
+        if ([fileType isEqualToString:@"audio"]) {
+            thumbMsgs.msgContent = @"[语音]";
+        }
+        else if ([fileType isEqualToString:@"img"]){
+            thumbMsgs.msgContent = @"[图片]";
+        }
+        else
+            thumbMsgs.msgContent = msgContent;
         thumbMsgs.sendTime = sendTime;
         thumbMsgs.senderType = COMMONUSER;
         int unread = [thumbMsgs.unRead intValue];
@@ -173,8 +246,13 @@
     for (int i = (commonMsgsArray.count>20?(commonMsgsArray.count-20):0); i<commonMsgsArray.count; i++) {
         NSMutableDictionary * thumbMsgsDict = [NSMutableDictionary dictionary];
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] sender] forKey:@"sender"];
+        [thumbMsgsDict setObject:username forKey:@"receiver"];
+        [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] readed]?[[commonMsgsArray objectAtIndex:i] readed]:@"YES" forKey:@"readed"];
         //        [thumbMsgsDict setObject:[[thumbCommonMsgsArray objectAtIndex:i] senderNickname] forKey:@"nickname"];
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] msgContent] forKey:@"msg"];
+        [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] msgType]?[[commonMsgsArray objectAtIndex:i] msgType]:@"text" forKey:@"fileType"];
+        [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] msgID]?[[commonMsgsArray objectAtIndex:i] msgID]:@"1" forKey:@"msgID"];
+        [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] status]?[[commonMsgsArray objectAtIndex:i] status]:@"1" forKey:@"status"];
         NSDate * tt = [[commonMsgsArray objectAtIndex:i] senTime];
         NSTimeInterval uu = [tt timeIntervalSince1970];
         [thumbMsgsDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];

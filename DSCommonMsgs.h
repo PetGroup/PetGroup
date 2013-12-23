@@ -18,6 +18,9 @@
 @property (nonatomic, retain) NSString * msgContent;
 @property (nonatomic, retain) NSString * msgType;
 @property (nonatomic, retain) NSString * msgFilesID;
+@property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSString * msgID;
+@property (nonatomic, retain) NSString * readed;
 @property (nonatomic, retain) NSDate * senTime;
 
 @end
