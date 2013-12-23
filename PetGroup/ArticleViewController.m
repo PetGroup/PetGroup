@@ -18,7 +18,10 @@
 #import "SomeOneDynamicViewController.h"
 #import "HostInfo.h"
 #import "PersonDetailViewController.h"
-@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,OwenrCellDelegate,followerCellDelegate,EditReplyViewDelegate>
+#import "sharePlatformView.h"
+#import <ShareSDK/ShareSDK.h>
+#import "EditShareContentViewController.h"
+@interface ArticleViewController ()<UITableViewDataSource,UITableViewDelegate,OwenrCellDelegate,followerCellDelegate,EditReplyViewDelegate,sharePlatformViewDelegate>
 {
     UIButton * nextB;
     UIButton* showB ;
@@ -33,6 +36,7 @@
 @property (nonatomic,retain)UIView* pageV;
 @property (nonatomic,retain)UIView* reportV;
 @property (nonatomic,assign)int row;
+@property (nonatomic,retain)sharePlatformView * shareView;
 @end
 
 @implementation ArticleViewController
@@ -73,11 +77,7 @@
     nextB.frame = CGRectMake(235, 1+diffH, 80, 44);
     [nextB setTitle:@"只看楼主" forState:UIControlStateNormal];
     nextB.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-//    if (diffH==0) {
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-//        
-//    }
+
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
@@ -107,6 +107,14 @@
     [showB addTarget:self action:@selector(changePageView) forControlEvents:UIControlEventTouchUpInside];
     showB.userInteractionEnabled = NO;
     [bottomIV addSubview:showB];
+    
+    UIButton* shareB = [UIButton buttonWithType:UIButtonTypeCustom];
+    [shareB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//    [shareB setBackgroundImage:[UIImage imageNamed:@"pageChange"] forState:UIControlStateNormal];
+    [shareB setTitle:@"分享" forState:UIControlStateNormal];
+    shareB.frame = CGRectMake(70, 4.5, 50, 40);
+    [shareB addTarget:self action:@selector(shareTheArticle) forControlEvents:UIControlEventTouchUpInside];
+    [bottomIV addSubview:shareB];
     
     UIButton* replyB = [UIButton  buttonWithType:UIButtonTypeCustom];
     [replyB setBackgroundImage:[UIImage imageNamed:@"replyBottom_03"] forState:UIControlStateNormal];
@@ -149,15 +157,18 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+    self.shareView = [[sharePlatformView alloc]initWithView:self];
+    _shareView.delegate = self;
 }
-//-(void)
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-//    self.tableV = nil;
-    // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)shareTheArticle
+{
+    [_shareView showSharePlatformView];
+}
 -(void)cancelRepotr
 {
     [self.reportV removeFromSuperview];
@@ -190,6 +201,7 @@
     }];
     self.row = 0;
     [self cancelRepotr];
+    
 }
 -(void)next
 {
@@ -733,6 +745,250 @@
         }];
     }
     [self reloadData];
+}
+#pragma mark - sharePlatformView Delegate
+-(void)sharePlatformViewPressButtonWithIntage:(NSInteger)integer
+{
+    NSString* editString = nil;
+    if (integer == 1 || integer == 2 ||integer == 5 ||integer == 6) {
+        editString = [NSString stringWithFormat:@"我在宠物圈看见一篇有意思的帖子《%@》,你也来看看吧~~~%@share/pet_bbs/%@.html",self.ariticle.name,BaseDomain,self.ariticle.articleID];
+    }
+    NSString* contentText = [self getContentString];
+    NSString* imageURL = [self getFirstImageUrl];
+    
+    switch (integer) {
+        case 1:{
+            NSLog(@"新浪");
+            EditShareContentViewController* editVC = [[EditShareContentViewController alloc]init];
+            editVC.shareStyle = shareStyleSineWeiBo;
+            editVC.contentString = editString;
+            editVC.imageUrl = imageURL;
+            editVC.delegate = _shareView;
+            [self presentViewController:editVC animated:YES completion:nil];
+        }break;
+        case 2:{
+            NSLog(@"腾讯");
+            EditShareContentViewController* editVC = [[EditShareContentViewController alloc]init];
+            editVC.shareStyle = shareStyleTencentWeiBo;
+            editVC.contentString = editString;
+            editVC.imageUrl = imageURL;
+            editVC.delegate = _shareView;
+            [self presentViewController:editVC animated:YES completion:nil];
+        }break;
+        case 3:{
+            NSLog(@"朋友圈");
+            id<ISSContent> content = [ShareSDK content:contentText
+                                        defaultContent:nil
+                                                 image:imageURL?[ShareSDK imageWithUrl:imageURL]:nil
+                                                 title:[NSString stringWithFormat:@"《%@》",self.ariticle.name]
+                                                   url:[NSString stringWithFormat:@"%@share/pet_bbs/%@.html",BaseDomain,self.ariticle.articleID]
+                                           description:nil
+                                             mediaType:SSPublishContentMediaTypeNews];
+            
+            id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                                 allowCallback:YES
+                                                                 authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                                  viewDelegate:nil
+                                                       authManagerViewDelegate:nil];
+            
+            //在授权页面中添加关注官方微博
+            [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                                            nil]];
+            
+            [ShareSDK shareContent:content
+                              type:ShareTypeWeixiTimeline
+                       authOptions:authOptions
+                     statusBarTips:YES
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSPublishContentStateSuccess)
+                                {
+                                    [_shareView canclesharePlatformView];
+                                }
+                                else if (state == SSPublishContentStateFail)
+                                {
+                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                        message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
+                                                                                       delegate:nil
+                                                                              cancelButtonTitle:@"知道了"
+                                                                              otherButtonTitles:nil];
+                                    [alertView show];
+                                }
+                            }];
+        }break;
+        case 4:{
+            NSLog(@"微信好友");
+            id<ISSContent> content = [ShareSDK content:contentText
+                                        defaultContent:nil
+                                                 image:imageURL?[ShareSDK imageWithUrl:imageURL]:nil
+                                                 title:[NSString stringWithFormat:@"《%@》",self.ariticle.name]
+                                                   url:[NSString stringWithFormat:@"%@share/pet_bbs/%@.html",BaseDomain,self.ariticle.articleID]
+                                           description:nil
+                                             mediaType:SSPublishContentMediaTypeNews];
+            
+            id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                                 allowCallback:YES
+                                                                 authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                                  viewDelegate:nil
+                                                       authManagerViewDelegate:nil];
+            
+            //在授权页面中添加关注官方微博
+            [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                                            nil]];
+            
+            [ShareSDK shareContent:content
+                              type:ShareTypeWeixiSession
+                       authOptions:authOptions
+                     statusBarTips:YES
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSPublishContentStateSuccess)
+                                {
+                                    [_shareView canclesharePlatformView];
+                                }
+                                else if (state == SSPublishContentStateFail)
+                                {
+                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                        message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
+                                                                                       delegate:nil
+                                                                              cancelButtonTitle:@"知道了"
+                                                                              otherButtonTitles:nil];
+                                    [alertView show];
+                                }
+                            }];
+        }break;
+        case 5:{
+            NSLog(@"qq空间");
+            id<ISSContent> content = [ShareSDK content:contentText
+                                        defaultContent:nil
+                                                 image:imageURL?[ShareSDK imageWithUrl:imageURL]:nil
+                                                 title:[NSString stringWithFormat:@"《%@》",self.ariticle.name]
+                                                   url:[NSString stringWithFormat:@"%@share/pet_bbs/%@.html",BaseDomain,self.ariticle.articleID]
+                                           description:nil
+                                             mediaType:SSPublishContentMediaTypeNews];
+            
+            id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                                 allowCallback:YES
+                                                                 authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                                  viewDelegate:nil
+                                                       authManagerViewDelegate:nil];
+            
+            //在授权页面中添加关注官方微博
+            [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                                            nil]];
+            
+            [ShareSDK shareContent:content
+                              type:ShareTypeQQ
+                       authOptions:authOptions
+                     statusBarTips:YES
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSPublishContentStateSuccess)
+                                {
+                                    [_shareView canclesharePlatformView];
+                                }
+                                else if (state == SSPublishContentStateFail)
+                                {
+                                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                        message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
+                                                                                       delegate:nil
+                                                                              cancelButtonTitle:@"知道了"
+                                                                              otherButtonTitles:nil];
+                                    [alertView show];
+                                }
+                            }];
+        }break;
+        case 6:{
+            NSLog(@"短信");
+            //创建分享内容
+            id<ISSContent> publishContent = [ShareSDK content:editString
+                                               defaultContent:@""
+                                                        image:nil
+                                                        title:nil
+                                                          url:nil
+                                                  description:nil
+                                                    mediaType:SSPublishContentMediaTypeText];
+            
+            
+            id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES
+                                                                 allowCallback:YES
+                                                                 authViewStyle:SSAuthViewStyleFullScreenPopup
+                                                                  viewDelegate:nil
+                                                       authManagerViewDelegate:nil];
+            
+            //在授权页面中添加关注官方微博
+            [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
+                                            nil]];
+            
+            //显示分享菜单
+            [ShareSDK showShareViewWithType:ShareTypeSMS
+                                  container:nil
+                                    content:publishContent
+                              statusBarTips:YES
+                                authOptions:authOptions
+                               shareOptions:[ShareSDK defaultShareOptionsWithTitle:nil
+                                                                   oneKeyShareList:[NSArray defaultOneKeyShareList]
+                                                                    qqButtonHidden:NO
+                                                             wxSessionButtonHidden:NO
+                                                            wxTimelineButtonHidden:NO
+                                                              showKeyboardOnAppear:NO
+                                                                 shareViewDelegate:nil
+                                                               friendsViewDelegate:nil
+                                                             picViewerViewDelegate:nil]
+                                     result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                         
+                                         if (state == SSPublishContentStateSuccess)
+                                         {
+                                             [_shareView canclesharePlatformView];
+                                         }
+                                         else if (state == SSPublishContentStateFail)
+                                         {
+                                             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                                 message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
+                                                                                                delegate:nil
+                                                                                       cancelButtonTitle:@"知道了"
+                                                                                       otherButtonTitles:nil];
+                                             [alertView show];
+                                         }
+                                     }];
+        }break;
+        default:
+            break;
+    }
+
+}
+-(NSString*)getContentString
+{
+    unichar attachmentCharacter = 0xfffc;
+    NSString* contentStr = [[[NSString stringWithString:self.ariticle.content.string] stringByReplacingOccurrencesOfString:@" "withString:@""] stringByReplacingOccurrencesOfString:[NSString stringWithCharacters:&attachmentCharacter length:1] withString:@""];
+    return contentStr;
+}
+-(NSString*)getFirstImageUrl
+{
+    NSString* imageUrl = nil;
+    NSScanner * scanner = [NSScanner scannerWithString:self.ariticle.contentStr];
+    NSString * text = nil;
+    [scanner scanUpToString:@"http://" intoString:nil];
+    [scanner scanUpToString:@"\">" intoString:&text];
+    imageUrl = text;
+//    NSLog(@"++%@==",text);
+    return imageUrl;
 }
 
 @end

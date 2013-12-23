@@ -8,16 +8,30 @@
 
 #import "PhotoViewController.h"
 #import "EGOImageView.h"
+#import "sharePlatformView.h"
+#import <ShareSDK/ShareSDK.h>
+#import "EditShareContentViewController.h"
 
-@interface PhotoViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,EGOImageViewDelegate>
+@interface PhotoViewController ()<UIScrollViewDelegate,UIActionSheetDelegate,EGOImageViewDelegate,sharePlatformViewDelegate>
+@property (nonatomic,retain)UIImage* oneImage;
 @property (nonatomic,retain)UIScrollView* sc;
 @property (nonatomic,retain)UIImage* myimage;
 @property (nonatomic,retain)NSArray* smallImageArray;
 @property (nonatomic,retain)UILabel* titleL;
 @property (nonatomic,assign)int page;
+@property (nonatomic,retain)sharePlatformView * shareView;
 @end
 
 @implementation PhotoViewController
+- (id)initWithPath:(NSString*)path
+{
+    if (self = [super init]) {
+        NSData* data = [NSData dataWithContentsOfFile:path];
+        UIImage *image = [[UIImage alloc] initWithData:data];
+        self.oneImage = image;
+    }
+    return self;
+}
 - (id)initWithSmallImages:(NSArray*)sImages images:(NSArray*)images indext:(int)indext
 {
     self = [super init];
@@ -32,6 +46,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (self.oneImage) {
+        CGSize size = _oneImage.size;
+        UIImageView * imageV = [[UIImageView alloc]init];
+        imageV.frame = CGRectMake(0, (self.view.frame.size.height-size.height)/2, 320, size.height/size.width);
+        imageV.image = _oneImage;
+        [self.view addSubview:imageV];
+        return;
+    }
 	// Do any additional setup after loading the view.
     self.sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     _sc.delegate = self;
@@ -69,25 +91,39 @@
         [imageV addGestureRecognizer:longPress];
         
         [tapOne requireGestureRecognizerToFail:tapTwo];
-        if (self.delegate) {
-            UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
-            [zanB setBackgroundImage:[UIImage imageNamed:@"zanDatu"] forState:UIControlStateNormal];
-            zanB.frame = CGRectMake(150, self.view.frame.size.height - 60, 44, 43);
-            [zanB addTarget:self action:@selector(zanButtinAction) forControlEvents:UIControlEventTouchUpInside];
-            [self.view addSubview:zanB];
-            UIImageView* bgView = [[UIImageView alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height - 50, 62, 20)];
-            bgView.image = [UIImage imageNamed:@"like_bg"];
-            [self.view addSubview:bgView];
-            _titleL = [[UILabel alloc]initWithFrame:CGRectMake(200, self.view.frame.size.height - 50, 62, 20)];
-            _titleL.textColor = [UIColor whiteColor];
-            _titleL.textAlignment = NSTextAlignmentCenter;
-            [self.view addSubview:_titleL];
-        }
+    }
+    if (self.delegate) {
+        UIImageView* bgView = [[UIImageView alloc]initWithFrame:CGRectMake(187, self.view.frame.size.height - 53, 75, 26)];
+        bgView.image = [UIImage imageNamed:@"like_bg"];
+        [self.view addSubview:bgView];
         
+        UIButton * zanB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [zanB setBackgroundImage:[UIImage imageNamed:@"zanDatu"] forState:UIControlStateNormal];
+        zanB.frame = CGRectMake(180, self.view.frame.size.height - 62, 44, 43);
+        [zanB addTarget:self action:@selector(zanButtinAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:zanB];
+        
+        _titleL = [[UILabel alloc]initWithFrame:CGRectMake(210, self.view.frame.size.height - 50, 52, 20)];
+        _titleL.textColor = [UIColor whiteColor];
+        _titleL.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:_titleL];
+        
+        UIButton* shareB = [UIButton buttonWithType:UIButtonTypeCustom];
+        [shareB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [shareB setTitle:@"分享" forState:UIControlStateNormal];
+        shareB.frame = CGRectMake(120, self.view.frame.size.height - 53, 75, 26);
+        [shareB addTarget:self action:@selector(shareTheArticle) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:shareB];
+        
+        self.shareView = [[sharePlatformView alloc]initWithView:self];
+        _shareView.delegate = self;
     }
     [self scrollViewDidEndDecelerating:_sc];
 }
-
+-(void)shareTheArticle
+{
+    [_shareView showSharePlatformView];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -218,5 +254,10 @@
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"图片加载失败" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
     }];
+}
+#pragma mark - sharePlatformView Delegate
+-(void)sharePlatformViewPressButtonWithIntage:(NSInteger)integer
+{
+    
 }
 @end

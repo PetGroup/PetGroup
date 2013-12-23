@@ -48,7 +48,7 @@
 ////#define BaseUploadImageUrl @"http://123.178.27.74/pet/client/upload"
 //#define BaseUploadImageUrl  @"http://www.52pet.net/pet-file-server/put"
 //#define BaseImageUrl  @"http://www.52pet.net/pet-file-server/get/"
-
+//#define BaseDomain @"http://www.52pet.net/"
 
 //#define BaseClientUrl @"http://www.52pet.net/pet/client/request"
 ////#define BaseClientUrl @"http://192.168.2.118/pet/client/request"

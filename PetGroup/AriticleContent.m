@@ -16,6 +16,7 @@
         self.articleID = [info objectForKey:@"id"];
         self.name = [info objectForKey:@"name"];
         self.content = [AriticleContent _attributedStringForSnippetUsingiOS6Attributes:NO String:[info objectForKey:@"content"]];
+        self.contentStr = [info objectForKey:@"content"];
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
         self.cTotalReply = [NSString stringWithFormat:@"%d",[[info objectForKey:@"cTotalReply"] integerValue]];
