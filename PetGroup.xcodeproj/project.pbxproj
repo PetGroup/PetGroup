@@ -363,6 +363,7 @@
 		9723DECB1868133500B8BF44 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9723DEBA1868133400B8BF44 /* libWeChatSDK.a */; };
 		9723DECC1868133500B8BF44 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9723DEBD1868133400B8BF44 /* ShareSDK.framework */; };
 		9723DECD186813EF00B8BF44 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937D17D9C86F0001E863 /* libicucore.dylib */; };
+		9723DECE1868249400B8BF44 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937C17D9C8630001E863 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937B17D9C8630001E863 /* CoreText.framework */; };
 		972AEF2817F017E00010070B /* biaoqianNearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 972AEF2717F017E00010070B /* biaoqianNearby.png */; };
@@ -4998,6 +4999,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9723DECE1868249400B8BF44 /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,

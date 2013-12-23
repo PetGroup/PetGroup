@@ -1227,6 +1227,7 @@
             cell.maskContentImgV.hidden = YES;
  
         }
+        cell.maskContentImgV.hidden = YES;
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
@@ -1307,18 +1308,18 @@
             NSString * imgfilePath = [NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,imgfileID];
             NSFileManager *fm = [NSFileManager defaultManager];
             if([fm fileExistsAtPath:imgfilePath] == YES){
-//                PhotoViewController * pv = [[PhotoViewController alloc] initWithPath:imgfilePath];
-//                [self.navigationController presentViewController:pv animated:NO completion:^{
-//                    
-//                }];
+                PhotoViewController * pv = [[PhotoViewController alloc] initWithPath:imgfilePath];
+                [self.navigationController presentViewController:pv animated:NO completion:^{
+                    
+                }];
             }
             else
             {
-//                NSArray * iA = [NSArray arrayWithObject:imgfileID];
-//                PhotoViewController * pv = [[PhotoViewController alloc] initWithSmallImages:nil images:iA indext:0];
-//                [self.navigationController presentViewController:pv animated:NO completion:^{
-//                    
-//                }];
+                NSArray * iA = [NSArray arrayWithObject:imgfileID];
+                PhotoViewController * pv = [[PhotoViewController alloc] initWithSmallImages:nil images:iA indext:0];
+                [self.navigationController presentViewController:pv animated:NO completion:^{
+                    
+                }];
             }
 
         }
