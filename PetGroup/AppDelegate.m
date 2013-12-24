@@ -232,8 +232,8 @@
      连接新浪微博开放平台应用以使用相关功能，此应用需要引用SinaWeiboConnection.framework
      http://open.weibo.com上注册新浪微博开放平台应用，并将相关信息填写到以下字段
      **/
-    [ShareSDK connectSinaWeiboWithAppKey:@"2690418120"
-                               appSecret:@"801c22bedee7cc7e073dcf9f184e64f2"
+    [ShareSDK connectSinaWeiboWithAppKey:@"2455646689"
+                               appSecret:@"8285248b5dcc0690df9d747a71754073"
                              redirectUri:@"https://api.weibo.com/oauth2/default.html"];
     /**
      连接腾讯微博开放平台应用以使用相关功能，此应用需要引用TencentWeiboConnection.framework
@@ -241,8 +241,8 @@
      
      如果需要实现SSO，需要导入libWeiboSDK.a，并引入WBApi.h，将WBApi类型传入接口
      **/
-    [ShareSDK connectTencentWeiboWithAppKey:@"801458716"
-                                  appSecret:@"752329fa40b8ccce78a7b51051afc3ce"
+    [ShareSDK connectTencentWeiboWithAppKey:@"801460737"
+                                  appSecret:@"79c7a0dfc43683d3f5f6b637004bfccd"
                                 redirectUri:@"http://www.52pet.net"
                                    wbApiCls:[WBApi class]];
     
@@ -255,8 +255,8 @@
      
      如果需要实现SSO，需要导入TencentOpenAPI.framework,并引入QQApiInterface.h和TencentOAuth.h，将QQApiInterface和TencentOAuth的类型传入接口
      **/
-    [ShareSDK connectQZoneWithAppKey:@"100579980"
-                           appSecret:@"	ec422e540243ae6d9caa5286397410cd"
+    [ShareSDK connectQZoneWithAppKey:@"100584356"
+                           appSecret:@"	2fb71cb3592fd340adfd2257d1bc16fe"
                    qqApiInterfaceCls:[QQApiInterface class]
                      tencentOAuthCls:[TencentOAuth class]];
     /**
@@ -266,14 +266,14 @@
     //旧版中申请的AppId（如：QQxxxxxx类型），可以通过下面方法进行初始化
     //    [ShareSDK connectQQWithAppId:@"QQ075BCD15" qqApiCls:[QQApi class]];
     
-    [ShareSDK connectQQWithQZoneAppKey:@"100579980"
+    [ShareSDK connectQQWithQZoneAppKey:@"100584356"
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
     /**
      连接微信应用以使用相关功能，此应用需要引用WeChatConnection.framework和微信官方SDK
      http://open.weixin.qq.com上注册应用，并将相关信息填写以下字段
      **/
-    [ShareSDK connectWeChatWithAppId:@"wx98cf851143ed2703" wechatCls:[WXApi class]];
+    [ShareSDK connectWeChatWithAppId:@"wxa45ff01dc73e9109" wechatCls:[WXApi class]];
 }
 - (BOOL)application:(UIApplication *)application  handleOpenURL:(NSURL *)url
 {

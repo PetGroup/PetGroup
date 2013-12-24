@@ -350,9 +350,9 @@
             
             //在授权页面中添加关注官方微博
             [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈主"],
                                             SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈"],
                                             SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
                                             nil]];
             
@@ -395,9 +395,9 @@
             
             //在授权页面中添加关注官方微博
             [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈主"],
                                             SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈"],
                                             SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
                                             nil]];
             
@@ -440,9 +440,9 @@
             
             //在授权页面中添加关注官方微博
             [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈主"],
                                             SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈"],
                                             SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
                                             nil]];
             
@@ -487,9 +487,9 @@
             
             //在授权页面中添加关注官方微博
             [authOptions setFollowAccounts:[NSDictionary dictionaryWithObjectsAndKeys:
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈主"],
                                             SHARE_TYPE_NUMBER(ShareTypeSinaWeibo),
-                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"ShareSDK"],
+                                            [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈"],
                                             SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
                                             nil]];
             
