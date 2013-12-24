@@ -62,6 +62,7 @@
     canSendAudio = NO;
     sendingFileArray = [NSMutableArray array];
     playWhose = @"myself";
+    nowPlayingAudioID = @"no";
 
     
     NSLog(@"wwwwwww:%@",currentID);
@@ -2099,6 +2100,21 @@
 }
 -(void)playAudioWithAudioID:(NSString *)audioID
 {
+    if ([audioID isEqualToString:nowPlayingAudioID]&&[audioPlayer isPlaying]) {
+        [audioPlayer stop];
+        indexPathTo = [NSIndexPath indexPathForRow:readyIndex inSection:0];
+        KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+        cell.playAudioImageV.animationImages = nil;
+        [cell.playAudioImageV stopAnimating];
+        NSDictionary *dictionary = [messages objectAtIndex:readyIndex];
+        if ([[dictionary objectForKey:@"sender"] isEqualToString:@"you"]) {
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+        }
+        else
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
+        NSLog(@"audio play stopped manual!");
+        return;
+    }
     NSError *err = nil;
     [self.session setCategory :AVAudioSessionCategoryPlayback error:&err];
     NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,audioID];
@@ -2106,6 +2122,7 @@
     if (audioPlayer) {
         audioPlayer.delegate = self;
         audioPlayer.volume=1.0;
+        nowPlayingAudioID = audioID;
         [audioPlayer prepareToPlay];
         [audioPlayer play];
     }
