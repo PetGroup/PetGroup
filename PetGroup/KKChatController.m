@@ -754,14 +754,14 @@
     int imgIndex = messages.count-1;
     indexPathTo = [NSIndexPath indexPathForRow:imgIndex inSection:0];
     KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
-    double maskH = cell.maskContentImgV.frame.size.height;
+    float maskH = cell.maskContentImgV.frame.size.height;
     [NetManager chatUploadImage:theImage WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"a:%d,b:%lld,c:%lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
-        double bytesE = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
+        float bytesE = (float)((double)totalBytesWritten/(double)totalBytesExpectedToWrite);
         [cell.maskContentImgV setFrame:CGRectMake(cell.maskContentImgV.frame.origin.x, cell.maskContentImgV.frame.origin.y, cell.maskContentImgV.frame.size.width, maskH-maskH*bytesE)];
         cell.progressLabel.frame = CGRectMake(cell.bgImageView.frame.origin.x, cell.bgImageView.frame.origin.y+cell.bgImageView.frame.size.height/2-10, cell.bgImageView.frame.size.width, 20);
-        cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100];
-        NSLog(@"bytes written:%@,FRame:%f",cell.progressLabel.text,maskH*bytesE);
+        cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100.0f];
+        NSLog(@"bytes written:%@,FRame:%f.byteE:%f,Height:%f",cell.progressLabel.text,maskH*bytesE,bytesE,maskH);
 //        cell.messageContentView.textAlignment = NSTextAlignmentCenter;
         
     } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1227,6 +1227,7 @@
             cell.maskContentImgV.hidden = YES;
  
         }
+        cell.maskContentImgV.hidden = YES;
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
@@ -1302,8 +1303,25 @@
         }
         else if ([msgType isEqualToString:@"img"]){
             readyIndex = tempBtn.tag-1;
-            NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
-            NSString * audiofileID = audioFile[0];
+            NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
+            NSString * imgfileID = imgFile[0];
+            NSString * imgfilePath = [NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,imgfileID];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:imgfilePath] == YES){
+                PhotoViewController * pv = [[PhotoViewController alloc] initWithPath:imgfilePath];
+                [self.navigationController presentViewController:pv animated:NO completion:^{
+                    
+                }];
+            }
+            else
+            {
+                NSArray * iA = [NSArray arrayWithObject:imgfileID];
+                PhotoViewController * pv = [[PhotoViewController alloc] initWithSmallImages:nil images:iA indext:0];
+                [self.navigationController presentViewController:pv animated:NO completion:^{
+                    
+                }];
+            }
+
         }
         else
         {
@@ -1928,7 +1946,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
 //            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //            [succeful show];
-            
+            self.textView.text = @"";
         });
     });
 
@@ -1953,7 +1971,7 @@
     if (messages.count>0) {
         [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    self.textView.text = @"";
+    
 }
 -(void)finalSendMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
 {
