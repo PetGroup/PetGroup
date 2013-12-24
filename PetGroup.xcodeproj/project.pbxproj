@@ -33,7 +33,6 @@
 		726F08D91867DE18006343F9 /* tencent.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08D31867DE18006343F9 /* tencent.png */; };
 		726F08DB1867E4F3006343F9 /* like_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08DA1867E4F3006343F9 /* like_bg.png */; };
 		726F0901186810B2006343F9 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		726F0909186833AD006343F9 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADB1842F84F00BB58E0 /* ImageCell.m */; };
 		72795AE01843274700BB58E0 /* DPNetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795ADF1843274700BB58E0 /* DPNetManager.m */; };
 		72795AE818432EB600BB58E0 /* DPBusinessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72795AE718432EB600BB58E0 /* DPBusinessListViewController.m */; };
@@ -752,6 +751,7 @@
 		97E25C3517C360E7007E187D /* MakeDict.m in Sources */ = {isa = PBXBuildFile; fileRef = 97E25C3417C360E7007E187D /* MakeDict.m */; };
 		97E25C3D17C3729A007E187D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 97E25C3F17C3729A007E187D /* Localizable.strings */; };
 		97E2BD181834E5B600B006AE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E2BD171834E5B600B006AE /* Default-568h@2x.png */; };
+		97E3794B18693DCC00151F1D /* MessageSendFail.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3794A18693DCC00151F1D /* MessageSendFail.png */; };
 		97E3AB2C17E7E67000674321 /* gengduoxinxi.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2B17E7E67000674321 /* gengduoxinxi.png */; };
 		97E3AB2E17E7F8E400674321 /* shanchu.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2D17E7F8E400674321 /* shanchu.png */; };
 		97E3AB3017E81FA000674321 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E3AB2F17E81FA000674321 /* placeholder.png */; };
@@ -1892,6 +1892,7 @@
 		97E25C3E17C3729A007E187D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		97E25C4017C372A0007E187D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		97E2BD171834E5B600B006AE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		97E3794A18693DCC00151F1D /* MessageSendFail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageSendFail.png; sourceTree = "<group>"; };
 		97E3AB2B17E7E67000674321 /* gengduoxinxi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gengduoxinxi.png; sourceTree = "<group>"; };
 		97E3AB2D17E7F8E400674321 /* shanchu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shanchu.png; sourceTree = "<group>"; };
 		97E3AB2F17E81FA000674321 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
@@ -3657,6 +3658,7 @@
 		9736BCD917C49146007DFE36 /* chatV */ = {
 			isa = PBXGroup;
 			children = (
+				97E3794A18693DCC00151F1D /* MessageSendFail.png */,
 				971CF33F180FB1CD00650409 /* Fav_No_Pic@2x.png */,
 				971CF32F180FB1C600650409 /* ReceiverVoiceNodePlaying@2x.png */,
 				971CF330180FB1C600650409 /* ReceiverVoiceNodePlaying001@2x.png */,
@@ -4646,6 +4648,7 @@
 				9736BD8517C49146007DFE36 /* popview2.png in Resources */,
 				9736BD8A17C49146007DFE36 /* zhuce_click.png in Resources */,
 				726F08DB1867E4F3006343F9 /* like_bg.png in Resources */,
+				97E3794B18693DCC00151F1D /* MessageSendFail.png in Resources */,
 				9736BD8B17C49146007DFE36 /* zhuce_normal.png in Resources */,
 				9736BD8C17C49146007DFE36 /* bottomgray.png in Resources */,
 				9736BD8F17C49146007DFE36 /* manicon.png in Resources */,

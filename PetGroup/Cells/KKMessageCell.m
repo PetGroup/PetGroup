@@ -20,6 +20,7 @@
 @synthesize contentImgV;
 @synthesize maskContentImgV;
 @synthesize progressLabel;
+@synthesize sendFailBtn;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -53,6 +54,11 @@
         //  [bgImageView setAdjustsImageWhenHighlighted:NO];
         [self.contentView addSubview:bgImageView];
         
+        self.sendFailBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [self.sendFailBtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+        [self.sendFailBtn setImage:[UIImage imageNamed:@"MessageSendFail"] forState:UIControlStateNormal];
+        //  [bgImageView setAdjustsImageWhenHighlighted:NO];
+        [self.contentView addSubview:self.sendFailBtn];
         
         //聊天信息
         messageContentView = [[OHAttributedLabel alloc] initWithFrame:CGRectZero];

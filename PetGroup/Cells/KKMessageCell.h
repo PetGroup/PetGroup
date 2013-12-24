@@ -16,6 +16,7 @@
 @property(nonatomic, retain) UILabel *progressLabel;
 @property(nonatomic, retain) OHAttributedLabel *messageContentView;
 @property(nonatomic, retain) UIButton *bgImageView;
+@property(nonatomic, retain) UIButton *sendFailBtn;
 @property(nonatomic, retain) EGOImageView * headImgV;
 @property(nonatomic, retain) EGOImageView * contentImgV;
 @property(nonatomic, retain) UIButton * headBtn;

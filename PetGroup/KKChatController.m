@@ -770,7 +770,7 @@
         [UIImageJPEGRepresentation(theImage, 0.6) writeToFile:[NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,responseObject] atomically:YES];
         cell.progressLabel.text = @"";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self finalMsgFailedSendWithFileID:sendingID MsgID:imageUUID FileType:@"img"];
+        [self finalMsgFailedSendWithFileID:[NSString stringWithFormat:@"%@_%f_%f",sendingID,a.size.width,a.size.height] MsgID:imageUUID FileType:@"img"];
         cell.progressLabel.text = @"";
     }];
 
@@ -1073,15 +1073,19 @@
             cell.playAudioImageV.hidden = NO;
             [cell.activityV setFrame:CGRectMake(320-theW - padding-20-10-25-33, padding*2-15+3, 30, 30)];
             if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
-                
+                cell.sendFailBtn.hidden = YES;
                 [cell.activityV startAnimating];
             }
             else if ([[dict objectForKey:@"status"] isEqualToString:@"sended"]){
+                cell.sendFailBtn.hidden = YES;
                 [cell.activityV stopAnimating];
                 
             }
             else
             {
+                cell.sendFailBtn.hidden = NO;
+                [cell.sendFailBtn setFrame:CGRectMake(320-theW - padding-20-10-25-33, padding*2-15+3, 28, 28)];
+                [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg) forControlEvents:UIControlEventTouchUpInside];
                 [cell.activityV stopAnimating];
                
             }
@@ -1103,6 +1107,7 @@
             if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
                 [cell.activityV startAnimating];
                 cell.maskContentImgV.hidden = NO;
+                cell.sendFailBtn.hidden = YES;
                 cell.maskContentImgV.backgroundColor = [UIColor blackColor];
                 cell.maskContentImgV.alpha = 0.65;
                 cell.maskContentImgV.frame = cell.contentImgV.frame;
@@ -1110,12 +1115,16 @@
             else if ([[dict objectForKey:@"status"] isEqualToString:@"sended"]){
                 [cell.activityV stopAnimating];
                 cell.maskContentImgV.hidden = YES;
+                cell.sendFailBtn.hidden = YES;
             }
             else
             {
                 [cell.activityV stopAnimating];
                 cell.maskContentImgV.hidden = NO;
                 cell.maskContentImgV.frame = cell.contentImgV.frame;
+                cell.sendFailBtn.hidden = NO;
+                [cell.sendFailBtn setFrame:CGRectMake(320-imgW - padding-20-10-25-10-33+10, padding*2-15+3, 28, 28)];
+                [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg) forControlEvents:UIControlEventTouchUpInside];
             }
 
             NSString *path = [NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,imgFile[0]];
@@ -1134,6 +1143,7 @@
         }
         else{
             cell.ifRead.hidden = YES;
+            cell.sendFailBtn.hidden = YES;
             cell.contentImgV.hidden = YES;
             [cell.messageContentView setFrame:CGRectMake(320-size.width - padding-15-10-25, padding*2-10, size.width, size.height)];
             [cell.bgImageView setFrame:CGRectMake(320-size.width - padding-20-10-25, padding*2-15, size.width+20, size.height+10)];
@@ -1228,6 +1238,7 @@
  
         }
         cell.maskContentImgV.hidden = YES;
+        cell.sendFailBtn.hidden = YES;
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
@@ -1946,7 +1957,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
 //            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //            [succeful show];
-            self.textView.text = @"";
+//            self.textView.text = @"";
         });
     });
 
@@ -2044,7 +2055,7 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
     [dictionary setObject:msgID forKey:@"msgID"];
-    [dictionary setObject:@"" forKey:@"msg"];
+    [dictionary setObject:fileID forKey:@"msg"];
     [dictionary setObject:@"you" forKey:@"sender"];
     [dictionary setObject:fileType forKey:@"fileType"];
     [dictionary setObject:@"failed" forKey:@"status"];
