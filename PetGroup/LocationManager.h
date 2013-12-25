@@ -11,6 +11,7 @@
 #import <CoreLocation/CLLocationManagerDelegate.h>
 #import <MapKit/MapKit.h>
 #import "TempData.h"
+#import "ChinaMapShift.h"
 @interface LocationManager : UIViewController<CLLocationManagerDelegate,MKMapViewDelegate>
 {
     CLLocationManager *locationManager;
@@ -21,8 +22,11 @@
     float lat;
     float lon;
     BOOL goUpdate;
+    
+    BOOL needManualFail;
 }
 @property(nonatomic,strong)CLLocation *userPoint;
+@property(nonatomic,strong)NSString *locType;
 + (id)sharedInstance;
 -(void)initLocation;
 -(void)startCheckLocationWithSuccess:(void(^)(double lat,double lon))success Failure:(void(^)(void))failure;

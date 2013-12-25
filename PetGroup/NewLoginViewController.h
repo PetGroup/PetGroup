@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TempData.h"
+#import "LocationManager.h"
 @interface NewLoginViewController : UIViewController
 
 @end

@@ -367,6 +367,7 @@
 		9727937517D9C8380001E863 /* HeightCalculate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9727936A17D9C8380001E863 /* HeightCalculate.m */; };
 		9727937C17D9C8630001E863 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9727937B17D9C8630001E863 /* CoreText.framework */; };
 		972AEF2817F017E00010070B /* biaoqianNearby.png in Resources */ = {isa = PBXBuildFile; fileRef = 972AEF2717F017E00010070B /* biaoqianNearby.png */; };
+		972F1C70186AA3F700128F07 /* ChinaMapShift.m in Sources */ = {isa = PBXBuildFile; fileRef = 972F1C6F186AA3F700128F07 /* ChinaMapShift.m */; };
 		973490F417F27CB1002A19C7 /* womenicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 973490F317F27CB1002A19C7 /* womenicon.png */; };
 		9736BACB17C472A1007DFE36 /* HostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACA17C472A1007DFE36 /* HostInfo.m */; };
 		9736BACE17C472B2007DFE36 /* PetInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9736BACD17C472B2007DFE36 /* PetInfo.m */; };
@@ -1225,6 +1226,8 @@
 		9727937B17D9C8630001E863 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		9727937D17D9C86F0001E863 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		972AEF2717F017E00010070B /* biaoqianNearby.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = biaoqianNearby.png; sourceTree = "<group>"; };
+		972F1C6E186AA3F700128F07 /* ChinaMapShift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChinaMapShift.h; sourceTree = "<group>"; };
+		972F1C6F186AA3F700128F07 /* ChinaMapShift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChinaMapShift.m; sourceTree = "<group>"; };
 		973490F317F27CB1002A19C7 /* womenicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = womenicon.png; sourceTree = "<group>"; };
 		9736BAC917C472A1007DFE36 /* HostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostInfo.h; sourceTree = "<group>"; };
 		9736BACA17C472A1007DFE36 /* HostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HostInfo.m; sourceTree = "<group>"; };
@@ -4245,6 +4248,8 @@
 				97D5020F17C49CC500799BD4 /* XMLMatcher.m */,
 				9736BC8F17C48B72007DFE36 /* Common.h */,
 				9736BC9017C48B72007DFE36 /* Common.m */,
+				972F1C6E186AA3F700128F07 /* ChinaMapShift.h */,
+				972F1C6F186AA3F700128F07 /* ChinaMapShift.m */,
 				9736BC9817C48B74007DFE36 /* LocationManager.h */,
 				9736BC9917C48B74007DFE36 /* LocationManager.m */,
 				9736BCA817C48B77007DFE36 /* Reachability.h */,
@@ -5248,6 +5253,7 @@
 				9736BCBE17C48B7B007DFE36 /* GDataXMLNode.m in Sources */,
 				9736BCC017C48B7B007DFE36 /* LocationManager.m in Sources */,
 				9736BCC117C48B7B007DFE36 /* MBProgressHUD.m in Sources */,
+				972F1C70186AA3F700128F07 /* ChinaMapShift.m in Sources */,
 				86FC764C18209F290025686B /* MJRefreshHeaderView.m in Sources */,
 				9736BCC417C48B7B007DFE36 /* MLNavigationController.m in Sources */,
 				9736BCC717C48B7B007DFE36 /* Reachability.m in Sources */,

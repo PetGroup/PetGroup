@@ -167,13 +167,15 @@
 }
 -(void)getUserLocation
 {
-    [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {
+    LocationManager * locM = [LocationManager sharedInstance];
+    locM.locType = @"open";
+    [locM startCheckLocationWithSuccess:^(double lat, double lon) {
         [[TempData sharedInstance] setLat:lat Lon:lon];
         if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
             [self upLoadUserLocationWithLat:lat Lon:lon];
         }
     } Failure:^{
-        
+
     }];
 }
 -(void)testGetOneState

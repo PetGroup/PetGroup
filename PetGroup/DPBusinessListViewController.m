@@ -97,7 +97,8 @@
     [self.view addSubview:hud];
     hud.labelText = @"搜索中...";
     [hud show:YES];
-    [self reloadData];
+//    [self reloadData];
+    [self getUserLocation];
 }
 
 - (void)didReceiveMemoryWarning
@@ -201,6 +202,18 @@
     }
 }
 #pragma mark - loadData
+-(void)getUserLocation
+{
+    LocationManager * locM = [LocationManager sharedInstance];
+    locM.locType = @"nearBy";
+    [locM startCheckLocationWithSuccess:^(double lat, double lon) {
+        [self performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        
+    } Failure:^{
+        [hud hide:YES];
+    }];
+}
+
 -(void)reloadData
 {
     self.pageNo = 1;
@@ -221,7 +234,7 @@
         NSLog(@"%@",url);
         self.netManager = [[DPNetManager alloc]initWithURL:url delegate:self];
     }else{
-        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许《宠物圈》获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil message:@"此功能需要使用您的地理位置，请允许宠物圈获得您的位置" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alertView show];
         [hud hide:YES];
     }
