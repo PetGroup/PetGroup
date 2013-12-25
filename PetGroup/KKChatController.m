@@ -271,6 +271,15 @@
 //  语音初始化
     rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
     rootChatImgPath = [RootDocPath stringByAppendingPathComponent:@"chatImg"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:rootChatImgPath] == NO)
+    {
+        [fm createDirectoryAtPath:rootChatImgPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    if([fm fileExistsAtPath:rootRecordPath] == NO)
+    {
+        [fm createDirectoryAtPath:rootRecordPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
     self.session = [AVAudioSession sharedInstance];
     NSError *err = nil;
     [self.session setCategory :AVAudioSessionCategoryPlayAndRecord error:&err];
