@@ -120,6 +120,7 @@
         cell.titleLabel.hidden = YES;
         cell.arrow.hidden = YES;
         cell.contentView.backgroundColor = [UIColor whiteColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     else{
@@ -133,6 +134,7 @@
         //    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
         [cell.titleLabel setFrame:CGRectMake(70, 20, 100, 20)];
         [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;
@@ -159,6 +161,7 @@
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
         default:
+            return;
             break;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
