@@ -12,7 +12,7 @@
 #import "DPNetManager.h"
 #import "EGOImageView.h"
 #import "DPReplyCell.h"
-@interface DPBusinessViewController ()<UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate>
+@interface DPBusinessViewController ()<UIAlertViewDelegate,UITableViewDataSource,UITableViewDelegate,DPNetManagerDelegate>
 {
     float diffH;
 }
@@ -89,7 +89,8 @@
 }
 -(void)callPhoneNo
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.business.telephone]]];
+    UIAlertView* alertV = [[UIAlertView alloc]initWithTitle:nil message:@"确认要拨打电话致该商户?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确认", nil];
+    [alertV show];
 }
 #pragma mark - Table view data source
 
@@ -259,5 +260,10 @@
     self.netManager = [[DPNetManager alloc]initWithURL:url delegate:self];
     
 }
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.business.telephone]]];
+    }
+}
 @end
