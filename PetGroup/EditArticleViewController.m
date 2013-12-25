@@ -341,14 +341,6 @@
 -(void)didselectCircle
 {
     [_circleTF resignFirstResponder];
-    self.indexPath = [NSIndexPath indexPathForRow:[_circlePV  selectedRowInComponent:1] inSection:[_circlePV  selectedRowInComponent:0]];
-    self.forumId = ((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).circleID;
-    self.forumName =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
-//    CGSize size = [self.forumName sizeWithFont:[UIFont systemFontOfSize:18]];
-//    titleLabel.frame = CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height);
-//    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
-//    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
-//    [titleLabel setText:self.forumName];
 }
 -(void)backButton:(UIButton*)button
 {
@@ -967,11 +959,13 @@
         self.circleArray = ((CircleClassify*)self.CircleTree[row]).circleArray;
         [pickerView reloadComponent:1];
     }
-    NSString* name =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
-    CGSize size = [name sizeWithFont:[UIFont systemFontOfSize:18]];
+    self.indexPath = [NSIndexPath indexPathForRow:[_circlePV  selectedRowInComponent:1] inSection:[_circlePV  selectedRowInComponent:0]];
+    self.forumId = ((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).circleID;
+    self.forumName =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
+    CGSize size = [_forumName sizeWithFont:[UIFont systemFontOfSize:18]];
     titleLabel.frame = CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height);
     xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
     xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
-    [titleLabel setText:name];
+    [titleLabel setText:_forumName];
 }
 @end
