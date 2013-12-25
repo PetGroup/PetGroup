@@ -88,6 +88,8 @@ typedef  enum
     
     NSString * playWhose;
     NSString * rootChatImgPath;
+    
+    NSString * nowPlayingAudioID;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;

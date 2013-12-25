@@ -62,6 +62,7 @@
     canSendAudio = NO;
     sendingFileArray = [NSMutableArray array];
     playWhose = @"myself";
+    nowPlayingAudioID = @"no";
 
     
     NSLog(@"wwwwwww:%@",currentID);
@@ -270,6 +271,15 @@
 //  语音初始化
     rootRecordPath = [RootDocPath stringByAppendingPathComponent:@"localRecord"];
     rootChatImgPath = [RootDocPath stringByAppendingPathComponent:@"chatImg"];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if([fm fileExistsAtPath:rootChatImgPath] == NO)
+    {
+        [fm createDirectoryAtPath:rootChatImgPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    if([fm fileExistsAtPath:rootRecordPath] == NO)
+    {
+        [fm createDirectoryAtPath:rootRecordPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
     self.session = [AVAudioSession sharedInstance];
     NSError *err = nil;
     [self.session setCategory :AVAudioSessionCategoryPlayAndRecord error:&err];
@@ -1041,6 +1051,9 @@
     // cell.userInteractionEnabled = NO;
     
     UIImage *bgImage = nil;
+    cell.sendFailBtn.tag = indexPath.row+1;
+    [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg:) forControlEvents:UIControlEventTouchUpInside];
+
 
     if ([sender isEqualToString:@"you"]) {
         cell.headImgV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
@@ -1085,7 +1098,7 @@
             {
                 cell.sendFailBtn.hidden = NO;
                 [cell.sendFailBtn setFrame:CGRectMake(320-theW - padding-20-10-25-33, padding*2-15+3, 28, 28)];
-                [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg) forControlEvents:UIControlEventTouchUpInside];
+//                [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg) forControlEvents:UIControlEventTouchUpInside];
                 [cell.activityV stopAnimating];
                
             }
@@ -1124,7 +1137,7 @@
                 cell.maskContentImgV.frame = cell.contentImgV.frame;
                 cell.sendFailBtn.hidden = NO;
                 [cell.sendFailBtn setFrame:CGRectMake(320-imgW - padding-20-10-25-10-33+10, padding*2-15+3, 28, 28)];
-                [cell.sendFailBtn addTarget:self action:@selector(resendThisMsg) forControlEvents:UIControlEventTouchUpInside];
+                
             }
 
             NSString *path = [NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,imgFile[0]];
@@ -1266,9 +1279,106 @@
         CGRect rect = [self.view convertRect:cell.frame fromView:self.tView];
         NSLog(@"dsdsdsdsdsd%@",NSStringFromCGRect(rect));
     }
+//    cell.senderAndTimeLabel.hidden = NO;
+//    cell.senderAndTimeLabel.text = time;
     
     return cell;
     
+}
+-(void)resendThisMsg:(UIButton *)sender
+{
+    NSMutableDictionary *dict = [messages objectAtIndex:sender.tag-1];
+    NSString *msgType = [dict objectForKey:@"fileType"];
+    if ([msgType isEqualToString:@"img"]) {
+        NSString * path = [NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,[dict objectForKey:@"msgID"]];
+        NSData* data = [NSData dataWithContentsOfFile:path];
+        UIImage *image = [[UIImage alloc] initWithData:data];
+        if (image) {
+            UIImage * a = [NetManager compressImageDownToPhoneScreenSize:image targetSizeX:80 targetSizeY:80];
+            NSFileManager *fm = [NSFileManager defaultManager];
+            if([fm fileExistsAtPath:rootChatImgPath] == NO)
+            {
+                [fm createDirectoryAtPath:rootChatImgPath withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+            NSString * sendingID = [NSString stringWithFormat:@"%@_%f_%f",[dict objectForKey:@"msgID"],a.size.width,a.size.height];
+            [UIImageJPEGRepresentation(a, 0.6) writeToFile:[NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,[dict objectForKey:@"msgID"]] atomically:YES];
+            [UIImageJPEGRepresentation(image, 0.6) writeToFile:[NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,[dict objectForKey:@"msgID"]] atomically:YES];
+            [self tempReSendFileMsgWithFileID:sendingID MsgID:[dict objectForKey:@"msgID"] FileType:@"img" Status:@"sending"];
+            int imgIndex = sender.tag-1;
+            indexPathTo = [NSIndexPath indexPathForRow:imgIndex inSection:0];
+            KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+            float maskH = cell.maskContentImgV.frame.size.height;
+            [NetManager chatUploadImage:image WithURLStr:BaseUploadImageUrl ImageName:@"CoverImage" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+                NSLog(@"a:%d,b:%lld,c:%lld",bytesWritten,totalBytesWritten,totalBytesExpectedToWrite);
+                float bytesE = (float)((double)totalBytesWritten/(double)totalBytesExpectedToWrite);
+                [cell.maskContentImgV setFrame:CGRectMake(cell.maskContentImgV.frame.origin.x, cell.maskContentImgV.frame.origin.y, cell.maskContentImgV.frame.size.width, maskH-maskH*bytesE)];
+                cell.progressLabel.frame = CGRectMake(cell.bgImageView.frame.origin.x, cell.bgImageView.frame.origin.y+cell.bgImageView.frame.size.height/2-10, cell.bgImageView.frame.size.width, 20);
+                cell.progressLabel.text = [NSString stringWithFormat:@"%.0f%%",bytesE*100.0f];
+                NSLog(@"bytes written:%@,FRame:%f.byteE:%f,Height:%f",cell.progressLabel.text,maskH*bytesE,bytesE,maskH);
+                //        cell.messageContentView.textAlignment = NSTextAlignmentCenter;
+                
+            } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [self finalSendMsgWithFileID:[NSString stringWithFormat:@"%@_%f_%f",responseObject,a.size.width,a.size.height] MsgID:[dict objectForKey:@"msgID"] FileType:@"img"];
+                [UIImageJPEGRepresentation(a, 0.6) writeToFile:[NSString stringWithFormat:@"%@/compress_%@.jpg",rootChatImgPath,responseObject] atomically:YES];
+                [UIImageJPEGRepresentation(image, 0.6) writeToFile:[NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,responseObject] atomically:YES];
+                cell.progressLabel.text = @"";
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self finalMsgFailedSendWithFileID:[NSString stringWithFormat:@"%@_%f_%f",sendingID,a.size.width,a.size.height] MsgID:[dict objectForKey:@"msgID"] FileType:@"img"];
+                cell.progressLabel.text = @"";
+            }];
+
+        }
+    }
+    else if ([msgType isEqualToString:@"audio"]){
+        NSString * audioP = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,[dict objectForKey:@"msgID"]];
+        NSData * data = [NSData dataWithContentsOfFile:audioP];
+        NSLog(@"LENGTH:%d",[data length]);
+        if (!data) {
+            return;
+        }
+#ifdef NotUseSimulator
+
+        NSData * data1 =EncodeWAVEToAMR(data,1,16);
+        NSLog(@"LENGTH2:%d",[data1 length]);
+        //        [data1 writeToURL:url2 atomically:YES];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:audioP] options:nil];
+        CMTime time = asset.duration;
+        double durationInSeconds = CMTimeGetSeconds(time);
+        int duration = (int)durationInSeconds;
+        NSString * audioUUID = [dict objectForKey:@"msgID"];
+        [sendingFileArray addObject:[NSString stringWithFormat:@"%@_%d",audioUUID,duration]];
+        NSString * sendingID = [NSString stringWithFormat:@"%@_%d",audioUUID,duration];
+        [self tempReSendFileMsgWithFileID:sendingID MsgID:audioUUID FileType:@"audio" Status:@"sending"];
+        
+        
+        [NetManager uploadAudioFileData:data1 WithURLStr:BaseUploadImageUrl MsgID:audioUUID AudioID:audioUUID  AudioName:@"recording.amr"  TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject, NSString * theAudioID,NSString *msgID) {
+            //            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+            //            NSDictionary * dict = [receiveStr JSONValue];
+            //            if ([dict objectForKey:@"success"]) {
+            NSString * sendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+            //            NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID]];
+            //            [data writeToURL:myRecordPath atomically:YES];
+            [data writeToFile:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID] atomically:YES];
+            [self finalSendMsgWithFileID:sendedID MsgID:msgID FileType:@"audio"];
+            //            }
+            //            else
+            //            {
+            //                NSLog(@"audioUploadError:%@",[dict objectForKey:@"entity"]);
+            //            }
+            NSLog(@"audioUploaded:%@",theAudioID);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error, NSString * theAudioID,NSString * msgID) {
+            NSString * notsendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+            [self finalMsgFailedSendWithFileID:notsendedID MsgID:msgID FileType:@"audio"];
+            NSLog(@"audioUploadError:%@",error);
+            //            self tempSendFileMsgWithID:<#(NSString *)#> FileType:<#(NSString *)#> Status:<#(NSString *)#>
+        }];
+#endif
+
+    }
+    else
+    {
+        
+    }
 }
 -(NSArray *)getFileIDAndSize:(NSString *)msgBody
 {
@@ -1984,6 +2094,44 @@
     }
     
 }
+-(void)tempReSendFileMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType Status:(NSString *)theStatus
+{
+    NSMutableDictionary *dictionary;
+//    [NSMutableDictionary dictionary];
+//    [dictionary setObject:msgID forKey:@"msgID"];
+//    [dictionary setObject:fileID forKey:@"msg"];
+//    [dictionary setObject:@"you" forKey:@"sender"];
+//    [dictionary setObject:fileType forKey:@"fileType"];
+//    [dictionary setObject:theStatus forKey:@"status"];
+//    //加入发送时间
+//    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+//    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    int uu = 0;
+    for (int i = 0;i<messages.count;i++) {
+        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
+            dictionary = [NSMutableDictionary dictionaryWithDictionary:messages[i]];
+            uu = i;
+            break;
+        }
+    }
+    [dictionary setObject:msgID forKey:@"msgID"];
+    [dictionary setObject:fileID forKey:@"msg"];
+    [dictionary setObject:@"you" forKey:@"sender"];
+    [dictionary setObject:fileType forKey:@"fileType"];
+    [dictionary setObject:theStatus forKey:@"status"];
+    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+
+    [messages replaceObjectAtIndex:uu withObject:dictionary];
+    [self normalMsgToFinalMsg];
+    [DataStoreManager storeMyMessage:dictionary];
+    //重新刷新tableView
+    [self.tView reloadData];
+    if (messages.count>0) {
+        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
+}
+
 -(void)finalSendMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
 {
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
@@ -2024,24 +2172,33 @@
     
     
     
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
+    NSMutableDictionary *dictionary;
+//    = [NSMutableDictionary dictionary];
+//    
+//    [dictionary setObject:msgID forKey:@"msgID"];
+//    [dictionary setObject:fileID forKey:@"msg"];
+//    [dictionary setObject:@"you" forKey:@"sender"];
+//    [dictionary setObject:fileType forKey:@"fileType"];
+//    [dictionary setObject:@"sended" forKey:@"status"];
+//
+//    //加入发送时间
+//    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+//    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    int uu = 0;
+    for (int i = 0;i<messages.count;i++) {
+        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
+            dictionary = [NSMutableDictionary dictionaryWithDictionary:messages[i]];
+            uu = i;
+            break;
+        }
+    }
     [dictionary setObject:msgID forKey:@"msgID"];
     [dictionary setObject:fileID forKey:@"msg"];
     [dictionary setObject:@"you" forKey:@"sender"];
     [dictionary setObject:fileType forKey:@"fileType"];
     [dictionary setObject:@"sended" forKey:@"status"];
-
-    //加入发送时间
-    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
     [dictionary setObject:self.chatWithUser forKey:@"receiver"];
-    int uu = 0;
-    for (int i = 0;i<messages.count;i++) {
-        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
-            uu = i;
-            break;
-        }
-    }
+    
     [messages replaceObjectAtIndex:uu withObject:dictionary];
     [self normalMsgToFinalMsg];
     [DataStoreManager storeMyMessage:dictionary];
@@ -2052,24 +2209,33 @@
 }
 -(void)finalMsgFailedSendWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
 {
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    
+    NSMutableDictionary *dictionary;
+//    = [NSMutableDictionary dictionary];
+//    
+//    [dictionary setObject:msgID forKey:@"msgID"];
+//    [dictionary setObject:fileID forKey:@"msg"];
+//    [dictionary setObject:@"you" forKey:@"sender"];
+//    [dictionary setObject:fileType forKey:@"fileType"];
+//    [dictionary setObject:@"failed" forKey:@"status"];
+//    
+//    //加入发送时间
+//    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+//    [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+    int uu = 0;
+    for (int i = 0;i<messages.count;i++) {
+        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
+            dictionary = [NSMutableDictionary dictionaryWithDictionary:messages[i]];
+            uu = i;
+            break;
+        }
+    }
     [dictionary setObject:msgID forKey:@"msgID"];
     [dictionary setObject:fileID forKey:@"msg"];
     [dictionary setObject:@"you" forKey:@"sender"];
     [dictionary setObject:fileType forKey:@"fileType"];
     [dictionary setObject:@"failed" forKey:@"status"];
-    
-    //加入发送时间
-    [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
     [dictionary setObject:self.chatWithUser forKey:@"receiver"];
-    int uu = 0;
-    for (int i = 0;i<messages.count;i++) {
-        if ([[messages[i] objectForKey:@"msgID"] isEqualToString:msgID]) {
-            uu = i;
-            break;
-        }
-    }
+    
     [messages replaceObjectAtIndex:uu withObject:dictionary];
     [self normalMsgToFinalMsg];
     [DataStoreManager storeMyMessage:dictionary];
@@ -2099,6 +2265,21 @@
 }
 -(void)playAudioWithAudioID:(NSString *)audioID
 {
+    if ([audioID isEqualToString:nowPlayingAudioID]&&[audioPlayer isPlaying]) {
+        [audioPlayer stop];
+        indexPathTo = [NSIndexPath indexPathForRow:readyIndex inSection:0];
+        KKMessageCell * cell = (KKMessageCell *)[self.tView cellForRowAtIndexPath:indexPathTo];
+        cell.playAudioImageV.animationImages = nil;
+        [cell.playAudioImageV stopAnimating];
+        NSDictionary *dictionary = [messages objectAtIndex:readyIndex];
+        if ([[dictionary objectForKey:@"sender"] isEqualToString:@"you"]) {
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+        }
+        else
+            [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
+        NSLog(@"audio play stopped manual!");
+        return;
+    }
     NSError *err = nil;
     [self.session setCategory :AVAudioSessionCategoryPlayback error:&err];
     NSString  *localRecordPath = [NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,audioID];
@@ -2106,6 +2287,7 @@
     if (audioPlayer) {
         audioPlayer.delegate = self;
         audioPlayer.volume=1.0;
+        nowPlayingAudioID = audioID;
         [audioPlayer prepareToPlay];
         [audioPlayer play];
     }
