@@ -1082,7 +1082,15 @@
 //            cell.messageContentView.backgroundColor = [UIColor redColor];
             [cell.bgImageView setFrame:CGRectMake(320-theW - padding-20-10-25, padding*2-15, theW+20, 35)];
             [cell.playAudioImageV setFrame:CGRectMake(320-10-40-35, padding*2-9, 20, 20)];
-            [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+            if ([audioFile[0] isEqualToString:nowPlayingAudioID]) {
+                cell.playAudioImageV.animationImages = animationTwo;
+                [cell.playAudioImageV startAnimating];
+            }
+            else
+            {
+                [cell.playAudioImageV setImage:[UIImage imageNamed:@"SenderVoiceNodePlaying003@2x"]];
+
+            }
             cell.playAudioImageV.hidden = NO;
             [cell.activityV setFrame:CGRectMake(320-theW - padding-20-10-25-33, padding*2-15+3, 30, 30)];
             if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
@@ -1105,6 +1113,7 @@
             cell.ifRead.hidden = YES;
             cell.contentImgV.hidden = YES;
             cell.maskContentImgV.hidden = YES;
+            
             
         }
         else if ([msgType isEqualToString:@"img"]){
@@ -1189,7 +1198,15 @@
             
             [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-10-2-3, theW+20, 35)];
             [cell.playAudioImageV setFrame:CGRectMake(padding-10+45+10, padding*2-9+3-3, 20, 20)];
-            [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
+            if ([audioFile[0] isEqualToString:nowPlayingAudioID]) {
+                cell.playAudioImageV.animationImages = animationOne;
+                [cell.playAudioImageV startAnimating];
+            }
+            else
+            {
+                [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
+                
+            }
             cell.playAudioImageV.hidden = NO;
             [cell.activityV setFrame:CGRectMake(padding-10+45+theW+5, padding*2-15+3, 30, 30)];
             [cell.activityV stopAnimating];
@@ -2334,6 +2351,7 @@
     else
         [cell.playAudioImageV setImage:[UIImage imageNamed:@"ReceiverVoiceNodePlaying@2x"]];
     NSLog(@"audio play done!");
+    nowPlayingAudioID = @"no";
 }
 
 -(void)viewWillAppear:(BOOL)animated
