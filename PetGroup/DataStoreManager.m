@@ -253,6 +253,9 @@
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] msgType]?[[commonMsgsArray objectAtIndex:i] msgType]:@"text" forKey:@"fileType"];
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] msgID]?[[commonMsgsArray objectAtIndex:i] msgID]:@"1" forKey:@"msgID"];
         [thumbMsgsDict setObject:[[commonMsgsArray objectAtIndex:i] status]?[[commonMsgsArray objectAtIndex:i] status]:@"1" forKey:@"status"];
+        if ([[thumbMsgsDict objectForKey:@"status"] isEqualToString:@"sending"]) {
+            [thumbMsgsDict setObject:@"failed" forKey:@"status"];
+        }
         NSDate * tt = [[commonMsgsArray objectAtIndex:i] senTime];
         NSTimeInterval uu = [tt timeIntervalSince1970];
         [thumbMsgsDict setObject:[NSString stringWithFormat:@"%f",uu] forKey:@"time"];
