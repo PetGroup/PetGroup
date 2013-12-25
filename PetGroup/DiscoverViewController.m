@@ -40,7 +40,7 @@
     self.hidesBottomBarWhenPushed = YES;
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
 	// Do any additional setup after loading the view.
-    float diffH = [Common diffHeight:self];
+    diffH = [Common diffHeight:self];
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
@@ -53,7 +53,7 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStyleGrouped];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-diffH) style:UITableViewStylePlain];
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.backgroundView = nil;
@@ -88,15 +88,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return 5;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    if (indexPath.row==4) {
+        return self.view.frame.size.height-44-diffH-240;
+    }
+    return 60;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -112,22 +115,33 @@
 //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 //        cell.selectionStyle = UITableViewCellSelectionStyleGray;
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
-    cell.headImageV.image = [UIImage imageNamed:_iconNameArray[indexPath.section]];
-    [cell.headImageV setFrame:CGRectMake(10, 7.5, 35, 35)];
-//    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
-    cell.titleLabel.text = _nameArray[indexPath.row+indexPath.section];
-//    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
-    [cell.titleLabel setFrame:CGRectMake(60, 15, 100, 20)];
-    [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
-    
+    if (indexPath.row==4) {
+        cell.headImageV.hidden = YES;
+        cell.titleLabel.hidden = YES;
+        cell.arrow.hidden = YES;
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else{
+        cell.headImageV.hidden = NO;
+        cell.titleLabel.hidden = NO;
+        cell.arrow.hidden = NO;
+        cell.headImageV.image = [UIImage imageNamed:_iconNameArray[indexPath.row]];
+        [cell.headImageV setFrame:CGRectMake(10, 7.5, 45, 45)];
+        //    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
+        cell.titleLabel.text = _nameArray[indexPath.row];
+        //    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
+        [cell.titleLabel setFrame:CGRectMake(70, 20, 100, 20)];
+        [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     return cell;
 }
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.row+indexPath.section) {
+    switch (indexPath.row) {
         case 0:{
             NearByViewController* nearByVC = [[NearByViewController alloc]init];
             [self.navigationController pushViewController:nearByVC animated:YES];

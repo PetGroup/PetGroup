@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MoreCell.h"
 @interface DiscoverViewController : UIViewController
-
+{
+    float diffH;
+}
 @end

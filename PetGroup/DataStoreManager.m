@@ -53,8 +53,28 @@
                 NSPredicate * predicate = [NSPredicate predicateWithFormat:@"msgContent==[c]%@",msgContent];
                 
                 DSCommonMsgs * commonMsg = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
-                if (!commonMsg)
+                if (!commonMsg){
                     commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+                    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+                    
+                    DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+                    if (!thumbMsgs)
+                        thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+                    thumbMsgs.sender = sender;
+                    thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
+                    if ([fileType isEqualToString:@"audio"]) {
+                        thumbMsgs.msgContent = @"[语音]";
+                    }
+                    else if ([fileType isEqualToString:@"img"]){
+                        thumbMsgs.msgContent = @"[图片]";
+                    }
+                    else
+                        thumbMsgs.msgContent = msgContent;
+                    thumbMsgs.sendTime = sendTime;
+                    thumbMsgs.senderType = sendertype;
+                    int unread = [thumbMsgs.unRead intValue];
+                    thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+                }
 //                commonMsg.msgID = msgID;
                 commonMsg.readed = [msg objectForKey:@"readed"]?[msg objectForKey:@"readed"]:@"NO";
                 commonMsg.msgType = fileType;
@@ -76,27 +96,31 @@
                 commonMsg.msgContent = msgContent?msgContent:@"";
                 commonMsg.senTime = sendTime;
                 commonMsg.receiver = receiver;
+                
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+                
+                DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+                if (!thumbMsgs)
+                    thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+                thumbMsgs.sender = sender;
+                thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
+                if ([fileType isEqualToString:@"audio"]) {
+                    thumbMsgs.msgContent = @"[语音]";
+                }
+                else if ([fileType isEqualToString:@"img"]){
+                    thumbMsgs.msgContent = @"[图片]";
+                }
+                else
+                    thumbMsgs.msgContent = msgContent;
+                thumbMsgs.sendTime = sendTime;
+                thumbMsgs.senderType = sendertype;
+                int unread = [thumbMsgs.unRead intValue];
+                thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+
+                
             }
 
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
             
-            DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate]; 
-            if (!thumbMsgs) 
-                thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];    
-            thumbMsgs.sender = sender;
-            thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
-            if ([fileType isEqualToString:@"audio"]) {
-                thumbMsgs.msgContent = @"[语音]";
-            }
-            else if ([fileType isEqualToString:@"img"]){
-                thumbMsgs.msgContent = @"[图片]";
-            }
-            else
-                thumbMsgs.msgContent = msgContent;
-            thumbMsgs.sendTime = sendTime;
-            thumbMsgs.senderType = sendertype;
-            int unread = [thumbMsgs.unRead intValue];
-            thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
             
             if (![self ifHaveThisFriend:sender]) {
                 [self addFriendToLocal:sender];
@@ -145,8 +169,28 @@
             NSPredicate * predicate = [NSPredicate predicateWithFormat:@"msgID==[c]%@",msgID];
             
             DSCommonMsgs * commonMsg = [DSCommonMsgs MR_findFirstWithPredicate:predicate];
-            if (!commonMsg)
+            if (!commonMsg){
                 commonMsg = [DSCommonMsgs MR_createInContext:localContext];
+                NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",receicer];
+                
+                DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+                if (!thumbMsgs)
+                    thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+                thumbMsgs.sender = receicer;
+                thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
+                if ([fileType isEqualToString:@"audio"]) {
+                    thumbMsgs.msgContent = @"[语音]";
+                }
+                else if ([fileType isEqualToString:@"img"]){
+                    thumbMsgs.msgContent = @"[图片]";
+                }
+                else
+                    thumbMsgs.msgContent = msgContent;
+                thumbMsgs.sendTime = sendTime;
+                thumbMsgs.senderType = COMMONUSER;
+                int unread = [thumbMsgs.unRead intValue];
+                thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+            }
             commonMsg.msgID = msgID;
             commonMsg.readed = @"YES";
             commonMsg.msgType = fileType;
@@ -166,28 +210,30 @@
             commonMsg.msgContent = msgContent?msgContent:@"";
             commonMsg.senTime = sendTime;
             commonMsg.receiver = receicer;
+            
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",receicer];
+            
+            DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+            if (!thumbMsgs)
+                thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+            thumbMsgs.sender = receicer;
+            thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
+            if ([fileType isEqualToString:@"audio"]) {
+                thumbMsgs.msgContent = @"[语音]";
+            }
+            else if ([fileType isEqualToString:@"img"]){
+                thumbMsgs.msgContent = @"[图片]";
+            }
+            else
+                thumbMsgs.msgContent = msgContent;
+            thumbMsgs.sendTime = sendTime;
+            thumbMsgs.senderType = COMMONUSER;
+            int unread = [thumbMsgs.unRead intValue];
+            thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
         }
         
         
-        NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",receicer];
         
-        DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
-        if (!thumbMsgs)
-            thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
-        thumbMsgs.sender = receicer;
-        thumbMsgs.senderNickname = senderNickname?senderNickname:@"";
-        if ([fileType isEqualToString:@"audio"]) {
-            thumbMsgs.msgContent = @"[语音]";
-        }
-        else if ([fileType isEqualToString:@"img"]){
-            thumbMsgs.msgContent = @"[图片]";
-        }
-        else
-            thumbMsgs.msgContent = msgContent;
-        thumbMsgs.sendTime = sendTime;
-        thumbMsgs.senderType = COMMONUSER;
-        int unread = [thumbMsgs.unRead intValue];
-        thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
         
     }];
 
