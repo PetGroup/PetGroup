@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LocationManager.h"
 @interface DPBusinessListViewController : UIViewController
 
 @end

@@ -152,6 +152,15 @@
     hud = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:hud];
     hud.labelText = @"登录中...";
+    
+    LocationManager * locM = [LocationManager sharedInstance];
+    locM.locType = @"open";
+    [locM startCheckLocationWithSuccess:^(double lat, double lon) {
+
+    } Failure:^{
+        
+    }];
+
 }
 - (void) textFieldDidChange:(UITextField *) textField
 {

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LocationManager.h"
 @interface NewRegistThreeViewController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (nonatomic,strong) NSString* phoneNo;

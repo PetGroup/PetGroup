@@ -167,7 +167,9 @@
 }
 -(void)getUserLocation
 {
-    [[LocationManager sharedInstance] startCheckLocationWithSuccess:^(double lat, double lon) {
+    LocationManager * locM = [LocationManager sharedInstance];
+    locM.locType = @"nearBy";
+    [locM startCheckLocationWithSuccess:^(double lat, double lon) {
         latitude = lat;
         longitude = lon;
         if (personOrPet) {
