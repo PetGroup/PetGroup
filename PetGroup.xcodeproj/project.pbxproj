@@ -580,6 +580,9 @@
 		973901D518585B850091930A /* fdy.png in Resources */ = {isa = PBXBuildFile; fileRef = 973901D318585B850091930A /* fdy.png */; };
 		973901D618585B850091930A /* circleplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 973901D418585B850091930A /* circleplaceholder.png */; };
 		973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */; };
+		974D7631186BC1660023F40E /* HeadImageCutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 974D7630186BC1660023F40E /* HeadImageCutViewController.m */; };
+		974D7634186BFEAC0023F40E /* bubble_img_bg_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 974D7632186BFEAC0023F40E /* bubble_img_bg_01.png */; };
+		974D7635186BFEAC0023F40E /* bubble_img_bg_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 974D7633186BFEAC0023F40E /* bubble_img_bg_02.png */; };
 		9758124B1856B0470059D0FD /* quitB.png in Resources */ = {isa = PBXBuildFile; fileRef = 975812491856B0470059D0FD /* quitB.png */; };
 		9758124C1856B0470059D0FD /* joinB.png in Resources */ = {isa = PBXBuildFile; fileRef = 9758124A1856B0470059D0FD /* joinB.png */; };
 		9758124F1856C8B50059D0FD /* choosegallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 9758124D1856C8B50059D0FD /* choosegallery.png */; };
@@ -1587,6 +1590,10 @@
 		973901D418585B850091930A /* circleplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circleplaceholder.png; sourceTree = "<group>"; };
 		973EAB5E17CC786600A8F945 /* FriendsReqsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsReqsViewController.h; sourceTree = "<group>"; };
 		973EAB5F17CC786600A8F945 /* FriendsReqsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsReqsViewController.m; sourceTree = "<group>"; };
+		974D762F186BC1660023F40E /* HeadImageCutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadImageCutViewController.h; sourceTree = "<group>"; };
+		974D7630186BC1660023F40E /* HeadImageCutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadImageCutViewController.m; sourceTree = "<group>"; };
+		974D7632186BFEAC0023F40E /* bubble_img_bg_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_img_bg_01.png; sourceTree = "<group>"; };
+		974D7633186BFEAC0023F40E /* bubble_img_bg_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble_img_bg_02.png; sourceTree = "<group>"; };
 		975812491856B0470059D0FD /* quitB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quitB.png; sourceTree = "<group>"; };
 		9758124A1856B0470059D0FD /* joinB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = joinB.png; sourceTree = "<group>"; };
 		9758124D1856C8B50059D0FD /* choosegallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choosegallery.png; sourceTree = "<group>"; };
@@ -2803,6 +2810,8 @@
 				97DD8CA517E19D09002E36BE /* selectContactPage.m */,
 				97D501CE17C4998300799BD4 /* KKChatController.h */,
 				97D501CF17C4998300799BD4 /* KKChatController.m */,
+				974D762F186BC1660023F40E /* HeadImageCutViewController.h */,
+				974D7630186BC1660023F40E /* HeadImageCutViewController.m */,
 				976EA1391843260C00D120AE /* EmojiView.h */,
 				976EA13A1843260C00D120AE /* EmojiView.m */,
 				86FF42B117CC66D7007F8DE2 /* MessageViewController.h */,
@@ -3685,6 +3694,8 @@
 				97F764B217F817750063A72E /* newfriend.png */,
 				9736BCDA17C49146007DFE36 /* bubble_01.png */,
 				9736BCDB17C49146007DFE36 /* bubble_02.png */,
+				974D7632186BFEAC0023F40E /* bubble_img_bg_01.png */,
+				974D7633186BFEAC0023F40E /* bubble_img_bg_02.png */,
 				9736BCDC17C49146007DFE36 /* chat_bg.png */,
 				9736BCDD17C49146007DFE36 /* chat_input.png */,
 				9736BCDE17C49146007DFE36 /* chat_send.png */,
@@ -4672,6 +4683,7 @@
 				7214AD6C18541E370027D47E /* jing.png in Resources */,
 				9700D3B818502B2B003260BC /* tabbar01.png in Resources */,
 				9736BD9D17C49146007DFE36 /* list-short-normal.png in Resources */,
+				974D7634186BFEAC0023F40E /* bubble_img_bg_01.png in Resources */,
 				9736BD9E17C49146007DFE36 /* login-normal.png in Resources */,
 				72D7B93618556E750048FAE2 /* scroll_bg.png in Resources */,
 				9736BD9F17C49146007DFE36 /* logininputbg.png in Resources */,
@@ -4794,6 +4806,7 @@
 				9718F46117E8668300BEC495 /* dyn.png in Resources */,
 				972AEF2817F017E00010070B /* biaoqianNearby.png in Resources */,
 				973490F417F27CB1002A19C7 /* womenicon.png in Resources */,
+				974D7635186BFEAC0023F40E /* bubble_img_bg_02.png in Resources */,
 				86E3B45B17F3E2A000EC9F61 /* morenbeijing.png in Resources */,
 				86E3B45E17F3E93300EC9F61 /* notiBG.png in Resources */,
 				973901CC1857FDAE0091930A /* placeholderpet.png in Resources */,
@@ -5097,6 +5110,7 @@
 				97E25C0617C34418007E187D /* AFXMLRequestOperation.m in Sources */,
 				97E25C0717C34418007E187D /* UIImageView+AFNetworking.m in Sources */,
 				97E25C2617C34B38007E187D /* NSObject+SBJSON.m in Sources */,
+				974D7631186BC1660023F40E /* HeadImageCutViewController.m in Sources */,
 				97E25C2717C34B38007E187D /* NSString+SBJSON.m in Sources */,
 				97E25C2817C34B38007E187D /* SBJSON.m in Sources */,
 				97E25C2917C34B38007E187D /* SBJsonBase.m in Sources */,

@@ -5,7 +5,7 @@
 
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 #import "EGOImageView.h"
 #import "EGOImageButton.h"
 #import "OHAttributedLabel.h"
@@ -22,6 +22,7 @@
 @property(nonatomic, retain) UIButton * headBtn;
 @property(nonatomic ,retain) UIButton * chattoHeadBtn;
 @property(nonatomic ,retain) UIImageView * ifRead;
+@property(nonatomic ,retain) UIImageView * imgRadiusBG;
 @property(nonatomic ,retain) UIImageView * playAudioImageV;
 @property(nonatomic ,retain) UIImageView * maskContentImgV;
 @property(nonatomic ,retain) UIActivityIndicatorView * activityV;
