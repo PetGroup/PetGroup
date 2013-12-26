@@ -97,7 +97,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row==4) {
-        return self.view.frame.size.height-44-diffH-240;
+        return self.view.frame.size.height-44-diffH-240-49;
     }
     return 60;
 }
@@ -122,6 +122,7 @@
         cell.contentView.backgroundColor = [UIColor whiteColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        
     }
     else{
         cell.headImageV.hidden = NO;
