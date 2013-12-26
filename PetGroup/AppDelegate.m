@@ -51,7 +51,7 @@
 
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     
-    [MobClick startWithAppkey:@"528c5e1056240b39ce0a0f90" reportPolicy:BATCH channelId:@""];
+//    [MobClick startWithAppkey:@"528c5e1056240b39ce0a0f90" reportPolicy:BATCH channelId:@""];
     [self setChannel:@"1"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

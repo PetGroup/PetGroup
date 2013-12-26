@@ -21,13 +21,15 @@
 #import "selectContactPage.h"
 #import "OHASBasicHTMLParser.h"
 #import "EmojiView.h"
+#import "HeadImageCutViewController.h"
+#import "MBProgressHUD.h"
 typedef  enum
 {
     actionSheetMore = 0,
     actionSheetChoosePic
 }ActionSheetStyle;
 @class AppDelegate, XMPPHelper;
-@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CutHeadImageSucceedDelegate,MBProgressHUDDelegate>
 {
     UILabel *titleLabel;
     NSString * userName;
@@ -90,6 +92,7 @@ typedef  enum
     NSString * rootChatImgPath;
     
     NSString * nowPlayingAudioID;
+    MBProgressHUD * hud;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;
