@@ -21,6 +21,7 @@
 @synthesize maskContentImgV;
 @synthesize progressLabel;
 @synthesize sendFailBtn;
+@synthesize imgRadiusBG;
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     
@@ -88,8 +89,8 @@
         [self.contentView addSubview:self.playAudioImageV];
         
         self.contentImgV = [[EGOImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-        self.contentImgV.layer.cornerRadius = 5;
-        self.contentImgV.layer.masksToBounds = YES;
+//        self.contentImgV.layer.cornerRadius = 5;
+//        self.contentImgV.layer.masksToBounds = YES;
         [self.contentView addSubview:self.contentImgV];
         self.contentImgV.hidden = YES;
         
@@ -98,6 +99,12 @@
         self.maskContentImgV.hidden = YES;
         self.maskContentImgV.backgroundColor = [UIColor blackColor];
         self.maskContentImgV.alpha = 0.65;
+        
+        self.imgRadiusBG = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+        [self.contentView addSubview:self.imgRadiusBG];
+        self.imgRadiusBG.hidden = YES;
+//        self.imgRadiusBG.backgroundColor = [UIColor blackColor];
+//        self.imgRadiusBG.alpha = 0.65;
         
         self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 300, 20)];
         //居中显示

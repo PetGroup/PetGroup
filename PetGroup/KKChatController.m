@@ -1193,6 +1193,10 @@
 
 
         }
+        UIImage * imgRadiusImage = [[UIImage imageNamed:@"bubble_img_bg_02.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
+        [cell.imgRadiusBG setImage:imgRadiusImage];
+        [cell.imgRadiusBG setFrame:cell.contentImgV.frame];
+        cell.imgRadiusBG.hidden = cell.contentImgV.hidden;
     }else {
         [cell.headImgV setFrame:CGRectMake(10, padding*2-15, 40, 40)];
         [cell.chattoHeadBtn setFrame:cell.headImgV.frame];
@@ -1288,6 +1292,10 @@
         }
         cell.maskContentImgV.hidden = YES;
         cell.sendFailBtn.hidden = YES;
+        UIImage * imgRadiusImage = [[UIImage imageNamed:@"bubble_img_bg_01.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
+        [cell.imgRadiusBG setImage:imgRadiusImage];
+        [cell.imgRadiusBG setFrame:cell.contentImgV.frame];
+        cell.imgRadiusBG.hidden = cell.contentImgV.hidden;
     }
     
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
@@ -2162,9 +2170,9 @@
     [DataStoreManager storeMyMessage:dictionary];
     //重新刷新tableView
     [self.tView reloadData];
-    if (messages.count>0) {
-        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
+//    if (messages.count>0) {
+//        [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//    }
     
 }
 
