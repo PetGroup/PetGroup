@@ -358,7 +358,7 @@
 {
     NSRange range = [[messageContent objectForKey:@"sender"] rangeOfString:@"@"];
     NSString * sender = [[messageContent objectForKey:@"sender"] substringToIndex:range.location];
-    if (![DataStoreManager ifHaveThisFriend:sender]) {
+    if (![DataStoreManager ifHaveThisFriend:sender]&&[[messageContent objectForKey:@"msgType"] isEqualToString:@"normalchat"]) {
         [self requestPeopleInfoWithName:sender ForType:1 Msg:nil];
     }
     
