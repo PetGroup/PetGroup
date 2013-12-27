@@ -109,4 +109,4 @@
 #define DEFAULT_thumbImageWidth 200.0f
 #define DEFAULT_thumbImageHeight 300.0f
 
-//#define NotUseSimulator  @"YES"
+#define NotUseSimulator  @"YES"
