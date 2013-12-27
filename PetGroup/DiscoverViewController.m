@@ -172,23 +172,24 @@
 //生成广告条,如果视图条目增加,增加TableView.from的修改逻辑
 -(void)advertisement
 {
-    if ((![self.view viewWithTag:2013])&&(_advertisementArray.count > 0)) {
-        UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-49-60 , 320, 60)];
-        sc.backgroundColor = [UIColor blackColor];
-        sc.contentSize = CGSizeMake(320*_advertisementArray.count, 60);
-        for (int i = 0;i<_advertisementArray.count;i++) {
-            EGOImageButton * button = [[EGOImageButton alloc]initWithFrame:CGRectMake(i*320, 0, 320, 60)];
-            button.tag = 100+i;
-            button.imageURL = [NSURL URLWithString:_advertisementArray[0]];
+    if (![self.view viewWithTag:2013]) {
+        UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-(diffH?49:0)-60, 320, 60)];
+//        sc.backgroundColor = [UIColor blackColor];
+//        sc.contentSize = CGSizeMake(320*_advertisementArray.count, 60);
+//        for (int i = 0;i<_advertisementArray.count;i++) {
+            UIButton * button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+//            button.tag = 100+i;
+//            button.imageURL = [NSURL URLWithString:_advertisementArray[0]];
+            [button setBackgroundImage:[UIImage imageNamed:@"ab"] forState:UIControlStateNormal];
             [button addTarget:self action:@selector(readAdvertisement:) forControlEvents:UIControlEventTouchUpInside];
             [sc addSubview:button];
-        }
+//        }
         sc.tag = 2014;
         sc.pagingEnabled = YES;
         [self.view addSubview:sc];
         UIButton * deleteB  = [UIButton buttonWithType:UIButtonTypeCustom];
         deleteB.tag = 2013;
-        deleteB.frame = CGRectMake(260, self.view.frame.size.height-49-60, 60, 60);
+        deleteB.frame = CGRectMake(260, self.view.frame.size.height-(diffH?49:0)-60, 60, 60);
         [deleteB setBackgroundImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [deleteB addTarget:self action:@selector(removeadvertisement) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:deleteB];
@@ -202,12 +203,12 @@
 -(void)readAdvertisement:(UIButton*)button
 {
     WebViewViewController* web = [[WebViewViewController alloc]init];
-    web.addressURL = [NSURL URLWithString:_advertisementArray[button.tag-100]];
+    web.addressURL = [NSURL URLWithString:@"http://www.52pet.net"];
     [self presentViewController:web animated:YES completion:nil];
     
 }
 -(void)loadAdvertisement
-{
+{//未来实现广告接口的请求，在viewDidLoad中调用，请求返回后调用advertisement方法并修改里面的实现细节
     
 }
 @end
