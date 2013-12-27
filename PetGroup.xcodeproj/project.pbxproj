@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7203B55C186C144300248CC5 /* ab.png in Resources */ = {isa = PBXBuildFile; fileRef = 7203B55B186C144300248CC5 /* ab.png */; };
+		7203B55D186D298E00248CC5 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7214AD6A18541E370027D47E /* ding.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6718541E370027D47E /* ding.png */; };
 		7214AD6B18541E370027D47E /* havepic.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6818541E370027D47E /* havepic.png */; };
 		7214AD6C18541E370027D47E /* jing.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6918541E370027D47E /* jing.png */; };
@@ -823,6 +825,7 @@
 
 /* Begin PBXFileReference section */
 		4E86BCF917A44940AF695B2A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		7203B55B186C144300248CC5 /* ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ab.png; sourceTree = "<group>"; };
 		7214AD6718541E370027D47E /* ding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ding.png; sourceTree = "<group>"; };
 		7214AD6818541E370027D47E /* havepic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = havepic.png; sourceTree = "<group>"; };
 		7214AD6918541E370027D47E /* jing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jing.png; sourceTree = "<group>"; };
@@ -3821,6 +3824,7 @@
 		9736BD2017C49146007DFE36 /* nearBy */ = {
 			isa = PBXGroup;
 			children = (
+				7203B55B186C144300248CC5 /* ab.png */,
 				7259561C186BD72800CB0D6E /* delete.png */,
 				97ED57F7185AA99B00CAE5CA /* filterBtn.png */,
 				97FD5C711855B0E5007F5B7E /* nopet.png */,
@@ -4853,6 +4857,7 @@
 				726F08D41867DE18006343F9 /* imessage.png in Resources */,
 				9700D3D318505B53003260BC /* newloginBtn.png in Resources */,
 				72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */,
+				7203B55C186C144300248CC5 /* ab.png in Resources */,
 				86A56A29180F8191000FD684 /* biaoqing017.png in Resources */,
 				72D7B92E18555D4D0048FAE2 /* maomi_click.png in Resources */,
 				86A56A2A180F8191000FD684 /* biaoqing018.png in Resources */,
