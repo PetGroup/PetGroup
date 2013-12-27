@@ -93,6 +93,13 @@ typedef  enum
     
     NSString * nowPlayingAudioID;
     MBProgressHUD * hud;
+    
+    UIMenuItem *copyItem;
+    UIMenuItem *copyItem2;
+    UIMenuItem *copyItem3;
+    
+    NSDictionary * waitingTransDict;
+    NSDictionary *settings;
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;
