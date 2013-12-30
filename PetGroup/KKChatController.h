@@ -109,6 +109,8 @@ typedef  enum
     
     NSTimer * recordTimer;
     
+    NSTimeInterval * recordBtnBeginTime;
+    
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;

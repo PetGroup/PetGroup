@@ -1176,12 +1176,20 @@
             NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
             float imgW = [imgFile[1] floatValue];
             float imgH = [imgFile[2] floatValue];
+//            float r = imgW/imgH;
+            imgW = imgW>210?210:imgW;
+//            imgH = imgW/r;
+            imgH = imgH>150?150:imgH;
+//            imgW = imgH*r;
+//            imgW = imgW<80?80:imgW;
             cell.messageContentView.attributedText = nil;
             cell.messageContentView.text = @"";
             [cell.messageContentView setFrame:CGRectMake(320-imgW- padding-15-10-25+3+10, padding*2-9, 40, 30)];
             [cell.bgImageView setFrame:CGRectMake(320-imgW - padding-20-10-25-10+10, padding*2-15, imgW+20, imgH+10)];
             cell.contentImgV.hidden = NO;
             [cell.contentImgV setFrame:CGRectMake(320-imgW - padding-20-10-25-4.5+10, padding*2-15+5, imgW, imgH)];
+            cell.contentImgV.contentMode = UIViewContentModeCenter;
+            cell.contentImgV.clipsToBounds  = YES;
             [cell.activityV setFrame:CGRectMake(320-imgW - padding-20-10-25-10-33+10, padding*2-15+3, 30, 30)];
             if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
                 [cell.activityV startAnimating];
@@ -1296,11 +1304,19 @@
             NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
             float imgW = [imgFile[1] floatValue];
             float imgH = [imgFile[2] floatValue];
+//            float r = imgW/imgH;
+            imgW = imgW>210?210:imgW;
+//            imgH = imgW/r;
+            imgH = imgH>150?150:imgH;
+//            imgW = imgH*r;
+//            imgW = imgW<80?80:imgW;
             cell.messageContentView.attributedText = nil;
             cell.messageContentView.text = @"";
             [cell.messageContentView setFrame:CGRectMake(padding+5+45+imgW-20, padding*2-9, 40, 30)];
             [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-15, imgW+20, imgH+10)];
             cell.contentImgV.hidden = NO;
+            cell.contentImgV.contentMode = UIViewContentModeCenter;
+            cell.contentImgV.clipsToBounds  = YES;
             [cell.contentImgV setFrame:CGRectMake(padding-10+45+13, padding*2-15+5, imgW, imgH)];
             [cell.activityV setFrame:CGRectMake(padding-10+45+imgW+10+5, padding*2-15+3, 30, 30)];
             if ([[dict objectForKey:@"status"] isEqualToString:@"sending"]) {
@@ -1484,6 +1500,7 @@
     if ([msgType isEqualToString:@"img"]) {
         NSString * path = [NSString stringWithFormat:@"%@/origin_%@.jpg",rootChatImgPath,[dict objectForKey:@"msgID"]];
         NSData* data = [NSData dataWithContentsOfFile:path];
+        NSLog(@"img data length:%d",data.length);
         UIImage *image = [[UIImage alloc] initWithData:data];
         if (image) {
             UIImage * a = [NetManager compressImageDownToPhoneScreenSize:image targetSizeX:80 targetSizeY:80];
@@ -1676,7 +1693,7 @@
         NSString * fileType = [dictionary objectForKey:@"fileType"];
         fileType = fileType?fileType:@"text";
         if ([fileType isEqualToString:@"audio"]||[fileType isEqualToString:@"img"]) {
-            [menu setMenuItems:[NSArray arrayWithObjects:copyItem2,copyItem3, nil]];
+            [menu setMenuItems:[NSArray arrayWithObjects:copyItem3, nil]];
         }
         else
         {
@@ -1889,6 +1906,8 @@
         NSArray * imgFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
         float imgH = [imgFile[2] floatValue];
         theH = imgH;
+        theH = theH>150?150:theH;
+
     }
     theH += padding*2;
 
@@ -2282,8 +2301,8 @@
             canSendAudio = NO;
         }
         if (durationInSeconds>=60.0f) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已达到最大录制时间，为您发送" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [alert show];
+//            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已达到最大录制时间，为您发送" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//            [alert show];
             recordTimeOut = YES;
             canSendAudio = YES;
         }
