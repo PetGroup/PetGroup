@@ -78,7 +78,7 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
-//    [self advertisement];
+    [self advertisement];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -172,18 +172,18 @@
 //生成广告条,如果视图条目增加,增加TableView.from的修改逻辑
 -(void)advertisement
 {
-    if (![self.view viewWithTag:2013]) {
+    if ((![self.view viewWithTag:2013]) && _advertisementArray.count>0) {
         UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-(diffH?49:0)-60, 320, 60)];
+        sc.showsHorizontalScrollIndicator = NO;
 //        sc.backgroundColor = [UIColor blackColor];
-//        sc.contentSize = CGSizeMake(320*_advertisementArray.count, 60);
-//        for (int i = 0;i<_advertisementArray.count;i++) {
-            UIButton * button = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
-//            button.tag = 100+i;
-//            button.imageURL = [NSURL URLWithString:_advertisementArray[0]];
-            [button setBackgroundImage:[UIImage imageNamed:@"ab"] forState:UIControlStateNormal];
+        sc.contentSize = CGSizeMake(320*_advertisementArray.count, 60);
+        for (int i = 0;i<_advertisementArray.count;i++) {
+            EGOImageButton * button = [[EGOImageButton alloc]initWithFrame:CGRectMake(i*320, 0, 320, 60)];
+            button.tag = 100+i;
+            button.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[_advertisementArray[0] objectForKey:@"img"]]];
             [button addTarget:self action:@selector(readAdvertisement:) forControlEvents:UIControlEventTouchUpInside];
             [sc addSubview:button];
-//        }
+        }
         sc.tag = 2014;
         sc.pagingEnabled = YES;
         [self.view addSubview:sc];
@@ -202,13 +202,45 @@
 }
 -(void)readAdvertisement:(UIButton*)button
 {
-    WebViewViewController* web = [[WebViewViewController alloc]init];
-    web.addressURL = [NSURL URLWithString:@"http://www.52pet.net"];
-    [self presentViewController:web animated:YES completion:nil];
-    
+    if ([[_advertisementArray[button.tag - 100] objectForKey:@"adType"] isEqualToString:@"url"]) {
+        ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+        cv.contentType = contentTypeWebView;
+        cv.typeName = @"内容";
+        cv.needRequestURL = YES;
+        cv.needDismiss = YES;
+        cv.contentMode = ContentModeAD;
+        cv.articleID = [_advertisementArray[button.tag - 100] objectForKey:@"id"];
+        [self presentViewController:cv animated:YES completion:^{
+            
+        }];
+    }
+    if ([[_advertisementArray[button.tag - 100] objectForKey:@"adType"] isEqualToString:@"text"]) {
+        ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+        cv.contentType = contentTypeTextView;
+        cv.typeName = @"内容";
+        cv.needDismiss = YES;
+        cv.contentMode = ContentModeAD;
+        cv.articleID = [_advertisementArray[button.tag - 100] objectForKey:@"id"];
+        [self presentViewController:cv animated:YES completion:^{
+            
+        }];
+    }
 }
 -(void)loadAdvertisement
 {//未来实现广告接口的请求，在viewDidLoad中调用，请求返回后调用advertisement方法并修改里面的实现细节
-    
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"getAds" forKey:@"method"];
+    [postDict setObject:@"service.uri.pet_notice" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.advertisementArray = [NSArray arrayWithArray:responseObject];
+        [self advertisement];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 @end

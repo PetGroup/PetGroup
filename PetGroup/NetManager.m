@@ -441,34 +441,14 @@ NSString * gen_uuid()
 {
 	
 	UIImage * bigImage = theImage;
-	
 	float actualHeight = bigImage.size.height;
 	float actualWidth = bigImage.size.width;
-	
 	float imgRatio = actualWidth / actualHeight;
-    
     if (actualWidth > sizeX) {
         imgRatio = sizeX / actualWidth;
         actualHeight = imgRatio * actualHeight;
         actualWidth = sizeX;
     }
-    
-    //	if(actualWidth > sizeX || actualHeight > sizeY)
-    //	{
-    //		float maxRatio = sizeX / sizeY;
-    //
-    //		if(imgRatio < maxRatio){
-    //            imgRatio = sizeY / actualHeight;
-    //			actualWidth = imgRatio * actualWidth;
-    //			actualHeight = sizeY;
-    //		} else {
-    //            imgRatio = sizeX / actualWidth;
-    //			actualHeight = imgRatio * actualHeight;
-    //			actualWidth = sizeX;
-    //
-    //		}
-    //
-    //	}
 	CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
 	UIGraphicsBeginImageContext(rect.size);
 	[bigImage drawInRect:rect];  // scales image to rect

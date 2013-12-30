@@ -32,6 +32,7 @@
         self.needDismiss = NO;
         self.needRequestURL = NO;
         self.isSystemNoti = NO;
+        self.contentMode = ContentModeOther;
     }
     return self;
 }
@@ -107,66 +108,122 @@
 -(void)getURLbyID:(NSString *)theID
 {
     [hud show:YES];
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:theID forKey:@"id"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"getEncyById" forKey:@"method"];
-    [body setObject:@"service.uri.pet_ency" forKey:@"service"];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"XXXXXXXXXX%@",responseObject);
-        if ([responseObject objectForKey:@"info"]) {
-            [theWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[responseObject objectForKey:@"info"]]]];
-        }
-        
-        [hud hide:YES];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [hud hide:YES];
-    }];
+    if (self.contentMode == ContentModeOther) {
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:theID forKey:@"id"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"getEncyById" forKey:@"method"];
+        [body setObject:@"service.uri.pet_ency" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"XXXXXXXXXX%@",responseObject);
+            if ([responseObject objectForKey:@"info"]) {
+                [theWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[responseObject objectForKey:@"info"]]]];
+            }
+            
+            [hud hide:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [hud hide:YES];
+        }];
+    }
+    if (self.contentMode == ContentModeAD) {
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:theID forKey:@"id"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"getAdById" forKey:@"method"];
+        [body setObject:@"service.uri.pet_notice" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"XXXXXXXXXX%@",responseObject);
+            if ([responseObject objectForKey:@"info"]) {
+                [theWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[responseObject objectForKey:@"info"]]]];
+            }
+            
+            [hud hide:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [hud hide:YES];
+        }];
 
+    }
 }
 -(void)getArticleByID:(NSString *)theID
 {
     [hud show:YES];
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    [params setObject:theID forKey:@"id"];
-    NSMutableDictionary* body = [NSMutableDictionary dictionary];
-    [body setObject:params forKey:@"params"];
-    if (!self.isSystemNoti) {
-        [body setObject:@"getExperById" forKey:@"method"];
-        [body setObject:@"service.uri.pet_exper" forKey:@"service"];
-    }
-    else
+    if (self.contentMode == ContentModeOther)
     {
-        [body setObject:@"getNoticeById" forKey:@"method"];
-        [body setObject:@"service.uri.pet_notice" forKey:@"service"];
-    }
-
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if ([responseObject objectForKey:@"info"]) {
-            _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:theID forKey:@"id"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        if (!self.isSystemNoti) {
+            [body setObject:@"getExperById" forKey:@"method"];
+            [body setObject:@"service.uri.pet_exper" forKey:@"service"];
+        }
+        else
+        {
+            [body setObject:@"getNoticeById" forKey:@"method"];
+            [body setObject:@"service.uri.pet_notice" forKey:@"service"];
         }
         
-        [hud hide:YES];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [hud hide:YES];
-    }];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            if ([responseObject objectForKey:@"info"]) {
+                _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
+            }
+            
+            [hud hide:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [hud hide:YES];
+        }];
+    }
+    if (self.contentMode == ContentModeAD) {
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        NSMutableDictionary* params = [NSMutableDictionary dictionary];
+        [params setObject:theID forKey:@"id"];
+        NSMutableDictionary* body = [NSMutableDictionary dictionary];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"getAdById" forKey:@"method"];
+        [body setObject:@"service.uri.pet_notice" forKey:@"service"];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"%@",responseObject);
+            if ([responseObject objectForKey:@"info"]) {
+                _textView.attributedString = [self _attributedStringForSnippetUsingiOS6Attributes:NO String:[responseObject objectForKey:@"info"]];
+            }
+            
+            [hud hide:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [hud hide:YES];
+        }];
+    }
 
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView

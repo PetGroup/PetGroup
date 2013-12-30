@@ -23,6 +23,11 @@ typedef  enum
     ButtonTypeImage = 1,
     ButtonTypeNormal
 }ButtonType;
+typedef  enum
+{
+    ContentModeOther = 1,
+    ContentModeAD
+}ContentMode;
 @interface ContentDetailViewController : UIViewController<DTAttributedTextContentViewDelegate,MBProgressHUDDelegate,UIAlertViewDelegate,UIWebViewDelegate>
 {
     DTAttributedTextView *_textView;
@@ -33,6 +38,7 @@ typedef  enum
 @property (nonatomic,strong)NSString * typeName;
 @property (nonatomic,strong)NSString * articleID;
 @property (nonatomic,assign)ContentType contentType;
+@property (nonatomic,assign)ContentMode contentMode;
 @property (nonatomic,assign)BOOL needDismiss;
 @property (nonatomic,assign)BOOL needRequestURL;
 @property (nonatomic,assign)BOOL isSystemNoti;
