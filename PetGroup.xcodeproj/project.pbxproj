@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7203B55C186C144300248CC5 /* ab.png in Resources */ = {isa = PBXBuildFile; fileRef = 7203B55B186C144300248CC5 /* ab.png */; };
-		7203B55D186D298E00248CC5 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7214AD6A18541E370027D47E /* ding.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6718541E370027D47E /* ding.png */; };
 		7214AD6B18541E370027D47E /* havepic.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6818541E370027D47E /* havepic.png */; };
 		7214AD6C18541E370027D47E /* jing.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6918541E370027D47E /* jing.png */; };

@@ -68,6 +68,7 @@ typedef  enum
     NSTimeInterval beginTime;
     UIButton * audioplayButton;
     UIImageView *recordAnimationIV;
+    UILabel * recordTimeLabel;
     
     UIScrollView *m_EmojiScrollView;
     UIPageControl *m_Emojipc;
@@ -100,6 +101,14 @@ typedef  enum
     
     NSDictionary * waitingTransDict;
     NSDictionary *settings;
+    
+    BOOL recordTimeOut;
+    BOOL stopTime;
+    
+    BOOL audioCancelled;
+    
+    NSTimer * recordTimer;
+    
 }
 @property (strong, nonatomic)  UITableView *tView;
 @property (strong, nonatomic)  NSMutableArray *finalMessageArray;

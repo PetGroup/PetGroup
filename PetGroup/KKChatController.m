@@ -63,6 +63,9 @@
     sendingFileArray = [NSMutableArray array];
     playWhose = @"myself";
     nowPlayingAudioID = @"no";
+    recordTimeOut = NO;
+    stopTime = NO;
+    audioCancelled = NO;
 
     
     NSLog(@"wwwwwww:%@",currentID);
@@ -464,12 +467,21 @@
         UIImage *img=[UIImage imageNamed:str];
         [arr addObject:img];
     }
-
+    recordTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, audioplayButton.frame.size.height+audioplayButton.frame.origin.y+10, 80, 25)];
+    [recordTimeLabel setBackgroundColor:[UIColor blackColor]];
+    recordTimeLabel.alpha = 0.7;
+    recordTimeLabel.layer.cornerRadius = 5;
+    recordTimeLabel.layer.masksToBounds = YES;
+    recordTimeLabel.textAlignment = NSTextAlignmentCenter;
+    [recordTimeLabel setTextColor:[UIColor whiteColor]];
+    [self.view addSubview:recordTimeLabel];
+    
     recordAnimationIV.animationImages=arr;
     recordAnimationIV.animationDuration=1.0;
     recordAnimationIV.animationRepeatCount=0;
     
     recordAnimationIV.hidden = YES;
+    recordTimeLabel.hidden = YES;
     [self.view addSubview:recordAnimationIV];
 }
 -(void)showRecordAnimation
@@ -477,11 +489,15 @@
     [recordAnimationIV startAnimating];
     audioplayButton.hidden = NO;
     recordAnimationIV.hidden = NO;
+    recordTimeLabel.hidden = NO;
+    [recordTimeLabel setTextColor:[UIColor whiteColor]];
+    [recordTimeLabel setText:@"0''"];
 }
 -(void)hideRecordAnimation
 {
     audioplayButton.hidden = YES;
     recordAnimationIV.hidden = YES;
+    recordTimeLabel.hidden = YES;
     [recordAnimationIV stopAnimating];
 }
 -(void)buttonDown
@@ -500,22 +516,26 @@
     
     [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
-    if(endTime-beginTime>0.5)
-    {
-        canSendAudio = YES;
+//    if(endTime-beginTime>0.5)
+//    {
+//        canSendAudio = YES;
+//    }
+//    else
+//    {
+//        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//        [alert show];
+//        canSendAudio = NO;
+//    }
+    if (!recordTimeOut) {
+        [self stopRecording];
     }
-    else
-    {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-        [alert show];
-        canSendAudio = NO;
-    }
-    [self stopRecording];
+    recordTimeOut = NO;
     [self hideRecordAnimation];
 
 }
 -(void)buttonCancel:(UIButton *)sender
 {
+    audioCancelled = YES;
     [self stopRecording];
     [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     [self hideRecordAnimation];
@@ -1109,7 +1129,8 @@
         if ([msgType isEqualToString:@"audio"]) {
             NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
             int theDuration = [audioFile[1] intValue]+1;
-            int dW = 220*theDuration/60;
+            theDuration = theDuration>=60?60:theDuration;
+            int dW = 210*theDuration/60;
             float theW = dW>45?(float)dW:45.0f;
             cell.messageContentView.attributedText = nil;
             [cell.messageContentView setFrame:CGRectMake(320-theW- padding-15-10-25+3, padding*2-9, 40, 30)];
@@ -1156,6 +1177,7 @@
             float imgW = [imgFile[1] floatValue];
             float imgH = [imgFile[2] floatValue];
             cell.messageContentView.attributedText = nil;
+            cell.messageContentView.text = @"";
             [cell.messageContentView setFrame:CGRectMake(320-imgW- padding-15-10-25+3+10, padding*2-9, 40, 30)];
             [cell.bgImageView setFrame:CGRectMake(320-imgW - padding-20-10-25-10+10, padding*2-15, imgW+20, imgH+10)];
             cell.contentImgV.hidden = NO;
@@ -1229,7 +1251,8 @@
         if ([msgType isEqualToString:@"audio"]) {
             NSArray * audioFile = [self getFileIDAndSize:[dict objectForKey:@"msg"]];
             int theDuration = [audioFile[1] intValue]+1;
-            int dW = 220*theDuration/60;
+            theDuration = theDuration>=60?60:theDuration;
+            int dW = 210*theDuration/60;
             float theW = dW>45?(float)dW:45.0f;
             cell.messageContentView.attributedText = nil;
             [cell.messageContentView setFrame:CGRectMake(padding+5+45+theW-30, padding*2-9+3-3, 40, 30)];
@@ -1238,8 +1261,8 @@
             }
             else{
                 //就是个简单占位，不要多想...
-                unichar attachmentCharacter = 0xfffc;
-                cell.messageContentView.text = [NSString stringWithFormat:@"%@%d''",[NSString stringWithCharacters:&attachmentCharacter length:1],theDuration];
+//                unichar attachmentCharacter = 0xfffc;
+                cell.messageContentView.text = [NSString stringWithFormat:@"%d''",theDuration];
             }
             
             
@@ -1259,7 +1282,7 @@
             [cell.activityV stopAnimating];
             if ([[dict objectForKey:@"readed"] isEqualToString:@"NO"]) {
                 cell.ifRead.hidden = NO;
-                [cell.ifRead setFrame:CGRectMake(padding-10+45+theW+23, padding*2-10+11, 15, 15)];
+                [cell.ifRead setFrame:CGRectMake(padding-10+45+theW+23, padding*2-10+2, 15, 15)];
             }
             else
             {
@@ -1274,6 +1297,7 @@
             float imgW = [imgFile[1] floatValue];
             float imgH = [imgFile[2] floatValue];
             cell.messageContentView.attributedText = nil;
+            cell.messageContentView.text = @"";
             [cell.messageContentView setFrame:CGRectMake(padding+5+45+imgW-20, padding*2-9, 40, 30)];
             [cell.bgImageView setFrame:CGRectMake(padding-10+45, padding*2-15, imgW+20, imgH+10)];
             cell.contentImgV.hidden = NO;
@@ -1614,7 +1638,7 @@
         }
         else
         {
-            
+            readyIndex = tempBtn.tag-1;
         }
     }
     NSLog(@"end");
@@ -2128,12 +2152,33 @@
 
 
 
-
+-(void)monitorRecordTime
+{
+    NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval cha=nowTime-beginTime;
+    if (cha>=50.0f) {
+        [recordTimeLabel setTextColor:[UIColor redColor]];
+    }
+    [recordTimeLabel setText:[NSString stringWithFormat:@"%d''",(int)cha]];
+    
+}
 
 - (BOOL)beginRecord
 {
     NSLog(@"begin record");
+    nowPlayingAudioID = @"no";
+    recordTimeOut = NO;
+    stopTime = NO;
+    audioCancelled = NO;
 
+    [self.tView reloadData];
+    if ([audioPlayer isPlaying]) {
+        [audioPlayer stop];
+        [self.session setCategory :AVAudioSessionCategoryPlayAndRecord error:nil];
+        [self.session setActive: YES error: nil];
+        UInt32 doChangeDefault = 1;
+        AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefault), &doChangeDefault);
+    }
 	NSError *error;
     [recordSetting setObject:
      [NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
@@ -2162,7 +2207,7 @@
 		return NO;
 	}
     [self showRecordAnimation];
-    beginTime = [[NSDate date] timeIntervalSince1970];
+    
 	// Initialize degate, metering, etc.
 	self.audioRecorder.delegate = self;
 	self.audioRecorder.meteringEnabled = YES;
@@ -2180,6 +2225,8 @@
         
 		return NO;
 	}
+    beginTime = [[NSDate date] timeIntervalSince1970];
+    recordTimer =  [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(monitorRecordTime) userInfo:nil repeats:YES];
 	return YES;
 }
 - (void) stopRecording
@@ -2190,12 +2237,23 @@
 }
 - (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag
 {
-
-    if (!canSendAudio) {
+    if (stopTime) {
         return;
     }
+    stopTime = YES;
+    if (recordTimer != nil) {
+        if( [recordTimer isValid])
+        {
+            [recordTimer invalidate];
+        }
+        recordTimer = nil;
+    }
+
+    [self hideRecordAnimation];
+
+
     NSLog(@"stop record delegate do");
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         #ifdef NotUseSimulator
 ////        NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
 //        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audioRecord.caf",rootRecordPath];
@@ -2215,6 +2273,23 @@
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:recorder.url options:nil];
         CMTime time = asset.duration;
         double durationInSeconds = CMTimeGetSeconds(time);
+        if (durationInSeconds>=1.0f&&durationInSeconds<=60.0f) {
+            canSendAudio = YES;
+        }
+        if (durationInSeconds<=1.0f) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+            [alert show];
+            canSendAudio = NO;
+        }
+        if (durationInSeconds>=60.0f) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已达到最大录制时间，为您发送" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+            [alert show];
+            recordTimeOut = YES;
+            canSendAudio = YES;
+        }
+        if (!canSendAudio||audioCancelled) {
+            return;
+        }
         int duration = (int)durationInSeconds;
         NSString * audioUUID = [[NSString stringWithFormat:@"%@",recorder.url] substringFromIndex:(rootRecordPath.length+1+7)];
         audioUUID = [audioUUID substringToIndex:(audioUUID.length-4)];
@@ -2245,12 +2320,12 @@
 //            self tempSendFileMsgWithID:<#(NSString *)#> FileType:<#(NSString *)#> Status:<#(NSString *)#>
         }];
         #endif
-        dispatch_async(dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
 //            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //            [succeful show];
 //            self.textView.text = @"";
-        });
-    });
+//        });
+//    });
 
 
 }
