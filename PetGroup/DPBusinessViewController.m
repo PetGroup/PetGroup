@@ -89,7 +89,7 @@
 }
 -(void)callPhoneNo
 {
-    UIAlertView* alertV = [[UIAlertView alloc]initWithTitle:nil message:@"确认要拨打电话致该商户?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确认", nil];
+    UIAlertView* alertV = [[UIAlertView alloc]initWithTitle:nil message:@"确认要拨打电话至该商户?" delegate:self cancelButtonTitle:@"点错啦" otherButtonTitles:@"确认", nil];
     [alertV show];
 }
 #pragma mark - Table view data source
