@@ -977,6 +977,9 @@
 {
     unichar attachmentCharacter = 0xfffc;
     NSString* contentStr = [[[NSString stringWithString:self.ariticle.content.string] stringByReplacingOccurrencesOfString:@" "withString:@""] stringByReplacingOccurrencesOfString:[NSString stringWithCharacters:&attachmentCharacter length:1] withString:@""];
+    if (contentStr.length>100) {
+        contentStr = [contentStr substringToIndex:99];
+    }
     return contentStr;
 }
 -(NSString*)getFirstImageUrl

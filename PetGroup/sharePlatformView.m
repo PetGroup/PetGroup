@@ -132,6 +132,11 @@
         cancleB.frame = CGRectMake(0, 200 , 320, 50);
         [cancleB addTarget:self action:@selector(canclesharePlatformView) forControlEvents:UIControlEventTouchUpInside];
         [whiteView addSubview:cancleB];
+        
+        UIButton* cancelB = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelB.frame = CGRectMake(0, 0, 320, self.frame.size.height - whiteView.frame.size.height);
+        [cancelB addTarget:self action:@selector(canclesharePlatformView) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:cancelB];
     }
     return self;
 }

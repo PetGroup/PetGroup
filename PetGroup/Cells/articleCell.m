@@ -108,13 +108,13 @@
     CGSize sz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
     
     CGSize linesSz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(_titleL.frame.size.width, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
-    if(sz.width <= linesSz.width) //判断是否折行
+    if(sz.width > linesSz.width && linesSz.height > 20)//判断是否折行
     {
-        lastPoint = CGPointMake(_titleL.frame.origin.x + sz.width, _titleL.frame.origin.y);
+        lastPoint = CGPointMake(_titleL.frame.origin.x + (int)sz.width % (int)linesSz.width,linesSz.height - 10);
     }
     else
     {
-        lastPoint = CGPointMake(_titleL.frame.origin.x + (int)sz.width % (int)linesSz.width,linesSz.height - 10);
+        lastPoint = CGPointMake(_titleL.frame.origin.x + sz.width, _titleL.frame.origin.y);
     }
     if (_article.haveImage) {
         _topI.hidden = NO;

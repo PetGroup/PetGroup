@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 @interface EditShareContentViewController ()
 {
+    int beganCount;
     MBProgressHUD* hud;
 }
 @property (nonatomic,retain) UITextView * textV;
@@ -90,6 +91,7 @@
 }
 -(void)shareContent
 {
+    beganCount = 0;
     [hud show:YES];
     id<ISSContent> publishContent = [ShareSDK content:_textV.text
                                        defaultContent:nil
@@ -112,8 +114,6 @@
                                     [ShareSDK userFieldWithType:SSUserFieldTypeName value:@"宠物圈"],
                                     SHARE_TYPE_NUMBER(ShareTypeTencentWeibo),
                                     nil]];
-    
-    BOOL needAuth = NO;
     ShareType shareType = 0;
     switch (self.shareStyle) {
         case shareStyleSineWeiBo:{
@@ -125,77 +125,34 @@
         default:
             break;
     }
-    if (![ShareSDK hasAuthorizedWithType:shareType])
-    {
-        needAuth = YES;
-        [ShareSDK getUserInfoWithType:shareType
-                          authOptions:authOptions
-                               result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-                                   
-                                   if (result)
-                                   {
-                                       //分享内容
-                                       [ShareSDK shareContent:publishContent
-                                                         type:shareType
-                                                  authOptions:authOptions
-                                                statusBarTips:NO
-                                                       result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                                                           if (state == SSResponseStateSuccess) {
-                                                               [hud hide:YES];
-                                                               if (self.delegate) {
-                                                                   [_delegate shareContentSuccess];
-                                                               }
-                                                               [self dismissViewControllerAnimated:YES completion:nil];
-                                                           }
-                                                           if (state == SSResponseStateFail) {
-                                                               [hud hide:YES];
-                                                               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                                                   message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
-                                                                                                                  delegate:nil
-                                                                                                         cancelButtonTitle:@"知道了"
-                                                                                                         otherButtonTitles:nil];
-                                                               [alertView show];
-                                                           }
-                                                       }];
-                                   }
-                                   else
-                                   {
-                                       [hud hide:YES];
-                                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                           message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
-                                                                                          delegate:nil
-                                                                                 cancelButtonTitle:@"知道了"
-                                                                                 otherButtonTitles:nil];
-                                       [alertView show];
-                                   }
-                               }];
-    }
-    
-    if (!needAuth)
-    {
-        //分享内容
-        [ShareSDK shareContent:publishContent
-                          type:shareType
-                   authOptions:authOptions
-                 statusBarTips:NO
-                        result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                            if (state == SSResponseStateSuccess) {
-                                [hud hide:YES];
-                                if (self.delegate) {
-                                    [_delegate shareContentSuccess];
-                                }
-                                [self dismissViewControllerAnimated:YES completion:nil];
+    [ShareSDK shareContent:publishContent
+                      type:shareType
+               authOptions:authOptions
+             statusBarTips:NO
+                    result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                        if (state == SSResponseStateBegan) {
+                            NSLog(@"Cancel");
+                            beganCount++;
+                            if (beganCount == 4) {
+                                [ShareSDK cancelAuthWithType:shareType];
                             }
-                            if (state == SSResponseStateFail) {
-                                [hud hide:YES];
-                                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                    message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
-                                                                                   delegate:nil
-                                                                          cancelButtonTitle:@"知道了"
-                                                                          otherButtonTitles:nil];
-                                [alertView show];
+                        }
+                        if (state == SSResponseStateSuccess) {
+                            [hud hide:YES];
+                            if (self.delegate) {
+                                [_delegate shareContentSuccess];
                             }
-                        }];
-    }
+                            [self dismissViewControllerAnimated:YES completion:nil];
+                        }
+                        if (state == SSResponseStateFail) {
+                            [hud hide:YES];
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                message:[NSString stringWithFormat:@"发送失败!%@", [error errorDescription]]
+                                                                               delegate:nil
+                                                                      cancelButtonTitle:@"知道了"
+                                                                      otherButtonTitles:nil];
+                            [alertView show];
+                        }
+                    }];
 }
 @end
