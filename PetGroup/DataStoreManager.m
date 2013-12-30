@@ -327,6 +327,8 @@
 +(void)refreshThumbMsgsAfterDeleteCommonMsg:(NSDictionary *)message ForUser:(NSString *)username ifDel:(BOOL)del
 {
     NSString * msgContent = [message objectForKey:@"msg"];
+    NSString * fileType = [message objectForKey:@"fileType"];
+    fileType = fileType?fileType:@"text";
     NSDate * sendTime = [NSDate dateWithTimeIntervalSince1970:[[message objectForKey:@"time"] doubleValue]];
     [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
         NSPredicate * predicate;
@@ -341,7 +343,14 @@
             }
             else
             {
-                thumbMsgs.msgContent = msgContent;
+                if ([fileType isEqualToString:@"audio"]) {
+                    thumbMsgs.msgContent = @"[语音]";
+                }
+                else if ([fileType isEqualToString:@"img"]){
+                    thumbMsgs.msgContent = @"[图片]";
+                }
+                else
+                    thumbMsgs.msgContent = msgContent;
                 thumbMsgs.sendTime = sendTime;
             }
         }
