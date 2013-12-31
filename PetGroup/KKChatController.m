@@ -14,6 +14,7 @@
 #import "XMPPHelper.h"
 #import "JSON.h"
 #import "HeightCalculate.h"
+#import "MessageViewController.h"
 #ifdef NotUseSimulator
     #import "amrFileCodec.h"
 #endif
@@ -66,7 +67,8 @@
     recordTimeOut = NO;
     stopTime = NO;
     audioCancelled = NO;
-
+    self.messageV = self.navigationController.viewControllers[0];
+    self.mlNavigationController = self.messageV.mlNavigationController;
     
     NSLog(@"wwwwwww:%@",currentID);
 //    if (currentID) {
@@ -218,17 +220,24 @@
     [inPutView addSubview:audioBtn];
     [audioBtn addTarget:self action:@selector(audioBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
    
-    audioRecordBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [audioRecordBtn setFrame:CGRectMake(40, inPutView.frame.size.height-42, 200, 35)];
-    [audioRecordBtn setBackgroundImage:[UIImage imageNamed:@"yanzhengma_normal.png"] forState:UIControlStateNormal];
-    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    audioRecordBtn = [[UIImageView alloc] init];
+    //[UIButton buttonWithType:UIButtonTypeCustom];
+    [audioRecordBtn setFrame:CGRectMake(40, inPutView.frame.size.height-43, 200, 35)];
+    [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+//    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     [inPutView addSubview:audioRecordBtn];
     audioRecordBtn.hidden = YES;
-    [audioRecordBtn addTarget:self action:@selector(buttonDown) forControlEvents:UIControlEventTouchDown];
-
-    [audioRecordBtn addTarget:self action:@selector(buttonUp) forControlEvents:UIControlEventTouchUpInside];
-    [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchUpOutside];
-    [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchCancel];
+    recordTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 7.5, 200, 20)];
+    [recordTextLabel setBackgroundColor:[UIColor clearColor]];
+    [recordTextLabel setText:@"按住说话"];
+    [recordTextLabel setTextColor:[UIColor grayColor]];
+    [audioRecordBtn addSubview:recordTextLabel];
+    [recordTextLabel setTextAlignment:NSTextAlignmentCenter];
+//    [audioRecordBtn addTarget:self action:@selector(buttonDown) forControlEvents:UIControlEventTouchDown];
+//
+//    [audioRecordBtn addTarget:self action:@selector(buttonUp) forControlEvents:UIControlEventTouchUpInside];
+//    [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchUpOutside];
+//    [audioRecordBtn addTarget:self action:@selector(buttonCancel:) forControlEvents:UIControlEventTouchCancel];
   /**************   语音图片等
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [emojiBtn setFrame:CGRectMake(250, inPutView.frame.size.height-12-27, 25, 27)];
@@ -313,7 +322,11 @@
     menu = [UIMenuController sharedMenuController];
     [menu setMenuItems:@[]];
     
-
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"处理中...";
+    hud.showCloseBtn = NO;
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
@@ -503,7 +516,7 @@
 -(void)buttonDown
 {
     canSendAudio = NO;
-    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
+//    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
     beginTime = [[NSDate date] timeIntervalSince1970];
     NSLog(@"recording voice button touchDown");
     
@@ -514,7 +527,7 @@
 -(void)buttonUp
 {
     
-    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+//    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
 //    if(endTime-beginTime>0.5)
 //    {
@@ -537,7 +550,7 @@
 {
     audioCancelled = YES;
     [self stopRecording];
-    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+//    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
     [self hideRecordAnimation];
 }
 
@@ -886,9 +899,61 @@
         }
         canAdd = YES;
     }
-    
+    if (audioRecordBtn.hidden==NO) {
+        
+       CGPoint lastPoint=[touch locationInView:self.view];
+        if (lastPoint.x>=45&&lastPoint.x<=45+200&&lastPoint.y>=inPutView.frame.origin.y+3&&lastPoint.y<=inPutView.frame.origin.y+40) {
+            [audioRecordBtn setImage:[UIImage imageNamed:@"recordBB"]];
+            [recordTextLabel setText:@"松开发送您说的话"];
+            [self.mlNavigationController setGestureEnableNO];
+            canSendAudio = NO;
+            //    [audioRecordBtn setTitle:@"松开发送您说的话" forState:UIControlStateNormal];
+            beginTime = [[NSDate date] timeIntervalSince1970];
+            NSLog(@"recording voice button touchDown");
+            
+            
+            [self beginRecord];
+
+        }
+    }
 
  
+}
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch * touch = [touches anyObject];
+    if (audioRecordBtn.hidden==NO) {
+        CGPoint lastPoint=[touch locationInView:self.view];
+        if (lastPoint.x<=45||lastPoint.x>=45+200||lastPoint.y<=inPutView.frame.origin.y+3||lastPoint.y>=inPutView.frame.origin.y+40) {
+            audioCancelled = YES;
+            [self stopRecording];
+            //    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+            [self hideRecordAnimation];
+            [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+            [recordTextLabel setText:@"按住说话"];
+            NSLog(@"recordCancel");
+        }
+    }
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.mlNavigationController setGestureEnableYES];
+    UITouch * touch = [touches anyObject];
+    if (audioRecordBtn.hidden==NO) {
+        [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+        CGPoint lastPoint=[touch locationInView:self.view];
+        if (lastPoint.x>=45&&lastPoint.x<=45+200&&lastPoint.y>=inPutView.frame.origin.y+3&&lastPoint.y<=inPutView.frame.origin.y+40) {
+            if (!recordTimeOut) {
+                [self stopRecording];
+            }
+            recordTimeOut = NO;
+            [self hideRecordAnimation];
+            [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+            [recordTextLabel setText:@"按住说话"];
+            NSLog(@"recordSuccess");
+        }
+    }
 }
 
 - (void)viewDidUnload
@@ -2269,10 +2334,10 @@
     }
 
     [self hideRecordAnimation];
-
+    [hud show:NO];
 
     NSLog(@"stop record delegate do");
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         #ifdef NotUseSimulator
 ////        NSString *filePath1 = [NSHomeDirectory() stringByAppendingPathComponent: @"Documents/recording.caf"];
 //        NSString  *localRecordPath = [NSString stringWithFormat:@"%@/audioRecord.caf",rootRecordPath];
@@ -2292,59 +2357,64 @@
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:recorder.url options:nil];
         CMTime time = asset.duration;
         double durationInSeconds = CMTimeGetSeconds(time);
-        if (durationInSeconds>=1.0f&&durationInSeconds<=60.0f) {
-            canSendAudio = YES;
-        }
-        if (durationInSeconds<=1.0f) {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-            [alert show];
-            canSendAudio = NO;
-        }
-        if (durationInSeconds>=60.0f) {
-//            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"已达到最大录制时间，为您发送" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
-//            [alert show];
-            recordTimeOut = YES;
-            canSendAudio = YES;
-        }
-        if (!canSendAudio||audioCancelled) {
-            return;
-        }
-        int duration = (int)durationInSeconds;
-        NSString * audioUUID = [[NSString stringWithFormat:@"%@",recorder.url] substringFromIndex:(rootRecordPath.length+1+7)];
-        audioUUID = [audioUUID substringToIndex:(audioUUID.length-4)];
-        [sendingFileArray addObject:[NSString stringWithFormat:@"%@_%d",audioUUID,duration]];
-        NSString * sendingID = [NSString stringWithFormat:@"%@_%d",audioUUID,duration];
-        [self tempSendFileMsgWithFileID:sendingID MsgID:audioUUID FileType:@"audio" Status:@"sending"];
-        
-        
-        [NetManager uploadAudioFileData:data1 WithURLStr:BaseUploadImageUrl MsgID:audioUUID AudioID:audioUUID  AudioName:@"recording.amr"  TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject, NSString * theAudioID,NSString *msgID) {
-//            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-//            NSDictionary * dict = [receiveStr JSONValue];
-//            if ([dict objectForKey:@"success"]) {
-            NSString * sendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
-//            NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID]];
-//            [data writeToURL:myRecordPath atomically:YES];
-            [data writeToFile:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID] atomically:YES];
-            [self finalSendMsgWithFileID:sendedID MsgID:msgID FileType:@"audio"];
-//            }
-//            else
-//            {
-//                NSLog(@"audioUploadError:%@",[dict objectForKey:@"entity"]);
-//            }
-            NSLog(@"audioUploaded:%@",theAudioID);
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error, NSString * theAudioID,NSString * msgID) {
-            NSString * notsendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
-            [self finalMsgFailedSendWithFileID:notsendedID MsgID:msgID FileType:@"audio"];
-            NSLog(@"audioUploadError:%@",error);
-//            self tempSendFileMsgWithID:<#(NSString *)#> FileType:<#(NSString *)#> Status:<#(NSString *)#>
-        }];
-        #endif
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [succeful show];
-//            self.textView.text = @"";
-//        });
-//    });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:NO];
+            if (durationInSeconds>=1.0f&&durationInSeconds<=60.0f) {
+                canSendAudio = YES;
+            }
+            if (durationInSeconds<=1.0f) {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"说话时间太短了" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+                [alert show];
+                canSendAudio = NO;
+            }
+            if (durationInSeconds>=60.0f) {
+                [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+                [recordTextLabel setText:@"按住说话"];
+//                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"达到最大录制时间，已为您发送" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+//                [alert show];
+                recordTimeOut = YES;
+                canSendAudio = YES;
+            }
+            if (!canSendAudio||audioCancelled) {
+                return;
+            }
+            int duration = (int)durationInSeconds;
+            NSString * audioUUID = [[NSString stringWithFormat:@"%@",recorder.url] substringFromIndex:(rootRecordPath.length+1+7)];
+            audioUUID = [audioUUID substringToIndex:(audioUUID.length-4)];
+            [sendingFileArray addObject:[NSString stringWithFormat:@"%@_%d",audioUUID,duration]];
+            NSString * sendingID = [NSString stringWithFormat:@"%@_%d",audioUUID,duration];
+            [self tempSendFileMsgWithFileID:sendingID MsgID:audioUUID FileType:@"audio" Status:@"sending"];
+            
+            
+            [NetManager uploadAudioFileData:data1 WithURLStr:BaseUploadImageUrl MsgID:audioUUID AudioID:audioUUID  AudioName:@"recording.amr"  TheController:self Success:^(AFHTTPRequestOperation *operation, id responseObject, NSString * theAudioID,NSString *msgID) {
+                //            NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+                //            NSDictionary * dict = [receiveStr JSONValue];
+                //            if ([dict objectForKey:@"success"]) {
+                NSString * sendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+                //            NSURL * myRecordPath = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID]];
+                //            [data writeToURL:myRecordPath atomically:YES];
+                [data writeToFile:[NSString stringWithFormat:@"%@/%@.caf",rootRecordPath,theAudioID] atomically:YES];
+                [self finalSendMsgWithFileID:sendedID MsgID:msgID FileType:@"audio"];
+                //            }
+                //            else
+                //            {
+                //                NSLog(@"audioUploadError:%@",[dict objectForKey:@"entity"]);
+                //            }
+                NSLog(@"audioUploaded:%@",theAudioID);
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error, NSString * theAudioID,NSString * msgID) {
+                NSString * notsendedID = [NSString stringWithFormat:@"%@_%d",theAudioID,duration];
+                [self finalMsgFailedSendWithFileID:notsendedID MsgID:msgID FileType:@"audio"];
+                NSLog(@"audioUploadError:%@",error);
+                //            self tempSendFileMsgWithID:<#(NSString *)#> FileType:<#(NSString *)#> Status:<#(NSString *)#>
+            }];
+
+            //            UIAlertView *succeful=[[UIAlertView alloc]initWithTitle:nil message:@"录音压缩完成,可以上传!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //            [succeful show];
+            //            self.textView.text = @"";
+        });
+                #endif
+
+    });
 
 
 }

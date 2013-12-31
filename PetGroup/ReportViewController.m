@@ -111,8 +111,8 @@
     [remainingLabel setText:[NSString stringWithFormat:@"还可以输入%d字",self.maxCount-self.inputTextF.text.length]];
     [bigBG addSubview:remainingLabel];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.delegate = self;
     hud.labelText = @"提交中...";
 	// Do any additional setup after loading the view.

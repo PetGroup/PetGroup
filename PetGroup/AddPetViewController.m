@@ -218,8 +218,8 @@
     _ageL.textColor = [UIColor grayColor];
     [self.view addSubview:_ageL];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.labelText = @"提交中...";
 }
 

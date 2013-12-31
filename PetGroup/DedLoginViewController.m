@@ -79,8 +79,8 @@
     [goBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [goBtn addTarget:self action:@selector(goBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.labelText = @"正在设置您的个人信息";
 }
 

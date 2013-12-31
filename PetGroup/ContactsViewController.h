@@ -29,6 +29,7 @@
     float diffH;
     SRRefreshView   *_slimeView;
     BOOL ifRequested;
+    BOOL canGetFriends;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic)UITableView *contactsTable;

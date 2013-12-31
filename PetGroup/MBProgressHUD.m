@@ -24,7 +24,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 
 @interface MBProgressHUD ()
-
+{
+    UIButton * closeBtn;
+}
 - (void)setupLabels;
 - (void)registerForKVO;
 - (void)unregisterFromKVO;
@@ -62,6 +64,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	UILabel *detailsLabel;
 	BOOL isFinished;
 	CGAffineTransform rotationTransform;
+    
 }
 
 #pragma mark - Properties
@@ -180,8 +183,13 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.alpha = 0.0f;
 		
 		taskInProgress = NO;
+        self.showCloseBtn = YES;
 		rotationTransform = CGAffineTransformIdentity;
-		
+        closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [closeBtn setImage:[UIImage imageNamed:@"delenew"] forState:UIControlStateNormal];
+//        [closeBtn setTitle:@"取消" forState:UIControlStateNormal];
+        [closeBtn setFrame:CGRectMake(0, 0, 30, 30)];
+        [self addSubview:closeBtn];
 		[self setupLabels];
 		[self updateIndicators];
 		[self registerForKVO];
@@ -239,7 +247,13 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		[self setNeedsDisplay];
 		[self showUsingAnimation:useAnimation];
 	}
+    [self performSelector:@selector(manualHideIt) withObject:nil afterDelay:NormalRequestTimeout];
 //    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+-(void)manualHideIt
+{
+    [self hide:YES];
 }
 
 - (void)hide:(BOOL)animated {
@@ -571,6 +585,14 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	}
 	
 	self.size = totalSize;
+    [closeBtn setFrame:CGRectMake(indicator.frame.origin.x+32, indicator.frame.origin.y-25, 40, 40)];
+    [closeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [closeBtn addTarget:self action:@selector(manualHideIt) forControlEvents:UIControlEventTouchUpInside];
+    if (!self.showCloseBtn) {
+        closeBtn.hidden = YES;
+    }
+//    [closeBtn setTitle:@"X" forState:UIControlStateNormal];
+    NSLog(@"theSizeOrigin:%f,%f",self.frame.origin.x,self.frame.origin.y);
 }
 
 #pragma mark BG Drawing
@@ -772,6 +794,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.opaque = NO;
 		_progress = 0.f;
 		_annular = NO;
+
 		_progressTintColor = [[UIColor alloc] initWithWhite:1.f alpha:1.f];
 		_backgroundTintColor = [[UIColor alloc] initWithWhite:1.f alpha:.1f];
 		[self registerForKVO];
