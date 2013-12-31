@@ -14,8 +14,12 @@
 #import "TempData.h"
 #import "CustomTabBar.h"
 #import "EGOImageButton.h"
+#import "EGOImageView.h"
 #import "WebViewViewController.h"
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
+{
+    NSTimer* timer;
+}
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)NSArray*nameArray;
 @property (nonatomic,retain)NSArray*iconNameArray;
@@ -140,6 +144,24 @@
         return cell;
     }
 }
+
+#pragma mark - UIScroll View delegate
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.x >= _advertisementArray.count*320) {
+        scrollView.contentOffset = CGPointMake(0, 0);
+        return;
+    }
+    if (timer != nil) {
+        [timer invalidate];
+    }
+    timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -176,14 +198,32 @@
         UIScrollView * sc = [[UIScrollView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-(diffH?49:0)-60, 320, 60)];
         sc.showsHorizontalScrollIndicator = NO;
 //        sc.backgroundColor = [UIColor blackColor];
-        sc.contentSize = CGSizeMake(320*_advertisementArray.count, 60);
-        for (int i = 0;i<_advertisementArray.count;i++) {
-            EGOImageButton * button = [[EGOImageButton alloc]initWithFrame:CGRectMake(i*320, 0, 320, 60)];
-            button.tag = 100+i;
+        if (_advertisementArray.count == 1) {
+            sc.contentSize = CGSizeMake(320 , 60);
+            EGOImageButton * button = [[EGOImageButton alloc]initWithFrame:CGRectMake(0, 0, 320, 60)];
+            button.tag = 100;
             button.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[_advertisementArray[0] objectForKey:@"img"]]];
             [button addTarget:self action:@selector(readAdvertisement:) forControlEvents:UIControlEventTouchUpInside];
             [sc addSubview:button];
+        }else
+        {
+            sc.contentSize = CGSizeMake(320*_advertisementArray.count + 320, 60);
+            for (int i = 0;i<_advertisementArray.count;i++) {
+                EGOImageButton * button = [[EGOImageButton alloc]initWithFrame:CGRectMake(i*320, 0, 320, 60)];
+                button.tag = 100+i;
+                button.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[_advertisementArray[i] objectForKey:@"img"]]];
+                [button addTarget:self action:@selector(readAdvertisement:) forControlEvents:UIControlEventTouchUpInside];
+                [sc addSubview:button];
+            }
+            EGOImageView * view = [[EGOImageView alloc]initWithFrame:CGRectMake(_advertisementArray.count*320, 0, 320, 60)];
+            view.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[_advertisementArray[0] objectForKey:@"img"]]];
+            [sc addSubview:view];
+            if (timer != nil) {
+                [timer invalidate];
+            }
+            timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
         }
+        sc.delegate = self;
         sc.tag = 2014;
         sc.pagingEnabled = YES;
         [self.view addSubview:sc];
@@ -199,6 +239,9 @@
 {
     [[self.view viewWithTag:2013] removeFromSuperview];
     [[self.view viewWithTag:2014] removeFromSuperview];
+    if (timer != nil) {
+        [timer invalidate];
+    }
 }
 -(void)readAdvertisement:(UIButton*)button
 {
@@ -242,5 +285,14 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
+}
+-(void)timerDown:(NSTimer*)aTimer
+{
+    UIScrollView * sc = (UIScrollView*)[self.view viewWithTag:2014];
+    sc.contentOffset = CGPointMake(sc.contentOffset.x + 320, 0);
+    if (sc.contentOffset.x >= _advertisementArray.count*320) {
+        sc.contentOffset = CGPointMake(0, 0);
+        return;
+    }
 }
 @end

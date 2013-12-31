@@ -9,5 +9,6 @@
 #import "hotPintsDataSource.h"
 
 @interface NewReplyArticleDataSource : hotPintsDataSource
-
+@property (nonatomic,assign)BOOL needSave;
+-(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure;
 @end

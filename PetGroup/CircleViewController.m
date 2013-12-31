@@ -165,9 +165,9 @@
     [_backGroundV addSubview:_hotPintsV];
     
     self.publishArticleDS = [[NewReplyArticleDataSource alloc]init];
+    _publishArticleDS.needSave = YES;
     _hotPintsV.dataSource = _publishArticleDS;
     _publishArticleDS.myController = self;
-    [self reloadHotPintsData];
     
     self.goodV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-139.5-diffH)];
     _goodV.rowHeight = 80;
@@ -175,9 +175,9 @@
     [_backGroundV addSubview:_goodV];
     
     self.goodArticleDS = [[GoodArticleDataSource alloc]init];
+    _goodArticleDS.needSave = YES;
     _goodV.dataSource = _goodArticleDS;
     _goodArticleDS.myController = self;
-    [self reloadGoodArticleData];
     
     self.attentionV = [[UITableView alloc]initWithFrame:CGRectMake(640, 0, 320, self.view.frame.size.height-139.5-diffH)];
     _attentionV.contentInset = UIEdgeInsetsMake(0, 0, -sectionFooterHeight, 0);
@@ -677,6 +677,18 @@
         [self reloadAttentionData];
     } failure:^{
         
+    }];
+    [_publishArticleDS loadHistorySuccess:^{
+        [self.hotPintsV reloadData];
+        [self reloadHotPintsData];
+    } failure:^{
+        [self reloadHotPintsData];
+    }];
+    [_goodArticleDS loadHistorySuccess:^{
+        [self.goodV reloadData];
+        [self reloadGoodArticleData];
+    } failure:^{
+        [self reloadGoodArticleData];
     }];
 }
 #pragma mark -

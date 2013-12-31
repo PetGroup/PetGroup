@@ -9,6 +9,29 @@
 #import "GoodArticleDataSource.h"
 #import "Article.h"
 @implementation GoodArticleDataSource
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.needSave = NO;
+    }
+    return self;
+}
+-(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure
+{
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSArray* array = [defaults objectForKey:MyGoodArticle];
+    if (array) {
+        for (NSDictionary* dic in array) {
+            Article* a = [[Article alloc]initWithDictionnary:dic];
+            [self.dataSourceArray addObject:a];
+        }
+        success();
+    }else
+    {
+        failure();
+    }
+}
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {// body={"method":"getEuteNoteList","token":"","params":{"forumPid":"92DE9E82807142A293107DFFC4368177","pageNo":"1","pageSize":"3"}}
     self.pageNo = 0;
@@ -32,6 +55,11 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
         NSArray* array = responseObject;
+        if (self.needSave) {
+            NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:array forKey:MyGoodArticle];
+            [defaults synchronize];
+        }
         [self.dataSourceArray removeAllObjects];
         if (array.count > 0) {
             for (NSDictionary* dic in array) {
