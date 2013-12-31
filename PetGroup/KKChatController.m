@@ -123,7 +123,7 @@
     [self.view addSubview:profileButton];
     [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
     
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 2+diffH, 180, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
