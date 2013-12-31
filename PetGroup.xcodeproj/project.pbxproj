@@ -769,6 +769,7 @@
 		97EC66A918725B8900D434F2 /* recordB.png in Resources */ = {isa = PBXBuildFile; fileRef = 97EC66A818725B8900D434F2 /* recordB.png */; };
 		97EC66AB18725EDA00D434F2 /* recordBB.png in Resources */ = {isa = PBXBuildFile; fileRef = 97EC66AA18725EDA00D434F2 /* recordBB.png */; };
 		97EC66AF18727A4B00D434F2 /* delenew.png in Resources */ = {isa = PBXBuildFile; fileRef = 97EC66AE18727A4B00D434F2 /* delenew.png */; };
+		97EC66B518729DDD00D434F2 /* conten_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 97EC66B418729DDD00D434F2 /* conten_share.png */; };
 		97ED57F8185AA99B00CAE5CA /* filterBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 97ED57F7185AA99B00CAE5CA /* filterBtn.png */; };
 		97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6A18338C2100FD6725 /* Default@2x.png */; };
 		97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F567C8180E84B000A72604 /* AVFoundation.framework */; };
@@ -1929,6 +1930,7 @@
 		97EC66A818725B8900D434F2 /* recordB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordB.png; sourceTree = "<group>"; };
 		97EC66AA18725EDA00D434F2 /* recordBB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordBB.png; sourceTree = "<group>"; };
 		97EC66AE18727A4B00D434F2 /* delenew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delenew.png; sourceTree = "<group>"; };
+		97EC66B418729DDD00D434F2 /* conten_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = conten_share.png; sourceTree = "<group>"; };
 		97ED57F7185AA99B00CAE5CA /* filterBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filterBtn.png; sourceTree = "<group>"; };
 		97F2FA6A18338C2100FD6725 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		97F56701180E364400A72604 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -2307,6 +2309,7 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				97EC66B418729DDD00D434F2 /* conten_share.png */,
 				973901D318585B850091930A /* fdy.png */,
 				973901D418585B850091930A /* circleplaceholder.png */,
 				72D7B93418556E750048FAE2 /* scroll_bg.png */,
@@ -4782,6 +4785,7 @@
 				9700D3C518502C81003260BC /* tabbar_sel_04.png in Resources */,
 				97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */,
 				72795AFB1844456C00BB58E0 /* star_16_3.png in Resources */,
+				97EC66B518729DDD00D434F2 /* conten_share.png in Resources */,
 				97DB09CF17C5B037000EC195 /* xuanzechongwu-bg.png in Resources */,
 				72D7B9411856C5D70048FAE2 /* circle_normal.png in Resources */,
 				97DB09D717C5B037000EC195 /* zhuren.png in Resources */,

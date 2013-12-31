@@ -82,7 +82,7 @@
         [self.customTabBarController hidesTabBar:NO animated:YES];
         [[TempData sharedInstance] Panned:YES];
     }
-    [self advertisement];
+//    [self advertisement];
 }
 - (void)didReceiveMemoryWarning
 {

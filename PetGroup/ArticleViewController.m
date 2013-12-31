@@ -109,10 +109,11 @@
     [bottomIV addSubview:showB];
     
     UIButton* shareB = [UIButton buttonWithType:UIButtonTypeCustom];
-    [shareB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//    [shareB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
 //    [shareB setBackgroundImage:[UIImage imageNamed:@"pageChange"] forState:UIControlStateNormal];
-    [shareB setTitle:@"分享" forState:UIControlStateNormal];
-    shareB.frame = CGRectMake(70, 4.5, 50, 40);
+//    [shareB setTitle:@"分享" forState:UIControlStateNormal];
+    [shareB setImage:[UIImage imageNamed:@"conten_share"] forState:UIControlStateNormal];
+    shareB.frame = CGRectMake(73, 8, 30, 30);
     [shareB addTarget:self action:@selector(shareTheArticle) forControlEvents:UIControlEventTouchUpInside];
     [bottomIV addSubview:shareB];
     
