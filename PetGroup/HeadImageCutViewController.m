@@ -104,6 +104,7 @@
         hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
         [[UIApplication sharedApplication].keyWindow addSubview:hud];
         hud.delegate = self;
+        hud.showCloseBtn = NO;
         return;
     }
     for (int i = 0;i < self.imgIDArray.count;i++) {
