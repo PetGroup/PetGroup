@@ -650,6 +650,8 @@
         //        NSDictionary * recDict = [receiveStr JSONValue];
         //        [DataStoreManager saveUserInfo:responseObject];
         //        [self refreshFriendList];
+        TempData * uu = [TempData sharedInstance];
+        uu.haveGotFriends = YES;
         [self parseFriendsList:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

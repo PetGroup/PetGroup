@@ -166,8 +166,8 @@
         [self.view addSubview:tpic22];
     }
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.labelText = @"正在完善您的信息...";
 }
 

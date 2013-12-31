@@ -10,9 +10,11 @@
 #import "Reachability.h"
 #import "TempData.h"
 #import "LoadingViewController.h"
+
 @class ContentDetailViewController;
 @class ViewController;
 @class XMPPHelper;
+@class MBProgressHUD;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     BOOL inActive;

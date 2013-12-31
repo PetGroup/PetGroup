@@ -27,6 +27,7 @@
         rowsArray = [NSMutableArray array];
         sectionIndexArray = [NSMutableArray array];
         ifRequested = NO;
+        canGetFriends = YES;
     }
     return self;
 }
@@ -154,7 +155,11 @@
 {
     
     [self refreshFriendList];
-    
+    TempData * uu = [TempData sharedInstance];
+    if (!uu.haveGotFriends&&canGetFriends) {
+        canGetFriends = NO;
+        [self getFriendByHttp];
+    }
  //   [self getFriendInfo:@"england"];
 }
 -(void)getFriendByHttp
@@ -177,6 +182,8 @@
 //        NSDictionary * recDict = [receiveStr JSONValue];
 //        [DataStoreManager saveUserInfo:responseObject];
 //        [self refreshFriendList];
+        TempData * uu = [TempData sharedInstance];
+        uu.haveGotFriends = YES;
         [self parseFriendsList:responseObject];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -186,15 +193,17 @@
 -(void)parseFriendsList:(NSArray *)friendsList
 {
     dispatch_queue_t queue = dispatch_queue_create("com.pet.StoreFriends", NULL);
-    for (NSDictionary * dict in friendsList) {
-        dispatch_async(queue, ^{
+    dispatch_async(queue, ^{
+        for (NSDictionary * dict in friendsList) {
+            
             [DataStoreManager saveUserInfo:dict];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshFriendList];
-            });
+            
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            canGetFriends = YES;
         });
-    }
-    [self refreshFriendList];
+    });
+    
 }
 -(void)refreshFriendList
 {

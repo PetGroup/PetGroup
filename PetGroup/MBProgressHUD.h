@@ -280,7 +280,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * @see MBProgressHUDMode
  */
 @property (assign) MBProgressHUDMode mode;
-
+@property (assign,nonatomic) BOOL showCloseBtn;
 /**
  * The animation type that should be used when the HUD is shown and hidden. 
  *

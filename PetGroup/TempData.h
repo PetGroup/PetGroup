@@ -29,6 +29,7 @@
 @property (assign,nonatomic)BOOL newFriendsReq;
 @property (nonatomic,assign)BOOL needDisplayPushNotification;
 @property (nonatomic,assign)BOOL changeUser;
+@property (nonatomic,assign)BOOL haveGotFriends;
 
 + (TempData*)sharedInstance;
 -(void)setOpened:(BOOL)haveOpened;

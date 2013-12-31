@@ -23,12 +23,13 @@
 #import "EmojiView.h"
 #import "HeadImageCutViewController.h"
 #import "MBProgressHUD.h"
+#import "MLNavigationController.h"
 typedef  enum
 {
     actionSheetMore = 0,
     actionSheetChoosePic
 }ActionSheetStyle;
-@class AppDelegate, XMPPHelper;
+@class AppDelegate, XMPPHelper,MessageViewController;
 @interface KKChatController : UIViewController<UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate,StoreMsgDelegate,getContact,UIAlertViewDelegate,UIActionSheetDelegate,UIScrollViewDelegate,AVAudioRecorderDelegate,AVAudioSessionDelegate,AVAudioPlayerDelegate,HPGrowingTextViewDelegate,EmojiViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CutHeadImageSucceedDelegate,MBProgressHUDDelegate>
 {
     UILabel *titleLabel;
@@ -63,7 +64,8 @@ typedef  enum
     UIButton * audioBtn;
     UIButton * emojiBtn;
     UIButton * picBtn;
-    UIButton * audioRecordBtn;
+    UIImageView * audioRecordBtn;
+    UILabel * recordTextLabel;
     
     NSTimeInterval beginTime;
     UIButton * audioplayButton;
@@ -128,6 +130,8 @@ typedef  enum
 @property (nonatomic,retain) AVAudioSession *session;
 @property (nonatomic,retain) AVAudioRecorder *audioRecorder;
 @property (assign,nonatomic) ActionSheetStyle actionSheetStyle;
+@property (strong,nonatomic) MLNavigationController * mlNavigationController;
+@property (strong,nonatomic) MessageViewController * messageV;
 - (void)sendButton:(id)sender;
 - (void)closeButton:(id)sender;
 @end

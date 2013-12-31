@@ -93,8 +93,8 @@
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.labelText = @"搜索中...";
     [hud show:YES];
 //    [self reloadData];

@@ -173,7 +173,12 @@ NSString * gen_uuid()
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
     UIImage * a = [NetManager compressImage:uploadImage targetSizeX:640 targetSizeY:1136];
-    NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
+//    NSData *imageData = UIImageJPEGRepresentation(a, CompressionQuality);
+    NSData *imageData = UIImageJPEGRepresentation(a, 0.8);
+    NSLog(@"imageDtat1:%d",imageData.length);
+    if (imageData.length>1000000) {
+        imageData = UIImageJPEGRepresentation(a, 0.3);
+    }
 //    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage", nil];
     NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"N",@"addTopImage", nil];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
