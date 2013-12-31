@@ -116,6 +116,7 @@
         [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
         [hud show:YES];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [hud hide:YES];
             if ([responseObject boolValue]==true) {
                 [self next];
             }else{

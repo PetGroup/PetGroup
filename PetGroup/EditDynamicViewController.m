@@ -226,6 +226,7 @@
         [dic setObject:@"" forKey:@"transmitMsg"];
         [dic setObject:@"0" forKey:@"totalPat"];
         [dic setObject:@"0" forKey:@"didIpat"];
+        [hud hide:YES];
         Dynamic* dynamic = [[Dynamic alloc]initWithNSDictionary:dic];
         if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicListAddOneDynamic:)]) {
             [self.delegate dynamicListAddOneDynamic:dynamic];
