@@ -92,7 +92,6 @@
 -(void)shareContent
 {
     beganCount = 0;
-    [hud show:YES];
     id<ISSContent> publishContent = [ShareSDK content:_textV.text
                                        defaultContent:nil
                                                 image:self.imageUrl?[ShareSDK imageWithUrl:self.imageUrl]:[ShareSDK jpegImageWithImage:[UIImage imageNamed:@"icon-256"] quality:1]
@@ -131,9 +130,11 @@
              statusBarTips:NO
                     result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
                         if (state == SSResponseStateBegan) {
-                            NSLog(@"Cancel");
+                            NSLog(@"Began");
+                            [hud show:YES];
                             beganCount++;
                             if (beganCount == 4) {
+                                [hud hide:YES];
                                 [ShareSDK cancelAuthWithType:shareType];
                             }
                         }
