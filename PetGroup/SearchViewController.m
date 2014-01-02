@@ -99,8 +99,13 @@
     noResultLabel.textColor = [UIColor grayColor];
     [self.view addSubview:noResultLabel];
     noResultLabel.hidden = YES;
+    
+    
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [asearchBar becomeFirstResponder];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

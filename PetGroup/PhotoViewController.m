@@ -124,13 +124,14 @@
         
         _titleL = [[UILabel alloc]initWithFrame:CGRectMake(210, self.view.frame.size.height - 50, 52, 20)];
         _titleL.textColor = [UIColor whiteColor];
+        _titleL.backgroundColor = [UIColor clearColor];
         _titleL.textAlignment = NSTextAlignmentCenter;
         [self.view addSubview:_titleL];
         
         UIButton* shareB = [UIButton buttonWithType:UIButtonTypeCustom];
-        [shareB setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [shareB setTitle:@"分享" forState:UIControlStateNormal];
-        shareB.frame = CGRectMake(120, self.view.frame.size.height - 53, 75, 26);
+        [shareB setImage:[UIImage imageNamed:@"conten_share"] forState:UIControlStateNormal];
+//        shareB.frame = CGRectMake(73, 8, 30, 30);
+        shareB.frame = CGRectMake(140, self.view.frame.size.height - 55, 30, 30);
         [shareB addTarget:self action:@selector(shareTheArticle) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:shareB];
         

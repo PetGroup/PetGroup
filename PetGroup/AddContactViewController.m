@@ -156,7 +156,10 @@
 //    }];
     
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [asearchBar becomeFirstResponder];
+}
 #pragma mark -
 #pragma mark TableView 
 

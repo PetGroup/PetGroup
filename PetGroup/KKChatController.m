@@ -123,7 +123,7 @@
     [self.view addSubview:profileButton];
     [profileButton addTarget:self action:@selector(moreOperation) forControlEvents:UIControlEventTouchUpInside];
     
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(100, 2+diffH, 120, 40)];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 2+diffH, 180, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
     titleLabel.text=self.nickName;
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -2479,6 +2479,54 @@
 
 -(void)finalSendMsgWithFileID:(NSString *)fileID MsgID:(NSString *)msgID FileType:(NSString *)fileType
 {
+    if (!self.ifFriend) {
+        [self.appDel.xmppHelper addOrDenyFriend:YES user:self.chatWithUser];
+        [DataStoreManager addFriendToLocal:self.chatWithUser];
+        [DataStoreManager updateReceivedHellosStatus:@"accept" ForPerson:self.chatWithUser];
+        NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+        [body setStringValue:[NSString stringWithFormat:@"我是%@，我们已经是朋友啦!",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]]];
+        
+        //生成XML消息文档
+        NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+        //   [mes addAttributeWithName:@"nickname" stringValue:@"aaaa"];
+        //消息类型
+        [mes addAttributeWithName:@"type" stringValue:@"chat"];
+        
+        //发送给谁
+        [mes addAttributeWithName:@"to" stringValue:[self.chatWithUser stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+        //   NSLog(@"chatWithUser:%@",chatWithUser);
+        //由谁发送
+        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+        
+        [mes addAttributeWithName:@"msgtype" stringValue:@"normalchat"];
+        [mes addAttributeWithName:@"fileType" stringValue:@"text"];  //如果发送图片音频改这里
+        [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+        [mes addChild:body];
+        if (![self.appDel.xmppHelper sendMessage:mes]) {
+            [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+            //Do something when send failed...
+            return;
+        }
+        
+        
+        
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        
+        [dictionary setObject:[NSString stringWithFormat:@"我添加了%@为好友",self.nickName] forKey:@"msg"];
+        [dictionary setObject:@"you" forKey:@"sender"];
+        //加入发送时间
+        [dictionary setObject:[Common getCurrentTime] forKey:@"time"];
+        [dictionary setObject:self.chatWithUser forKey:@"receiver"];
+        [messages addObject:dictionary];
+        [self normalMsgToFinalMsg];
+        [DataStoreManager storeMyMessage:dictionary];
+        //重新刷新tableView
+        [self.tView reloadData];
+        if (messages.count>0) {
+            [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+        self.ifFriend = YES;
+    }
     NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
     [body setStringValue:fileID];
     
