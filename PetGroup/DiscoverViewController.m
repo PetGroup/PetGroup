@@ -16,6 +16,8 @@
 #import "EGOImageButton.h"
 #import "EGOImageView.h"
 #import "WebViewViewController.h"
+
+#import "SubjectViewController.h"
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     NSTimer* timer;
@@ -35,8 +37,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
-        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
+        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科",@"专题"];
+        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png",@""];
     }
     return self;
 }
@@ -64,6 +66,7 @@
     _tableV.delegate = self;
     _tableV.dataSource = self;
     _tableV.backgroundView = nil;
+    _tableV.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_tableV];
     
     [self loadAdvertisement];
@@ -106,48 +109,38 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row==4) {
-        return self.view.frame.size.height-44-diffH-240;
-    }
     return 60;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row!=4) {
-        static NSString *cellIdentifier = @"cell1";
-        MoreCell *cell = (MoreCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (cell == nil) {
-            cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        cell.headImageV.hidden = NO;
-        cell.titleLabel.hidden = NO;
-        cell.arrow.hidden = NO;
-        cell.headImageV.image = [UIImage imageNamed:_iconNameArray[indexPath.row]];
-        [cell.headImageV setFrame:CGRectMake(10, 7.5, 45, 45)];
-        //    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
-        cell.titleLabel.text = _nameArray[indexPath.row];
-        //    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
-        [cell.titleLabel setFrame:CGRectMake(70, 20, 100, 20)];
-        [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
+    static NSString *cellIdentifier = @"cell1";
+    MoreCell *cell = (MoreCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[MoreCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        return cell;
-    }else{
-        static NSString *cellIdentifier = @"advertisementCell";
-        UITableViewCell* cell =(UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:cellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        return cell;
     }
+    cell.headImageV.hidden = NO;
+    cell.titleLabel.hidden = NO;
+    cell.arrow.hidden = NO;
+    cell.headImageV.image = [UIImage imageNamed:_iconNameArray[indexPath.row]];
+    [cell.headImageV setFrame:CGRectMake(10, 7.5, 45, 45)];
+    //    [cell.imageView setFrame:CGRectMake(cell.imageView.frame.origin.x, cell.imageView.frame.origin.y, 35, 35)];
+    cell.titleLabel.text = _nameArray[indexPath.row];
+    //    [cell.titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [cell.titleLabel setFrame:CGRectMake(70, 20, 100, 20)];
+    [cell.arrow setFrame:CGRectMake(287, 18.5, 8.5, 12.5)];
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    return cell;
 }
 
 #pragma mark - UIScroll View delegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (scrollView == _tableV) {
+        return;
+    }
     if (scrollView.contentOffset.x >= _advertisementArray.count*320) {
         scrollView.contentOffset = CGPointMake(0, 0);
         return;
@@ -157,11 +150,6 @@
     }
     timer = [NSTimer scheduledTimerWithTimeInterval:6 target:self selector:@selector(timerDown:) userInfo:nil repeats:YES];
 }
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-	
-}
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -182,6 +170,10 @@
         case 3:{
             PetknowledgeViewController* pinterestVC = [[PetknowledgeViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
+        }break;
+        case 4:{
+            SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
+            [self.navigationController pushViewController:subjectVC animated:YES];
         }break;
         default:
             return;
