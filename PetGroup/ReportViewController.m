@@ -207,7 +207,17 @@
         return;
     }
     if (self.realReport) {
-        [self submitReport];
+        [self sendEMail];
+        [self.inputTextF resignFirstResponder];
+        if (self.realReport) {
+            [self.emailField resignFirstResponder];
+            [UIView animateWithDuration:0.3 animations:^{
+                [bigBG setFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+//        [self submitReport];
     }
     else{
 
@@ -215,6 +225,117 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
+-(void)sendEMail
+{
+    Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+    
+    if (mailClass != nil)
+    {
+        if ([mailClass canSendMail])
+        {
+            [self displayComposerSheet];
+        }
+        else
+        {
+            [self launchMailAppOnDevice];
+        }
+    }
+    else
+    {
+        [self launchMailAppOnDevice];
+    }
+}
+//可以发送邮件的话
+-(void)displayComposerSheet
+{
+    [hud show:YES];
+    hud.labelText = @"初始化邮件";
+    MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
+    
+    mailPicker.mailComposeDelegate = self;
+    
+    //设置主题
+    [mailPicker setSubject: @"宠物圈-意见反馈"];
+    
+    // 添加发送者
+    NSArray *toRecipients = [NSArray arrayWithObject: @"suggestion@52pet.net"];
+    //NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];
+    //NSArray *bccRecipients = [NSArray arrayWithObject:@"fourth@example.com", nil];
+    [mailPicker setToRecipients: toRecipients];
+    //[picker setCcRecipients:ccRecipients];
+    //[picker setBccRecipients:bccRecipients];
+    
+    // 添加图片
+
+    NSString *emailBody = [NSString stringWithFormat:@"%@\n%@",self.inputTextF.text,self.emailField.text.length>0?self.emailField.text:@""];
+    [mailPicker setMessageBody:emailBody isHTML:YES];
+    
+    [self presentViewController:mailPicker animated:YES completion:^{
+        [hud hide:YES];
+    }];
+}
+-(void)launchMailAppOnDevice
+{
+//    NSString *recipients = @"mailto:first@example.com&subject=my email!";
+//    //@"mailto:first@example.com?cc=second@example.com,third@example.com&subject=my email!";
+//    NSString *body = @"&body=email body!";
+//    
+//    NSString *email = [NSString stringWithFormat:@"%@%@", recipients, body];
+//    email = [email stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+//    
+//    [[UIApplication sharedApplication] openURL: [NSURL URLWithString:email]];
+    [self submitReport];
+    NSLog(@"cannotsendmail");
+}
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+//    NSString *msg;
+    
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+        {
+            [controller dismissViewControllerAnimated:YES completion:^{
+//                [hud hide:YES];
+//                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        }
+            break;
+        case MFMailComposeResultSaved:
+        {
+            [controller dismissViewControllerAnimated:YES completion:^{
+//                [hud hide:YES];
+//                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        }
+            break;
+        case MFMailComposeResultSent:
+        {
+            [controller dismissViewControllerAnimated:YES completion:^{
+                //                [hud hide:YES];
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        }
+            break;
+        case MFMailComposeResultFailed:
+        {
+            [controller dismissViewControllerAnimated:YES completion:^{
+                //                [hud hide:YES];
+                //                [self.navigationController popViewControllerAnimated:YES];
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+    
+//    [controller dismissViewControllerAnimated:YES completion:^{
+//        [hud hide:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }];
+}
+
 -(void)submitReport
 {
     [hud show:YES];
