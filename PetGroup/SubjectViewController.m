@@ -36,7 +36,9 @@
     }
     return self;
 }
-
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -53,7 +55,7 @@
     [backButton addTarget:self action:@selector(backButton) forControlEvents:UIControlEventTouchUpInside];
     UILabel *  titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(50, 2+diffH, 220, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    [titleLabel setText:@"专题"];
+    [titleLabel setText:@"专题推荐"];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -79,7 +81,7 @@
     _refreshView.slime.shadowBlur = 4;
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
     [self.tableview addSubview:_refreshView];
-    
+    [DataStoreManager blankMsgUnreadCountForUser:@"bbs_special_subject"];
     [self loadHistorySubject];
     
 }
