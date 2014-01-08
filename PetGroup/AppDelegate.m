@@ -118,6 +118,7 @@
         [_loadingV performSelector:@selector(makeTabbarPresentAViewController:) withObject:nil afterDelay:1];
     }
 
+
     
 }
 
@@ -161,8 +162,8 @@
     inActive = YES;
     [TempData sharedInstance].appActive = YES;
     ReconnectionManager * reconnetMannager = [ReconnectionManager sharedInstance];
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+//    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification

@@ -1121,10 +1121,10 @@
       [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
       [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSLog(@"%@",responseObject);
-          NSString * str = ((NSDictionary*)((NSArray*)responseObject[0])[0])[@"gid"];
+          NSString * str = ((NSDictionary*)((NSArray*)responseObject[0])[0])[@"id"];
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           NSMutableArray* array = [NSMutableArray arrayWithArray:[userDefaults objectForKey:@"52petMySubject"]];
-          NSString * str2 = ((NSDictionary*)((NSArray*)array[0])[0])[@"gid"];
+          NSString * str2 = ((NSDictionary*)((NSArray*)array[0])[0])[@"id"];
           if (![str isEqualToString:str2]) {
               [array insertObject:responseObject[0] atIndex:0];
               [userDefaults setObject:array forKey:@"52petMySubject"];
