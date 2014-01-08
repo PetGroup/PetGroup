@@ -82,13 +82,13 @@
 - (void)setPhotoUrl:(NSString*)photoUrl
 {
 
-    [self.viewPhoto setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    [self.viewPhoto setImageWithURL:[NSURL URLWithString:photoUrl] placeholderImage:[UIImage imageNamed:@"placeholderpet"]];
 
 }
 
 -(void)SetPhotoUrlWithCache:(NSString *)url
 {
-    self.viewPhoto.placeholderImage = [UIImage imageNamed:@"placeholder.png"];
+    self.viewPhoto.placeholderImage = [UIImage imageNamed:@"placeholderpet"];
     NSRange range=[url rangeOfString:@"<local>"];
     if (range.location!=NSNotFound) {
 //        self.viewPhoto.image =

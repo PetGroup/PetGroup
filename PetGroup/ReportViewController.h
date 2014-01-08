@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
 #import "IdentifyingString.h"
 @protocol ChangeText <NSObject>
 -(void)changeText:(NSString *)textinfo WithIndex:(int)theIndex;
 @end
-@interface ReportViewController : UIViewController<UITextViewDelegate,MBProgressHUDDelegate,UITextFieldDelegate>
+@interface ReportViewController : UIViewController<UITextViewDelegate,MBProgressHUDDelegate,UITextFieldDelegate,MFMailComposeViewControllerDelegate>
 {
     UILabel * remainingLabel;
     MBProgressHUD * hud;

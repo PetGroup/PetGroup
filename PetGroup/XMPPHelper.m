@@ -474,7 +474,9 @@
                         [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
                     }
                     [dict setObject:[NSString stringWithFormat:@"%@:%@",title,notiContent] forKey:@"msg"];
-                    
+                    if ([notiType isEqualToString:@"bbs_special_subject"]){
+                        [dict setObject:[NSString stringWithFormat:@"%@",notiContent] forKey:@"msg"];
+                    }
                     [dict setObject:[Common getCurrentTime] forKey:@"time"];
                     [dict setObject:notiType forKey:@"contentType"];
                     [dict setObject:notiType forKey:@"msgType"];

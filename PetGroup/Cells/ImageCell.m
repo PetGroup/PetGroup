@@ -18,7 +18,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.imageV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
+        self.imageV = [[EGOImageView alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholderpet"]];
         _imageV.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         [self.contentView addSubview:_imageV];
     }
