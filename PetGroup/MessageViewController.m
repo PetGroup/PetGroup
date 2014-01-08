@@ -108,6 +108,9 @@
     self.appDel = [[UIApplication sharedApplication] delegate];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inspectNewSubject) name:@"inspectNewSubject" object:nil];
+    [self inspectNewSubject];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -1098,5 +1101,45 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)inspectNewSubject
+{
+  if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+      NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+      long long a = (long long)(cT*1000);
+      NSMutableDictionary* params = [NSMutableDictionary dictionary];
+      [params setObject:@"0" forKey:@"pageNo"];
+      [params setObject:@"1" forKey:@"pageSize"];
+      NSMutableDictionary* body = [NSMutableDictionary dictionary];
+      [body setObject:params forKey:@"params"];
+      [body setObject:@"getSpecialSubjectList" forKey:@"method"];
+      [body setObject:@"service.uri.pet_bbs" forKey:@"service"];
+      [body setObject:@"1" forKey:@"channel"];
+      [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+      [body setObject:@"iphone" forKey:@"imei"];
+      [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+      [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+      [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          NSLog(@"%@",responseObject);
+          NSString * str = ((NSDictionary*)((NSArray*)responseObject[0])[0])[@"gid"];
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          NSMutableArray* array = [NSMutableArray arrayWithArray:[userDefaults objectForKey:@"52petMySubject"]];
+          NSString * str2 = ((NSDictionary*)((NSArray*)array[0])[0])[@"gid"];
+          if (![str isEqualToString:str2]) {
+              [array insertObject:responseObject[0] atIndex:0];
+              [userDefaults setObject:array forKey:@"52petMySubject"];
+              [userDefaults synchronize];
+              NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+              [dic setObject:((NSDictionary*)((NSArray*)responseObject[0])[0])[@"name"] forKey:@"msg"];
+              [dic setObject:[Common getCurrentTime] forKey:@"time"];
+              [dic setObject:@"bbs_special_subject" forKey:@"contentType"];
+              [dic setObject:@"bbs_special_subject" forKey:@"msgType"];
+              [dic setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+              [self newMessageReceived:dic];
+          }
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          
+      }];
+  }
 }
 @end

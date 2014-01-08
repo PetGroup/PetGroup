@@ -65,7 +65,6 @@
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
-
     return YES;
 }
 -(void)setChannel:(NSString *)theChannel
@@ -153,6 +152,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -213,6 +213,8 @@
     };
     
     [reach startNotifier];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
     
 //    if ([[TempData sharedInstance] ifOpened]){
 //        [_loadingV makeTabbarPresentAViewController:nil];
