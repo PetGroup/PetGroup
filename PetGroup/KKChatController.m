@@ -67,6 +67,19 @@
     recordTimeOut = NO;
     stopTime = NO;
     audioCancelled = NO;
+    
+//    partyStr = @"🎉";
+//    giftStr = @"🎁";
+//    starStr = @"✨";
+//    bellStr = @"🔔";
+//    treeStr = @"🎄";
+//    cakeStr = @"🎂";
+    
+//    newyearArray = [NSArray arrayWithObjects:partyStr,giftStr,starStr, nil];
+//    christmasArray = [NSArray arrayWithObjects:bellStr,treeStr,starStr, nil];
+//    birthdayArray = [NSArray arrayWithObjects:cakeStr,giftStr,starStr, nil];
+    
+    
     self.messageV = self.navigationController.viewControllers[0];
     self.mlNavigationController = self.messageV.mlNavigationController;
     
@@ -327,6 +340,14 @@
     hud.delegate = self;
     hud.labelText = @"处理中...";
     hud.showCloseBtn = NO;
+    
+    judgeDrawmood = [[JudgeDrawMood alloc] initWithArrays];
+    [judgeDrawmood isExsitKeyWordsInTheSentence:@"hahaha,ksakdj生日快乐akdjkl过年好ads askjdkajdkjsa djashdjasd" ExsitYES:^void(NSString * theType) {
+        NSLog(@"exsit:%@",theType);
+    } ExsitNO:^void() {
+        NSLog(@"not exsit");
+    }];
+    
 //    KKAppDelegate *del = [self appDelegate];
 //    del.messageDelegate = self;
 	// Do any additional setup after loading the view, typically from a nib.
@@ -924,7 +945,8 @@
     UITouch * touch = [touches anyObject];
     if (audioRecordBtn.hidden==NO) {
         CGPoint lastPoint=[touch locationInView:self.view];
-        if (lastPoint.x<=45||lastPoint.x>=45+200||lastPoint.y<=inPutView.frame.origin.y+3||lastPoint.y>=inPutView.frame.origin.y+40) {
+        NSLog(@"lastY:%f,%f",lastPoint.y,inPutView.frame.origin.y+40);
+        if (lastPoint.x<=45||lastPoint.x>=45+200||lastPoint.y<=inPutView.frame.origin.y+3||lastPoint.y>inPutView.frame.origin.y+40) {
             audioCancelled = YES;
             [self stopRecording];
             //    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
@@ -943,7 +965,7 @@
     if (audioRecordBtn.hidden==NO) {
         [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
         CGPoint lastPoint=[touch locationInView:self.view];
-        if (lastPoint.x>=45&&lastPoint.x<=45+200&&lastPoint.y>=inPutView.frame.origin.y+3&&lastPoint.y<=inPutView.frame.origin.y+40) {
+        if (lastPoint.x>=45&&lastPoint.x<=45+200&&lastPoint.y>=inPutView.frame.origin.y+3&&lastPoint.y<inPutView.frame.origin.y+40) {
             if (!recordTimeOut) {
                 [self stopRecording];
             }
@@ -952,6 +974,15 @@
             [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
             [recordTextLabel setText:@"按住说话"];
             NSLog(@"recordSuccess");
+        }
+        else if (lastPoint.y>=inPutView.frame.origin.y+40){
+            audioCancelled = YES;
+            [self stopRecording];
+            //    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+            [self hideRecordAnimation];
+            [audioRecordBtn setImage:[UIImage imageNamed:@"recordB"]];
+            [recordTextLabel setText:@"按住说话"];
+            NSLog(@"recordCancel");
         }
     }
 }
@@ -2097,6 +2128,7 @@
             [self.tView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messages.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
         self.textView.text = @"";
+        [self drawMoodWithString:[dictionary objectForKey:@"msg"]];
     }
 }
 
@@ -2136,8 +2168,40 @@
         {
             AudioServicesPlayAlertSound(1007);
         }
+        [self drawMoodWithString:[messageCotent objectForKey:@"msg"]];
     }
     
+}
+-(void)drawMoodWithString:(NSString *)msgContent
+{
+    [judgeDrawmood isExsitKeyWordsInTheSentence:msgContent ExsitYES:^void(NSString * theType) {
+        NSLog(@"exsit:%@",theType);
+        NSArray * pArray;
+        if ([theType isEqualToString:@"NewYear"]) {
+            pArray = @[@"🎉",@"🎁",@"✨"];
+        }
+        else if ([theType isEqualToString:@"Christmas"]){
+            pArray = @[@"🔔",@"🎄"];
+        }
+        else if ([theType isEqualToString:@"Birthday"]){
+            pArray = @[@"🎁",@"🎂"];
+        }
+        UIWindow * uWin;
+        if ([[UIApplication sharedApplication].windows count] > 1 )
+        {
+            uWin=[[UIApplication sharedApplication].windows objectAtIndex:1];
+            
+        }
+        else
+        {
+            uWin = [UIApplication sharedApplication].keyWindow;
+        }
+
+        [[AnimationStoreManager sharedManager] doAnimationWithTypeArray:pArray view:uWin];
+        
+    } ExsitNO:^void() {
+        NSLog(@"not exsit");
+    }];
 }
 -(void)makeMsgVStoreMsg:(NSDictionary *)messageContent
 {

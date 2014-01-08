@@ -68,41 +68,17 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
-    [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
-    [self.photoWall setEditModel:YES];
-    
-//    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-//    NSMutableArray * replyArray = [NSMutableArray arrayWithArray:[userDefault objectForKey:NewComment]];
-//    if (replyArray) {
-//        unreadComment = replyArray.count;
-//    }
-//    else
-//        unreadComment = 0;
-//    if (unreadComment>0) {
-//        [self.customTabBarController notificationWithNumber:YES AndTheNumber:unreadComment OrDot:NO WithButtonIndex:4];
-//    }
-//    else
-//        [self.customTabBarController removeNotificatonOfIndex:4];
+    if ([DataStoreManager ifFriendHaveNicknameAboutUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+        self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
+        [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
+        [self.photoWall setEditModel:YES];
+        [self.profileTableV reloadData];
+    }
+    else
+    {
+        [self getMyUserInfoFromNet];
+    }
 
-    [self.profileTableV reloadData];
-    
-    
-//    [NetManager uploadImageWithCompres:[UIImage imageNamed:@"xuanzechongwu-bg.png"] WithURLStr:NewUploadURL ImageName:@"test.jpg" TheController:self Progress:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-//        
-//    } Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *receiveStr = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSDictionary * gg = [receiveStr JSONValue];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//    }];
-//    [NetManager downloadImageWithBaseURLStr:NewDownloadURL ImageId:@"973" success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-//        UIImageView * hh = [[UIImageView alloc] initWithFrame:CGRectMake(10, 100, 300, 300)];
-//        [hh setImage:image];
-//        [self.view addSubview:hh];
-//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-//        
-//    }];
     
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -120,6 +96,55 @@
     }
 
 }
+-(void)getMyUserInfoFromNet
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:@"getUserinfo" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self saveMyInfo:responseObject];
+        
+        [self getMyPetInfoFromNet];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+}
+-(void)saveMyInfo:(NSDictionary *)dict
+{
+    [DataStoreManager saveUserInfo:dict];
+}
+-(void)getMyPetInfoFromNet
+{
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:@"getPetinfo" forKey:@"method"];
+    [body setObject:@"service.uri.pet_user" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray * petsArray = responseObject;
+        for (NSDictionary * dict in petsArray) {
+            [DataStoreManager storeOnePetInfo:dict];
+        }
+        self.hostInfo = [[HostInfo alloc] initWithHostInfo:[DataStoreManager queryMyInfo]];
+        [self.photoWall setPhotos:[self imageToURL:self.hostInfo.petsHeadArray]];
+        [self.photoWall setEditModel:YES];
+        [self.profileTableV reloadData];
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+    }];
+}
+
 -(NSArray *)imageToURL:(NSArray *)imageArray;
 {
     NSMutableArray * temp = [NSMutableArray array];

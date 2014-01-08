@@ -24,6 +24,8 @@
 #import "HeadImageCutViewController.h"
 #import "MBProgressHUD.h"
 #import "MLNavigationController.h"
+#import "JudgeDrawMood.h"
+#import "AnimationStoreManager.h"
 typedef  enum
 {
     actionSheetMore = 0,
@@ -112,6 +114,19 @@ typedef  enum
     NSTimer * recordTimer;
     
     NSTimeInterval * recordBtnBeginTime;
+    
+    NSString * partyStr;
+    NSString * giftStr;
+    NSString * starStr;
+    NSString * bellStr;
+    NSString * treeStr;
+    NSString * cakeStr;
+    
+    NSArray * newyearArray;
+    NSArray * christmasArray;
+    NSArray * birthdayArray;
+    
+    JudgeDrawMood * judgeDrawmood;
     
 }
 @property (strong, nonatomic)  UITableView *tView;

@@ -83,10 +83,22 @@
     searchDisplay.searchResultsDataSource = self;
     searchDisplay.searchResultsDelegate = self;
 
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
 //    [self getFriendByHttp];
 
  //   [self getFriendsList];
 	// Do any additional setup after loading the view.
+}
+-(void)makeScrollToTheTop:(NSNumber *)index
+{
+    if (self.customTabBarController.selectedIndex!=3) {
+        return;
+    }
+    if (sectionArray.count>0&&[[[sectionArray objectAtIndex:0] objectAtIndex:1] count]>0) {
+        [self.contactsTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+    }
+    
 }
 -(void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {

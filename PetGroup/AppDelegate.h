@@ -14,7 +14,7 @@
 @class ContentDetailViewController;
 @class ViewController;
 @class XMPPHelper;
-@class MBProgressHUD;
+@class MBProgressHUD,ReconnectionManager;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
     BOOL inActive;

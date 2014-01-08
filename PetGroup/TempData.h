@@ -30,6 +30,7 @@
 @property (nonatomic,assign)BOOL needDisplayPushNotification;
 @property (nonatomic,assign)BOOL changeUser;
 @property (nonatomic,assign)BOOL haveGotFriends;
+@property (nonatomic,assign)BOOL appActive;
 
 + (TempData*)sharedInstance;
 -(void)setOpened:(BOOL)haveOpened;

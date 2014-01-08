@@ -20,6 +20,7 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WXApi.h"
 #import "MBProgressHUD.h"
+#import "ReconnectionManager.h"
 
 #define DataStoreModel @"LocalDataStore.sqlite"
 @implementation AppDelegate
@@ -131,6 +132,7 @@
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     inActive = NO;
+    [TempData sharedInstance].appActive = NO;
     [self.xmppHelper disconnect];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -157,6 +159,8 @@
 {
     //暂时注释
     inActive = YES;
+    [TempData sharedInstance].appActive = YES;
+    ReconnectionManager * reconnetMannager = [ReconnectionManager sharedInstance];
     [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -167,6 +171,7 @@
        // Reachability * reach2 = [Reachability reachabilityWithHostname:@"www.google.com"];
     Reachability * reach = [Reachability reachabilityForInternetConnection];
     if (reach) {
+        reconnetMannager.networkAvailable = YES;
         // messageV->titleLabel.text=@"消息";
         if ([[TempData sharedInstance] ifOpened]) {
             if (![self.xmppHelper ifXMPPConnected]) {
@@ -177,6 +182,7 @@
         
     }
     else{
+        reconnetMannager.networkAvailable = NO;
         // messageV->titleLabel.text=@"消息(未连接)";
         [_loadingV setLabelTitle:@"消息(未连接)"];
         [self.xmppHelper disconnect];
@@ -184,6 +190,7 @@
     reach.reachableBlock = ^(Reachability * reachability)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
+            reconnetMannager.networkAvailable = YES;
             //    messageV->titleLabel.text=@"消息";
             if ([[TempData sharedInstance] ifOpened]) {
                 if (![self.xmppHelper ifXMPPConnected]) {
@@ -198,6 +205,7 @@
     reach.unreachableBlock = ^(Reachability * reachability)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
+            reconnetMannager.networkAvailable = NO;
             //   messageV->titleLabel.text=@"消息（未连接）";
             [_loadingV setLabelTitle:@"消息(未连接)"];
             [self.xmppHelper disconnect];

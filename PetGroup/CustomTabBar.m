@@ -7,6 +7,7 @@
 //
 
 #import "CustomTabBar.h"
+#import "MessageViewController.h"
 //#import "MainView.h"
 
 #define Background @"bottombgt.png"
@@ -147,7 +148,7 @@ static CustomTabBar *customTabBarController;
 		UIButton * button = [UIButton buttonWithType:
 							 UIButtonTypeCustom];
 		button.frame = CGRectMake(width*i, 0, width, height);
-		[button addTarget:self action:@selector(selectedTabBarItem:) forControlEvents:UIControlEventTouchUpInside];
+		[button addTarget:self action:@selector(tabTabBarItem:) forControlEvents:UIControlEventTouchUpInside];
 		button.tag = i+1;
 //		UILabel*label = [[UILabel alloc] initWithFrame:CGRectMake(0,height-22, width, height-22)];
 //		[label setBackgroundColor:[UIColor clearColor]];
@@ -201,8 +202,41 @@ static CustomTabBar *customTabBarController;
 	}
     
     self.selectedIndex = self.currentSelectedIndex;
+    previousSelected = self.selectedIndex;
    // [self.view layoutSubviews];
 }
+-(void) tabTabBarItem:(UIButton *) button
+{
+    
+    int i = button.tag;
+    //    float width = button.frame.size.width;
+    //    float height = button.frame.size.height;
+    self.currentSelectedIndex = button.tag-1;
+    
+    // self.selectedIndex = button.tag-1;
+    // [self performSelector:@selector(slideTabBarItem:) withObject:imagView];
+	if (self.currentSelectedIndex ==i-1) {
+        UIImageView *imagev = (UIImageView *)[button viewWithTag:button.tag+100];
+        imagev.image = [UIImage imageNamed:[theSelectedArray objectAtIndex:i-1]];
+        for (int j = 0; j<[self.buttons count]; ++j) {
+            UIButton * temp = (UIButton *)[self.buttons objectAtIndex:j];
+            if (temp.tag!=button.tag) {
+                UIImageView *imagev2 = (UIImageView *)[temp viewWithTag:temp.tag+100];
+                imagev2.image = [UIImage imageNamed:[theNormalArray objectAtIndex:j]];
+            }
+            
+            
+        }
+	}
+
+    self.selectedIndex = self.currentSelectedIndex;
+    if (self.selectedIndex==previousSelected) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_makeSrollTop" object:@1 userInfo:nil];
+    }
+    previousSelected = self.selectedIndex;
+    // [self.view layoutSubviews];
+}
+
 -(void)setSelectedPage:(int)index
 {
     [self selectedTabBarItem:[self.buttons objectAtIndex:index]];

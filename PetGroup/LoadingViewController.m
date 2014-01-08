@@ -92,11 +92,13 @@
         }
     }
     [self.view addSubview:splashImageView];
+//    [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
-        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
 //        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
 //        NSString * macAddress = [dv macaddress];
-        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfa forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
     NSString * theVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
     
@@ -141,10 +143,11 @@
 //    NSLog(@"uuuuurrrrrlllll:%@",storeURL.path);
 //    [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
     if (![SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
-        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+//        NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+        NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
         //        DeviceIdentifier * dv = [[DeviceIdentifier alloc] init];
         //        NSString * macAddress = [dv macaddress];
-        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfv forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfa forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     }
     [[LocationManager sharedInstance] initLocation];
     [self getUserLocation];

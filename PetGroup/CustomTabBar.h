@@ -10,6 +10,7 @@
 
 #import <UIKit/UIKit.h>
 //@class MainView;
+@class MessageViewController;
 @interface CustomTabBar : UITabBarController {
 	NSMutableArray * buttons;
 	int currentSelectedIndex;
@@ -23,6 +24,8 @@
     NSArray * theNormalArray;
     NSArray * theSelectedArray;
     NSArray * theControllerArray;
+    
+    int previousSelected;
 }
 @property (nonatomic ,retain)  NSMutableArray * buttons;
 @property (nonatomic ,retain)  UIImageView    * slideView;

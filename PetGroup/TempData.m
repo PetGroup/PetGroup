@@ -36,6 +36,7 @@ static TempData *sharedInstance=nil;
     ifNeedChat = NO;
     needChatUserName = @"";
     opened = NO;
+    self.appActive = NO;
     self.needDisplayPushNotification = NO;
     self.haveGotFriends = NO;
 }

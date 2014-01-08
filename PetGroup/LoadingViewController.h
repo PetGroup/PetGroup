@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AdSupport/AdSupport.h>
 #import "MLNavigationController.h"
 #import "LocationManager.h"
 @class ViewController,CustomTabBar,LeveyTabBarController,MessageViewController,DynamicViewController,NearByViewController,ContactsViewController,MoreViewController,LoginViewController,DetailMessageViewController,KKChatController,DiscoverViewController,ContentDetailViewController;

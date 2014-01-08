@@ -81,6 +81,7 @@
 #define MACADDRESS @"lovepetmacaddress"
 
 #define NewComment @"newCommentOfMyDynamic"
+#define NewSpecialSubject  @"newSpecialSubject"
 #define MyDynamic  @"localMyDynamic"
 
 #define MyCircle @"52PetMyClrcle"

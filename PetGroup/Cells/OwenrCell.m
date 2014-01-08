@@ -151,10 +151,10 @@
     _titleL.frame = CGRectMake(10, origin, 300, size.height);
     _titleL.text = self.article.name;
     origin += (size.height+10);
-    _readL.frame = CGRectMake(170, origin, 70, 12);
+    _readL.frame = CGRectMake(170, origin, 70, 20);
     _readL.text = [NSString stringWithFormat:@"浏览:%@",self.article.clientCount];
     
-    _replyL.frame = CGRectMake(250, origin, 70, 12);
+    _replyL.frame = CGRectMake(250, origin, 70, 20);
     _replyL.text = [NSString stringWithFormat:@"回复:%@",self.article.replyCount];
     origin += 22;
     _backV.frame = CGRectMake(0, 0, 320, origin);

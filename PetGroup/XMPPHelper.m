@@ -56,6 +56,7 @@
     if (![self.xmppStream isDisconnected]) {
         return YES;
     }
+
     
     if (theaccount == nil) {
         return NO;
@@ -91,6 +92,18 @@
 -(BOOL)ifXMPPConnected
 {
     return [self.xmppStream getStateOfXMPP];
+}
+-(BOOL)isDisconnected
+{
+    return [self.xmppStream isDisconnected];
+}
+-(BOOL)isConnecting
+{
+    return [self.xmppStream isConnecting];
+}
+-(BOOL)isConnected
+{
+    return [self.xmppStream isConnected];
 }
 //获取所有联系人
 -(void)getCompleteRoster:(XMPPRosterMemoryStorageCallBack)callback{
@@ -445,11 +458,21 @@
                     NSString * title = @"";
                     if ([notiType isEqualToString:@"notice"]) {
                         title = @"系统通知";
+                        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+                        [dict setObject:@"圈子通知" forKey:@"fname"];
                     }
-                    else
+                    else if ([notiType isEqualToString:@"bbs_special_subject"]){
+                        title = @"专题推荐";
+                        [dict setObject:@"专题推荐" forKey:@"fname"];
+                        [dict setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+                    }
+                    else{
                         title = @"小编推荐";
+                        [dict setObject:@"圈子通知" forKey:@"fname"];
+                        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+                    }
                     [dict setObject:[NSString stringWithFormat:@"%@:%@",title,notiContent] forKey:@"msg"];
-                    [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+                    
                     [dict setObject:[Common getCurrentTime] forKey:@"time"];
                     [dict setObject:notiType forKey:@"contentType"];
                     [dict setObject:notiType forKey:@"msgType"];

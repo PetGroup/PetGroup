@@ -12,5 +12,6 @@
 {
     float diffH;
     UIPageControl * m_Emojipc;
+    NSArray * arrayC;
 }
 @end

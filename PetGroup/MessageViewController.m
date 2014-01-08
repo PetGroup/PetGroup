@@ -10,6 +10,7 @@
 #import "CustomTabBar.h"
 #import "JSON.h"
 #import "KKChatController.h"
+#import "ReconnectionManager.h"
 @interface MessageViewController ()
 
 @end
@@ -101,9 +102,12 @@
     _slimeView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
     
     [self.messageTable addSubview:_slimeView];
+    
+    judgeDrawmood = [[JudgeDrawMood alloc] initWithArrays];
 
     self.appDel = [[UIApplication sharedApplication] delegate];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -116,17 +120,7 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    if ([[TempData sharedInstance] needChat]) {
-        NSDictionary * theDict = (NSDictionary *)[DataStoreManager queryOneFriendInfoWithUserName:[[TempData sharedInstance] getNeedChatUser]];
-        KKChatController * kkchat = [[KKChatController alloc] init];
-        kkchat.chatWithUser = [theDict objectForKey:@"username"];
-        kkchat.nickName = [[theDict objectForKey:@"nickname"] length]>1?[theDict objectForKey:@"nickname"]:[theDict objectForKey:@"username"];
-        kkchat.chatUserImg = [DataStoreManager queryFirstHeadImageForUser:[theDict objectForKey:@"username"]];
-        [self.navigationController pushViewController:kkchat animated:YES];
-        kkchat.msgDelegate = self;
-        [self.customTabBarController hidesTabBar:YES animated:YES];
-        [[TempData sharedInstance] setNeedChatNO];
-    }
+
 //    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 //    [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 //    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
@@ -218,19 +212,58 @@
     self.appDel.xmppHelper.addReqDelegate = self;
     self.appDel.xmppHelper.commentDelegate = self;
     
+    
+    [self performSelector:@selector(toChatPage) withObject:nil afterDelay:0.1];
 //    [self.customTabBarController setSelectedPage:1];
 //    self.appDel.xmppHelper.notConnect = self;
 }
 
+-(void)toChatPage
+{
+    if ([[TempData sharedInstance] needChat]) {
+        NSDictionary * theDict = (NSDictionary *)[DataStoreManager queryOneFriendInfoWithUserName:[[TempData sharedInstance] getNeedChatUser]];
+        KKChatController * kkchat = [[KKChatController alloc] init];
+        kkchat.chatWithUser = [theDict objectForKey:@"username"];
+        kkchat.nickName = [[theDict objectForKey:@"nickname"] length]>1?[theDict objectForKey:@"nickname"]:[theDict objectForKey:@"username"];
+        kkchat.chatUserImg = [DataStoreManager queryFirstHeadImageForUser:[theDict objectForKey:@"username"]];
+        [self.navigationController pushViewController:kkchat animated:YES];
+        kkchat.msgDelegate = self;
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        [[TempData sharedInstance] setNeedChatNO];
+    }
+}
+
 -(void)notConnectted
 {
-    titleLabel.text=@"消息(未连接)";
+//    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+//        
+//    }];
+    [self.appDel.xmppHelper disconnect];
+    titleLabel.text = @"消息(未连接)";
+    if ([TempData sharedInstance].appActive&&[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+        titleLabel.text = @"消息(连接中...)";
+        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+            titleLabel.text = @"消息";
+        }];
+    }
+
  //   [self connectChatServer];
    // NSLog(@"ddddd");
 }
 
 -(void)reConnectChatServer
 {
+    
+}
+
+-(void)makeScrollToTheTop:(NSNumber *)index
+{
+    if (self.customTabBarController.selectedIndex!=2) {
+        return;
+    }
+    if (allMsgArray.count>0) {
+        [self.messageTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+    }
     
 }
 
@@ -280,6 +313,10 @@
 -(void)storeReceivedNotification:(NSDictionary *)theDict
 {
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
+    
+    if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
+        return;
+    }
     NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     NSArray * tempNewNotiArray = [defaultUserD objectForKey:notiKey];
     NSMutableArray * newNotiArray;
@@ -390,9 +427,41 @@
     {
         AudioServicesPlayAlertSound(1007);
         [DataStoreManager storeNewMsgs:messageContent senderType:COMMONUSER];
+        [self drawMoodWithString:[messageContent objectForKey:@"msg"]];
     }
 //    NSRange range = [[messageContent objectForKey:@"sender"] rangeOfString:@"@"];
 //    NSString * sender = [[messageContent objectForKey:@"sender"] substringToIndex:range.location];
+}
+
+-(void)drawMoodWithString:(NSString *)msgContent
+{
+    [judgeDrawmood isExsitKeyWordsInTheSentence:msgContent ExsitYES:^void(NSString * theType) {
+        NSLog(@"exsit:%@",theType);
+        NSArray * pArray;
+        if ([theType isEqualToString:@"NewYear"]) {
+            pArray = @[@"🎉",@"🎁",@"✨"];
+        }
+        else if ([theType isEqualToString:@"Christmas"]){
+            pArray = @[@"🔔",@"🎄"];
+        }
+        else if ([theType isEqualToString:@"Birthday"]){
+            pArray = @[@"🎁",@"🎂"];
+        }
+        UIWindow * uWin;
+        if ([[UIApplication sharedApplication].windows count] > 1 )
+        {
+            uWin=[[UIApplication sharedApplication].windows objectAtIndex:1];
+            
+        }
+        else
+        {
+            uWin = [UIApplication sharedApplication].keyWindow;
+        }
+        
+        [[AnimationStoreManager sharedManager] doAnimationWithTypeArray:pArray view:uWin];
+    } ExsitNO:^void() {
+        NSLog(@"not exsit");
+    }];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -819,8 +888,8 @@
 {
     self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
-    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
-        NSLog(@"登陆成功xmpp");
+    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+//        NSLog(@"登陆成功xmpp");
 //        self.appDel.xmppHelper.buddyListDelegate = self;
 //        self.appDel.xmppHelper.chatDelegate = self;
 //        self.appDel.xmppHelper.processFriendDelegate = self;
@@ -830,9 +899,25 @@
         [[TempData sharedInstance] setOpened:YES];
         [self.appDel.xmppHelper checkToServerifSubscibe];
 //        [self.appDel.xmppHelper realSubscribeToServer];
-    }fail:^(NSError *result){
-        titleLabel.text = @"消息(未连接)"; 
     }];
+//    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
+//        NSLog(@"登陆成功xmpp");
+////        self.appDel.xmppHelper.buddyListDelegate = self;
+////        self.appDel.xmppHelper.chatDelegate = self;
+////        self.appDel.xmppHelper.processFriendDelegate = self;
+////        self.appDel.xmppHelper.addReqDelegate = self;
+////        self.appDel.xmppHelper.commentDelegate = self;
+//        titleLabel.text = @"消息";
+//        [[TempData sharedInstance] setOpened:YES];
+//        [self.appDel.xmppHelper checkToServerifSubscibe];
+////        [self.appDel.xmppHelper realSubscribeToServer];
+//    }fail:^(NSError *result){
+//        titleLabel.text = @"消息(连接中...)";
+//        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+//            titleLabel.text = @"消息";
+//        }];
+//        
+//    }];
 }
 
 -(void)toLoginPage

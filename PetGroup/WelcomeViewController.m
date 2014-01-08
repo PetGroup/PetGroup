@@ -36,7 +36,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationController.navigationBarHidden =YES;
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor orangeColor];
     diffH = [Common diffHeight:self];
 
     sc=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
@@ -45,13 +45,21 @@
 	sc.delegate=self;
     //设置背景颜色
 	sc.backgroundColor=[UIColor blackColor];
+    UIColor * iii1 = [UIColor colorWithRed:0.93 green:0.83 blue:0 alpha:1];
+    UIColor * iii2 = [UIColor colorWithRed:0.576 green:0.886 blue:0.31 alpha:1];
+    UIColor * iii3 = [UIColor colorWithRed:0.96 green:0.592 blue:0.592 alpha:1];
+    UIColor * iii4 = [UIColor colorWithRed:0.306 green:0.851 blue:0.914 alpha:1];
+    UIColor * iii5 = [UIColor colorWithRed:0.71 green:0.486 blue:0.878 alpha:1];
+    arrayC = [NSArray arrayWithObjects:iii1,iii2,iii3,iii4,iii5,iii1, nil];
+    
     [sc setContentSize:CGSizeMake(6*320, self.view.frame.size.height-diffH)];
 //    sc.alpha = 0.96;
     for (int i=1; i<=5; i++) {
 		//图片命名加拓展名
 //		NSString *str=[NSString stringWithFormat:@"tupian%d",i];
         UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*(i-1), 0, 320, self.view.frame.size.height)];
-        [imgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"start_bg_0%d",i]]];
+        
+//        [imgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"start_bg_0%d",i]]];
 //        [imgView setImage:[UIImage imageNamed:str]];
         imgView.tag=i;
 		//将imgView添加到sc(scrollerView)上
@@ -63,6 +71,7 @@
         [textV setImage:[UIImage imageNamed:[NSString stringWithFormat:@"start_text_0%d",i]]];
         [sc addSubview:textV];
 	}
+    sc.backgroundColor = arrayC[0];
 //    NSString *str=[NSString stringWithFormat:@"tupian%d",1];
 //    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*5, 0, 320, 460)];
 //    [imgView setImage:[UIImage imageNamed:str]];
@@ -71,7 +80,7 @@
 //    [sc addSubview:imgView];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(320*5, 0, 320, self.view.frame.size.height)];
-    [imgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"start_bg_0%d",1]]];
+//    [imgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"start_bg_0%d",1]]];
     //        [imgView setImage:[UIImage imageNamed:str]];
     imgView.tag=6;
     //将imgView添加到sc(scrollerView)上
@@ -142,16 +151,26 @@
 -(void)timerDown:(NSTimer*)aTimer
 {
     if (sc.contentOffset.x > 960) {
-        sc.contentOffset = CGPointMake(0, -diffH);
+        [UIView animateWithDuration:0.5 animations:^{
+            sc.contentOffset = CGPointMake(0, -diffH);
+        } completion:^(BOOL finished) {
+            float a=sc.contentOffset.x;
+            int page=floor((a-320/2)/320)+1;
+            m_Emojipc.currentPage=page;
+        }];
+        
+ 
+        return;
+    }
+    [UIView animateWithDuration:0.5 animations:^{
+        sc.contentOffset = CGPointMake(sc.contentOffset.x + 320, -diffH);
+    } completion:^(BOOL finished) {
         float a=sc.contentOffset.x;
         int page=floor((a-320/2)/320)+1;
         m_Emojipc.currentPage=page;
-        return;
-    }
-    sc.contentOffset = CGPointMake(sc.contentOffset.x + 320, -diffH);
-    float a=sc.contentOffset.x;
-	int page=floor((a-320/2)/320)+1;
-	m_Emojipc.currentPage=page;
+    }];
+    
+
 }
 -(void)layoutAllImages
 {
@@ -186,6 +205,12 @@
 	float a=sc.contentOffset.x;
 	int page=floor((a-320/2)/320)+1;
 	m_Emojipc.currentPage=page;
+    [UIView animateWithDuration:0.5 animations:^{
+        sc.backgroundColor = arrayC[page];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
 #pragma mark - button action
 -(void)registNewUser

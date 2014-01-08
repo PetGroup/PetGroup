@@ -21,7 +21,8 @@
 #import "WelcomeViewController.h"
 #import "FriendsReqsViewController.h"
 #import "NotificationViewController.h"
-@class XMPPHelper;
+#import "JudgeDrawMood.h"
+@class XMPPHelper,ReconnectionManager;
 @interface MessageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,NotConnectDelegate,UISearchBarDelegate,SRRefreshDelegate,StoreMsgDelegate,UISearchDisplayDelegate>
 {
     UISearchBar * searchBar;
@@ -78,6 +79,8 @@
     
     BOOL firstOpen;
     UIImageView *TopBarBGV;
+    
+    JudgeDrawMood * judgeDrawmood;
 }
 
 
@@ -87,5 +90,6 @@
 
 -(void)logInToServer;
 -(void)logInToChatServer;
+-(void)makeScrollToTheTop:(NSNumber *)index;
 
 @end

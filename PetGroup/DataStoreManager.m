@@ -139,13 +139,13 @@
     else if ([sendertype isEqualToString:SYSTEMNOTIFICATION]){
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",@"123456789"];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
             
             DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
             if (!thumbMsgs)
                 thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
-            thumbMsgs.sender = @"123456789";
-            thumbMsgs.senderNickname = @"圈子通知";
+            thumbMsgs.sender = sender;
+            thumbMsgs.senderNickname = [msg objectForKey:@"fname"];
             thumbMsgs.msgContent = msgContent;
             thumbMsgs.sendTime = sendTime;
             thumbMsgs.senderType = sendertype;
@@ -482,7 +482,7 @@
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",username];
     DSFriends * dFriends = [DSFriends MR_findFirstWithPredicate:predicate];
     if (dFriends) {
-        if (dFriends.nickName.length>1) {
+        if (dFriends.nickName) {
             return YES;
         }
         else
@@ -672,6 +672,9 @@
     if ([userName isEqualToString:@"123456789"]) {
         return @"圈子通知";
     }
+    else if ([userName isEqualToString:@"bbs_special_subject"]){
+        return @"专题推荐";
+    }
     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"userName==[c]%@",userName];
     DSFriends * dFriend = [DSFriends MR_findFirstWithPredicate:predicate];
     if (dFriend) {
@@ -749,7 +752,7 @@
             NSString * nameIndex;
             NSString * nameKey;
             if (nickName.length>=1) {
-                nameKey = [[DataStoreManager convertChineseToPinYin:nickName] stringByAppendingFormat:@"+%@",nickName];
+                nameKey = [[DataStoreManager convertChineseToPinYin:nickName] stringByAppendingFormat:@"+%@%@",nickName,myUserName];
                 dFriend.nameKey = nameKey;
                 nameIndex = [[nameKey substringToIndex:1] uppercaseString];
                 dFriend.nameIndex = nameIndex;

@@ -43,6 +43,8 @@
     float diffH;
     
     BOOL needGuidance;
+    
+    int currentTableView;
 }
 @property (nonatomic,retain)NSString* myUserID;
 @property (nonatomic,retain)UIImageView* pageV;
@@ -153,6 +155,7 @@
     _backGroundV.delegate = self;
     _backGroundV.contentSize = CGSizeMake(960, self.view.frame.size.height-139.5-diffH);
     _backGroundV.contentOffset = CGPointMake(320, 0);
+    currentTableView = 2;
     _backGroundV.pagingEnabled=YES;
 	_backGroundV.showsHorizontalScrollIndicator=NO;
 	_backGroundV.showsVerticalScrollIndicator=NO;
@@ -261,7 +264,45 @@
     if (![defaults objectForKey:@"25PetFirstLoadCircleView"]) {
         needGuidance = YES;
         _backGroundV.contentOffset = CGPointMake(640, 0);
+        currentTableView = 3;
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
+}
+-(void)makeScrollToTheTop:(NSNumber *)index
+{
+    if (self.customTabBarController.selectedIndex!=0) {
+        return;
+    }
+    switch (currentTableView) {
+        case 1:
+        {
+            if (self.goodArticleDS.dataSourceArray.count>0) {
+                [_goodV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            }
+        }
+            
+            break;
+        case 2:
+        {
+            if (self.publishArticleDS.dataSourceArray.count>0) {
+                [_hotPintsV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            }
+        }
+            
+            break;
+        case 3:
+        {
+            if (self.attentionDS.dataSourceArray.count>0) {
+                [_attentionV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+            }
+        }
+            
+            break;
+            
+        default:
+            break;
+    }
+    
 }
 - (void)buildGuidView
 {
@@ -341,6 +382,7 @@
         _hotPintsV.contentOffset = CGPointMake(0, 44);
         [TempData sharedInstance].changeUser = NO;
         _backGroundV.contentOffset = CGPointMake(320, 0);
+        currentTableView = 2;
         
     }
     if ([[TempData sharedInstance] ifPanned]) {
@@ -613,14 +655,17 @@
     if (scrollView == _backGroundV) {
         _pageV.frame = CGRectMake(12+(scrollView.contentOffset.x/320)*100, 11, 96, 25);
         if (_pageV.frame.origin.x == 12) {
+            currentTableView = 1;
             [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }if (_pageV.frame.origin.x == 112) {
+            currentTableView = 2;
             [attentionB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         }if (_pageV.frame.origin.x == 212) {
+            currentTableView = 3;
             [attentionB setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [hotPintsB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
             [goodB setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
@@ -927,6 +972,7 @@
 -(void)scrollToNewView
 {
     [UIView animateWithDuration:0.3 animations:^{
+        currentTableView = 2;
          _backGroundV.contentOffset = CGPointMake(320, 0);
     } completion:^(BOOL finished) {
         [((UIGestureRecognizer*)_firstView.gestureRecognizers[0]) addTarget:self action:@selector(scrollToGoodView)];
@@ -946,6 +992,7 @@
 -(void)scrollToGoodView
 {
     [UIView animateWithDuration:0.3 animations:^{
+        currentTableView = 1;
         _backGroundV.contentOffset = CGPointMake(0, 0);
     } completion:^(BOOL finished) {
         NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
