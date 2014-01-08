@@ -22,6 +22,7 @@
 #import "FriendsReqsViewController.h"
 #import "NotificationViewController.h"
 #import "JudgeDrawMood.h"
+#import "SubjectViewController.h"
 @class XMPPHelper,ReconnectionManager;
 @interface MessageViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,NotConnectDelegate,UISearchBarDelegate,SRRefreshDelegate,StoreMsgDelegate,UISearchDisplayDelegate>
 {

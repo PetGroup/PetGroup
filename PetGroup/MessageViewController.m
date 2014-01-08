@@ -423,6 +423,9 @@
     else if ([type isEqualToString:@"notice"]||[type isEqualToString:@"ency"]||[type isEqualToString:@"exper"]||[type isEqualToString:@"bbs_note"]){
         [DataStoreManager storeNewMsgs:messageContent senderType:SYSTEMNOTIFICATION];
     }
+    else if ([type isEqualToString:@"bbs_special_subject"]){
+        [DataStoreManager storeNewMsgs:messageContent senderType:NewSpecialSubject];
+    }
     else if([type isEqualToString:@"normalchat"])
     {
         AudioServicesPlayAlertSound(1007);
@@ -522,6 +525,9 @@
         if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
             [cell.headImageV setImage:[UIImage imageNamed:@"noti.png"]];
         }
+        else if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]){
+            [cell.headImageV setImage:[UIImage imageNamed:@"special_subject"]];
+        }
         else
             cell.headImageV.imageURL = theUrl;
 //        [cell.headImageV setImageWithURL:theUrl placeholderImage:[UIImage imageNamed:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:theIndex]]]];
@@ -551,6 +557,9 @@
         NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[allHeadImgArray objectAtIndex:indexPath.row]]];
         if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
             [cell.headImageV setImage:[UIImage imageNamed:@"noti.png"]];
+        }
+        else if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]){
+            [cell.headImageV setImage:[UIImage imageNamed:@"special_subject"]];
         }
         else
             cell.headImageV.imageURL = theUrl;
@@ -598,6 +607,12 @@
             [self.customTabBarController hidesTabBar:YES animated:YES];
             return;
         }
+        else if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]) {
+            SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
+            [self.navigationController pushViewController:subjectVC animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+            return;
+        }
         KKChatController * kkchat = [[KKChatController alloc] init];
         kkchat.chatWithUser = [[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"];
         kkchat.nickName = [allNickNameArray objectAtIndex:theIndex];
@@ -620,6 +635,12 @@
     if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"123456789"]) {
         NotificationViewController * notiV = [[NotificationViewController alloc] init];
         [self.navigationController pushViewController:notiV animated:YES];
+        [self.customTabBarController hidesTabBar:YES animated:YES];
+        return;
+    }
+    else if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]) {
+        SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
+        [self.navigationController pushViewController:subjectVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
         return;
     }

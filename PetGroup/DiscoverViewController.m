@@ -37,8 +37,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科",@"专题"];
-        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png",@""];
+        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
+        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
     }
     return self;
 }
@@ -105,7 +105,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 5;
+    return 4;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -139,13 +139,30 @@
     else if ([sendertype isEqualToString:SYSTEMNOTIFICATION]){
         [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
             
-            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",sender];
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",@"123456789"];
             
             DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
             if (!thumbMsgs)
                 thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
-            thumbMsgs.sender = sender;
-            thumbMsgs.senderNickname = [msg objectForKey:@"fname"];
+            thumbMsgs.sender = @"123456789";
+            thumbMsgs.senderNickname = @"圈子通知";
+            thumbMsgs.msgContent = msgContent;
+            thumbMsgs.sendTime = sendTime;
+            thumbMsgs.senderType = sendertype;
+            int unread = [thumbMsgs.unRead intValue];
+            thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+        }];
+    }
+    else if ([sendertype isEqualToString:NewSpecialSubject]){
+        [MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+            
+            NSPredicate * predicate = [NSPredicate predicateWithFormat:@"sender==[c]%@",@"bbs_special_subject"];
+            
+            DSThumbMsgs * thumbMsgs = [DSThumbMsgs MR_findFirstWithPredicate:predicate];
+            if (!thumbMsgs)
+                thumbMsgs = [DSThumbMsgs MR_createInContext:localContext];
+            thumbMsgs.sender = @"bbs_special_subject";
+            thumbMsgs.senderNickname = @"专题推荐";
             thumbMsgs.msgContent = msgContent;
             thumbMsgs.sendTime = sendTime;
             thumbMsgs.senderType = sendertype;
