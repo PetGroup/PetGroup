@@ -17,8 +17,11 @@
 #import "SomeOneDynamicViewController.h"
 #import "HostInfo.h"
 #import "PersonDetailViewController.h"
+#import "MBProgressHUD.h"
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
-
+{
+    MBProgressHUD * hud;
+}
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -26,7 +29,6 @@
 @property (nonatomic,retain)EGOImageView* imageV;
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
-
 @property (nonatomic,retain)UIView * firstView;
 @end
 
@@ -158,7 +160,10 @@
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
-    
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+    hud.labelText = @"正在为您加载,请稍后!";
+    [hud show:YES];
     [self reloadData];
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
@@ -452,6 +457,7 @@
 -(void)reloadData
 {
     [_friendCircleDS reloadDataSuccess:^{
+        [hud hide:YES];
         [self.tableV reloadData];
         [_refreshView endRefresh];
     } failure:^{

@@ -7,7 +7,9 @@
 //
 
 #import "MoreCell.h"
-
+@interface MoreCell ()
+@property (nonatomic,retain)UIView*lineV;
+@end
 @implementation MoreCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -37,6 +39,10 @@
         [self.unreadCountLabel setTextColor:[UIColor whiteColor]];
         [self.notiBgV addSubview:self.unreadCountLabel];
         self.notiBgV.hidden = YES;
+        
+        self.lineV = [[UIView alloc]init];
+        _lineV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        [self.contentView addSubview:_lineV];
 
         
 //        self.arrow = [[UIImageView alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width-30, 12.7, 8.5, 12.5)];
@@ -52,5 +58,9 @@
 
     // Configure the view for the selected state
 }
-
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _lineV.frame = CGRectMake(0, self.contentView.frame.size.height-1, 320, 1);
+}
 @end
