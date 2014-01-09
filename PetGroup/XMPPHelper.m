@@ -124,6 +124,22 @@
     [self.xmppStream sendElement:iq];
 }
 
+-(void)getAllSubscribedMsg
+{
+//    NSXMLElement *query = [NSXMLElement elementWithName:@"query" xmlns:@"jabber:iq:roster"];
+    NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
+    NSXMLElement * items = [NSXMLElement elementWithName:@"items"];
+    [items addAttributeWithName:@"node" stringValue:@"princely_musings"];
+    NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
+    XMPPJID *myJID = self.xmppStream.myJID;
+    [iq addAttributeWithName:@"from" stringValue:myJID.description];
+    [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
+    //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
+    [iq addAttributeWithName:@"type" stringValue:@"get"];
+    [iq addChild:items];
+    [iq addChild:pubsub];
+    [self.xmppStream sendElement:iq];
+}
 -(void)checkToServerifSubscibe
 {
     NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
@@ -149,6 +165,7 @@
     [sub addAttributeWithName:@"jid" stringValue:myJID.description];
     [iq addAttributeWithName:@"from" stringValue:myJID.description];
     [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
+//    [iq addAttributeWithName:@"xmlns" stringValue:@"http://jabber.org/protocol/pubsub"];
     //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
     [iq addAttributeWithName:@"type" stringValue:@"set"];
     [pubsub addChild:sub];
