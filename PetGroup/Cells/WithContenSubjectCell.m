@@ -72,7 +72,7 @@
     _imageV.frame = CGRectMake((contentSize.width - 280)/2, 60, 280, 156);
     _contentL.frame = CGRectMake((contentSize.width - 280)/2, 220, 280, 45);
     _titleL.text = _subject.title;
-    _timeL.text = _subject.time;
+    _timeL.text = [_subject.time substringToIndex:10];
     _imageV.imageURL = _subject.imageURL;
     _contentL.text = _subject.content;
     

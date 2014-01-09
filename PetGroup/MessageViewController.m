@@ -1121,11 +1121,29 @@
       [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
       [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSLog(@"%@",responseObject);
+          if (!((NSArray*)responseObject).count>0) {
+              return ;
+          }
           NSString * str = ((NSDictionary*)((NSArray*)responseObject[0])[0])[@"id"];
           NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
           NSMutableArray* array = [NSMutableArray arrayWithArray:[userDefaults objectForKey:@"52petMySubject"]];
-          NSString * str2 = ((NSDictionary*)((NSArray*)array[0])[0])[@"id"];
-          if (![str isEqualToString:str2]) {
+          if (array.count>0) {
+              NSString * str2 = ((NSDictionary*)((NSArray*)array[0])[0])[@"id"];
+              if (![str isEqualToString:str2]) {
+                  [array insertObject:responseObject[0] atIndex:0];
+                  [userDefaults setObject:array forKey:@"52petMySubject"];
+                  [userDefaults synchronize];
+                  NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+                  [dic setObject:((NSDictionary*)((NSArray*)responseObject[0])[0])[@"name"] forKey:@"msg"];
+                  [dic setObject:[Common getCurrentTime] forKey:@"time"];
+                  [dic setObject:@"bbs_special_subject" forKey:@"contentType"];
+                  [dic setObject:@"bbs_special_subject" forKey:@"msgType"];
+                  [dic setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+                  [self newMessageReceived:dic];
+              }
+          }
+          else if ([self timeIsToday:((NSDictionary*)((NSArray*)responseObject[0])[0])[@"et"]])
+          {
               [array insertObject:responseObject[0] atIndex:0];
               [userDefaults setObject:array forKey:@"52petMySubject"];
               [userDefaults synchronize];
@@ -1141,5 +1159,16 @@
           
       }];
   }
+}
+-(BOOL)timeIsToday:(NSString*)time
+{
+    NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
+    NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+    dateF.dateFormat = @"yyyy-MM-dd";
+    NSString * today = [dateF stringFromDate:[NSDate dateWithTimeIntervalSince1970:nowTime]];
+    if ([[time substringToIndex:10] isEqualToString:today]) {
+        return YES;
+    }
+    return NO;
 }
 @end

@@ -16,6 +16,7 @@
 @interface RootCell ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,retain)UITableView * tableView;
 @property (nonatomic,retain)UIImageView * bgImageV;
+@property (nonatomic,retain)UILabel * timeL;
 @end
 @implementation RootCell
 
@@ -37,6 +38,12 @@
         _tableView.bounces = NO;
         _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
         [self.contentView addSubview:_tableView];
+        
+        self.timeL = [[UILabel alloc]init];
+        _timeL.textColor = [UIColor whiteColor];
+        _timeL.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_timeL];
+        
     }
     return self;
 }
@@ -50,10 +57,19 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _tableView.frame = CGRectMake(11, 18, self.contentView.frame.size.width-22, self.contentView.frame.size.height-36);
+    _tableView.frame = CGRectMake(11, 48, self.contentView.frame.size.width-22, self.contentView.frame.size.height-56);
     [_tableView reloadData];
-    _bgImageV.frame = CGRectMake(10, 10, self.contentView.frame.size.width-20, self.contentView.frame.size.height-20);
-
+    _bgImageV.frame = CGRectMake(10, 40, self.contentView.frame.size.width-20, self.contentView.frame.size.height-40);
+    
+    NSString * time = ((Subject*)_array[0]).time;
+    NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
+    dateF.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    NSDate *date = [dateF dateFromString:time];
+    NSTimeInterval theMessageT = [date timeIntervalSince1970];
+    time = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",theMessageT]];
+    CGSize size = [time sizeWithFont:_timeL.font constrainedToSize:CGSizeMake(320, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    _timeL.frame = CGRectMake((320 - size.width)/2, 10, size.width, size.height);
+    _timeL.text = time;
 }
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -124,8 +140,8 @@
 +(CGFloat)heightForRowWithArrayCount:(NSUInteger)arrayCount
 {
     if (arrayCount>1) {
-        return (arrayCount - 1) * 60 + 166 + 36;
+        return (arrayCount - 1) * 60 + 166 + 56;
     }
-    return arrayCount*300+36;
+    return arrayCount*300+56;
 }
 @end
