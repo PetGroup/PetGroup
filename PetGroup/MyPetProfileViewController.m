@@ -83,7 +83,7 @@
     self.petTypeStr = @"Dog";
     if (self.pageType==PageStyleAdd) {
         self.petInfo = [[PetInfo alloc] init];
-        self.petInfo.headImgStr = @"";
+        self.petInfo.headImgStr = @"none";
         self.petInfo.petType = @"";
     }
     
@@ -374,7 +374,11 @@
         
         self.petInfo.headImgArray = array1;
         self.petInfo.headBigImgArray = array2;
-        self.petInfo.headImgStr = @"";
+        if (self.petInfo.headImgArray.count>0) {
+            self.petInfo.headImgStr = @"";
+        }
+        else
+            self.petInfo.headImgStr = @"none";
         for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
             NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
             NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
@@ -414,7 +418,11 @@
     [tempHBig removeObjectAtIndex:index];
     self.petInfo.headImgArray = tempH;
     self.petInfo.headBigImgArray = tempHBig;
-    self.petInfo.headImgStr = @"";
+    if (self.petInfo.headImgArray.count>0) {
+        self.petInfo.headImgStr = @"";
+    }
+    else
+        self.petInfo.headImgStr = @"none";
     for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
         
         NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
@@ -570,8 +578,12 @@
     self.petInfo.headImgArray = tempArray;
     self.petInfo.headBigImgArray = tempBigArray;
     NSLog(@"%f",self.photoWall.frame.size.height);
-    self.petInfo.headImgStr = @"";
-    for (int i = 0;i<self.petInfo.headImgArray.count;i++) { 
+    if (self.petInfo.headImgArray.count>0) {
+        self.petInfo.headImgStr = @"";
+    }
+    else
+        self.petInfo.headImgStr = @"none";
+    for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
         NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
         NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];
         NSRange range=[temp1 rangeOfString:@"<local>"];
@@ -746,7 +758,11 @@
                 }
                 self.petInfo.headImgArray = a1;
                 self.petInfo.headBigImgArray = a2;
-                self.petInfo.headImgStr = @"";
+                if (self.petInfo.headImgArray.count>0) {
+                    self.petInfo.headImgStr = @"";
+                }
+                else
+                    self.petInfo.headImgStr = @"none";
                 for (int i = 0;i<self.petInfo.headImgArray.count;i++) {
                     NSString * temp1 = [self.petInfo.headImgArray objectAtIndex:i];
                     NSString * temp2 = [self.petInfo.headBigImgArray objectAtIndex:i];

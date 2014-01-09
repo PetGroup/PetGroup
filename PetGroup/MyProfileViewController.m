@@ -387,8 +387,13 @@
         
         self.hostInfo.headImgArray = array1;
         self.hostInfo.headBigImgArray = array2;
-        self.hostInfo.headImgStr = @"";
+        if (self.hostInfo.headImgArray.count>0) {
+            self.hostInfo.headImgStr = @"";
+        }
+        else
+            self.hostInfo.headImgStr = @"none";
         for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
+
             NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
             NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
             self.hostInfo.headImgStr = [self.hostInfo.headImgStr stringByAppendingFormat:@"%@_%@,",temp1,temp2];
@@ -427,9 +432,12 @@
     [tempHBig removeObjectAtIndex:index];
     self.hostInfo.headImgArray = tempH;
     self.hostInfo.headBigImgArray = tempHBig;
-    self.hostInfo.headImgStr = @"";
+    if (self.hostInfo.headImgArray.count>0) {
+        self.hostInfo.headImgStr = @"";
+    }
+    else
+        self.hostInfo.headImgStr = @"none";
     for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
-        
         NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
         NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
         NSRange range=[temp1 rangeOfString:@"<local>"];
@@ -534,9 +542,12 @@
     self.hostInfo.headImgArray = tempArray;
     self.hostInfo.headBigImgArray = tempBigArray;
     NSLog(@"%f",self.photoWall.frame.size.height);
-    self.hostInfo.headImgStr = @"";
+    if (self.hostInfo.headImgArray.count>0) {
+        self.hostInfo.headImgStr = @"";
+    }
+    else
+        self.hostInfo.headImgStr = @"none";
     for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
-        
         NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
         NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
         NSRange range=[temp1 rangeOfString:@"<local>"];
@@ -686,7 +697,11 @@
                 }
                 self.hostInfo.headImgArray = a1;
                 self.hostInfo.headBigImgArray = a2;
-                self.hostInfo.headImgStr = @"";
+                if (self.hostInfo.headImgArray.count>0) {
+                    self.hostInfo.headImgStr = @"";
+                }
+                else
+                    self.hostInfo.headImgStr = @"none";
                 for (int i = 0;i<self.hostInfo.headImgArray.count;i++) {
                     NSString * temp1 = [self.hostInfo.headImgArray objectAtIndex:i];
                     NSString * temp2 = [self.hostInfo.headBigImgArray objectAtIndex:i];
