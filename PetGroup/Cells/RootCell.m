@@ -17,6 +17,7 @@
 @property (nonatomic,retain)UITableView * tableView;
 @property (nonatomic,retain)UIImageView * bgImageV;
 @property (nonatomic,retain)UILabel * timeL;
+@property (nonatomic,retain)UIImageView* blackIV;
 @end
 @implementation RootCell
 
@@ -39,11 +40,17 @@
         _tableView.separatorStyle = UITableViewCellSelectionStyleNone;
         [self.contentView addSubview:_tableView];
         
+        self.blackIV = [[UIImageView alloc]init];
+        _blackIV.image = [[UIImage imageNamed:@"timelabelbg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 5, 0, 5)];
+        _blackIV.alpha = 0.5;
+        [self.contentView addSubview:_blackIV];
+        
         self.timeL = [[UILabel alloc]init];
         _timeL.textColor = [UIColor whiteColor];
         _timeL.backgroundColor = [UIColor clearColor];
+        _timeL.font = [UIFont systemFontOfSize:14];
+        _timeL.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:_timeL];
-        
     }
     return self;
 }
@@ -57,9 +64,14 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _tableView.frame = CGRectMake(11, 48, self.contentView.frame.size.width-22, self.contentView.frame.size.height-56);
+    int a = 0;
+    if (_array.count>1) {
+        a = (_array.count - 1) * 60 + 166 + 16;
+    }
+    a = _array.count*300+16;
+    _tableView.frame = CGRectMake(11, 48, self.contentView.frame.size.width-22, a-16);
     [_tableView reloadData];
-    _bgImageV.frame = CGRectMake(10, 40, self.contentView.frame.size.width-20, self.contentView.frame.size.height-40);
+    _bgImageV.frame = CGRectMake(10, 40, self.contentView.frame.size.width-20, a);
     
     NSString * time = ((Subject*)_array[0]).time;
     NSDateFormatter * dateF= [[NSDateFormatter alloc]init];
@@ -67,8 +79,9 @@
     NSDate *date = [dateF dateFromString:time];
     NSTimeInterval theMessageT = [date timeIntervalSince1970];
     time = [Common CurrentTime:[Common getCurrentTime] AndMessageTime:[NSString stringWithFormat:@"%f",theMessageT]];
-    CGSize size = [time sizeWithFont:_timeL.font constrainedToSize:CGSizeMake(320, 20) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [time sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(320, 20) lineBreakMode:NSLineBreakByWordWrapping];
     _timeL.frame = CGRectMake((320 - size.width)/2, 10, size.width, size.height);
+    _blackIV.frame = CGRectMake((320 - size.width-10)/2, 10, size.width+10, size.height);
     _timeL.text = time;
 }
 #pragma mark - Table view data source

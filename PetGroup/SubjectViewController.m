@@ -10,23 +10,18 @@
 #import "TempData.h"
 #import "RootCell.h"
 #import "Subject.h"
-#import "MJRefresh.h"
 #import "SRRefreshView.h"
 
 #define MySubject @"52petMySubject"
-@interface SubjectViewController ()<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate,SRRefreshDelegate>
+@interface SubjectViewController ()<UITableViewDataSource,UITableViewDelegate,SRRefreshDelegate>
 @property (nonatomic,retain)UITableView* tableview;
 @property (nonatomic,retain)NSMutableArray* array;
 @property (nonatomic,retain)SRRefreshView* refreshView;
-@property (strong,nonatomic)MJRefreshFooterView *footer;
 @property (nonatomic,assign)int pageNo;
 @end
 
 @implementation SubjectViewController
-- (void)dealloc
-{
-    [_footer free];
-}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -67,10 +62,6 @@
     _tableview.backgroundColor = [UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1];
     [self.view addSubview:_tableview];
     
-    self.footer = [[MJRefreshFooterView alloc] init];
-    _footer.delegate = self;
-    _footer.scrollView = self.tableview;
-    
     self.refreshView = [[SRRefreshView alloc] init];
     _refreshView.delegate = self;
     _refreshView.upInset = 0;
@@ -99,6 +90,9 @@
 #pragma mark - Table view data source
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == _array.count-1) {
+        return [RootCell heightForRowWithArrayCount:((NSArray*)_array[indexPath.row]).count] + 20;
+    }
     return [RootCell heightForRowWithArrayCount:((NSArray*)_array[indexPath.row]).count];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -133,16 +127,11 @@
 {
     [_refreshView scrollViewDidEndDraging];
 }
-#pragma mark MJRefreshBaseView delegate
-- (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
-{
-    [self loadMoreSubject];
-}
 #pragma mark - slimeRefresh delegate
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    [self reloadSubject];
+    [self loadMoreSubject];
 }
 - (void)loadHistorySubject
 {
@@ -156,9 +145,10 @@
                 Subject* sub = [[Subject alloc]initWithNSDictionary:dic];
                 [arr addObject:sub];
             }
-            [_array addObject:arr];
+            [_array insertObject:arr atIndex:0];
         }
         [_tableview reloadData];
+        [_tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_array.count - 1 inSection:0 ] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
     [self reloadSubject];
 }
@@ -193,13 +183,13 @@
                     Subject* sub = [[Subject alloc]initWithNSDictionary:dic];
                     [arr addObject:sub];
                 }
-                [_array addObject:arr];
+                [_array insertObject:arr atIndex:0];
             }
             [_tableview reloadData];
+            [_tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_array.count - 1 inSection:0 ] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
         }
-        [_refreshView endRefresh];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [_refreshView endRefresh];
+        
     }];
 }
 - (void)loadMoreSubject
@@ -228,13 +218,14 @@
                     Subject* sub = [[Subject alloc]initWithNSDictionary:dic];
                     [arr addObject:sub];
                 }
-                [_array addObject:arr];
+                [_array insertObject:arr atIndex:0];
             }
             [_tableview reloadData];
+            [_tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:((NSArray*)responseObject).count inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
         }
-        [_footer endRefreshing];
+        [_refreshView endRefresh];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [_footer endRefreshing];
+        [_refreshView endRefresh];
     }];
 }
 @end

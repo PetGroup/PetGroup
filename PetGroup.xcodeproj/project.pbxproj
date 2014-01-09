@@ -16,7 +16,6 @@
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
-		72363BD21874F88D0030E868 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -65,6 +64,7 @@
 		72795B4C18445B9600BB58E0 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795B4B18445B9600BB58E0 /* like.png */; };
 		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
 		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
+		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -924,6 +924,7 @@
 		727BB2F618471D19005A2C44 /* CircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleCell.m; sourceTree = "<group>"; };
 		727BB2F818473438005A2C44 /* FriendCircleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCircleCell.h; sourceTree = "<group>"; };
 		727BB2F918473438005A2C44 /* FriendCircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCircleCell.m; sourceTree = "<group>"; };
+		72B64D10187E62FD00A6A923 /* timelabelbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timelabelbg.png; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		72CAD8B3183C7C7200B1F927 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
@@ -2163,6 +2164,7 @@
 		7241373E18644AE400851BB4 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				72B64D10187E62FD00A6A923 /* timelabelbg.png */,
 				72363C2618754FC90030E868 /* root_bg.png */,
 				726F08CE1867DE18006343F9 /* imessage.png */,
 				726F08CF1867DE18006343F9 /* wechat.png */,
@@ -4900,6 +4902,7 @@
 				97233BA11820F42C00A8015D /* magnifier-ranged-lo-stemless@2x.png in Resources */,
 				97FE60CF18346DF200CEAF79 /* keyboard.png in Resources */,
 				726F08D81867DE18006343F9 /* sina.png in Resources */,
+				72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */,
 				865FDD4C180920D3005BB088 /* huifu.png in Resources */,
 				973901CA1857FDAE0091930A /* placeholderman.png in Resources */,
 				975812501856C8B50059D0FD /* takepic.png in Resources */,
