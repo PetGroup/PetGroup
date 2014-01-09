@@ -465,6 +465,8 @@
                         title = @"专题推荐";
                         [dict setObject:@"专题推荐" forKey:@"fname"];
                         [dict setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
+                        return;
                     }
                     else{
                         title = @"小编推荐";
