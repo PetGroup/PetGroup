@@ -128,6 +128,9 @@
 }
 -(void)storeReceivedNotification:(NSDictionary *)theDict
 {
+    if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
+        return;
+    }
     AudioServicesPlayAlertSound(1003);
     [self.notiArray insertObject:theDict atIndex:0];
     if (self.notiArray.count>50) {

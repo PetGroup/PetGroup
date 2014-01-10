@@ -1139,6 +1139,7 @@
                   [dic setObject:@"bbs_special_subject" forKey:@"contentType"];
                   [dic setObject:@"bbs_special_subject" forKey:@"msgType"];
                   [dic setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+                  AudioServicesPlayAlertSound(1003);
                   [self newMessageReceived:dic];
               }
           }
@@ -1153,6 +1154,7 @@
               [dic setObject:@"bbs_special_subject" forKey:@"contentType"];
               [dic setObject:@"bbs_special_subject" forKey:@"msgType"];
               [dic setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+              AudioServicesPlayAlertSound(1003);
               [self newMessageReceived:dic];
           }
       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
