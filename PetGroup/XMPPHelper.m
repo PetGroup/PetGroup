@@ -130,13 +130,14 @@
     NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
     NSXMLElement * items = [NSXMLElement elementWithName:@"items"];
     [items addAttributeWithName:@"node" stringValue:@"princely_musings"];
+    [items addAttributeWithName:@"max_items" stringValue:@"1"];
     NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
     XMPPJID *myJID = self.xmppStream.myJID;
     [iq addAttributeWithName:@"from" stringValue:myJID.description];
     [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
     //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
     [iq addAttributeWithName:@"type" stringValue:@"get"];
-    [iq addChild:items];
+    [pubsub addChild:items];
     [iq addChild:pubsub];
     [self.xmppStream sendElement:iq];
 }
@@ -512,6 +513,7 @@
     
     }
 }
+
 
 //注册成功
 - (void)xmppStreamDidRegister:(XMPPStream *)sender{
