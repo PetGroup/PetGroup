@@ -168,6 +168,7 @@
             thumbMsgs.senderType = sendertype;
             int unread = [thumbMsgs.unRead intValue];
             thumbMsgs.unRead = [NSString stringWithFormat:@"%d",unread+1];
+            NSLog(@"unread:%@",thumbMsgs.unRead);
         }];
     }
 }
