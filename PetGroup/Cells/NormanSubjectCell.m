@@ -25,6 +25,7 @@
         lineV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:lineV];
         self.imageV = [[EGOImageView alloc]init];
+        _imageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_imageV];
         self.titleL = [[UILabel alloc]init];
         _titleL.backgroundColor = [UIColor clearColor];

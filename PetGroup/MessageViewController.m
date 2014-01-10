@@ -12,7 +12,9 @@
 #import "KKChatController.h"
 #import "ReconnectionManager.h"
 @interface MessageViewController ()
-
+{
+    BOOL canProcess;
+}
 @end
 
 @implementation MessageViewController
@@ -122,7 +124,7 @@
     if (diffH==20.0f) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    
+    canProcess = YES;
 
 //    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 //    [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
@@ -611,6 +613,7 @@
             return;
         }
         else if ([[[allMsgArray objectAtIndex:theIndex] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]) {
+            canProcess = NO;
             SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
             [self.navigationController pushViewController:subjectVC animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -642,6 +645,7 @@
         return;
     }
     else if ([[[allMsgArray objectAtIndex:indexPath.row] objectForKey:@"sender"] isEqualToString:@"bbs_special_subject"]) {
+        canProcess = NO;
         SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
         [self.navigationController pushViewController:subjectVC animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
@@ -1104,7 +1108,7 @@
 }
 -(void)inspectNewSubject
 {
-  if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+  if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] && canProcess) {
       NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
       long long a = (long long)(cT*1000);
       NSMutableDictionary* params = [NSMutableDictionary dictionary];

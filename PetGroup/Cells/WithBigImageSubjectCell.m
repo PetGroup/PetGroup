@@ -23,6 +23,7 @@
         self.selectionStyle = UITableViewCellSelectionStyleGray;
         // Initialization code
         self.imageV = [[EGOImageView alloc]init];
+        _imageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_imageV];
         self.blackV = [[UIView alloc]init];
         _blackV.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7];

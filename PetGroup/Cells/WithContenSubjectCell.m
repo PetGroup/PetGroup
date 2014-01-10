@@ -34,6 +34,7 @@
         _timeL.font = [UIFont systemFontOfSize:12];
         [self.contentView addSubview:_timeL];
         self.imageV = [[EGOImageView alloc]init];
+        _imageV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
         [self.contentView addSubview:_imageV];
         self.contentL = [[UILabel alloc]init];
         _contentL.backgroundColor = [UIColor clearColor];

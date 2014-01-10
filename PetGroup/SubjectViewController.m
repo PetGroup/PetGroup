@@ -75,6 +75,8 @@
     [DataStoreManager blankMsgUnreadCountForUser:@"bbs_special_subject"];
     [self loadHistorySubject];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSubject) name:@"inspectNewSubject" object:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning
