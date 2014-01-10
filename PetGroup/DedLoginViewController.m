@@ -81,7 +81,7 @@
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在设置您的个人信息";
+    hud.labelText = @"设置中...";
 }
 
 - (void)didReceiveMemoryWarning

@@ -15,6 +15,8 @@
 #import "NotConnectDelegate.h"
 #import "Common.h"
 #import "XMPPRoster.h"
+#import "XMPPReconnect.h"
+#import "XMPPAutoPing.h"
 #import "XMPPRosterMemoryStorage.h"
 #import "XMPPvCardTemp.h"
 #import "XMPPvCardTempModule.h"
@@ -23,6 +25,7 @@
 #import "XMPPJID.h"
 #import "TempData.h"
 
+#define localServerPushedMessageIDs  @"localServerPushedMessageIDs"
 @implementation XMPPHelper
 //@synthesize xmppStream,xmppvCardStorage,xmppvCardTempModule,xmppvCardAvatarModule,xmppvCardTemp,account,password,buddyListDelegate,chatDelegate,xmpprosterDelegate,processFriendDelegate,xmpptype,success,fail,regsuccess,regfail,xmppRosterscallback,myVcardTemp,xmppRosterMemoryStorage,xmppRoster;
 
@@ -37,6 +40,14 @@
     [self.xmppRoster activate:self.xmppStream];
     [self.xmppRoster setAutoFetchRoster:NO];
     self.xmppStream.enableBackgroundingOnSocket = YES;
+    self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+    [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
+    [self.xmppReconnect activate:self.xmppStream];
+    self.xmppAutoPing = [[XMPPAutoPing alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+    self.xmppAutoPing.pingInterval = 25.f; // default is 60
+    self.xmppAutoPing.pingTimeout = 10.f; // default is 10
+    [self.xmppAutoPing addDelegate:self delegateQueue:dispatch_get_main_queue()];
+    [self.xmppAutoPing activate:self.xmppStream];
 }
 - (void)goOnline {
 	XMPPPresence *presence = [XMPPPresence presence];
@@ -130,7 +141,7 @@
     NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
     NSXMLElement * items = [NSXMLElement elementWithName:@"items"];
     [items addAttributeWithName:@"node" stringValue:@"princely_musings"];
-    [items addAttributeWithName:@"max_items" stringValue:@"1"];
+    [items addAttributeWithName:@"max_items" stringValue:@"4"];
     NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
     XMPPJID *myJID = self.xmppStream.myJID;
     [iq addAttributeWithName:@"from" stringValue:myJID.description];
@@ -305,7 +316,7 @@
 
 -(BOOL)sendMessage:(NSXMLElement *)message
 {
-    if (![self ifXMPPConnected]) {
+    if (![self isConnected]) {
         return NO;
     }
     else
@@ -350,6 +361,7 @@
             if (subscriptionArray) {
                 if (subscriptionArray.count>0) {
                     NSLog(@"subscribed");
+                    [self getAllSubscribedMsg];
                 }
                 else
                 {
@@ -357,7 +369,34 @@
                     [self realSubscribeToServer];
                 }
             }
-            
+            NSXMLElement *items = [query elementForName:@"items"];
+            NSArray * itemsArray = [items children];
+            if (itemsArray) {
+                if (itemsArray.count>0) {
+                    NSLog(@"messages delayed:%@",itemsArray);
+                    NSString * pushedkey = [NSString stringWithFormat:@"%@_%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil],localServerPushedMessageIDs];
+                    NSArray * localServerPushed = [[NSUserDefaults standardUserDefaults] objectForKey:pushedkey];
+                    NSMutableArray * olocalServerPushed;
+                    if (localServerPushed) {
+                        olocalServerPushed = [NSMutableArray arrayWithArray:localServerPushed];
+                    }
+                    else
+                        olocalServerPushed = [NSMutableArray array];
+                    for (int i = 0; i<itemsArray.count; i++) {
+                        NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+                        NSXMLElement * oitem = [itemsArray objectAtIndex:i];
+                        NSXMLElement * item = [oitem elementForName:@"entry"];
+                        NSLog(@"ITEM ID iq:%@",[oitem attributeStringValueForName:@"id"]);
+                        if (![olocalServerPushed containsObject:[oitem attributeStringValueForName:@"id"]]) {
+                            [olocalServerPushed addObject:[oitem attributeStringValueForName:@"id"]];
+                            [[NSUserDefaults standardUserDefaults] setObject:olocalServerPushed forKey:pushedkey];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                            [self parseItem:item withDict:dict];
+                        }
+                        
+                    }
+                }
+            }
         }
         
     }
@@ -470,42 +509,20 @@
                     if (!item) {
                         return;
                     }
-                    NSString * notiType = [[item elementForName:@"type"] stringValue];
-                    NSString * notiID = [[item elementForName:@"id"] stringValue];
-                    NSString * notiContent = [[item elementForName:@"body"] stringValue];
-                    NSString * title = @"";
-                    if ([notiType isEqualToString:@"notice"]) {
-                        title = @"系统通知";
-                        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
-                        [dict setObject:@"圈子通知" forKey:@"fname"];
+                    NSXMLElement * oitem = [itemsArray objectAtIndex:0];
+                    NSString * pushedkey = [NSString stringWithFormat:@"%@_%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil],localServerPushedMessageIDs];
+                    NSArray * localServerPushed = [[NSUserDefaults standardUserDefaults] objectForKey:pushedkey];
+                    NSMutableArray * olocalServerPushed;
+                    if (localServerPushed) {
+                        olocalServerPushed = [NSMutableArray arrayWithArray:localServerPushed];
                     }
-                    else if ([notiType isEqualToString:@"bbs_special_subject"]){
-                        title = @"专题推荐";
-                        [dict setObject:@"专题推荐" forKey:@"fname"];
-                        [dict setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
-                        return;
-                    }
-                    else{
-                        title = @"小编推荐";
-                        [dict setObject:@"圈子通知" forKey:@"fname"];
-                        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
-                    }
-                    [dict setObject:[NSString stringWithFormat:@"%@:%@",title,notiContent] forKey:@"msg"];
-                    if ([notiType isEqualToString:@"bbs_special_subject"]){
-                        [dict setObject:[NSString stringWithFormat:@"%@",notiContent] forKey:@"msg"];
-                    }
-                    [dict setObject:[Common getCurrentTime] forKey:@"time"];
-                    [dict setObject:notiType forKey:@"contentType"];
-                    [dict setObject:notiType forKey:@"msgType"];
-                    [dict setObject:notiContent forKey:@"replyContent"];
-                    [dict setObject:notiID forKey:@"contentID"];
-                    [dict setObject:title forKey:@"fromNickname"];
-                    [dict setObject:@"no" forKey:@"fromHeadImg"];
-                    [dict setObject:@"no" forKey:@"ifRead"];
-                    [self.chatDelegate newMessageReceived:dict];
-                    [self.commentDelegate newCommentReceived:dict];
-                    
+                    else
+                        olocalServerPushed = [NSMutableArray array];
+                    NSLog(@"ITEM ID msg:%@",[oitem attributeStringValueForName:@"id"]);
+                    [olocalServerPushed addObject:[oitem attributeStringValueForName:@"id"]];
+                    [[NSUserDefaults standardUserDefaults] setObject:olocalServerPushed forKey:pushedkey];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self parseItem:item withDict:dict];
                 }
             }
         }
@@ -514,6 +531,45 @@
     }
 }
 
+-(void)parseItem:(NSXMLElement *)item withDict:(NSMutableDictionary *)dict
+{
+    NSString * notiType = [[item elementForName:@"type"] stringValue];
+    NSString * notiID = [[item elementForName:@"id"] stringValue];
+    NSString * notiContent = [[item elementForName:@"body"] stringValue];
+    NSString * title = @"";
+    if ([notiType isEqualToString:@"notice"]) {
+        title = @"系统通知";
+        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+        [dict setObject:@"圈子通知" forKey:@"fname"];
+    }
+    else if ([notiType isEqualToString:@"bbs_special_subject"]){
+        title = @"专题推荐";
+        [dict setObject:@"专题推荐" forKey:@"fname"];
+        [dict setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
+        return;
+    }
+    else{
+        title = @"小编推荐";
+        [dict setObject:@"圈子通知" forKey:@"fname"];
+        [dict setObject:@"123456789@xxx.com" forKey:@"sender"];
+    }
+    [dict setObject:[NSString stringWithFormat:@"%@:%@",title,notiContent] forKey:@"msg"];
+    if ([notiType isEqualToString:@"bbs_special_subject"]){
+        [dict setObject:[NSString stringWithFormat:@"%@",notiContent] forKey:@"msg"];
+    }
+    [dict setObject:[Common getCurrentTime] forKey:@"time"];
+    [dict setObject:notiType forKey:@"contentType"];
+    [dict setObject:notiType forKey:@"msgType"];
+    [dict setObject:notiContent forKey:@"replyContent"];
+    [dict setObject:notiID forKey:@"contentID"];
+    [dict setObject:title forKey:@"fromNickname"];
+    [dict setObject:@"no" forKey:@"fromHeadImg"];
+    [dict setObject:@"no" forKey:@"ifRead"];
+    [self.chatDelegate newMessageReceived:dict];
+    [self.commentDelegate newCommentReceived:dict];
+
+}
 
 //注册成功
 - (void)xmppStreamDidRegister:(XMPPStream *)sender{

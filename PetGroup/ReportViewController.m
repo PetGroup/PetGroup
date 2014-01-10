@@ -249,7 +249,7 @@
 -(void)displayComposerSheet
 {
     [hud show:YES];
-    hud.labelText = @"初始化邮件";
+    hud.labelText = @"生成邮件";
     MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
     
     mailPicker.mailComposeDelegate = self;

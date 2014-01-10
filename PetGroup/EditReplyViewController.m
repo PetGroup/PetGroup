@@ -179,7 +179,7 @@
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"正在为您发布...";
+    hud.labelText = @"发布中...";
 }
 -(void)emojiBtnClicked:(UIButton *)sender
 {

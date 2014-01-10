@@ -162,7 +162,7 @@
     _footer.scrollView = self.tableV;
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在为您加载,请稍后!";
+    hud.labelText = @"正在加载...";
     [hud show:YES];
     [self reloadData];
     

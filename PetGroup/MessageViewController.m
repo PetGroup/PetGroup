@@ -112,7 +112,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inspectNewSubject) name:@"inspectNewSubject" object:nil];
-    [self inspectNewSubject];
+//    [self inspectNewSubject];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -243,14 +243,14 @@
 //    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
 //        
 //    }];
-    [self.appDel.xmppHelper disconnect];
+//    [self.appDel.xmppHelper disconnect];
     titleLabel.text = @"消息(未连接)";
-    if ([TempData sharedInstance].appActive&&[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
-        titleLabel.text = @"消息(连接中...)";
-        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
-            titleLabel.text = @"消息";
-        }];
-    }
+//    if ([TempData sharedInstance].appActive&&[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
+//        titleLabel.text = @"消息(连接中...)";
+//        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+//            titleLabel.text = @"消息";
+//        }];
+//    }
 
  //   [self connectChatServer];
    // NSLog(@"ddddd");
@@ -916,20 +916,8 @@
 {
     self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
-    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
-//        NSLog(@"登陆成功xmpp");
-//        self.appDel.xmppHelper.buddyListDelegate = self;
-//        self.appDel.xmppHelper.chatDelegate = self;
-//        self.appDel.xmppHelper.processFriendDelegate = self;
-//        self.appDel.xmppHelper.addReqDelegate = self;
-//        self.appDel.xmppHelper.commentDelegate = self;
-        titleLabel.text = @"消息";
-        [[TempData sharedInstance] setOpened:YES];
-        [self.appDel.xmppHelper checkToServerifSubscibe];
-//        [self.appDel.xmppHelper realSubscribeToServer];
-    }];
-//    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
-//        NSLog(@"登陆成功xmpp");
+//    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+////        NSLog(@"登陆成功xmpp");
 ////        self.appDel.xmppHelper.buddyListDelegate = self;
 ////        self.appDel.xmppHelper.chatDelegate = self;
 ////        self.appDel.xmppHelper.processFriendDelegate = self;
@@ -939,13 +927,26 @@
 //        [[TempData sharedInstance] setOpened:YES];
 //        [self.appDel.xmppHelper checkToServerifSubscibe];
 ////        [self.appDel.xmppHelper realSubscribeToServer];
-//    }fail:^(NSError *result){
+//    }];
+    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
+        NSLog(@"登陆成功xmpp");
+//        self.appDel.xmppHelper.buddyListDelegate = self;
+//        self.appDel.xmppHelper.chatDelegate = self;
+//        self.appDel.xmppHelper.processFriendDelegate = self;
+//        self.appDel.xmppHelper.addReqDelegate = self;
+//        self.appDel.xmppHelper.commentDelegate = self;
+        titleLabel.text = @"消息";
+        [[TempData sharedInstance] setOpened:YES];
+        [self.appDel.xmppHelper checkToServerifSubscibe];
+//        [self.appDel.xmppHelper realSubscribeToServer];
+    }fail:^(NSError *result){
+        titleLabel.text = @"消息(未连接)";
 //        titleLabel.text = @"消息(连接中...)";
 //        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
 //            titleLabel.text = @"消息";
 //        }];
-//        
-//    }];
+        
+    }];
 }
 
 -(void)toLoginPage

@@ -215,7 +215,7 @@
     
     [reach startNotifier];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
     
 //    if ([[TempData sharedInstance] ifOpened]){
 //        [_loadingV makeTabbarPresentAViewController:nil];

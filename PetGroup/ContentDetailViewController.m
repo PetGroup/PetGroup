@@ -132,6 +132,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [hud hide:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
     }
     if (self.contentMode == ContentModeAD) {
@@ -158,6 +159,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [hud hide:YES];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }];
 
     }
@@ -239,6 +241,7 @@
     [webView stopLoading];
     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"网页加载失败" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:@"重新加载", nil];
     [alert show];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {

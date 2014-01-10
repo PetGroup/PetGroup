@@ -168,7 +168,7 @@
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在完善您的信息...";
+    hud.labelText = @"正在完善...";
 }
 
 - (void)didReceiveMemoryWarning

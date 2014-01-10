@@ -57,7 +57,7 @@
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.delegate = self;
-    hud.labelText = @"正在加载网页...";
+    hud.labelText = @"加载中...";
 	// Do any additional setup after loading the view.
 }
 -(void)backButton:(UIButton *)sender

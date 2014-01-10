@@ -77,7 +77,7 @@
     [self.view addSubview:_textV];
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在分享,请稍等";
+    hud.labelText = @"分享中...";
 }
 
 - (void)didReceiveMemoryWarning

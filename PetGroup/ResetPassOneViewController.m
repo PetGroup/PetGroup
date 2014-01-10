@@ -125,7 +125,7 @@
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在发送，请稍后";
+    hud.labelText = @"处理中...";
 }
 
 - (void)didReceiveMemoryWarning
