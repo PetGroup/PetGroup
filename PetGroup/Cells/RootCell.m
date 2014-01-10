@@ -67,8 +67,9 @@
     int a = 0;
     if (_array.count>1) {
         a = (_array.count - 1) * 60 + 166 + 16;
+    }else{
+        a = _array.count*300+16;
     }
-    a = _array.count*300+16;
     _tableView.frame = CGRectMake(11, 48, self.contentView.frame.size.width-22, a-16);
     [_tableView reloadData];
     _bgImageV.frame = CGRectMake(10, 40, self.contentView.frame.size.width-20, a);
