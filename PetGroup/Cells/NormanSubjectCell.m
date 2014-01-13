@@ -19,7 +19,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         // Initialization code
         UIView* lineV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.contentView.frame.size.width, 1)];
         lineV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];

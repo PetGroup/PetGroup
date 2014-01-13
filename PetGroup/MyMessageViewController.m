@@ -192,7 +192,6 @@
     self.presentDS = _myDynamicDS;
     _tableV.dataSource = _myDynamicDS;
     
-    [self.tableV setContentOffset:CGPointMake(0, -100) animated:NO];
     [_refreshView pullApart:_refreshView];
 
 }
