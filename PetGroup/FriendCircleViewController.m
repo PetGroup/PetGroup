@@ -17,11 +17,8 @@
 #import "SomeOneDynamicViewController.h"
 #import "HostInfo.h"
 #import "PersonDetailViewController.h"
-#import "MBProgressHUD.h"
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
-{
-    MBProgressHUD * hud;
-}
+
 @property (nonatomic,retain)UIView* backV;
 @property (nonatomic,retain)MJRefreshFooterView* footer;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -132,8 +129,6 @@
     [headIV addTarget:self action:@selector(headAct) forControlEvents:UIControlEventTouchUpInside];
     
     nameL.text = [dic objectForKey:@"nickname"];
-//    CGSize size = [nameL.text sizeWithFont:[UIFont systemFontOfSize:16.0] constrainedToSize:CGSizeMake(220, 20) lineBreakMode:NSLineBreakByWordWrapping];
-//    nameL.frame = CGRectMake(220-size.width, 140, size.width, 20);
     NSString * imageID = [DataStoreManager queryFirstHeadImageForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
     headIV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",imageID]];
     
@@ -154,17 +149,16 @@
     _refreshView.slime.lineWith = 1;
     _refreshView.slime.shadowBlur = 4;
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.0];
+    _refreshView.slime.hidden = YES;
     
     [self.tableV addSubview:_refreshView];
     
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
-    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
-    [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.labelText = @"正在加载...";
-    [hud show:YES];
-    [self reloadData];
+    
+    [self.tableV setContentOffset:CGPointMake(0, -100) animated:NO];
+    [_refreshView pullApart:_refreshView];
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults objectForKey:@"25PetFirstLoadFrirndCircleView"]) {
@@ -457,7 +451,6 @@
 -(void)reloadData
 {
     [_friendCircleDS reloadDataSuccess:^{
-        [hud hide:YES];
         [self.tableV reloadData];
         [_refreshView endRefresh];
     } failure:^{

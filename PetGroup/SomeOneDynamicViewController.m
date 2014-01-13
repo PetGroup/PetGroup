@@ -131,7 +131,7 @@
     _refreshView.slime.lineWith = 1;
     _refreshView.slime.shadowBlur = 4;
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.0];
-    
+    _refreshView.slime.hidden = YES;
     [self.tableV addSubview:_refreshView];
     
     self.footer = [[MJRefreshFooterView alloc]init];
@@ -146,7 +146,8 @@
     signatureL.text = _userInfo.signature;
     _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",_userInfo.backgroundImg]];
     
-    [self reloadData];
+    [self.tableV setContentOffset:CGPointMake(0, -100) animated:NO];
+    [_refreshView pullApart:_refreshView];
 }
 - (void)didReceiveMemoryWarning
 {
