@@ -133,6 +133,7 @@
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.0];
     _refreshView.slime.hidden = YES;
     [self.tableV addSubview:_refreshView];
+    _refreshView.activityIndicationView.color = [UIColor orangeColor];
     
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;

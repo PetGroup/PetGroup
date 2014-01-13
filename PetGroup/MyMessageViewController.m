@@ -171,6 +171,7 @@
     _refreshView.slime.shadowBlur = 4;
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:0.0];
     _refreshView.slime.hidden = YES;
+    _refreshView.activityIndicationView.color = [UIColor orangeColor];
     
     [self.tableV addSubview:_refreshView];
     
