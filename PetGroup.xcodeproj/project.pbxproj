@@ -65,6 +65,7 @@
 		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
 		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
 		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
+		72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -608,7 +609,6 @@
 		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
 		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
 		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
-		97804886187CF593005DAB58 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97804888187D2E3A005DAB58 /* special_subject.png in Resources */ = {isa = PBXBuildFile; fileRef = 97804887187D2E3A005DAB58 /* special_subject.png */; };
 		979088D4182DF7710060A345 /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D1182DF7710060A345 /* OHParagraphStyle.m */; };
 		979088D5182DF7710060A345 /* OHTouchesGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D3182DF7710060A345 /* OHTouchesGestureRecognizer.m */; };
@@ -5110,7 +5110,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97804886187CF593005DAB58 /* amrFileCodec.m in Sources */,
+				72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
