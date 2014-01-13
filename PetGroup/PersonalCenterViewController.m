@@ -213,7 +213,7 @@
             }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+            cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
 
             cell.headImageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseImageUrl,self.hostInfo.headImgArray.count>0? [self.hostInfo.headImgArray objectAtIndex:0]:@""]];
           

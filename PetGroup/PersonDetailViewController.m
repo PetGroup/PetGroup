@@ -323,6 +323,7 @@
             }
         }
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

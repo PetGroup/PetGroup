@@ -88,10 +88,16 @@
         UIScrollView * subSC = [[UIScrollView alloc]initWithFrame:CGRectMake(i*320, 0, 320, _sc.frame.size.height)];
         subSC.tag = 1000+i;
         EGOImageView* imageV = [[EGOImageView alloc]initWithFrame:CGRectMake(110,(_sc.frame.size.height-100)/2 , 100, 100)];
-        imageV.placeholderImage = _smallImageArray[i];
+        if (_smallImageArray.count>0) {
+            imageV.placeholderImage = _smallImageArray[i];
+        }
+        else
+            imageV.placeholderImage = [UIImage imageNamed:@"placeholderpet"];
+        
         [subSC addSubview:imageV];
         imageV.userInteractionEnabled = YES;
         UIActivityIndicatorView*act = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((_sc.frame.size.width-10)/2, (_sc.frame.size.height-10)/2, 10, 10)];
+        act.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
         [act startAnimating];
         [subSC addSubview:act];
         imageV.delegate = self;

@@ -521,7 +521,7 @@
     }
     else
     {
-        cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+        cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
     }
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];

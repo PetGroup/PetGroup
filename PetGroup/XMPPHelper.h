@@ -87,4 +87,5 @@ typedef enum {
 -(void)checkToServerifSubscibe;
 -(void)realSubscribeToServer;
 -(void)getAllSubscribedMsg;
+-(void)deleteAItemWithID:(NSString *)theID;
 @end

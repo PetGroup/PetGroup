@@ -42,6 +42,8 @@
         self.viewMask.alpha = 0.6;
         self.viewMask.backgroundColor = [UIColor blackColor];
         self.viewMask.layer.masksToBounds = YES;
+        self.viewPhoto.layer.cornerRadius = 5;
+        self.viewPhoto.layer.masksToBounds = YES;
         
         
         

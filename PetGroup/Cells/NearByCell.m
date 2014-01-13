@@ -26,6 +26,9 @@
 //        self.headImageV.layer.cornerRadius = 5;
 //        self.headImageV.layer.masksToBounds=YES;
         [bgV addSubview:self.headImageV];
+        UIImageView * bgbgV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+        [bgbgV setImage:[UIImage imageNamed:@"headMask.png"]];
+        [bgV addSubview:bgbgV];
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(80, 10, 190, 20)];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [self.nameLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
@@ -78,6 +81,9 @@
         
         self.petOneImgV = [[UIImageView alloc] initWithFrame:CGRectMake(270, 10, 40, 40)];
         [bgV addSubview:self.petOneImgV];
+        UIImageView * bgbgV2 = [[UIImageView alloc] initWithFrame:CGRectMake(270, 10, 40, 40)];
+        [bgbgV2 setImage:[UIImage imageNamed:@"headMask.png"]];
+        [bgV addSubview:bgbgV2];
         self.petOneImgV.hidden = YES;
 //        self.petOneImgV.layer.cornerRadius = 3;
 //        self.petOneImgV.layer.masksToBounds=YES;

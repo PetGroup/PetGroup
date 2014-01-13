@@ -327,7 +327,7 @@
     }
     else
         tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
-    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
     cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingString:[tempDict objectForKey:@"img"]]];
     cell.nameLabel.text = [tempDict objectForKey:@"displayName"];
     cell.signatureLabel.text = [tempDict objectForKey:@"signature"];

@@ -185,7 +185,27 @@
     [self.xmppStream sendElement:iq];
 }
 
-
+-(void)deleteAItemWithID:(NSString *)theID
+{
+    NSXMLElement *pubsub = [NSXMLElement elementWithName:@"pubsub" xmlns:@"http://jabber.org/protocol/pubsub"];
+    NSXMLElement * sub = [NSXMLElement elementWithName:@"retract"];
+    
+    NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
+    XMPPJID *myJID = self.xmppStream.myJID;
+    [sub addAttributeWithName:@"node" stringValue:@"princely_musings"];
+//    [sub addAttributeWithName:@"jid" stringValue:myJID.description];
+    [iq addAttributeWithName:@"from" stringValue:myJID.description];
+    [iq addAttributeWithName:@"to" stringValue:[NSString stringWithFormat:@"pubsub.%@", [[TempData sharedInstance] getRealDomain]]];
+    //    [iq addAttributeWithName:@"xmlns" stringValue:@"http://jabber.org/protocol/pubsub"];
+    //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
+    [iq addAttributeWithName:@"type" stringValue:@"set"];
+    NSXMLElement * item = [NSXMLElement elementWithName:@"item"];
+    [item addAttributeWithName:@"id" stringValue:theID];
+    [sub addChild:item];
+    [pubsub addChild:sub];
+    [iq addChild:pubsub];
+    [self.xmppStream sendElement:iq];
+}
 - (void)updateVCard:(XMPPvCardTemp *)vcard success:(CallBackBlock)thesuccess fail:(CallBackBlockErr)thefail{
     self.success=thesuccess;
     self.fail=thefail;
