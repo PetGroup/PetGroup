@@ -21,7 +21,7 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleGray;
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         // Initialization code
         self.titleL = [[UILabel alloc]init];
         _titleL.backgroundColor = [UIColor clearColor];

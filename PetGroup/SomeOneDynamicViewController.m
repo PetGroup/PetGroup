@@ -147,7 +147,6 @@
     signatureL.text = _userInfo.signature;
     _imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@",_userInfo.backgroundImg]];
     
-    [self.tableV setContentOffset:CGPointMake(0, -100) animated:NO];
     [_refreshView pullApart:_refreshView];
 }
 - (void)didReceiveMemoryWarning

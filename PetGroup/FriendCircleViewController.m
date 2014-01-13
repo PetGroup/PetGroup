@@ -158,7 +158,6 @@
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
     
-    [self.tableV setContentOffset:CGPointMake(0, -100) animated:NO];
     [_refreshView pullApart:_refreshView];
     
     NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
