@@ -111,9 +111,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(100, origin, 200, 70);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                    _imageCollectionV.frame = CGRectMake(100, origin, 70, 70);
+                }break;
+                case 2:{
+                    _imageCollectionV.frame = CGRectMake(100, origin, 140, 70);
+                }break;
+                case 3:{
+                    _imageCollectionV.frame = CGRectMake(100, origin, 200, 70);
+                }break;
+                    
+                default:
+                    break;
+            }
             origin+=75;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if (self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(100, origin, 140, 140);
+            origin+=145;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(100, origin, 200, 140);
             origin+=145;
         }else if(self.dynamic.smallImage.count>6){
@@ -130,9 +146,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 200, 70);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                     _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 70, 70);
+                }break;
+                case 2:{
+                     _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 140, 70);
+                }break;
+                case 3:{
+                     _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 200, 70);
+                }break;
+                    
+                default:
+                    break;
+            }
             origin+=75;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if (self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 140, 140);
+            origin+=145;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(self.contentView.frame.size.width-220, origin, 200, 140);
             origin+=145;
         }else if(self.dynamic.smallImage.count>6){

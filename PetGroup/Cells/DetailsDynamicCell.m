@@ -144,9 +144,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 5;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(10, origin, 300, 98.3);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                    _imageCollectionV.frame = CGRectMake(10, origin, 100, 98.3);
+                }break;
+                case 2:{
+                    _imageCollectionV.frame = CGRectMake(10, origin, 200, 98.3);
+                }break;
+                case 3:{
+                    _imageCollectionV.frame = CGRectMake(10, origin, 300, 98.3);
+                }break;
+                    
+                default:
+                    break;
+            }
             origin+=103.3;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if (self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(10, origin, 200, 201.6);
+            origin+=206.6;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(10, origin, 300, 201.6);
             origin+=206.6;
         }else if(self.dynamic.smallImage.count>6){
@@ -163,9 +179,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 5;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(20, origin, 280, 91.6);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                    _imageCollectionV.frame = CGRectMake(20, origin, 93.3, 91.6);
+                }break;
+                case 2:{
+                    _imageCollectionV.frame = CGRectMake(20, origin, 188.2, 91.6);
+                }break;
+                case 3:{
+                    _imageCollectionV.frame = CGRectMake(20, origin, 280, 91.6);
+                }break;
+                    
+                default:
+                    break;
+            }
             origin+=96.6;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if (self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(20, origin, 188.2, 188.2);
+            origin+=193.2;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(20, origin, 280, 188.2);
             origin+=193.2;
         }else if(self.dynamic.smallImage.count>6){

@@ -135,17 +135,6 @@
         [zhuanfaB addTarget:self action:@selector(zhuanfaAction) forControlEvents:UIControlEventTouchUpInside];
         [zhuanfaB setBackgroundImage:[UIImage imageNamed:@"zhuanfaB"] forState:UIControlStateNormal];
         [_bottomIV addSubview:zhuanfaB];
-        
-//        self.zanImageV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 4, 14, 15)];
-//        [zanB addSubview:_zanImageV];
-//        
-//        UIImageView* replyIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 5, 17, 14.5)];
-//        replyIV.image = [UIImage imageNamed:@"pinglun"];
-//        [_replyB addSubview:replyIV];
-//        
-//        UIImageView * zhuanfaIV = [[UIImageView alloc]initWithFrame:CGRectMake(10, 3.5, 14, 16.5)];
-//        zhuanfaIV.image = [UIImage imageNamed:@"zhuanfa"];
-//        [zhuanfaB addSubview:zhuanfaIV];
     }
     return self;
 }
@@ -172,9 +161,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 80, 80);
+                }break;
+                case 2:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 160, 80);
+                }break;
+                case 3:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
+                }break;
+
+                default:
+                    break;
+            }
             origin+=85;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if(self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(60, origin, 160, 160);
+            origin+=165;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(60, origin, 240, 160);
             origin+=165;
         }else if(self.dynamic.smallImage.count>6){
@@ -191,9 +196,25 @@
         _msgL.attributedText = self.dynamic.msg;
         origin = origin + size.height + 10;
         if (self.dynamic.smallImage.count>=1&&self.dynamic.smallImage.count<=3) {
-            _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
+            switch (self.dynamic.smallImage.count) {
+                case 1:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 80, 80);
+                }break;
+                case 2:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 160, 80);
+                }break;
+                case 3:{
+                    _imageCollectionV.frame = CGRectMake(60, origin, 240, 80);
+                }break;
+                    
+                default:
+                    break;
+            }
             origin+=85;
-        }else if(self.dynamic.smallImage.count>3&&self.dynamic.smallImage.count<=6){
+        }else if(self.dynamic.smallImage.count == 4){
+            _imageCollectionV.frame = CGRectMake(60, origin, 160, 160);
+            origin+=165;
+        }else if(self.dynamic.smallImage.count>4&&self.dynamic.smallImage.count<=6){
             _imageCollectionV.frame = CGRectMake(60, origin, 240, 160);
             origin+=165;
         }else if(self.dynamic.smallImage.count>6){
@@ -203,11 +224,6 @@
         self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 255, origin-_msgL.frame.origin.y);
     }
     [_imageCollectionV reloadData];
-//    if (self.dynamic.ifIZaned) {
-//        _zanImageV.image = [UIImage imageNamed:@"zaned"];
-//    }else{
-//        _zanImageV.image = [UIImage imageNamed:@"zan"];
-//    }
     if (self.dynamic.countZan>0) {
         [zanB setTitle:[NSString stringWithFormat:@"       %d",self.dynamic.countZan] forState:UIControlStateNormal];
     }else{
