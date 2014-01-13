@@ -340,6 +340,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        [searchDisplay setActive:NO animated:NO];
         tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
     }
     else

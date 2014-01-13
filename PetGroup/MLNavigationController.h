@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MLNavigationController : UINavigationController
+@interface MLNavigationController : UINavigationController<UIGestureRecognizerDelegate>
 {
     //UIPanGestureRecognizer *recognizer;
 }

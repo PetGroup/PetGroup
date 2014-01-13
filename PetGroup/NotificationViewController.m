@@ -128,10 +128,11 @@
 }
 -(void)storeReceivedNotification:(NSDictionary *)theDict
 {
+    AudioServicesPlayAlertSound(1003);
     if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
         return;
     }
-    AudioServicesPlayAlertSound(1003);
+    
     [self.notiArray insertObject:theDict atIndex:0];
     if (self.notiArray.count>50) {
         [self.notiArray removeLastObject];
@@ -226,7 +227,7 @@
     if (cell == nil) {
         cell = [[NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"noti.png"];
     NSDictionary * cDict = self.notiArray[indexPath.row];
     NSURL * theUrl = [NSURL URLWithString:[BaseImageUrl stringByAppendingFormat:@"%@",[self getHead:[cDict objectForKey:@"fromHeadImg"]]]];
     cell.headImageV.imageURL = theUrl;

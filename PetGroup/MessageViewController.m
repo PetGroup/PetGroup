@@ -111,7 +111,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inspectNewSubject) name:@"inspectNewSubject" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inspectNewSubject) name:@"inspectNewSubject" object:nil];
 //    [self inspectNewSubject];
 }
 
@@ -318,7 +318,7 @@
 -(void)storeReceivedNotification:(NSDictionary *)theDict
 {
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
-    
+    AudioServicesPlayAlertSound(1003);
     if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
         return;
     }
@@ -334,7 +334,7 @@
     }
     else
         newNotiArray = [NSMutableArray arrayWithObject:theDict];
-    AudioServicesPlayAlertSound(1003);
+    
     [defaultUserD setObject:newNotiArray forKey:notiKey];
     [defaultUserD synchronize];
 //    if (newNotiArray.count>0) {
@@ -594,8 +594,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        [searchDisplay setActive:NO animated:NO];
         NSString * thisOne = [searchResultArray objectAtIndex:indexPath.row];
         NSInteger theIndex = [pyChineseArray indexOfObject:thisOne];
         if ([[allNickNameArray objectAtIndex:theIndex] isEqualToString:ZhaoHuLan]) {
@@ -625,7 +626,7 @@
         kkchat.chatUserImg = [allHeadImgArray objectAtIndex:theIndex];
         [self.navigationController pushViewController:kkchat animated:YES];
         kkchat.msgDelegate = self;
-        [searchDisplay setActive:NO animated:NO];
+        
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
         return;

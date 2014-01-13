@@ -11,7 +11,8 @@
 #import "RootCell.h"
 #import "Subject.h"
 #import "SRRefreshView.h"
-
+#import "AppDelegate.h"
+#import "XMPPHelper.h"
 #define MySubject @"52petMySubject"
 @interface SubjectViewController ()<UITableViewDataSource,UITableViewDelegate,SRRefreshDelegate>
 @property (nonatomic,retain)UITableView* tableview;
@@ -73,10 +74,15 @@
     _refreshView.slime.shadowColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
     [self.tableview addSubview:_refreshView];
     [DataStoreManager blankMsgUnreadCountForUser:@"bbs_special_subject"];
+    self.appDel = [[UIApplication sharedApplication] delegate];
     [self loadHistorySubject];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSubject) name:@"inspectNewSubject" object:nil];
     
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [DataStoreManager blankMsgUnreadCountForUser:@"bbs_special_subject"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,6 +141,23 @@
 {
     [self loadMoreSubject];
 }
+-(void)newCommentReceived:(NSDictionary *)theDict
+{
+    [self storeReceivedNotification:theDict];
+}
+-(void)storeReceivedNotification:(NSDictionary *)theDict
+{
+    AudioServicesPlayAlertSound(1003);
+    if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
+        [self reloadSubject];
+    }
+
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.appDel.xmppHelper.commentDelegate = self;
+}
+
 - (void)loadHistorySubject
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

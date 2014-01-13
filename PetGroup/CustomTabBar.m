@@ -57,6 +57,7 @@ static CustomTabBar *customTabBarController;
 		{
 			//view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y+TabbarHeight, view.frame.size.width, view.frame.size.height);
             view.hidden = YES;
+            self.view.backgroundColor = [UIColor whiteColor];
 			//break;
 		}
 	}
@@ -120,10 +121,10 @@ static CustomTabBar *customTabBarController;
 	tabBarBackgroundView = [[UIView alloc] 
 									 initWithFrame:
 									 self.tabBar.frame];
-	UIColor * color = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:Background]];
-	[tabBarBackgroundView setBackgroundColor:color];
+//	UIColor * color = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:Background]];
+	[tabBarBackgroundView setBackgroundColor:[UIColor whiteColor]];
    // NSLog(@"sssssss:%f,%f,%f,%f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
-	[color release];
+//	[color release];
 	//将tabBarBackGroundView加载到self.view上去
 	//[self.view insertSubview:tabBarBackgroundView atIndex:1];
 	[self.view addSubview:tabBarBackgroundView];

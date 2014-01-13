@@ -34,20 +34,20 @@
 {
     self.xmppStream = [[XMPPStream alloc] init];
     [self.xmppStream addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    self.xmppRosterMemoryStorage = [[XMPPRosterMemoryStorage alloc] init];
-    self.xmppRoster = [[XMPPRoster alloc] initWithRosterStorage:self.xmppRosterMemoryStorage];
-    [self.xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppRoster activate:self.xmppStream];
-    [self.xmppRoster setAutoFetchRoster:NO];
-    self.xmppStream.enableBackgroundingOnSocket = YES;
+//    self.xmppRosterMemoryStorage = [[XMPPRosterMemoryStorage alloc] init];
+//    self.xmppRoster = [[XMPPRoster alloc] initWithRosterStorage:self.xmppRosterMemoryStorage];
+//    [self.xmppRoster addDelegate:self delegateQueue:dispatch_get_main_queue()];
+//    [self.xmppRoster activate:self.xmppStream];
+//    [self.xmppRoster setAutoFetchRoster:NO];
+//    self.xmppStream.enableBackgroundingOnSocket = YES;
     self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
     [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
     [self.xmppReconnect activate:self.xmppStream];
-    self.xmppAutoPing = [[XMPPAutoPing alloc] initWithDispatchQueue:dispatch_get_main_queue()];
-    self.xmppAutoPing.pingInterval = 25.f; // default is 60
-    self.xmppAutoPing.pingTimeout = 10.f; // default is 10
-    [self.xmppAutoPing addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppAutoPing activate:self.xmppStream];
+//    self.xmppAutoPing = [[XMPPAutoPing alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+//    self.xmppAutoPing.pingInterval = 25.f; // default is 60
+//    self.xmppAutoPing.pingTimeout = 10.f; // default is 10
+//    [self.xmppAutoPing addDelegate:self delegateQueue:dispatch_get_main_queue()];
+//    [self.xmppAutoPing activate:self.xmppStream];
 }
 - (void)goOnline {
 	XMPPPresence *presence = [XMPPPresence presence];
@@ -546,8 +546,8 @@
         title = @"专题推荐";
         [dict setObject:@"专题推荐" forKey:@"fname"];
         [dict setObject:@"bbs_special_subject@xxx.com" forKey:@"sender"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
-        return;
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
+//        return;
     }
     else{
         title = @"小编推荐";

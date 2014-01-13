@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "Common.h"
+@class AppDelegate;
 @interface SubjectViewController : UIViewController
-
+@property (strong,nonatomic) AppDelegate * appDel;
 @end

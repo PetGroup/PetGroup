@@ -88,6 +88,7 @@
     
    self.recognizer = [[[UIPanGestureRecognizer alloc]initWithTarget:self
                                                                                  action:@selector(paningGestureReceive:)]autorelease];
+    self.recognizer.delegate = self;
     [self.recognizer delaysTouchesBegan];
     [self.view addGestureRecognizer:self.recognizer];
 
@@ -114,6 +115,7 @@
     }
     
     [self.recognizer setEnabled:NO];
+    
     [super pushViewController:viewController animated:animated];
     [self performSelector:@selector(setGestureEnableYES) withObject:nil afterDelay:0.3];
 }
@@ -167,7 +169,16 @@
 }
 
 #pragma mark - Gesture Recognizer -
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return YES;
+}
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if (self.viewControllers.count <= 1 || !self.canDragBack) return NO;
+
+    return YES;
+}
 - (void)paningGestureReceive:(UIPanGestureRecognizer *)recoginzer
 {
     // If the viewControllers has only one vc or disable the interaction, then return.
