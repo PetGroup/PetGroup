@@ -16,4 +16,5 @@
 -(void)dynamicCellPressReplyButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressZhuangFaButtonAtIndexPath:(NSIndexPath *)indexPath;
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext;
+-(void)dynamicCellPressURL:(NSURL*)url;
 @end

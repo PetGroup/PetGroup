@@ -19,5 +19,6 @@
     UIView * emojiBGV;
 }
 - (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith;
+- (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith withDeleteBtn:(BOOL)dele;
 @property (nonatomic,assign)id<EmojiViewDelegate>delegate;
 @end

@@ -17,6 +17,8 @@
 #import "SomeOneDynamicViewController.h"
 #import "HostInfo.h"
 #import "PersonDetailViewController.h"
+#import "WebViewViewController.h"
+
 @interface FriendCircleViewController ()<UITableViewDelegate,DynamicCellDelegate,TableViewDatasourceDidChange,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 
 @property (nonatomic,retain)UIView* backV;
@@ -27,6 +29,7 @@
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)FriendCircleDataSource* friendCircleDS;
 @property (nonatomic,retain)UIView * firstView;
+@property (nonatomic,retain)UILabel * alertL;
 @end
 
 @implementation FriendCircleViewController
@@ -157,6 +160,14 @@
     self.footer = [[MJRefreshFooterView alloc]init];
     _footer.delegate = self;
     _footer.scrollView = self.tableV;
+    
+    self.alertL = [[UILabel alloc]initWithFrame:CGRectMake(10, 300, 300, 60)];
+    _alertL.backgroundColor = [UIColor clearColor];
+    _alertL.text = @"这里静悄悄的，赶紧发布您的第一个动态!";
+    _alertL.textColor = [UIColor grayColor];
+    _alertL.numberOfLines = 0;
+    [self.view addSubview:_alertL];
+    _alertL.hidden = YES;
     
     [_refreshView pullApart:_refreshView];
     
@@ -338,6 +349,14 @@
     [self.navigationController pushViewController:odVC animated:YES];
 }
 #pragma mark - dynamic cell delegate
+- (void)dynamicCellPressURL:(NSURL *)url
+{
+    WebViewViewController* webVC = [[WebViewViewController alloc]init];
+    webVC.addressURL = url;
+    [self presentViewController:webVC animated:YES completion:^{
+        
+    }];
+}
 -(void)dynamicCellPressNameButtonOrHeadButtonAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([((Dynamic*)self.friendCircleDS.dataSourceArray[indexPath.row]).userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {
@@ -440,7 +459,7 @@
 -(void)dynamicListAddOneDynamic:(Dynamic*)dynamic
 {
     [self.friendCircleDS.dataSourceArray insertObject:dynamic atIndex:0];
-//    [self.friendCircleDS.rowHighArray insertObject:[NSString stringWithFormat:@"%f",[DynamicCell heightForRowWithDynamic:dynamic]] atIndex:0];
+    _alertL.hidden = YES;
     [self.tableV reloadData];
 }
 -(void)dynamicListJustReload
@@ -451,7 +470,12 @@
 -(void)reloadData
 {
     [_friendCircleDS reloadDataSuccess:^{
-        [self.tableV reloadData];
+        if (self.friendCircleDS.dataSourceArray.count == 0) {
+            _alertL.hidden = NO;
+        }else{
+            _alertL.hidden = YES;
+            [self.tableV reloadData];
+        }
         [_refreshView endRefresh];
     } failure:^{
         [_refreshView endRefresh];

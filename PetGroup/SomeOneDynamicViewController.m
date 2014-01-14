@@ -323,6 +323,14 @@
     return cell;
 }
 #pragma mark - dynamic cell delegate
+- (void)dynamicCellPressURL:(NSURL *)url
+{
+    WebViewViewController* webVC = [[WebViewViewController alloc]init];
+    webVC.addressURL = url;
+    [self presentViewController:webVC animated:YES completion:^{
+        
+    }];
+}
 -(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
 {
     PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];

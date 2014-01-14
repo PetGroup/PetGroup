@@ -20,7 +20,6 @@
 #import "IdentifyingString.h"
 @interface EditReplyViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
-    UIButton* PhotoB;
     UIImageView* deleteIV;
     MBProgressHUD * hud;
     
@@ -77,21 +76,12 @@
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-//    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
-//    [backButton setBackgroundImage:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
-//    [self.view addSubview:backButton];
-//    [backButton addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.frame = CGRectMake(-3, 0+diffH, 80, 44);
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancelBtn setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
     [cancelBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-//    if (diffH==0.0f) {
-//        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-//        [cancelBtn setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-//    }
     [cancelBtn addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelBtn];
     
@@ -108,10 +98,6 @@
     [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
     [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-//    if (diffH==0.0f) {
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-//    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
@@ -139,19 +125,19 @@
     
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
+    if (diffH==0.0f) {
+        tool.image = [UIImage imageNamed:@"table_bg"];
+    }
+    else
+    {
+        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        tool.layer.borderColor = [[UIColor grayColor] CGColor];
+        tool.layer.borderWidth = 1;
+    }
     tool.backgroundColor = [UIColor clearColor];
-    //    if (diffH==0.0f) {
-    //        tool.image = [UIImage imageNamed:@"table_bg"];
-    //    }
-    //    else
-    //    {
-    //        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-    //        tool.layer.borderColor = [[UIColor grayColor] CGColor];
-    //        tool.layer.borderWidth = 1;
-    //    }
     tool.userInteractionEnabled = YES;
-    //    _dynamicTV.inputAccessoryView = tool;
-    [self.view addSubview:tool];
+    _dynamicTV.inputAccessoryView = tool;
+
     imageB = [UIButton buttonWithType:UIButtonTypeCustom];
     imageB.frame = CGRectMake(270, 4, 32, 32);
     [imageB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
@@ -164,64 +150,26 @@
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO];
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO withDeleteBtn:NO];
     theEmojiView.delegate = self;
-    [self.view addSubview:theEmojiView];
-    theEmojiView.hidden = YES;
-    
-    PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
-    PhotoB.frame = CGRectMake(13, 195+diffH, 48.5, 48.5);
-    [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
-    [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
-    PhotoB.hidden = YES;
-    //   [self.view addSubview:PhotoB];
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.delegate = self;
     hud.labelText = @"发布中...";
 }
--(void)emojiBtnClicked:(UIButton *)sender
+-(void)viewDidAppear:(BOOL)animated
 {
-    if (!ifEmoji) {
-        [_dynamicTV resignFirstResponder];
-        ifEmoji = YES;
-        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
-        [self showEmojiScrollView];
-        
-    }
-    else
-    {
-        [_dynamicTV becomeFirstResponder];
-        ifEmoji = NO;
-        theEmojiView.hidden = YES;
-        [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
-    }
+    [self.dynamicTV becomeFirstResponder];
 }
--(void)showEmojiScrollView
+- (void)didReceiveMemoryWarning
 {
-    theEmojiView.hidden = NO;
-    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253)];
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
--(void)backBtnDo
-{
-    if (_dynamicTV.text.length>=1) {
-        _dynamicTV.text = [_dynamicTV.text substringToIndex:(_dynamicTV.text.length-1)];
-    }
-    
-}
--(void)deleteEmojiStr
-{
-    //    if (self.textView.text.length>=1) {
-    //        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
-    //    }
-}
+#pragma mark - EmojiViewDelegate
 -(NSString *)selectedEmoji:(NSString *)ssss
 {
-    //	if (_dynamicTV.text == nil) {
-    //		_dynamicTV.text = ssss;
-    //	}
-    //	else {
     UITextRange *selectedTextRange = [_dynamicTV selectedTextRange];
     if (!selectedTextRange) {
         UITextPosition *endOfDocument = [_dynamicTV endOfDocument];
@@ -258,18 +206,29 @@
     if (mutableAttributedString) {
         _dynamicTV.attributedString = mutableAttributedString;
     }
-    //		_dynamicTV.text = [_dynamicTV.text stringByAppendingString:ssss];
-    //	}
     
     return 0;
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 #pragma mark - button action
+-(void)emojiBtnClicked:(UIButton *)sender
+{
+    if (!ifEmoji) {
+        [_dynamicTV resignFirstResponder];
+        _dynamicTV.inputView = theEmojiView;
+        [_dynamicTV becomeFirstResponder];
+        ifEmoji = YES;
+        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [_dynamicTV resignFirstResponder];
+        _dynamicTV.inputView = nil;
+        [_dynamicTV becomeFirstResponder];
+        ifEmoji = NO;
+        [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    }
+}
 -(void)backButton:(UIButton*)button
 {
     [self dismissViewControllerAnimated:YES completion:^{}];
@@ -476,14 +435,12 @@
         if (buttonIndex == 0) {
             NSUInteger index = [_pictureArray indexOfObject:deleteIV];
             [UIView animateWithDuration:0.3 animations:^{
-                PhotoB.frame = ((UIImageView*)[_pictureArray lastObject]).frame;
                 for (int i = _pictureArray.count-1; i > index ; i-- ) {
                     ((UIImageView*)_pictureArray[i]).frame = ((UIImageView*)_pictureArray[i-1]).frame;
                 }
             }];
             [deleteIV removeFromSuperview];
             [_pictureArray removeObject:deleteIV];
-            PhotoB.hidden = NO;
         }
     }
     
@@ -729,7 +686,6 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
     
     ifEmoji = NO;
-    theEmojiView.hidden = YES;
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
 }
 

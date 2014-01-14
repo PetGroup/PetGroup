@@ -50,6 +50,7 @@
         self.msgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
+        _msgL.delegate = self;
         [self.contentView addSubview:_msgL];
         self.separatorL = [[UILabel alloc]init];
         _separatorL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
@@ -89,5 +90,13 @@
     if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButtonAtIndexPath:)]) {
         [self.delegate dynamicCellPressNameButtonOrHeadButtonAtIndexPath:self.indexPath];
     }
+}
+#pragma mark - OHAttributedLabelDelegate
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    if (self.delegate&&[_delegate respondsToSelector:@selector(dynamicCellPressURL:)]) {
+        [_delegate dynamicCellPressURL:linkInfo.extendedURL];
+    }
+    return NO;
 }
 @end

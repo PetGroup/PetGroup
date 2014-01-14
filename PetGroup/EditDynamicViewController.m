@@ -10,11 +10,15 @@
 #import "MBProgressHUD.h"
 #import "TempData.h"
 #import "Dynamic.h"
-@interface EditDynamicViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
+#import "EmojiView.h"
+@interface EditDynamicViewController ()<UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate,EmojiViewDelegate>
 {
     UIButton* PhotoB;
     UIImageView* deleteIV;
     MBProgressHUD * hud;
+    UIButton * emojiBtn;
+    EmojiView * theEmojiView;
+    BOOL ifEmoji;
 }
 @property (nonatomic,strong)UITextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
@@ -70,14 +74,6 @@
     [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
     [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [nextB setTitle:@"完成" forState:UIControlStateNormal];
-//    if (diffH==20.0f) {
-//        
-//    }
-//    else
-//    {
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_normal"] forState:UIControlStateNormal];
-//        [nextB setBackgroundImage:[UIImage imageNamed:@"youshangjiao_click"] forState:UIControlStateHighlighted];
-//    }
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
@@ -111,6 +107,15 @@
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
     
+    emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emojiBtn setFrame:CGRectMake(220,-2 , 45, 45)];
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    [tool addSubview:emojiBtn];
+    [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO withDeleteBtn:YES];
+    theEmojiView.delegate = self;
+    
     self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75+diffH, 200, 20)];
     _placeholderL.backgroundColor = [UIColor clearColor];
     _placeholderL.textColor = [UIColor grayColor];
@@ -142,6 +147,26 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)emojiBtnClicked:(UIButton *)sender
+{
+    if (!ifEmoji) {
+        [_dynamicTV resignFirstResponder];
+        _dynamicTV.inputView = theEmojiView;
+        [_dynamicTV becomeFirstResponder];
+        ifEmoji = YES;
+        [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
+        
+    }
+    else
+    {
+        [_dynamicTV resignFirstResponder];
+        _dynamicTV.inputView = nil;
+        [_dynamicTV becomeFirstResponder];
+        ifEmoji = NO;
+//        theEmojiView.hidden = YES;
+        [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    }
+}
 -(void)backButton
 {
     [[TempData sharedInstance] Panned:NO];
@@ -249,23 +274,25 @@
     self.deleteActionSheet = [[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
     [_deleteActionSheet showInView:self.view];
 }
+#pragma mark - EmojiViewDelegate
+-(NSString *)selectedEmoji:(NSString *)ssss
+{
+    _placeholderL.text = @"";
+    if (_dynamicTV.text == nil) {
+        _dynamicTV.text = ssss;
+    }
+    else {
+        _dynamicTV.text = [_dynamicTV.text stringByAppendingString:ssss];
+    }
+    return 0;
+}
+-(void)deleteEmojiStr
+{
+    if (_dynamicTV.text.length>=1) {
+        _dynamicTV.text = [_dynamicTV.text substringToIndex:(_dynamicTV.text.length-1)];
+    }
+}
 #pragma mark - text view delegate
-//- (void)textViewDidChange:(UITextView *)textView
-//{
-//    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
-//        textView.text = [textView.text substringToIndex:textView.text.length-2];
-//    }
-//    if (textView.text.length>0) {
-//        _placeholderL.text = @"";
-//    }else{
-//        _placeholderL.text = @"今天想跟别人说点什么……";
-//    }
-//    if (textView.text.length>500)
-//    {
-//        textView.text=[textView.text substringToIndex:500];
-//    }
-//    
-//}
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
