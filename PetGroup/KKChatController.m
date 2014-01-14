@@ -549,7 +549,7 @@
 {
     
 //    [audioRecordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
-    NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+//    NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
 //    if(endTime-beginTime>0.5)
 //    {
 //        canSendAudio = YES;

@@ -400,8 +400,6 @@
     self.NaviMore.navigationBarHidden = YES;
     self.NaviDynamic.navigationBarHidden = YES;
     
-    float diffH = [Common diffHeight:self];
-    
     NSArray * views = [NSArray arrayWithObjects:self.NaviDynamic,self.NaviNearBy,self.NaviMessage,self.NaviContacts,self.NaviMore, nil];
 //    NSArray * normalPic = [NSArray arrayWithObjects:diffH==0.0f?@"os6normal_02.png":@"os7normal_02.png",diffH==0.0f?@"os6normal_01.png":@"os7normal_01.png",diffH==0.0f?@"os6normal_03.png":@"os7normal_03.png",diffH==0.0f?@"os6normal_04.png":@"os7normal_04.png",diffH==0.0f?@"os6normal_05.png":@"os7normal_05.png", nil];
     NSArray * normalPic = [NSArray arrayWithObjects:@"tabbar01.png",@"tabbar03.png",@"tabbar02.png",@"tabbar04.png",@"tabbar05.png", nil];

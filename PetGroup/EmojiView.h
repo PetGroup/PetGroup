@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol EmojiViewDelegate<NSObject>
+@optional
 -(NSString *)selectedEmoji:(NSString *)ssss;
 -(void)deleteEmojiStr;
 -(void)emojiSendBtnDo;
