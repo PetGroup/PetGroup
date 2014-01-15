@@ -10,7 +10,7 @@
 #import "EGOImageButton.h"
 #import "OHAttributedLabel.h"
 #import "ImageCell.h"
-@interface DetailsDynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface DetailsDynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource,OHAttributedLabelDelegate>
 
 {
     UIButton* nameB;
@@ -90,16 +90,6 @@
         _imageCollectionV.dataSource = self;
         [_imageCollectionV registerClass:[ImageCell class] forCellWithReuseIdentifier:@"cell"];
         
-//        NSMutableArray* arr = [[NSMutableArray alloc]init];
-//        for (int i = 0; i < 9; i++) {
-//            EGOImageButton * a = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
-//            [self.contentView addSubview:a];
-//            a.tag = 1000+i;
-//            [a addTarget:self action:@selector(loadBagImage:)  forControlEvents:UIControlEventTouchUpInside];
-//            [arr addObject:a];
-//        }
-//        self.imageButtons = arr;
-        
         self.timeL = [[UILabel alloc]init];
         _timeL.textColor = [UIColor grayColor];
         _timeL.font = [UIFont systemFontOfSize:12];
@@ -108,11 +98,13 @@
         self.transmitMsgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _transmitMsgL.backgroundColor = [UIColor clearColor];
         _transmitMsgL.numberOfLines = 0;
+        _transmitMsgL.delegate = self;
         [self.contentView addSubview:_transmitMsgL];
         
         self.msgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
+        _msgL.delegate = self;
         [self.contentView addSubview:_msgL];
         self.separatorL = [[UILabel alloc]init];
         _separatorL.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
@@ -220,6 +212,14 @@
     if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressNameButtonOrHeadButton)]) {
         [self.delegate dynamicCellPressNameButtonOrHeadButton];
     }
+}
+#pragma mark - OHAttributedLabelDelegate
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    if (self.delegate&&[_delegate respondsToSelector:@selector(dynamicCellPressURL:)]) {
+        [_delegate dynamicCellPressURL:linkInfo.extendedURL];
+    }
+    return NO;
 }
 #pragma mark - collection view delegate flow layout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

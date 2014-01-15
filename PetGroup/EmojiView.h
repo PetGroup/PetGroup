@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol EmojiViewDelegate<NSObject>
+@optional
 -(NSString *)selectedEmoji:(NSString *)ssss;
 -(void)deleteEmojiStr;
 -(void)emojiSendBtnDo;
@@ -19,5 +20,6 @@
     UIView * emojiBGV;
 }
 - (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith;
+- (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith withDeleteBtn:(BOOL)dele;
 @property (nonatomic,assign)id<EmojiViewDelegate>delegate;
 @end

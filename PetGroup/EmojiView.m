@@ -9,6 +9,54 @@
 #import "EmojiView.h"
 
 @implementation EmojiView
+- (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith withDeleteBtn:(BOOL)dele
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UIImageView *sixGridBGV=[[UIImageView alloc]initWithFrame:CGRectMake(-320, 0, 1280, 253)];//原来是253
+        [sixGridBGV setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+        
+        //创建表情视图
+        UIScrollView *i_emojiScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,  0, 320, 253)];//原来是227和253
+        //设置表情列表scrollview属性
+        i_emojiScrollView.backgroundColor=[UIColor yellowColor];
+        m_EmojiScrollView = i_emojiScrollView;
+        [m_EmojiScrollView addSubview:sixGridBGV];
+        m_EmojiScrollView.delegate=self;
+        m_EmojiScrollView.bouncesZoom = YES;
+        m_EmojiScrollView.pagingEnabled = YES;
+        m_EmojiScrollView.showsHorizontalScrollIndicator = NO;
+        m_EmojiScrollView.showsVerticalScrollIndicator = NO;
+        [m_EmojiScrollView setContentSize:CGSizeMake(960,253)];//原来是253
+        m_EmojiScrollView.backgroundColor = [UIColor clearColor];
+        m_EmojiScrollView.scrollEnabled = YES;
+        [self addSubview:m_EmojiScrollView];
+        [self emojiView];
+        //启动pagecontrol
+        [self loadPageControl];
+        emojiBGV = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-45.5-26.5-10, 320, 45.5+26.5+10)];
+        emojiBGV.backgroundColor = [UIColor clearColor];
+        [self addSubview:emojiBGV];
+        UIImageView * ebgv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 26.5+10, 320, 45.5)];
+        [ebgv setImage:[UIImage imageNamed:@"qqqqq_06.png"]];
+        [emojiBGV addSubview:ebgv];
+        if(ifWith){
+            UIButton * sendEmojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [sendEmojiBtn setFrame:CGRectMake(320-12-71.5, 43.5, 71.5, 32)];
+            [sendEmojiBtn setImage:[UIImage imageNamed:@"btn_03.png"] forState:UIControlStateNormal];
+            [emojiBGV addSubview:sendEmojiBtn];
+            [sendEmojiBtn addTarget:self action:@selector(sendButton:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if (dele) {
+            UIButton * backEmojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [backEmojiBtn setFrame:CGRectMake(320-12-49.5, 5, 40.5, 23)];
+            [backEmojiBtn setImage:[UIImage imageNamed:@"qqqqq_03.png"] forState:UIControlStateNormal];
+            [emojiBGV addSubview:backEmojiBtn];
+            [backEmojiBtn addTarget:self action:@selector(backBtnDo) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame WithSendBtn:(BOOL)ifWith
 {

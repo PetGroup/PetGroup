@@ -10,7 +10,7 @@
 #import "EGOImageButton.h"
 #import "OHAttributedLabel.h"
 #import "ImageCell.h"
-@interface PersonalDynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface PersonalDynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource,OHAttributedLabelDelegate>
 
 @property (nonatomic,retain)UIView* backView;
 @property (nonatomic,retain)UILabel* timeL;
@@ -77,11 +77,13 @@
         self.transmitMsgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _transmitMsgL.backgroundColor = [UIColor clearColor];
         _transmitMsgL.numberOfLines = 0;
+        _transmitMsgL.delegate = self;
         [self.contentView addSubview:_transmitMsgL];
         
         self.msgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
+        _msgL.delegate = self;
         [self.contentView addSubview:_msgL];
        
     }
@@ -174,6 +176,14 @@
         self.backView.frame = CGRectMake(_msgL.frame.origin.x-10, _msgL.frame.origin.y-5, 220, origin-_msgL.frame.origin.y);
     }
     [_imageCollectionV reloadData];
+}
+#pragma mark - OHAttributedLabelDelegate
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    if (self.delegate&&[_delegate respondsToSelector:@selector(dynamicCellPressURL:)]) {
+        [_delegate dynamicCellPressURL:linkInfo.extendedURL];
+    }
+    return NO;
 }
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

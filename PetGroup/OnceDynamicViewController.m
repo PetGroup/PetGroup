@@ -18,6 +18,7 @@
 #import "PhotoViewController.h"
 #import "PersonDetailViewController.h"
 #import "SomeOneDynamicViewController.h"
+#import "WebViewViewController.h"
 @interface OnceDynamicViewController ()<UITableViewDataSource,UITableViewDelegate,DynamicCellDelegate,UIActionSheetDelegate,UIAlertViewDelegate,UIExpandingTextViewDelegate,BHExpandingTextViewDelegate,HPGrowingTextViewDelegate,MJRefreshBaseViewDelegate>
 {
     UIImageView* bottomIV;
@@ -678,6 +679,14 @@
     [_inputTF becomeFirstResponder];
 }
 #pragma mark - dynmic delegate
+- (void)dynamicCellPressURL:(NSURL *)url
+{
+    WebViewViewController* webVC = [[WebViewViewController alloc]init];
+    webVC.addressURL = url;
+    [self presentViewController:webVC animated:YES completion:^{
+        
+    }];
+}
 -(void)dynamicCellPressNameButtonOrHeadButton
 {
     if ([self.dynamic.userID isEqualToString:[[TempData sharedInstance] getMyUserID]]) {

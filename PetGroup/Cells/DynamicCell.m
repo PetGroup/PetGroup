@@ -11,7 +11,7 @@
 #import "OHAttributedLabel.h"
 #import "ImageCell.h"
 
-@interface DynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface DynamicCell ()<UICollectionViewDelegate,UICollectionViewDataSource,OHAttributedLabelDelegate>
 
 {
     UIButton* nameB;
@@ -103,11 +103,13 @@
         self.transmitMsgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _transmitMsgL.backgroundColor = [UIColor clearColor];
         _transmitMsgL.numberOfLines = 0;
+        _transmitMsgL.delegate = self;
         [self.contentView addSubview:_transmitMsgL];
         
         self.msgL = [[OHAttributedLabel alloc]initWithFrame:CGRectZero];
         _msgL.backgroundColor = [UIColor clearColor];
         _msgL.numberOfLines = 0;
+        _msgL.delegate = self;
         [self.contentView addSubview:_msgL];
         
         self.bottomIV = [[UIImageView alloc]init];
@@ -263,16 +265,14 @@
         [self.delegate dynamicCellPressZhuangFaButtonAtIndexPath:self.indexPath];
     }
 }
-//-(void)loadBagImage:(EGOImageButton*)button
-//{
-//    NSMutableArray* array = [[NSMutableArray alloc]init];
-//    for (EGOImageButton*a in _imageButtons) {
-//        [array addObject:a.currentImage];
-//    }
-//    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
-//        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:button.tag-1000];
-//    }
-//}
+#pragma mark - OHAttributedLabelDelegate
+-(BOOL)attributedLabel:(OHAttributedLabel*)attributedLabel shouldFollowLink:(NSTextCheckingResult*)linkInfo
+{
+    if (self.delegate&&[_delegate respondsToSelector:@selector(dynamicCellPressURL:)]) {
+        [_delegate dynamicCellPressURL:linkInfo.extendedURL];
+    }
+    return NO;
+}
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
