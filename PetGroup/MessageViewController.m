@@ -137,7 +137,7 @@
     else
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-        if (![self.appDel.xmppHelper ifXMPPConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
+        if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
             [self logInToServer];
            // [self getMyUserInfoFromNet];
         }
