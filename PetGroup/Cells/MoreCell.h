@@ -14,4 +14,5 @@
 @property (strong,nonatomic) UILabel * unreadCountLabel;
 @property (strong,nonatomic) UIImageView * notiBgV;
 @property (strong,nonatomic) UIImageView * arrow;
+@property (nonatomic,retain)UIView*lineV;
 @end

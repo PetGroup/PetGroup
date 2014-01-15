@@ -22,6 +22,7 @@
     if (self) {
         // Custom initialization
         unreadComment = 0;
+        codeSwitch = YES;
     }
     return self;
 }
@@ -193,6 +194,17 @@
             return 2;
         }
             break;
+//二维码是否显示
+        case 2:
+        {
+            if (codeSwitch) {
+                return 2;
+            }
+            else
+                return 1;
+        }
+            break;
+//end
         default:
         {
             return 1;
@@ -275,17 +287,25 @@
             }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.lineV.hidden = YES;
             if (indexPath.section==2) {
-                [cell.headImageV setImage:[UIImage imageNamed:@"dongtai.png"]];
-                cell.titleLabel.text = @"我的动态";
-                if (unreadComment>0) {
-                    cell.notiBgV.hidden = NO;
-                    [cell.unreadCountLabel setText:[NSString stringWithFormat:@"%d",unreadComment]];
+                if (indexPath.row==0) {
+                    [cell.headImageV setImage:[UIImage imageNamed:@"dongtai.png"]];
+                    cell.titleLabel.text = @"我的动态";
+                    if (unreadComment>0) {
+                        cell.notiBgV.hidden = NO;
+                        [cell.unreadCountLabel setText:[NSString stringWithFormat:@"%d",unreadComment]];
+                    }
+                    else
+                    {
+                        cell.notiBgV.hidden = YES;
+                    }
                 }
-                else
-                {
-                    cell.notiBgV.hidden = YES;
+                else if(indexPath.row==1){
+                    [cell.headImageV setImage:[UIImage imageNamed:@"codeicon.png"]];
+                    cell.titleLabel.text = @"二维码";
                 }
+
             }
             else
             {
@@ -307,9 +327,17 @@
         [self.navigationController pushViewController:myV animated:YES];
         [self.customTabBarController hidesTabBar:YES animated:YES];
     }else if (indexPath.section==2) {
-        MyMessageViewController* myMessageVC = [[MyMessageViewController alloc]init];
-        [self.navigationController pushViewController:myMessageVC animated:YES];
-        [self.customTabBarController hidesTabBar:YES animated:YES];
+        if (indexPath.row==0) {
+            MyMessageViewController* myMessageVC = [[MyMessageViewController alloc]init];
+            [self.navigationController pushViewController:myMessageVC animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }
+        else if(indexPath.row==1){
+            QRCodeViewController * qrV = [[QRCodeViewController alloc] init];
+            [self.navigationController pushViewController:qrV animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }
+
     }
     else if (indexPath.section==3){
         SettingViewController * setV = [[SettingViewController alloc] init];

@@ -24,7 +24,6 @@
 		72363C2718754FC90030E868 /* root_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72363C2618754FC90030E868 /* root_bg.png */; };
 		724137381862CF2600851BB4 /* sharePlatformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 724137371862CF2600851BB4 /* sharePlatformView.m */; };
 		7241373B1862ED0A00851BB4 /* EditShareContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7241373A1862ED0A00851BB4 /* EditShareContentViewController.m */; };
-		7259561D186BD72800CB0D6E /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 7259561C186BD72800CB0D6E /* delete.png */; };
 		72676AE01857FE3E00EE5967 /* adddynamic.png in Resources */ = {isa = PBXBuildFile; fileRef = 72676ADF1857FE3E00EE5967 /* adddynamic.png */; };
 		72676AE21857FE6D00EE5967 /* guid.png in Resources */ = {isa = PBXBuildFile; fileRef = 72676AE11857FE6D00EE5967 /* guid.png */; };
 		72676AE818584EDA00EE5967 /* bottom_pl_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 72676AE318584EDA00EE5967 /* bottom_pl_normal.png */; };
@@ -836,6 +835,9 @@
 		97FD5C721855B0E5007F5B7E /* nopet.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FD5C711855B0E5007F5B7E /* nopet.png */; };
 		97FE60CD18346C9B00CEAF79 /* emoji.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE60CC18346C9B00CEAF79 /* emoji.png */; };
 		97FE60CF18346DF200CEAF79 /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE60CE18346DF200CEAF79 /* keyboard.png */; };
+		97FE80411886244F0040AC21 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE80401886244F0040AC21 /* delete.png */; };
+		97FE8043188652CF0040AC21 /* codeicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE8042188652CF0040AC21 /* codeicon.png */; };
+		97FE804618865BD00040AC21 /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FE804518865BD00040AC21 /* QRCodeViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -869,7 +871,6 @@
 		724137371862CF2600851BB4 /* sharePlatformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = sharePlatformView.m; sourceTree = "<group>"; };
 		724137391862ED0A00851BB4 /* EditShareContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShareContentViewController.h; sourceTree = "<group>"; };
 		7241373A1862ED0A00851BB4 /* EditShareContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditShareContentViewController.m; sourceTree = "<group>"; };
-		7259561C186BD72800CB0D6E /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		72676ADF1857FE3E00EE5967 /* adddynamic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adddynamic.png; sourceTree = "<group>"; };
 		72676AE11857FE6D00EE5967 /* guid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guid.png; sourceTree = "<group>"; };
 		72676AE318584EDA00EE5967 /* bottom_pl_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_pl_normal.png; sourceTree = "<group>"; };
@@ -2089,6 +2090,10 @@
 		97FD5C711855B0E5007F5B7E /* nopet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nopet.png; sourceTree = "<group>"; };
 		97FE60CC18346C9B00CEAF79 /* emoji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emoji.png; sourceTree = "<group>"; };
 		97FE60CE18346DF200CEAF79 /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
+		97FE80401886244F0040AC21 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		97FE8042188652CF0040AC21 /* codeicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = codeicon.png; sourceTree = "<group>"; };
+		97FE804418865BD00040AC21 /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
+		97FE804518865BD00040AC21 /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2927,6 +2932,8 @@
 			children = (
 				97D5020217C49ADF00799BD4 /* PersonalCenterViewController.h */,
 				97D5020317C49ADF00799BD4 /* PersonalCenterViewController.m */,
+				97FE804418865BD00040AC21 /* QRCodeViewController.h */,
+				97FE804518865BD00040AC21 /* QRCodeViewController.m */,
 				97DB08F817C5A1EE000EC195 /* MyProfileViewController.h */,
 				97DB08F917C5A1EE000EC195 /* MyProfileViewController.m */,
 				97DB08FB17C5A1FF000EC195 /* MyPetProfileViewController.h */,
@@ -3893,7 +3900,7 @@
 			isa = PBXGroup;
 			children = (
 				7203B55B186C144300248CC5 /* ab.png */,
-				7259561C186BD72800CB0D6E /* delete.png */,
+				97FE80401886244F0040AC21 /* delete.png */,
 				97ED57F7185AA99B00CAE5CA /* filterBtn.png */,
 				97FD5C711855B0E5007F5B7E /* nopet.png */,
 				97FD5C65185593D5007F5B7E /* dingShow.png */,
@@ -3903,6 +3910,7 @@
 				97FD5C5F18557053007F5B7E /* petBreed.png */,
 				97FD5C6018557053007F5B7E /* petKnowledge.png */,
 				97FB83FC1852FA0000F5F8F8 /* baike.png */,
+				97FE8042188652CF0040AC21 /* codeicon.png */,
 				97FB83FD1852FA0000F5F8F8 /* dongtai.png */,
 				97FB83FE1852FA0000F5F8F8 /* fujin.png */,
 				97FB83FF1852FA0000F5F8F8 /* meitu.png */,
@@ -4664,6 +4672,7 @@
 				97BCF0F01834D6B2006B7C0F /* icon.png in Resources */,
 				975B15D4185960330074B778 /* biaotibtn_01.png in Resources */,
 				8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */,
+				97FE80411886244F0040AC21 /* delete.png in Resources */,
 				8623874C181F99CD000A8DC3 /* ReceiverVoiceNodePlaying002@2x.png in Resources */,
 				8623874D181F99CD000A8DC3 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,
 				8623874E181F99CD000A8DC3 /* SenderVoiceNodePlaying@2x.png in Resources */,
@@ -4789,7 +4798,6 @@
 				9700D3D6185061D5003260BC /* newtypein.png in Resources */,
 				97B73F6C1827944300064447 /* redCB2.png in Resources */,
 				9736BDB817C49146007DFE36 /* asigbg.png in Resources */,
-				7259561D186BD72800CB0D6E /* delete.png in Resources */,
 				9736BDBB17C49146007DFE36 /* filterbg.png in Resources */,
 				9700D3CF18505A51003260BC /* newlogbg1.png in Resources */,
 				97E2BD181834E5B600B006AE /* Default-568h@2x.png in Resources */,
@@ -4837,6 +4845,7 @@
 				9736BDFE17C49146007DFE36 /* tianjia.png in Resources */,
 				72D7B947185706750048FAE2 /* alert.png in Resources */,
 				97BCF0F21834D6B2006B7C0F /* icon-256.png in Resources */,
+				97FE8043188652CF0040AC21 /* codeicon.png in Resources */,
 				9736BE0817C49146007DFE36 /* yanzhengma_click.png in Resources */,
 				9736BE0917C49146007DFE36 /* yanzhengma_normal.png in Resources */,
 				97DB09B917C5B037000EC195 /* anjiao.png in Resources */,
@@ -5391,6 +5400,7 @@
 				97DB08FA17C5A1EE000EC195 /* MyProfileViewController.m in Sources */,
 				97DB08FD17C5A1FF000EC195 /* MyPetProfileViewController.m in Sources */,
 				97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */,
+				97FE804618865BD00040AC21 /* QRCodeViewController.m in Sources */,
 				97DB098017C5A95C000EC195 /* addFriendCell.m in Sources */,
 				97BCF0E71834ACC8006B7C0F /* EmojiPictographs.m in Sources */,
 				97DB098117C5A95C000EC195 /* ContactsCell.m in Sources */,

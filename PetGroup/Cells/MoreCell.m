@@ -8,7 +8,7 @@
 
 #import "MoreCell.h"
 @interface MoreCell ()
-@property (nonatomic,retain)UIView*lineV;
+
 @end
 @implementation MoreCell
 

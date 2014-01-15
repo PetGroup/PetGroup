@@ -221,7 +221,7 @@
         [self.view addSubview:sc];
         UIButton * deleteB  = [UIButton buttonWithType:UIButtonTypeCustom];
         deleteB.tag = 2013;
-        deleteB.frame = CGRectMake(260, self.view.frame.size.height-(diffH?49:0)-60, 60, 60);
+        deleteB.frame = CGRectMake(290, self.view.frame.size.height-(diffH?49:0)-60, 30, 30);
         [deleteB setBackgroundImage:[UIImage imageNamed:@"delete"] forState:UIControlStateNormal];
         [deleteB addTarget:self action:@selector(removeadvertisement) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:deleteB];

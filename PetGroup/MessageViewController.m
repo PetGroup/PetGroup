@@ -695,9 +695,20 @@
 
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
-    [self performSelector:@selector(endRefresh)
-                     withObject:nil afterDelay:2
-                        inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+//    [self performSelector:@selector(endRefresh)
+//                     withObject:nil afterDelay:2
+//                        inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+    if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
+        [self logInToServer];
+        // [self getMyUserInfoFromNet];
+    }
+    else
+    {
+        [self performSelector:@selector(endRefresh)
+                              withObject:nil afterDelay:1
+                                 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+
+    }
     
 }
 -(void)endRefresh
@@ -939,9 +950,11 @@
         titleLabel.text = @"消息";
         [[TempData sharedInstance] setOpened:YES];
         [self.appDel.xmppHelper checkToServerifSubscibe];
+        [self endRefresh];
 //        [self.appDel.xmppHelper realSubscribeToServer];
     }fail:^(NSError *result){
         titleLabel.text = @"消息(未连接)";
+        [self endRefresh];
 //        titleLabel.text = @"消息(连接中...)";
 //        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
 //            titleLabel.text = @"消息";
@@ -1102,6 +1115,7 @@
 -(void)makeLogFailurePrompt
 {
     titleLabel.text = @"消息(未连接)";
+    [self endRefresh];
 }
 - (void)didReceiveMemoryWarning
 {

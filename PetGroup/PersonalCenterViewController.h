@@ -15,10 +15,12 @@
 #import "MyPetProfileViewController.h"
 #import "MyProfileViewController.h"
 #import "SettingViewController.h"
+#import "QRCodeViewController.h"
 @class CustomTabBar;
 @interface PersonalCenterViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,HGPhotoWallDelegate>
 {
     int unreadComment;
+    BOOL codeSwitch;
 }
 @property (strong,nonatomic) UITableView * profileTableV;
 @property (strong, nonatomic) HGPhotoWall *photoWall;
