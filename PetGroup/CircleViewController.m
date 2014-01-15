@@ -709,6 +709,7 @@
         if (needGuidance) {
             [self buildGuidData];
             [self buildGuidView];
+            _backGroundV.contentOffset = CGPointMake(640, 0);
         }
         [_slimeView endRefresh];
     } failure:^{
