@@ -34,13 +34,13 @@
         [self emojiView];
         //启动pagecontrol
         [self loadPageControl];
-        emojiBGV = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-45.5-26.5-10, 320, 45.5+26.5+10)];
+        emojiBGV = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-26.5-10, 320, 45.5+26.5+10)];
         emojiBGV.backgroundColor = [UIColor clearColor];
         [self addSubview:emojiBGV];
-        UIImageView * ebgv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 26.5+10, 320, 45.5)];
-        [ebgv setImage:[UIImage imageNamed:@"qqqqq_06.png"]];
-        [emojiBGV addSubview:ebgv];
         if(ifWith){
+             UIImageView * ebgv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 26.5+10, 320, 45.5)];
+            [ebgv setImage:[UIImage imageNamed:@"qqqqq_06.png"]];
+            [emojiBGV addSubview:ebgv];
             UIButton * sendEmojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [sendEmojiBtn setFrame:CGRectMake(320-12-71.5, 43.5, 71.5, 32)];
             [sendEmojiBtn setImage:[UIImage imageNamed:@"btn_03.png"] forState:UIControlStateNormal];
@@ -130,7 +130,7 @@
 -(void)loadPageControl
 {
 	//创建并初始化uipagecontrol
-	m_Emojipc=[[UIPageControl alloc]initWithFrame:CGRectMake(20, self.frame.size.height-70, 280, 20)];
+	m_Emojipc=[[UIPageControl alloc]initWithFrame:CGRectMake(20, 180, 280, 20)];
 	//设置背景颜色
 	m_Emojipc.backgroundColor=[UIColor clearColor];
 	//设置pc页数（此时不会同步跟随显示）

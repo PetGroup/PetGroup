@@ -27,7 +27,6 @@
     UIImageView* xialaIV;
     UIButton* xialaB;
     
-    UIButton* PhotoB;
     UIImageView* deleteIV;
     MBProgressHUD * hud;
     
@@ -161,10 +160,6 @@
     [self.view addSubview:self.titleTF];
     
     self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
-//    _dynamicTV.backgroundColor = [UIColor clearColor];
-//    _dynamicTV.font = [UIFont systemFontOfSize:16];
-//    _dynamicTV.delegate = self;
-    
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
@@ -175,13 +170,21 @@
     _dynamicTV.backgroundColor=[UIColor clearColor];
 
     [self.view addSubview:_dynamicTV];
-//    [_titleTF becomeFirstResponder];
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
     tool.userInteractionEnabled = YES;
-//    _dynamicTV.inputAccessoryView = tool;
-    [self.view addSubview:tool];
+    if (diffH==0.0f) {
+        tool.image = [UIImage imageNamed:@"table_bg"];
+    }
+    else
+    {
+        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+        tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
+        tool.layer.borderWidth = 1;
+    }
+    _dynamicTV.inputAccessoryView = tool;
+//    [self.view addSubview:tool];
     
     imageB = [UIButton buttonWithType:UIButtonTypeCustom];
     imageB.frame = CGRectMake(270, 4, 32, 32);
@@ -195,16 +198,10 @@
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO];
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:NO];
     theEmojiView.delegate = self;
-    [self.view addSubview:theEmojiView];
-    theEmojiView.hidden = YES;
-    
-    PhotoB = [UIButton buttonWithType:UIButtonTypeCustom];
-    PhotoB.frame = CGRectMake(13, 195+diffH, 48.5, 48.5);
-    [PhotoB setBackgroundImage:[UIImage imageNamed:@"tianjiazhaopian"] forState:UIControlStateNormal];
-    [PhotoB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
-    PhotoB.hidden = YES;
+//    [self.view addSubview:theEmojiView];
+//    theEmojiView.hidden = YES;
  
     self.circleTF = [[UITextField alloc]init];
     [self.view addSubview:_circleTF];
@@ -234,38 +231,25 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    theEmojiView.hidden = YES;
-    imageB.hidden = YES;
-    emojiBtn.hidden = YES;
-}
--(void)textFieldDidEndEditing:(UITextView *)textView{
-    imageB.hidden = NO;
-    emojiBtn.hidden = NO;
-}
+
 -(void)emojiBtnClicked:(UIButton *)sender
 {
     if (!ifEmoji) {
         [_dynamicTV resignFirstResponder];
-        [_titleTF resignFirstResponder];
+        _dynamicTV.inputView = theEmojiView;
+        [_dynamicTV becomeFirstResponder];
         ifEmoji = YES;
         [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
-        [self showEmojiScrollView];
         
     }
     else
     {
+        [_dynamicTV resignFirstResponder];
+        _dynamicTV.inputView = nil;
         [_dynamicTV becomeFirstResponder];
         ifEmoji = NO;
-        theEmojiView.hidden = YES;
         [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     }
-}
--(void)showEmojiScrollView
-{
-    theEmojiView.hidden = NO;
-    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253)];
 }
 -(void)backBtnDo
 {
@@ -664,14 +648,12 @@
         if (buttonIndex == 0) {
             NSUInteger index = [_pictureArray indexOfObject:deleteIV];
             [UIView animateWithDuration:0.3 animations:^{
-                PhotoB.frame = ((UIImageView*)[_pictureArray lastObject]).frame;
                 for (int i = _pictureArray.count-1; i > index ; i-- ) {
                     ((UIImageView*)_pictureArray[i]).frame = ((UIImageView*)_pictureArray[i-1]).frame;
                 }
             }];
             [deleteIV removeFromSuperview];
             [_pictureArray removeObject:deleteIV];
-            PhotoB.hidden = NO;
         }
     }
     
@@ -766,10 +748,6 @@
     startPosition=[_dynamicTV positionFromPosition:startPosition inDirection:UITextLayoutDirectionRight offset:1];
     UITextPosition *endPosition = [_dynamicTV positionFromPosition:startPosition offset:1];
     selectedTextRange = [_dynamicTV textRangeFromPosition:startPosition toPosition:endPosition];
-    
-    
-//    NSUInteger st = ((FastIndexedPosition *)(selectedTextRange.start)).index;
-//    NSUInteger en = ((FastIndexedPosition *)(selectedTextRange.end)).index;
     
 }
 
@@ -919,7 +897,7 @@
 - (void)keyboardWillShow:(NSNotification *)notification {
 
     ifEmoji = NO;
-    theEmojiView.hidden = YES;
+//    theEmojiView.hidden = YES;
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
 }
 

@@ -95,7 +95,7 @@
     else
     {
         tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-        tool.layer.borderColor = [[UIColor grayColor] CGColor];
+        tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
         tool.layer.borderWidth = 1;
     }
     tool.userInteractionEnabled = YES;
@@ -113,7 +113,7 @@
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 253) WithSendBtn:NO withDeleteBtn:YES];
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
     theEmojiView.delegate = self;
     
     self.placeholderL = [[UILabel alloc]initWithFrame:CGRectMake(23, 62.75+diffH, 200, 20)];
