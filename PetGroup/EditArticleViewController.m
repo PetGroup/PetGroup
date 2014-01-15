@@ -163,7 +163,6 @@
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
-    _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.placeHolder=@"好好写点^_^";
     [_dynamicTV setFont:[UIFont systemFontOfSize:17]];
     _dynamicTV.pragraghSpaceHeight=15;
@@ -896,9 +895,7 @@
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
 
-    ifEmoji = NO;
-//    theEmojiView.hidden = YES;
-    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+//    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
 }
 
 

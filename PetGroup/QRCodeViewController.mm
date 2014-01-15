@@ -7,8 +7,9 @@
 //
 
 #import "QRCodeViewController.h"
-
-@interface QRCodeViewController ()
+#import <QRCodeReader.h>
+#import "QRCustomViewController.h"
+@interface QRCodeViewController ()<CustomViewControllerDelegate>
 
 @end
 
@@ -51,29 +52,42 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button1 setTitle:@"扫描器" forState:UIControlStateNormal];
+    [button1 setFrame:CGRectMake(10.f, 240.f, 140.f, 50.f)];
+    [button1 addTarget:self action:@selector(pressButton1:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button1];
 
     // Do any additional setup after loading the view.
-}
--(void)back
-{
-    [[TempData sharedInstance] Panned:NO];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma mark - button action
+-(void)back
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    [[TempData sharedInstance] Panned:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
-*/
+- (void)pressButton1:(UIButton*)button
+{
+    QRCustomViewController *vc = [[QRCustomViewController alloc] init];
+    vc.delegate = self;
+    [self presentViewController:vc animated:YES completion:^{}];
+}
+#pragma mark - QRCustomViewControllerViewController
+- (void)customViewController:(QRCustomViewController *)controller didScanResult:(NSString *)result
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSLog(@"%@",result);
+    }];
 
+}
+- (void)customViewControllerDidCancel:(QRCustomViewController *)controller
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

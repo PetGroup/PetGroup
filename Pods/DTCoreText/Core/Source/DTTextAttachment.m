@@ -157,16 +157,16 @@ static NSMutableDictionary *_classForTagNameLookup = nil;
 
 #pragma mark - Subclass Customization
 
-+ (void)registerClass:(Class)class forTagName:(NSString *)tagName
++ (void)registerClass:(Class)aclass forTagName:(NSString *)tagName
 {
 	Class previousClass = [DTTextAttachment registeredClassForTagName:tagName];
 
 	if (previousClass)
 	{
-		DTLogWarning(@"Replacing previously registered class '%@' for tag name '%@' with '%@'", NSStringFromClass(previousClass), tagName, NSStringFromClass(class));
+		DTLogWarning(@"Replacing previously registered class '%@' for tag name '%@' with '%@'", NSStringFromClass(previousClass), tagName, NSStringFromClass(aclass));
 	}
 	
-	[_classForTagNameLookup setObject:class forKey:tagName];
+	[_classForTagNameLookup setObject:aclass forKey:tagName];
 }
 
 + (Class)registeredClassForTagName:(NSString *)tagName

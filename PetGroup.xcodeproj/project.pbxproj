@@ -63,6 +63,12 @@
 		72795B4C18445B9600BB58E0 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795B4B18445B9600BB58E0 /* like.png */; };
 		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
 		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
+		72AE85311886673900EB84F4 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE852C1886670600EB84F4 /* libZXingWidget.a */; };
+		72AE85331886678400EB84F4 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE85321886678400EB84F4 /* CoreAudio.framework */; };
+		72AE8535188667AB00EB84F4 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE8534188667AB00EB84F4 /* libiconv.dylib */; };
+		72AE8538188667B800EB84F4 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE8536188667B800EB84F4 /* AddressBook.framework */; };
+		72AE8539188667B800EB84F4 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE8537188667B800EB84F4 /* AddressBookUI.framework */; };
+		72AE854018867B1000EB84F4 /* QRCustomViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 72AE853F18867B1000EB84F4 /* QRCustomViewController.mm */; };
 		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
 		72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
@@ -837,8 +843,32 @@
 		97FE60CF18346DF200CEAF79 /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE60CE18346DF200CEAF79 /* keyboard.png */; };
 		97FE80411886244F0040AC21 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE80401886244F0040AC21 /* delete.png */; };
 		97FE8043188652CF0040AC21 /* codeicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 97FE8042188652CF0040AC21 /* codeicon.png */; };
-		97FE804618865BD00040AC21 /* QRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FE804518865BD00040AC21 /* QRCodeViewController.m */; };
+		97FE804618865BD00040AC21 /* QRCodeViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97FE804518865BD00040AC21 /* QRCodeViewController.mm */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		72AE852B1886670600EB84F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = ZXingWidget;
+		};
+		72AE852D1886670600EB84F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1D60398D13DF7CAD006F4B51;
+			remoteInfo = ZXingTests;
+		};
+		72AE852F1886672800EB84F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = ZXingWidget;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4E86BCF917A44940AF695B2A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -925,6 +955,13 @@
 		727BB2F618471D19005A2C44 /* CircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleCell.m; sourceTree = "<group>"; };
 		727BB2F818473438005A2C44 /* FriendCircleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCircleCell.h; sourceTree = "<group>"; };
 		727BB2F918473438005A2C44 /* FriendCircleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCircleCell.m; sourceTree = "<group>"; };
+		72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZXingWidget.xcodeproj; path = zxing/iphone/ZXingWidget/ZXingWidget.xcodeproj; sourceTree = SOURCE_ROOT; };
+		72AE85321886678400EB84F4 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		72AE8534188667AB00EB84F4 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		72AE8536188667B800EB84F4 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		72AE8537188667B800EB84F4 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		72AE853E18867B1000EB84F4 /* QRCustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCustomViewController.h; sourceTree = "<group>"; };
+		72AE853F18867B1000EB84F4 /* QRCustomViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QRCustomViewController.mm; sourceTree = "<group>"; };
 		72B64D10187E62FD00A6A923 /* timelabelbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timelabelbg.png; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -2093,7 +2130,7 @@
 		97FE80401886244F0040AC21 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		97FE8042188652CF0040AC21 /* codeicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = codeicon.png; sourceTree = "<group>"; };
 		97FE804418865BD00040AC21 /* QRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeViewController.h; sourceTree = "<group>"; };
-		97FE804518865BD00040AC21 /* QRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeViewController.m; sourceTree = "<group>"; };
+		97FE804518865BD00040AC21 /* QRCodeViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QRCodeViewController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2101,6 +2138,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72AE8538188667B800EB84F4 /* AddressBook.framework in Frameworks */,
+				72AE8539188667B800EB84F4 /* AddressBookUI.framework in Frameworks */,
+				72AE8535188667AB00EB84F4 /* libiconv.dylib in Frameworks */,
+				9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */,
+				72AE85331886678400EB84F4 /* CoreAudio.framework in Frameworks */,
+				97E25C0917C345B0007E187D /* AudioToolbox.framework in Frameworks */,
+				97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */,
+				72AE85311886673900EB84F4 /* libZXingWidget.a in Frameworks */,
 				971A49A6187A83CE00ED0474 /* AdSupport.framework in Frameworks */,
 				9723DECD186813EF00B8BF44 /* libicucore.dylib in Frameworks */,
 				9723DE6D1868085500B8BF44 /* MessageUI.framework in Frameworks */,
@@ -2110,13 +2155,11 @@
 				9723DEC41868133500B8BF44 /* AGCommon.framework in Frameworks */,
 				9723DE671868081A00B8BF44 /* libstdc++.dylib in Frameworks */,
 				9723DE65186807F800B8BF44 /* libsqlite3.dylib in Frameworks */,
-				9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */,
 				72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */,
 				9723DECC1868133500B8BF44 /* ShareSDK.framework in Frameworks */,
 				9723DEC71868133500B8BF44 /* ShareSDKCoreService.framework in Frameworks */,
 				9723DEBF1868133400B8BF44 /* QZoneConnection.framework in Frameworks */,
 				97E25C1317C345D7007E187D /* AssetsLibrary.framework in Frameworks */,
-				97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */,
 				9723DEC31868133500B8BF44 /* WeChatConnection.framework in Frameworks */,
 				9723DEC01868133400B8BF44 /* SinaWeiboConnection.framework in Frameworks */,
 				72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */,
@@ -2134,7 +2177,6 @@
 				97E25C0D17C345C0007E187D /* QuartzCore.framework in Frameworks */,
 				9723DEC81868133500B8BF44 /* TencentOpenAPI.framework in Frameworks */,
 				97E25C0B17C345B8007E187D /* MapKit.framework in Frameworks */,
-				97E25C0917C345B0007E187D /* AudioToolbox.framework in Frameworks */,
 				9723DEBE1868133400B8BF44 /* QQConnection.framework in Frameworks */,
 				72CAD8BB183C7DB300B1F927 /* libidn.a in Frameworks */,
 				97FB481017BCBC640071FA12 /* Security.framework in Frameworks */,
@@ -2276,6 +2318,15 @@
 				72795B0A1844500F00BB58E0 /* TMQuiltViewController.m */,
 			);
 			path = TMQuiltView;
+			sourceTree = "<group>";
+		};
+		72AE85271886670600EB84F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				72AE852C1886670600EB84F4 /* libZXingWidget.a */,
+				72AE852E1886670600EB84F4 /* ZXingTests.octest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		72CAD8B1183C7C7200B1F927 /* UMAnalytics */ = {
@@ -2933,7 +2984,9 @@
 				97D5020217C49ADF00799BD4 /* PersonalCenterViewController.h */,
 				97D5020317C49ADF00799BD4 /* PersonalCenterViewController.m */,
 				97FE804418865BD00040AC21 /* QRCodeViewController.h */,
-				97FE804518865BD00040AC21 /* QRCodeViewController.m */,
+				97FE804518865BD00040AC21 /* QRCodeViewController.mm */,
+				72AE853E18867B1000EB84F4 /* QRCustomViewController.h */,
+				72AE853F18867B1000EB84F4 /* QRCustomViewController.mm */,
 				97DB08F817C5A1EE000EC195 /* MyProfileViewController.h */,
 				97DB08F917C5A1EE000EC195 /* MyProfileViewController.m */,
 				97DB08FB17C5A1FF000EC195 /* MyPetProfileViewController.h */,
@@ -4015,6 +4068,10 @@
 		979546B617BA368F00D05874 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				72AE8536188667B800EB84F4 /* AddressBook.framework */,
+				72AE8537188667B800EB84F4 /* AddressBookUI.framework */,
+				72AE8534188667AB00EB84F4 /* libiconv.dylib */,
+				72AE85321886678400EB84F4 /* CoreAudio.framework */,
 				971A49A5187A83CE00ED0474 /* AdSupport.framework */,
 				9723DE6C1868085500B8BF44 /* MessageUI.framework */,
 				9723DE6A1868083700B8BF44 /* CoreTelephony.framework */,
@@ -4572,6 +4629,7 @@
 		97FB480A17BCBAC40071FA12 /* OtherRefs */ = {
 			isa = PBXGroup;
 			children = (
+				72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */,
 				9723DEA01868133400B8BF44 /* ShareSDK_v2.6.1 */,
 				72CAD8B1183C7C7200B1F927 /* UMAnalytics */,
 				97BCF0D91834ACB2006B7C0F /* Emoji */,
@@ -4623,6 +4681,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				72AE85301886672800EB84F4 /* PBXTargetDependency */,
 			);
 			name = PetGroup;
 			productName = PetGroup;
@@ -4654,12 +4713,35 @@
 			mainGroup = 979546AB17BA368F00D05874;
 			productRefGroup = 979546B517BA368F00D05874 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 72AE85271886670600EB84F4 /* Products */;
+					ProjectRef = 72AE85261886670600EB84F4 /* ZXingWidget.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				979546B317BA368F00D05874 /* PetGroup */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		72AE852C1886670600EB84F4 /* libZXingWidget.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libZXingWidget.a;
+			remoteRef = 72AE852B1886670600EB84F4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		72AE852E1886670600EB84F4 /* ZXingTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ZXingTests.octest;
+			remoteRef = 72AE852D1886670600EB84F4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		979546B217BA368F00D05874 /* Resources */ = {
@@ -5142,6 +5224,7 @@
 				72795ADC1842F84F00BB58E0 /* ImageCell.m in Sources */,
 				97A93DCF182CBC1D00D571A5 /* NSMutableAttributedString+TextUtil.m in Sources */,
 				72D7B9451856DC130048FAE2 /* UserGuidCell.m in Sources */,
+				72AE854018867B1000EB84F4 /* QRCustomViewController.mm in Sources */,
 				979546C817BA368F00D05874 /* AppDelegate.m in Sources */,
 				9795471617BA36AE00D05874 /* MagicalImportFunctions.m in Sources */,
 				9795471717BA36AE00D05874 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
@@ -5400,7 +5483,7 @@
 				97DB08FA17C5A1EE000EC195 /* MyProfileViewController.m in Sources */,
 				97DB08FD17C5A1FF000EC195 /* MyPetProfileViewController.m in Sources */,
 				97A93DC9182CBC1D00D571A5 /* ContentViewTiledLayer.m in Sources */,
-				97FE804618865BD00040AC21 /* QRCodeViewController.m in Sources */,
+				97FE804618865BD00040AC21 /* QRCodeViewController.mm in Sources */,
 				97DB098017C5A95C000EC195 /* addFriendCell.m in Sources */,
 				97BCF0E71834ACC8006B7C0F /* EmojiPictographs.m in Sources */,
 				97DB098117C5A95C000EC195 /* ContactsCell.m in Sources */,
@@ -5501,6 +5584,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		72AE85301886672800EB84F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ZXingWidget;
+			targetProxy = 72AE852F1886672800EB84F4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		9723DEAA1868133400B8BF44 /* ShareSDKLocalizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -5600,6 +5691,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5611,6 +5703,14 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"$(SDKROOT)/usr/include/libxml2",
+					"./zxing/iphone/ZXingWidget/Classes/**",
+					./zxing/cpp/core/src,
+				);
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -5636,6 +5736,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5647,6 +5748,14 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PetGroup/PetGroup-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"$(SDKROOT)/usr/include/libxml2",
+					"./zxing/iphone/ZXingWidget/Classes/**",
+					./zxing/cpp/core/src,
+				);
 				INFOPLIST_FILE = "PetGroup/PetGroup-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
