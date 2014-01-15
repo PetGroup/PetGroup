@@ -517,7 +517,10 @@
     NSMutableArray * nameIndexArray = [NSMutableArray array];
     for (int i = 0; i<nameIndexArray2.count; i++) {
         DSNameIndex * di = [nameIndexArray2 objectAtIndex:i];
-        [nameIndexArray addObject:di.index];
+        if (![nameIndexArray containsObject:di.index]) {
+            [nameIndexArray addObject:di.index];
+        }
+        
     }
     [nameIndexArray sortUsingSelector:@selector(compare:)];
     for (int i = 0; i<nameIndexArray.count; i++) {
@@ -530,7 +533,10 @@
             NSString * thename = [[fri objectAtIndex:i]userName];
             NSString * nameK = [[fri objectAtIndex:i]nameKey];
             if (![thename isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
-                [nameKeyArray addObject:nameK];
+                if (![nameKeyArray containsObject:nameK]) {
+                    [nameKeyArray addObject:nameK];
+                }
+                
             }
         
         }
