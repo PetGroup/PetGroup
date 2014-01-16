@@ -180,7 +180,10 @@
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-
+        AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
+        addPV.RQCodeMessage = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:NO];
+        [self.navigationController pushViewController:addPV animated:YES];
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
