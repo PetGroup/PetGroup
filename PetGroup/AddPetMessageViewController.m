@@ -127,10 +127,12 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
+        if (self.delegate&&[_delegate respondsToSelector:@selector(finishAddRQCodeMessageWithPet:)]) {
+            [_delegate finishAddRQCodeMessageWithPet:_RQCodeMessage];
+        }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //        self.profileTableV.hidden = YES;
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
     }];
 }
 #pragma mark - table view data source
