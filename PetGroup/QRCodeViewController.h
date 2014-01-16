@@ -10,10 +10,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TempData.h"
 #import "PetProfileCell.h"
-@interface QRCodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+#import "MBProgressHUD.h"
+@interface QRCodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,MBProgressHUDDelegate>
 {
     float diffH;
     NSArray * petListArray;
+    NSString * resultString;
+    MBProgressHUD * hud;
 }
 @property (strong,nonatomic) UITableView * profileTableV;
 @end

@@ -76,7 +76,11 @@
         _textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         [self.view addSubview:_textView];
-        [self getArticleByID:self.articleID];
+        if (self.contentStrS) {
+            _textView.attributedString = self.contentStrS;
+        }
+        else
+            [self getArticleByID:self.articleID];
     }
     else
     {

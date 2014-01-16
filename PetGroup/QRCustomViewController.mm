@@ -123,9 +123,11 @@
 }
 - (void)back
 {
-    if (_delegate && [_delegate respondsToSelector:@selector(customViewControllerDidCancel:)]) {
-        [self.delegate customViewControllerDidCancel:self];
-    }
+//    if (_delegate && [_delegate respondsToSelector:@selector(customViewControllerDidCancel:)]) {
+//        [self.delegate customViewControllerDidCancel:self];
+//    }
+    [[TempData sharedInstance] Panned:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)initCapture
 {
@@ -247,11 +249,15 @@
 - (void)decoder:(Decoder *)decoder didDecodeImage:(UIImage *)image usingSubset:(UIImage *)subset withResult:(TwoDDecoderResult *)result
 {
     [self.captureSession stopRunning];
-    if (_delegate && [_delegate respondsToSelector:@selector(customViewController:didScanResult:)]) {
-        [self.delegate customViewController:self didScanResult:result.text];
-    }
-}
+    [self.view.layer removeAllAnimations];
 
+
+    if (_delegate && [_delegate respondsToSelector:@selector(customViewController:didScanResult:)]) {
+            [self.delegate customViewController:self didScanResult:result.text];
+    }
+    
+
+}
 - (void)decoder:(Decoder *)decoder failedToDecodeImage:(UIImage *)image usingSubset:(UIImage *)subset reason:(NSString *)reason
 {
     
