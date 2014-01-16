@@ -109,6 +109,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.titleLabel.text = @"123";
+    return cell;
 
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
