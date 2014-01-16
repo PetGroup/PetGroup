@@ -141,7 +141,10 @@
     }else if(section == 1){
         return 3;
     }else {
-        return 1;
+        if (edit) {
+            return 1;
+        }
+        return 2;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -188,22 +191,10 @@
             case 0:{
                 cell.titleLabel.text = @"主人名称:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwner"];
-                if (!edit) {
-                    UIButton* addB = [UIButton buttonWithType:UIButtonTypeCustom];
-                    addB.frame = cell.arrow.frame;
-                    [addB setTitle:@"加为好友" forState:UIControlStateNormal];
-                    [cell.contentView addSubview:addB];
-                }
             }break;
             case 1:{
                 cell.titleLabel.text = @"主人电话:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwnerTel"];
-                if (!edit) {
-                    UIButton* addB = [UIButton buttonWithType:UIButtonTypeCustom];
-                    addB.frame = cell.arrow.frame;
-                    [addB setTitle:@"拨打" forState:UIControlStateNormal];
-                    [cell.contentView addSubview:addB];
-                }
             }break;
             case 2:{
                 cell.titleLabel.text = @"主人寄语:";
@@ -220,10 +211,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (edit) {
-        return 3;
-    }
-    return 2;
+    return 3;
 }
 #pragma mark - table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
