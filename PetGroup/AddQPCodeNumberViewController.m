@@ -65,8 +65,9 @@
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     [nextB setTitle:@"确认" forState:UIControlStateNormal];
+    [nextB setBackgroundImage:[UIImage imageNamed:@"newloginBtn"] forState:UIControlStateNormal];
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
-    nextB.frame = CGRectMake(125, 180 + diffH, 70, 30);
+    nextB.frame = CGRectMake(10, 180 + diffH, 300, 40);
     [self.view addSubview:nextB];
     
     
