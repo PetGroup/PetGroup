@@ -27,9 +27,9 @@
         [self.describeLabel setLineBreakMode:NSLineBreakByCharWrapping];
         [self.contentView addSubview:self.describeLabel];
         
-        UIImageView * arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 13.75, 8.5, 12.5)];
-        [arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
-        [self.contentView addSubview:arrow];
+        self.arrow = [[UIImageView alloc] initWithFrame:CGRectMake(287, 13.75, 8.5, 12.5)];
+        [_arrow setImage:[UIImage imageNamed:@"rightarrow.png"]];
+        [self.contentView addSubview:_arrow];
     }
     return self;
 }

@@ -11,4 +11,5 @@
 @interface PetProfileCell : UITableViewCell
 @property (strong,nonatomic) UILabel * titleLabel;
 @property (strong,nonatomic) UILabel * describeLabel;
+@property (strong,nonatomic) UIImageView * arrow;
 @end
