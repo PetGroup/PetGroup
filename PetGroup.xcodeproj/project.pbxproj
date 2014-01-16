@@ -5692,6 +5692,7 @@
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5737,6 +5738,7 @@
 			baseConfigurationReference = 4E86BCF917A44940AF695B2A /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (

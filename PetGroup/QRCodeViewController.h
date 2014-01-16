@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "TempData.h"
-@interface QRCodeViewController : UIViewController
+#import "PetProfileCell.h"
+@interface QRCodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     float diffH;
 }
+@property (strong,nonatomic) UITableView * profileTableV;
 @end

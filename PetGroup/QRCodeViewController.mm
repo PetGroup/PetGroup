@@ -53,14 +53,70 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button1 setTitle:@"扫描器" forState:UIControlStateNormal];
-    [button1 setFrame:CGRectMake(10.f, 240.f, 140.f, 50.f)];
-    [button1 addTarget:self action:@selector(pressButton1:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button1];
+//    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [button1 setTitle:@"扫描器" forState:UIControlStateNormal];
+//    [button1 setFrame:CGRectMake(10.f, 240.f, 140.f, 50.f)];
+//    [button1 addTarget:self action:@selector(pressButton1:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:button1];
+    
+    
+    UIButton * addV = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addV setFrame:CGRectMake(20, 44+diffH+20, 120, 120)];
+    [addV setBackgroundColor:[UIColor purpleColor]];
+    [addV setTitle:@"添加" forState:UIControlStateNormal];
+    [addV setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [addV.titleLabel setFont:[UIFont systemFontOfSize:22]];
+    addV.layer.cornerRadius = 8;
+    addV.layer.masksToBounds = YES;
+    [self.view addSubview:addV];
+    
+    UIButton * scanV = [UIButton buttonWithType:UIButtonTypeCustom];
+    [scanV setFrame:CGRectMake(180, 44+diffH+20, 120, 120)];
+    [scanV setBackgroundColor:[UIColor blueColor]];
+    [scanV setTitle:@"扫描" forState:UIControlStateNormal];
+    [scanV setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [scanV.titleLabel setFont:[UIFont systemFontOfSize:22]];
+    [scanV addTarget:self action:@selector(pressButton1:) forControlEvents:UIControlEventTouchUpInside];
+    scanV.layer.cornerRadius = 8;
+    scanV.layer.masksToBounds = YES;
+    [self.view addSubview:scanV];
 
+    self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,204+diffH, 320, self.view.frame.size.height-(204+diffH)) style:UITableViewStyleGrouped];
+    [self.view addSubview:self.profileTableV];
+    self.profileTableV.backgroundView = nil;
+    self.profileTableV.dataSource = self;
+    self.profileTableV.delegate = self;
     // Do any additional setup after loading the view.
 }
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 10;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *Cell = @"profile";
+    
+    PetProfileCell *cell = (PetProfileCell *)[tableView dequeueReusableCellWithIdentifier:Cell];
+    if (cell == nil) {
+        cell = [[PetProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    cell.titleLabel.text = @"123";
+
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
