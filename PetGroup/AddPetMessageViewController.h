@@ -16,5 +16,5 @@
 @interface AddPetMessageViewController : UIViewController
 @property (nonatomic,assign)id<AddRQCodeMessageDelegate>delegate;
 @property (nonatomic,retain)NSString* RQCodeNo;
-@property (nonatomic,retain)id RQCodeMessage;
+@property (nonatomic,retain)NSMutableDictionary* RQCodeMessage;
 @end
