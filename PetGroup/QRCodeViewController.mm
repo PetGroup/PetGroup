@@ -7,9 +7,9 @@
 //
 
 #import "QRCodeViewController.h"
-#import <QRCodeReader.h>
 #import "QRCustomViewController.h"
-@interface QRCodeViewController ()<CustomViewControllerDelegate>
+#import "AddQPCodeNumberViewController.h"
+@interface QRCodeViewController ()<CustomViewControllerDelegate,AddRQCodeMessageDelegate>
 
 @end
 
@@ -53,19 +53,13 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-//    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    [button1 setTitle:@"扫描器" forState:UIControlStateNormal];
-//    [button1 setFrame:CGRectMake(10.f, 240.f, 140.f, 50.f)];
-//    [button1 addTarget:self action:@selector(pressButton1:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:button1];
-    
-    
     UIButton * addV = [UIButton buttonWithType:UIButtonTypeCustom];
     [addV setFrame:CGRectMake(20, 44+diffH+20, 120, 120)];
     [addV setBackgroundColor:[UIColor purpleColor]];
     [addV setTitle:@"添加" forState:UIControlStateNormal];
     [addV setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [addV.titleLabel setFont:[UIFont systemFontOfSize:22]];
+    [addV addTarget:self action:@selector(addRQCodeMessage) forControlEvents:UIControlEventTouchUpInside];
     addV.layer.cornerRadius = 8;
     addV.layer.masksToBounds = YES;
     [self.view addSubview:addV];
@@ -124,6 +118,13 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - button action
+-(void)addRQCodeMessage
+{
+    AddQPCodeNumberViewController* addrqVC = [[AddQPCodeNumberViewController alloc]init];
+    addrqVC.delegate = self;
+    [self.navigationController pushViewController:addrqVC animated:YES];
+    
+}
 -(void)back
 {
     [[TempData sharedInstance] Panned:NO];
