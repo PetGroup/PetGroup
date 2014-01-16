@@ -129,6 +129,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
+    addPV.RQCodeMessage = petListArray[indexPath.row];
+    [self.navigationController pushViewController:addPV animated:YES];
 }
 
 -(void)getPetCardList
