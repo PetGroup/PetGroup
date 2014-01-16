@@ -11,15 +11,22 @@
 #import <QRCodeReader.h>
 #import <TwoDDecoderResult.h>
 @interface QRCustomViewController ()<UIAlertViewDelegate, DecoderDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+{
+    float diffH;
+    NSTimer * timer;
+}
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property (nonatomic, strong) AVCaptureSession *captureSession;
 
-@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic,retain)UIImageView * anminIV ;
 
 @end
 
 @implementation QRCustomViewController
-
+- (void)dealloc
+{
+    NSLog(@"dealloc");
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -28,12 +35,77 @@
     }
     return self;
 }
-
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [timer invalidate];
+    timer = nil;
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self timerDown];
+    timer = [NSTimer scheduledTimerWithTimeInterval:3.2 target:self selector:@selector(timerDown) userInfo:nil repeats:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self initCapture];
+    diffH = [Common diffHeight:self];
+    
+    UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
+    [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
+    [self.view addSubview:TopBarBGV];
+    
+    UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
+    titleLabel.backgroundColor=[UIColor clearColor];
+    titleLabel.text = @"二维码";
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
+    titleLabel.textAlignment=NSTextAlignmentCenter;
+    titleLabel.textColor=[UIColor whiteColor];
+    [self.view addSubview:titleLabel];
+    
+    UIButton *backButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame=CGRectMake(0, 0+diffH, 80, 44);
+    [backButton setBackgroundImage:[UIImage imageNamed:@"backnew.png"] forState:UIControlStateNormal];
+    [self.view addSubview:backButton];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView * blackVL = [[UIView alloc]initWithFrame:CGRectMake(0, 44 + diffH, 40, self.view.frame.size.height-44-diffH)];
+    blackVL.backgroundColor = [UIColor blackColor];
+    blackVL.alpha = 0.7;
+    [self.view addSubview:blackVL];
+    
+    UIView * blackVR = [[UIView alloc]initWithFrame:CGRectMake(280, 44 + diffH, 40, self.view.frame.size.height-44-diffH)];
+    blackVR.backgroundColor = [UIColor blackColor];
+    blackVR.alpha = 0.7;
+    [self.view addSubview:blackVR];
+    
+    UIView * blackVT = [[UIView alloc]initWithFrame:CGRectMake(40, 44 + diffH, 240, 50)];
+    blackVT.backgroundColor = [UIColor blackColor];
+    blackVT.alpha = 0.7;
+    [self.view addSubview:blackVT];
+    
+    UIView * blackVD = [[UIView alloc]initWithFrame:CGRectMake(40, 334 + diffH, 240, self.view.frame.size.height-304-diffH)];
+    blackVD.backgroundColor = [UIColor blackColor];
+    blackVD.alpha = 0.7;
+    [self.view addSubview:blackVD];
+    
+    UIImageView * LTimageV = [[UIImageView alloc]initWithFrame:CGRectMake(40, 94 + diffH, 10, 10)];
+    LTimageV.image = [UIImage imageNamed:@"QRCodeCorner_LeftTop"];
+    [self.view addSubview:LTimageV];
+    UIImageView * RTimageV = [[UIImageView alloc]initWithFrame:CGRectMake(270, 94 + diffH, 10, 10)];
+    RTimageV.image = [UIImage imageNamed:@"QRCodeCorner_RightTop"];
+    [self.view addSubview:RTimageV];
+    UIImageView * LDimageV = [[UIImageView alloc]initWithFrame:CGRectMake(40, 324 + diffH, 10, 10)];
+    LDimageV.image = [UIImage imageNamed:@"QRCodeCorner_LeftButtom"];
+    [self.view addSubview:LDimageV];
+    UIImageView * RDimageV = [[UIImageView alloc]initWithFrame:CGRectMake(270, 324 + diffH, 10, 10)];
+    RDimageV.image = [UIImage imageNamed:@"QRCodeCorner_RightButtom"];
+    [self.view addSubview:RDimageV];
+    
+    self.anminIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 94 + diffH, 320, 12)];
+    _anminIV.image = [UIImage imageNamed:@"QRCodeScanLine"];
+    [self.view addSubview:_anminIV];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,7 +113,20 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)timerDown
+{
+    [UIView animateWithDuration:3 animations:^{
+        _anminIV.frame = CGRectMake(0, 322 + diffH, 320, 12);
+    } completion:^(BOOL finished) {
+        _anminIV.frame = CGRectMake(0, 94 + diffH, 320, 12);
+    }];
+}
+- (void)back
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(customViewControllerDidCancel:)]) {
+        [self.delegate customViewControllerDidCancel:self];
+    }
+}
 - (void)initCapture
 {
     self.captureSession = [[AVCaptureSession alloc] init];
@@ -133,7 +218,6 @@
     CGImageRelease(cgImage);
     
     CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
-    
     return image;
 }
 
