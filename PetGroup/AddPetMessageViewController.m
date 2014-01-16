@@ -7,14 +7,22 @@
 //
 
 #import "AddPetMessageViewController.h"
+#import "AppDelegate.h"
 #import "TempData.h"
 #import "PetProfileCell.h"
 #import "ReportViewController.h"
-@interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText>
+#import "KGStatusBar.h"
+#import "XMPPHelper.h"
+@interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText,UIAlertViewDelegate>
 {
     BOOL edit;
+    BOOL isSelf;
 }
 @property (nonatomic,retain)UITableView * tableV;
+
+@property (nonatomic,retain)UIAlertView* addMeAlertV;
+@property (nonatomic,retain)UIAlertView* callMeAlertV;
+@property (nonatomic,assign)AppDelegate* appDel;
 @end
 
 @implementation AddPetMessageViewController
@@ -24,7 +32,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.appDel = [UIApplication sharedApplication].delegate;
         edit = YES;
+        isSelf = NO;
     }
     return self;
 }
@@ -33,6 +43,9 @@
 {
     if (_RQCodeMessage) {
         edit = NO;
+        if ([_RQCodeMessage[@"petOwnerName"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+            isSelf = YES;
+        }
     }else
     {
         self.RQCodeMessage = [[NSMutableDictionary alloc]init];
@@ -59,22 +72,22 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
-    
-    UIView * headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
-    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
-    tishiL.text = @"请认真填写信息,以便爱宠丢失后与您联系";
-    [headV addSubview:tishiL];
-    if (edit) {
-        UILabel* numberL = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 20)];
-        numberL.text = _RQCodeNo;
-        [headV addSubview:numberL];
-        headV.frame = CGRectMake(0, 0, 320, 55);
-    }
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44 + diffH, 320, self.view.frame.size.height - 44 - diffH) style:UITableViewStyleGrouped];
+    UIView * headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 55)];
     _tableV.tableHeaderView = headV;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
+    
+    if (edit) {
+        UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
+        tishiL.text = @"请认真填写信息,以便爱宠丢失后与您联系";
+        tishiL.font = [UIFont systemFontOfSize:16];
+        [headV addSubview:tishiL];
+        UILabel* numberL = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 20)];
+        numberL.text = _RQCodeNo;
+        [headV addSubview:numberL];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,10 +140,13 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
+        if (self.delegate&&[_delegate respondsToSelector:@selector(finishAddRQCodeMessageWithPet:)]) {
+            [_RQCodeMessage setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"petOwnerName"];
+            [_delegate finishAddRQCodeMessageWithPet:_RQCodeMessage];
+        }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //        self.profileTableV.hidden = YES;
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
     }];
 }
 #pragma mark - table view data source
@@ -141,7 +157,10 @@
     }else if(section == 1){
         return 3;
     }else {
-        return 1;
+        if (edit) {
+            return 1;
+        }
+        return 0;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -166,6 +185,7 @@
     if (cell == nil) {
         cell = [[PetProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         if (!edit) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.arrow.hidden = YES;
         }
     }
@@ -188,21 +208,15 @@
             case 0:{
                 cell.titleLabel.text = @"主人名称:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwner"];
-                if (!edit) {
-                    UIButton* addB = [UIButton buttonWithType:UIButtonTypeCustom];
-                    addB.frame = cell.arrow.frame;
-                    [addB setTitle:@"加为好友" forState:UIControlStateNormal];
-                    [cell.contentView addSubview:addB];
+                if (!edit && !isSelf) {
+                    cell.describeLabel.textColor = [UIColor blueColor];
                 }
             }break;
             case 1:{
                 cell.titleLabel.text = @"主人电话:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwnerTel"];
-                if (!edit) {
-                    UIButton* addB = [UIButton buttonWithType:UIButtonTypeCustom];
-                    addB.frame = cell.arrow.frame;
-                    [addB setTitle:@"拨打" forState:UIControlStateNormal];
-                    [cell.contentView addSubview:addB];
+                if (!edit && !isSelf) {
+                    cell.describeLabel.textColor = [UIColor blueColor];
                 }
             }break;
             case 2:{
@@ -220,10 +234,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (edit) {
-        return 3;
-    }
-    return 2;
+    return 3;
 }
 #pragma mark - table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -279,6 +290,18 @@
             }
             [self.navigationController pushViewController:reportV animated:YES];
         }
+    }else if (!isSelf)
+    {
+        if (indexPath.section ==1) {
+            if (indexPath.row == 0) {
+                self.addMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"加我为好友?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
+                [_addMeAlertV show];
+            }
+            if (indexPath.row == 1) {
+                self.callMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"给我打电话?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
+                [_callMeAlertV show];
+            }
+        }
     }
 }
 #pragma mark - ChangeText
@@ -300,10 +323,48 @@
         case 12:{
             [_RQCodeMessage setObject:textinfo forKey:@"petOwnerMsg"];
         }break;
-
+            
         default:
             break;
     }
     [_tableV reloadData];
+}
+#pragma mark - alertView delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        if (alertView == _addMeAlertV)
+        {
+            if (![self.appDel.xmppHelper addFriend:_RQCodeMessage[@"petOwnerTel"]]) {
+                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+                return;
+            }
+            NSString *message = [NSString stringWithFormat:@"Hi~我是%@，加我为好友吧",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+            if (message.length > 0) {
+                NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+                [body setStringValue:message];
+                NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+                [mes addAttributeWithName:@"type" stringValue:@"chat"];
+                [mes addAttributeWithName:@"msgtype" stringValue:@"sayHello"];
+                [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+                [mes addAttributeWithName:@"fileType" stringValue:@"no"];
+                [mes addAttributeWithName:@"to" stringValue:[_RQCodeMessage[@"petOwnerTel"] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+                [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+                [mes addChild:body];
+                //        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+                if (![self.appDel.xmppHelper sendMessage:mes]) {
+                    [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+                    //Do something when send failed...
+                    return;
+                }
+                
+                
+            }
+            [KGStatusBar showSuccessWithStatus:@"好友请求发送成功" Controller:self];
+        }
+        if (alertView == _callMeAlertV) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",_RQCodeMessage[@"petOwnerTel"]]]];
+        }
+    }
 }
 @end

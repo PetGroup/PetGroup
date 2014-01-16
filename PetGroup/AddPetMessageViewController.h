@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-@class PetInfo;
+
 @protocol AddRQCodeMessageDelegate <NSObject>
 
 @optional
-- (void)finishAddRQCodeMessageWithPet:(PetInfo*)pet;
+- (void)finishAddRQCodeMessageWithPet:(NSDictionary*)pet;
 @end
 @interface AddPetMessageViewController : UIViewController
 @property (nonatomic,assign)id<AddRQCodeMessageDelegate>delegate;

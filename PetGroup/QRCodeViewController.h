@@ -14,7 +14,7 @@
 @interface QRCodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,MBProgressHUDDelegate>
 {
     float diffH;
-    NSArray * petListArray;
+    NSMutableArray * petListArray;
     NSString * resultString;
     MBProgressHUD * hud;
 }

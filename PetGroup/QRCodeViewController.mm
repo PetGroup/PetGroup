@@ -20,7 +20,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        petListArray = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:@"jdahsdhkasdj12",@"id",@"哈哈哈哈",@"petNickname", nil]];
+        petListArray = [NSMutableArray array];
     }
     return self;
 }
@@ -129,6 +129,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
+    addPV.RQCodeMessage = petListArray[indexPath.row];
+    [self.navigationController pushViewController:addPV animated:YES];
 }
 
 -(void)getPetCardList
@@ -149,7 +152,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        petListArray = responseObject;
+        [petListArray addObjectsFromArray:responseObject];
         [self.profileTableV reloadData];
         if (petListArray.count==0) {
             self.profileTableV.hidden = YES;
@@ -341,5 +344,11 @@
 - (void)customViewControllerDidCancel:(QRCustomViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)finishAddRQCodeMessageWithPet:(NSDictionary*)pet
+{
+    [petListArray addObject:pet];
+    [_profileTableV reloadData];
+    [self.navigationController popToViewController:self animated:YES];
 }
 @end
