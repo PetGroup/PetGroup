@@ -403,15 +403,32 @@
                     else
                         olocalServerPushed = [NSMutableArray array];
                     for (int i = 0; i<itemsArray.count; i++) {
+
                         NSMutableDictionary * dict = [NSMutableDictionary dictionary];
                         NSXMLElement * oitem = [itemsArray objectAtIndex:i];
                         NSXMLElement * item = [oitem elementForName:@"entry"];
-                        NSLog(@"ITEM ID iq:%@",[oitem attributeStringValueForName:@"id"]);
-                        if (![olocalServerPushed containsObject:[oitem attributeStringValueForName:@"id"]]) {
-                            [olocalServerPushed addObject:[oitem attributeStringValueForName:@"id"]];
-                            [[NSUserDefaults standardUserDefaults] setObject:olocalServerPushed forKey:pushedkey];
-                            [[NSUserDefaults standardUserDefaults] synchronize];
-                            [self parseItem:item withDict:dict];
+                        NSString * mTime = [[item elementForName:@"expir"] stringValue];
+                        NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
+                        if (mTime) {
+                            double dd = ([mTime longLongValue]/1000);
+                            if (dd>nowTime) {
+                                NSLog(@"ITEM ID iq:%@",[oitem attributeStringValueForName:@"id"]);
+                                if (![olocalServerPushed containsObject:[oitem attributeStringValueForName:@"id"]]) {
+                                    [olocalServerPushed addObject:[oitem attributeStringValueForName:@"id"]];
+                                    [[NSUserDefaults standardUserDefaults] setObject:olocalServerPushed forKey:pushedkey];
+                                    [[NSUserDefaults standardUserDefaults] synchronize];
+                                    [self parseItem:item withDict:dict];
+                                }
+                            }
+                        }
+                        else{
+                            NSLog(@"ITEM ID iq:%@",[oitem attributeStringValueForName:@"id"]);
+                            if (![olocalServerPushed containsObject:[oitem attributeStringValueForName:@"id"]]) {
+                                [olocalServerPushed addObject:[oitem attributeStringValueForName:@"id"]];
+                                [[NSUserDefaults standardUserDefaults] setObject:olocalServerPushed forKey:pushedkey];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                                [self parseItem:item withDict:dict];
+                            }
                         }
                         
                     }
@@ -528,6 +545,14 @@
                     NSXMLElement * item = [[itemsArray objectAtIndex:0] elementForName:@"entry"];
                     if (!item) {
                         return;
+                    }
+                    NSString * mTime = [[item elementForName:@"expir"] stringValue];
+                    NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
+                    if (mTime) {
+                        double dd = ([mTime longLongValue]/1000);
+                        if (dd<nowTime) {
+                            return;
+                        }
                     }
                     NSXMLElement * oitem = [itemsArray objectAtIndex:0];
                     NSString * pushedkey = [NSString stringWithFormat:@"%@_%@",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil],localServerPushedMessageIDs];
