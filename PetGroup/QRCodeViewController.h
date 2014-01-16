@@ -13,6 +13,7 @@
 @interface QRCodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     float diffH;
+    NSArray * petListArray;
 }
 @property (strong,nonatomic) UITableView * profileTableV;
 @end
