@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Decoder.h>
+#import "TempData.h"
+#import "ContentDetailViewController.h"
 @class QRCustomViewController;
 
 @protocol CustomViewControllerDelegate <NSObject>

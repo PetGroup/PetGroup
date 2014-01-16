@@ -33,10 +33,12 @@ typedef  enum
     DTAttributedTextView *_textView;
     MBProgressHUD * hud;
     UIWebView * theWebView;
+    
 }
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic,strong)NSString * typeName;
 @property (nonatomic,strong)NSString * articleID;
+@property (nonatomic,strong)NSAttributedString * contentStrS;
 @property (nonatomic,assign)ContentType contentType;
 @property (nonatomic,assign)ContentMode contentMode;
 @property (nonatomic,assign)BOOL needDismiss;

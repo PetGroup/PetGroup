@@ -84,12 +84,17 @@
     self.profileTableV.backgroundColor = [UIColor clearColor];
     
     [self getPetCardList];
+    
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"加载信息...";
     // Do any additional setup after loading the view.
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self setCardInfoByID:@"1KL35D"];
-    [self getInfoByCardID:@"1KL35D"];
+//    [self setCardInfoByID:@"1KL35D"];
+//    [self getInfoByCardID:@"1KL35D"];
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -158,6 +163,7 @@
 
 -(void)getInfoByCardID:(NSString *)theID
 {
+    [hud show:YES];
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -173,9 +179,13 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
 
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud hide:YES];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"加载失败" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        [alert show];
         //        self.profileTableV.hidden = YES;
     }];
 }
@@ -230,16 +240,101 @@
 {
     QRCustomViewController *vc = [[QRCustomViewController alloc] init];
     vc.delegate = self;
-    [self presentViewController:vc animated:YES completion:^{}];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - QRCustomViewControllerViewController
 - (void)customViewController:(QRCustomViewController *)controller didScanResult:(NSString *)result
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        NSLog(@"%@",result);
-    }];
+    NSString * resultStr = result;
+    if ([self parseString:resultStr]) {
+        resultString = resultStr;
+        NSRange range = [resultStr rangeOfString:@"/p.html"];
+        if (range.location!=NSNotFound) {
+            NSRange range=[resultStr rangeOfString:@"share/"];
+            if (range.location!=NSNotFound) {
+                NSArray *imageArray = [resultStr componentsSeparatedByString:@"share/"];
+                if (imageArray.count>0) {
+                    NSString * codeID = imageArray[1];
+                    NSString * realCodeID = [codeID substringToIndex:(codeID.length-7)];
+                    [self getInfoByCardID:realCodeID];
+                }
+                else{
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"扫描到网址:%@,要打开它吗",resultStr] delegate:self cancelButtonTitle:@"不打开" otherButtonTitles:@"打开", nil];
+                    [alert show];
+                }
+            }
+            else{
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"扫描到网址:%@,要打开它吗",resultStr] delegate:self cancelButtonTitle:@"不打开" otherButtonTitles:@"打开", nil];
+                [alert show];
+            }
+        }
+        else{
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提醒" message:[NSString stringWithFormat:@"扫描到网址:%@,要打开它吗",resultStr] delegate:self cancelButtonTitle:@"不打开" otherButtonTitles:@"打开", nil];
+            [alert show];
+        }
+
+        NSLog(@"a website");
+    }
+    else
+    {
+        ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+        cv.contentType = contentTypeTextView;
+        cv.typeName = @"扫描内容";
+        cv.contentStrS = [[NSAttributedString alloc] initWithString:resultStr];
+        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:NO];
+        [self.navigationController pushViewController:cv animated:YES];
+    }
+
+//    [self dismissViewControllerAnimated:YES completion:^{
+//        NSLog(@"%@",result);
+//    }];
 
 }
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        ContentDetailViewController * cv = [[ContentDetailViewController alloc] init];
+        cv.contentType = contentTypeWebView;
+        cv.typeName = @"扫描内容";
+        cv.addressURL = [NSURL URLWithString:resultString];
+        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:NO];
+        [self.navigationController pushViewController:cv animated:YES];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+-(BOOL)parseString:(NSString *)theStr
+{
+    //组装一个字符串，需要把里面的网址解析出来
+    NSString *urlString=theStr;
+    
+    NSError *error;
+    
+    //http+:[^\\s]* 这个表达式是检测一个网址的。[0-9]{3,}
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http+:[^\\s]*"
+                                                                           options:0
+                                                                             error:&error];
+    NSLog( @"regex is %@", regex );
+    
+    if (regex != nil)
+    {
+        
+        NSArray *array = [regex matchesInString: urlString
+                                        options: 0 range: NSMakeRange( 0, [urlString length])];
+        if (array.count>0) {
+            return YES;
+        }
+        else
+            return NO;
+        
+        
+    }
+    else
+        return NO;
+}
+
 - (void)customViewControllerDidCancel:(QRCustomViewController *)controller
 {
     [self dismissViewControllerAnimated:YES completion:nil];
