@@ -40,7 +40,7 @@
 - (void)viewDidLoad
 {
     if (_RQCodeMessage) {
-        if ([_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+        if (![_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
             edit = NO;
         }
     }else
