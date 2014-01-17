@@ -75,6 +75,9 @@
     
     [self.xmppStream setMyJID:[XMPPJID jidWithString:theaccount]];
     [self.xmppStream setHostName:host];
+    TempData * tp = [TempData sharedInstance];
+    UInt16 thePort = (UInt16)[tp.hostPort integerValue];
+    [self.xmppStream setHostPort:thePort];
     
     //连接服务器
     NSError *err = nil;
@@ -302,6 +305,7 @@
             self.fail(error);
         }
     }
+
 }
 
 //此方法在stream连接断开的时候调用

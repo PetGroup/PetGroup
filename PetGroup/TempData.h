@@ -31,6 +31,7 @@
 @property (nonatomic,assign)BOOL changeUser;
 @property (nonatomic,assign)BOOL haveGotFriends;
 @property (nonatomic,assign)BOOL appActive;
+@property (strong,nonatomic)NSString* hostPort;
 
 + (TempData*)sharedInstance;
 -(void)setOpened:(BOOL)haveOpened;

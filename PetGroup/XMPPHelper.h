@@ -63,6 +63,7 @@ typedef enum {
 
 @property (strong,nonatomic) NSMutableArray * rosters;
 
+
 - (void) setupStream;
 - (void) goOnline;
 - (void) goOffline;

@@ -166,7 +166,6 @@
 //        [self readNewNoti];
     }
 
-    
 }
 //-(void)readNewNoti
 //{
@@ -254,6 +253,9 @@
 
  //   [self connectChatServer];
    // NSLog(@"ddddd");
+    if (![self.regerTimer isValid]) {
+        self.regerTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(regetXMPPServerAddress) userInfo:nil repeats:NO];
+    }
 }
 
 -(void)reConnectChatServer
@@ -871,7 +873,9 @@
 //        [alert show];
 //    }
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
-    [[TempData sharedInstance] SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
+    TempData * tp = [TempData sharedInstance];
+    tp.hostPort = [dict objectForKey:@"port"]?[dict objectForKey:@"port"]:@"5222";
+    [tp SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     
 //    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
 //    NSString * openImgStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"OpenImg"];
@@ -951,6 +955,13 @@
         [[TempData sharedInstance] setOpened:YES];
         [self.appDel.xmppHelper checkToServerifSubscibe];
         [self endRefresh];
+        if (self.regerTimer != nil) {
+            if( [self.regerTimer isValid])
+            {
+                [self.regerTimer invalidate];
+            }
+            self.regerTimer = nil;
+        }
 //        [self.appDel.xmppHelper realSubscribeToServer];
     }fail:^(NSError *result){
         titleLabel.text = @"消息(未连接)";
@@ -961,6 +972,31 @@
 //        }];
         
     }];
+}
+-(void)regetXMPPServerAddress
+{
+    NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
+    //    [paramDict setObject:userName forKey:@"username"];
+    //    [postDict setObject:paramDict forKey:@"params"];
+    [postDict setObject:@"1" forKey:@"channel"];
+    [postDict setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+    [postDict setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [postDict setObject:@"iphone" forKey:@"imei"];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [postDict setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [postDict setObject:@"getChatServer" forKey:@"method"];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:postDict TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary * dict = responseObject;
+        TempData * tp = [TempData sharedInstance];
+        [tp SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
+        tp.hostPort = [dict objectForKey:@"port"];
+        [self logInToChatServer];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    
 }
 
 -(void)toLoginPage
