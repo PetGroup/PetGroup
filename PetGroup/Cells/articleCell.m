@@ -116,6 +116,12 @@
     {
         lastPoint = CGPointMake(_titleL.frame.origin.x + sz.width, _titleL.frame.origin.y);
     }
+    if (lastPoint.y>40) {
+        lastPoint = CGPointMake(280 , 30);
+        if (_article.isTop || _article.isEute) {
+            lastPoint = CGPointMake(250 , 30);
+        }
+    }
     if (_article.haveImage) {
         _topI.hidden = NO;
         _topI.image = [UIImage imageNamed:@"havepic"];
