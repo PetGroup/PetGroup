@@ -314,7 +314,7 @@ NSString * gen_uuid()
 {
     NSURL *url = [NSURL URLWithString:urlStr];
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:url];
-    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"amr",@"fileType",nil];
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"amr",@"fileType",@"chat",@"fileSrc",nil];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:audioData name:@"file" fileName:audioName mimeType:@"amr"];
     }];
@@ -369,7 +369,7 @@ NSString * gen_uuid()
     }
     NSLog(@"imageDtat2:%d",imageData.length);
     //    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage", nil];
-    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"N",@"addTopImage", nil];
+    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"OK",@"compressImage",@"N",@"addTopImage",@"chat",@"fileSrc", nil];
     NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:@"" parameters:dict constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         [formData appendPartWithFileData:imageData name:@"file" fileName:imageName mimeType:@"image/jpeg"];
     }];
