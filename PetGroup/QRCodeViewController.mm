@@ -75,14 +75,32 @@
     scanV.layer.cornerRadius = 8;
     scanV.layer.masksToBounds = YES;
     [self.view addSubview:scanV];
+    
+    dLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,204+diffH, 320, 150)];
+    dLabel.textAlignment = NSTextAlignmentCenter;
+    [dLabel setTextColor:[UIColor orangeColor]];
+    [dLabel setBackgroundColor:[UIColor clearColor]];
+    [dLabel setFont:[UIFont systemFontOfSize:20]];
+    [dLabel setNumberOfLines:0];
+    [dLabel setLineBreakMode:NSLineBreakByCharWrapping];
+    [self.view addSubview:dLabel];
+    [dLabel setText:@"你的爱宠，不仅是你的宠物\n更是不可或缺的家人\n填写宠物圈防丢失二维码\n他很淘气，若有一天他走丢了\n好心人扫一下\n就能帮你找回来"];
+    
+    UILabel *sLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,204+diffH+120, 320, 150)];
+    sLabel.textAlignment = NSTextAlignmentCenter;
+    [sLabel setTextColor:[UIColor grayColor]];
+    [sLabel setBackgroundColor:[UIColor clearColor]];
+    [sLabel setFont:[UIFont systemFontOfSize:15]];
+    [self.view addSubview:sLabel];
+    [sLabel setText:@"点击添加按钮将二维码与您的宠物绑定"];
 
     self.profileTableV = [[UITableView alloc] initWithFrame:CGRectMake(0,204+diffH, 320, self.view.frame.size.height-(204+diffH+20)) style:UITableViewStylePlain];
     [self.view addSubview:self.profileTableV];
     self.profileTableV.backgroundView = nil;
     self.profileTableV.dataSource = self;
     self.profileTableV.delegate = self;
-    self.profileTableV.backgroundColor = [UIColor clearColor];
-    
+    self.profileTableV.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    self.profileTableV.hidden = YES;
     [self getPetCardList];
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
@@ -116,8 +134,8 @@
         cell = [[PetProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle  reuseIdentifier:Cell];
     }
 //    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    cell.backgroundColor = [UIColor clearColor];
-    cell.contentView.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    cell.contentView.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
     cell.titleLabel.frame =CGRectMake(20, 10, 130, 20);
     cell.describeLabel.frame =CGRectMake(160, 10, 120, 20);
     cell.titleLabel.textColor = [UIColor grayColor];
@@ -154,12 +172,13 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [petListArray addObjectsFromArray:responseObject];
         [self.profileTableV reloadData];
+        self.profileTableV.hidden = NO;
         if (petListArray.count==0) {
             self.profileTableV.hidden = YES;
         }
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        self.profileTableV.hidden = YES;
+        self.profileTableV.hidden = YES;
     }];
 
 }
@@ -349,6 +368,7 @@
 {
     [petListArray addObject:pet];
     [_profileTableV reloadData];
+    _profileTableV.hidden = NO;
     [self.navigationController popToViewController:self animated:YES];
 }
 @end
