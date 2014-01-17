@@ -42,6 +42,9 @@
     if (_RQCodeMessage) {
         if (![_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
             edit = NO;
+        }else
+        {
+            _RQCodeNo = _RQCodeMessage[@"id"];
         }
     }else
     {
@@ -80,9 +83,11 @@
         UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
         tishiL.text = @"请认真填写信息,以便爱宠丢失后与您联系";
         tishiL.font = [UIFont systemFontOfSize:16];
+        tishiL.backgroundColor = [UIColor clearColor];
         [headV addSubview:tishiL];
         UILabel* numberL = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 20)];
         numberL.text = _RQCodeNo;
+        numberL.backgroundColor = [UIColor clearColor];
         [headV addSubview:numberL];
     }
 }
@@ -171,6 +176,7 @@
             UILabel* titleL = [[UILabel alloc]initWithFrame:cell.contentView.frame];
             [cell.contentView addSubview:titleL];
             titleL.text = @"保存修改";
+            titleL.backgroundColor = [UIColor clearColor];
             titleL.textColor = [UIColor whiteColor];
             titleL.textAlignment = NSTextAlignmentCenter;
         }
