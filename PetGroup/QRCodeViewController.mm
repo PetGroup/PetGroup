@@ -369,6 +369,8 @@
 {
     for (NSDictionary* dic in petListArray) {
         if ([pet[@"id"] isEqualToString:dic[@"id"]]) {
+            [_profileTableV reloadData];
+            _profileTableV.hidden = NO;
             [self.navigationController popToViewController:self animated:YES];
             return;
         }

@@ -150,6 +150,7 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (self.delegate&&[_delegate respondsToSelector:@selector(finishAddRQCodeMessageWithPet:)]) {
             [_RQCodeMessage setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+            [_RQCodeMessage setObject:_RQCodeNo forKey:@"id"];
             [_delegate finishAddRQCodeMessageWithPet:_RQCodeMessage];
         }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
