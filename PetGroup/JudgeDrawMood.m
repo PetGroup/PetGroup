@@ -20,15 +20,21 @@
                           @"过年好",
                           @"Happy new year",
                           @"happy new year",
+                          @"happynewyear",
+                          @"Happynewyear",
+                          @"恭喜发财"
                           ];
         christmasArray = @[
                           @"圣诞快乐",
                           @"剩蛋快乐",
                           @"Merry Christmas",
+                          @"merrychristmas",
+                          @"merry christmas"
                           ];
         birthdayArray = @[
                            @"生日快乐",
                            @"Happy birthday",
+                           @"生日happy"
                            ];
     }
     return self;
