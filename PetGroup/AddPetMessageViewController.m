@@ -40,7 +40,7 @@
 - (void)viewDidLoad
 {
     if (_RQCodeMessage) {
-        if ([_RQCodeMessage[@"petOwnerName"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
+        if ([_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
             edit = NO;
         }
     }else
@@ -138,7 +138,7 @@
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (self.delegate&&[_delegate respondsToSelector:@selector(finishAddRQCodeMessageWithPet:)]) {
-            [_RQCodeMessage setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"petOwnerName"];
+            [_RQCodeMessage setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
             [_delegate finishAddRQCodeMessageWithPet:_RQCodeMessage];
         }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -332,7 +332,7 @@
     if (buttonIndex == 1) {
         if (alertView == _addMeAlertV)
         {
-            if (![self.appDel.xmppHelper addFriend:_RQCodeMessage[@"petOwnerTel"]]) {
+            if (![self.appDel.xmppHelper addFriend:_RQCodeMessage[@"username"]]) {
                 [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
                 return;
             }
