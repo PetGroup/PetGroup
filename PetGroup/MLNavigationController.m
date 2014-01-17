@@ -171,7 +171,11 @@
 #pragma mark - Gesture Recognizer -
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    return YES;
+    CGPoint touchPoint = [gestureRecognizer locationInView:KEY_WINDOW];
+    if (touchPoint.x>=0&&touchPoint.x<=40) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

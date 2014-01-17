@@ -22,7 +22,7 @@
     if (self) {
         // Custom initialization
         unreadComment = 0;
-        codeSwitch = YES;
+        codeSwitch = NO;
     }
     return self;
 }
