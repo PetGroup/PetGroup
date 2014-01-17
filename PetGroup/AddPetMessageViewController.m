@@ -16,7 +16,6 @@
 @interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText,UIAlertViewDelegate>
 {
     BOOL edit;
-    BOOL isSelf;
 }
 @property (nonatomic,retain)UITableView * tableV;
 
@@ -34,7 +33,6 @@
         // Custom initialization
         self.appDel = [UIApplication sharedApplication].delegate;
         edit = YES;
-        isSelf = NO;
     }
     return self;
 }
@@ -42,9 +40,8 @@
 - (void)viewDidLoad
 {
     if (_RQCodeMessage) {
-        edit = NO;
         if ([_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
-            isSelf = YES;
+            edit = NO;
         }
     }else
     {
@@ -208,14 +205,14 @@
             case 0:{
                 cell.titleLabel.text = @"主人名称:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwner"];
-                if (!edit && !isSelf) {
+                if (!edit) {
                     cell.describeLabel.textColor = [UIColor blueColor];
                 }
             }break;
             case 1:{
                 cell.titleLabel.text = @"主人电话:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwnerTel"];
-                if (!edit && !isSelf) {
+                if (!edit) {
                     cell.describeLabel.textColor = [UIColor blueColor];
                 }
             }break;
@@ -290,7 +287,7 @@
             }
             [self.navigationController pushViewController:reportV animated:YES];
         }
-    }else if (!isSelf)
+    }else
     {
         if (indexPath.section ==1) {
             if (indexPath.row == 0) {

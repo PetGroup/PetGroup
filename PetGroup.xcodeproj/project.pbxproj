@@ -75,7 +75,6 @@
 		72AE854A1886995900EB84F4 /* QRCodeCorner_RightTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85451886995900EB84F4 /* QRCodeCorner_RightTop.png */; };
 		72AE854B1886995900EB84F4 /* QRCodeScanLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85461886995900EB84F4 /* QRCodeScanLine.png */; };
 		72AE85521887762D00EB84F4 /* AddQPCodeNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */; };
-		72AE85561887789C00EB84F4 /* AddPetMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AE85551887789C00EB84F4 /* AddPetMessageViewController.m */; };
 		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
 		72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
@@ -346,6 +345,7 @@
 		9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9702BCDE18617EF60002A8E5 /* CoreMedia.framework */; };
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
 		97083336187BB61A00B98C2E /* topBar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97083335187BB61A00B98C2E /* topBar2.png */; };
+		9708A0291888C94200F31375 /* AddPetMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9708A0281888C94200F31375 /* AddPetMessageViewController.m */; };
 		9709821D185873FF00EFAE07 /* bottom_zan_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821B185873FF00EFAE07 /* bottom_zan_normal.png */; };
 		9709821E185873FF00EFAE07 /* bottom_zaned_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821C185873FF00EFAE07 /* bottom_zaned_normal.png */; };
 		970982221858799C00EFAE07 /* xuanzegou.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821F1858799C00EFAE07 /* xuanzegou.png */; };
@@ -977,7 +977,6 @@
 		72AE85501887762D00EB84F4 /* AddQPCodeNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddQPCodeNumberViewController.h; sourceTree = "<group>"; };
 		72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddQPCodeNumberViewController.m; sourceTree = "<group>"; };
 		72AE85541887789C00EB84F4 /* AddPetMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPetMessageViewController.h; sourceTree = "<group>"; };
-		72AE85551887789C00EB84F4 /* AddPetMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPetMessageViewController.m; sourceTree = "<group>"; };
 		72B64D10187E62FD00A6A923 /* timelabelbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timelabelbg.png; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -1253,6 +1252,7 @@
 		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		97083335187BB61A00B98C2E /* topBar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar2.png; sourceTree = "<group>"; };
+		9708A0281888C94200F31375 /* AddPetMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPetMessageViewController.m; sourceTree = "<group>"; };
 		9709821B185873FF00EFAE07 /* bottom_zan_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zan_normal.png; sourceTree = "<group>"; };
 		9709821C185873FF00EFAE07 /* bottom_zaned_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zaned_normal.png; sourceTree = "<group>"; };
 		9709821F1858799C00EFAE07 /* xuanzegou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xuanzegou.png; sourceTree = "<group>"; };
@@ -3018,7 +3018,7 @@
 				72AE85501887762D00EB84F4 /* AddQPCodeNumberViewController.h */,
 				72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */,
 				72AE85541887789C00EB84F4 /* AddPetMessageViewController.h */,
-				72AE85551887789C00EB84F4 /* AddPetMessageViewController.m */,
+				9708A0281888C94200F31375 /* AddPetMessageViewController.m */,
 				97DB08F817C5A1EE000EC195 /* MyProfileViewController.h */,
 				97DB08F917C5A1EE000EC195 /* MyProfileViewController.m */,
 				97DB08FB17C5A1FF000EC195 /* MyPetProfileViewController.h */,
@@ -5565,7 +5565,7 @@
 				973EAB6017CC786600A8F945 /* FriendsReqsViewController.m in Sources */,
 				86EEB14517CF0F36000162E8 /* EGOCache.m in Sources */,
 				86EEB14617CF0F36000162E8 /* EGOImageButton.m in Sources */,
-				72AE85561887789C00EB84F4 /* AddPetMessageViewController.m in Sources */,
+				9708A0291888C94200F31375 /* AddPetMessageViewController.m in Sources */,
 				86EEB14717CF0F36000162E8 /* EGOImageLoadConnection.m in Sources */,
 				976EA13B1843260C00D120AE /* EmojiView.m in Sources */,
 				86EEB14817CF0F36000162E8 /* EGOImageLoader.m in Sources */,
