@@ -149,6 +149,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
     addPV.RQCodeMessage = petListArray[indexPath.row];
+    addPV.delegate = self;
     [self.navigationController pushViewController:addPV animated:YES];
 }
 
@@ -366,6 +367,12 @@
 }
 - (void)finishAddRQCodeMessageWithPet:(NSDictionary*)pet
 {
+    for (NSDictionary* dic in petListArray) {
+        if ([pet[@"id"] isEqualToString:dic[@"id"]]) {
+            [self.navigationController popToViewController:self animated:YES];
+            return;
+        }
+    }
     [petListArray addObject:pet];
     [_profileTableV reloadData];
     _profileTableV.hidden = NO;

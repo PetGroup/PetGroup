@@ -16,6 +16,7 @@
 @interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText,UIAlertViewDelegate>
 {
     BOOL edit;
+    float specialHigh;
 }
 @property (nonatomic,retain)UITableView * tableV;
 
@@ -33,6 +34,7 @@
         // Custom initialization
         self.appDel = [UIApplication sharedApplication].delegate;
         edit = YES;
+        specialHigh = 50;
     }
     return self;
 }
@@ -40,6 +42,10 @@
 - (void)viewDidLoad
 {
     if (_RQCodeMessage) {
+        float a =[_RQCodeMessage[@"petOwnerMsg"] sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height;
+        if (a > 20) {
+            specialHigh = a +30;
+        }
         if (![_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
             edit = NO;
         }else
@@ -225,6 +231,7 @@
             case 2:{
                 cell.titleLabel.text = @"主人寄语:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwnerMsg"];
+                cell.describeLabel.frame = CGRectMake(cell.describeLabel.frame.origin.x, cell.describeLabel.frame.origin.y, cell.describeLabel.frame.size.width, [_RQCodeMessage[@"petOwnerMsg"] sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height);
             }break;
             default:
                 break;
@@ -242,6 +249,9 @@
 #pragma mark - table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1 && indexPath.row == 2) {
+        return specialHigh;
+    }
     return 50;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -287,6 +297,7 @@
                     reportV.theTitle = @"主人寄语";
                     reportV.defaultContent = _RQCodeMessage[@"petOwnerMsg"];
                     reportV.thisIndex = indexPath.row+10;
+                    reportV.maxCount = 50;
                 }break;
                 default:
                     break;
@@ -325,6 +336,10 @@
         }break;
         case 12:{
             [_RQCodeMessage setObject:textinfo forKey:@"petOwnerMsg"];
+            float a =[textinfo sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height;
+            if (a > 20) {
+                specialHigh = a + 30;
+            }
         }break;
             
         default:
