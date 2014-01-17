@@ -13,10 +13,12 @@
 #import "ReportViewController.h"
 #import "KGStatusBar.h"
 #import "XMPPHelper.h"
+#import "MBProgressHUD.h"
 @interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText,UIAlertViewDelegate>
 {
     BOOL edit;
     float specialHigh;
+    MBProgressHUD* hud;
 }
 @property (nonatomic,retain)UITableView * tableV;
 
@@ -96,6 +98,10 @@
         numberL.backgroundColor = [UIColor clearColor];
         [headV addSubview:numberL];
     }
+    
+    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+    hud.labelText = @"提交中...";
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,6 +133,7 @@
 }
 -(void)setCardInfoByID:(NSString *)theID
 {
+    [hud show:YES];
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
@@ -148,6 +155,7 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
         if (self.delegate&&[_delegate respondsToSelector:@selector(finishAddRQCodeMessageWithPet:)]) {
             [_RQCodeMessage setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
             [_RQCodeMessage setObject:_RQCodeNo forKey:@"id"];
@@ -156,6 +164,7 @@
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
+        [hud hide:YES];
     }];
 }
 #pragma mark - table view data source
