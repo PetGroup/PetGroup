@@ -76,7 +76,6 @@
 		72AE854B1886995900EB84F4 /* QRCodeScanLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85461886995900EB84F4 /* QRCodeScanLine.png */; };
 		72AE85521887762D00EB84F4 /* AddQPCodeNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */; };
 		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
-		72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
 		72CAD8BA183C7DB300B1F927 /* build-libidn.sh in Resources */ = {isa = PBXBuildFile; fileRef = 72CAD8B6183C7DB300B1F927 /* build-libidn.sh */; };
@@ -799,6 +798,7 @@
 		97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6A18338C2100FD6725 /* Default@2x.png */; };
 		97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F567C8180E84B000A72604 /* AVFoundation.framework */; };
 		97F764B317F817750063A72E /* newfriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F764B217F817750063A72E /* newfriend.png */; };
+		97F8FEF0188CB2CE00919EBD /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
 		97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB035017E00432002086D9 /* AboutAppViewController.m */; };
 		97FB47D817BC79F00071FA12 /* DSPets.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB47D717BC79F00071FA12 /* DSPets.m */; };
@@ -5239,7 +5239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72B64D12187FF4DF00A6A923 /* amrFileCodec.m in Sources */,
+				97F8FEF0188CB2CE00919EBD /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
@@ -5692,8 +5692,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5720,8 +5720,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5767,8 +5767,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5813,8 +5813,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
