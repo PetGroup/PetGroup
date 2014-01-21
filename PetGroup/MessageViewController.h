@@ -93,5 +93,6 @@
 -(void)logInToServer;
 -(void)logInToChatServer;
 -(void)makeScrollToTheTop:(NSNumber *)index;
+-(void)setTheTitleLabelText;
 
 @end

@@ -163,7 +163,7 @@
 -(void)setLabelTitle:(NSString *)title
 {
     if (messageV) {
-        messageV->titleLabel.text=title;
+        [messageV setTheTitleLabelText];
     }
     
 }

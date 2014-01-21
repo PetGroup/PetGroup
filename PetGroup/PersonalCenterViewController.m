@@ -95,6 +95,10 @@
     if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
         [self.customTabBarController setSelectedPage:2];
     }
+    if ([[TempData sharedInstance] needChat]) {
+        [self.customTabBarController setSelectedPage:2];
+        return;
+    }
 
 }
 -(void)getMyUserInfoFromNet

@@ -20,6 +20,7 @@
     MBProgressHUD * hud;
     UILabel * noResultLabel;
     NSString * searchCondition;
+    BOOL canShowKeyboard;
 }
 @property (strong,nonatomic) UITableView * resultTable;
 @property (strong,nonatomic) NSMutableArray * resultArray;

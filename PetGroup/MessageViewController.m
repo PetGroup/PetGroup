@@ -243,7 +243,10 @@
 //        
 //    }];
 //    [self.appDel.xmppHelper disconnect];
-    titleLabel.text = @"消息(未连接)";
+    if ([self.appDel.xmppHelper isDisconnected]) {
+        titleLabel.text = @"消息(未连接)";
+    }
+    
 //    if ([TempData sharedInstance].appActive&&[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
 //        titleLabel.text = @"消息(连接中...)";
 //        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
@@ -253,9 +256,6 @@
 
  //   [self connectChatServer];
    // NSLog(@"ddddd");
-    if (![self.regerTimer isValid]) {
-        self.regerTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(regetXMPPServerAddress) userInfo:nil repeats:NO];
-    }
 }
 
 -(void)reConnectChatServer
@@ -809,6 +809,7 @@
 
 -(void)logInToServer
 {
+
     titleLabel.text = @"消息(连接中...)";
     NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
@@ -928,8 +929,27 @@
         
     }];
 }
+-(void)setTheTitleLabelText
+{
+    if ([self.appDel.xmppHelper isConnected]) {
+        titleLabel.text = @"消息";
+    }
+    else if ([self.appDel.xmppHelper isConnecting]){
+        titleLabel.text = @"消息(连接中...)";
+    }
+    else if([self.appDel.xmppHelper isDisconnected]){
+        titleLabel.text = @"消息(未连接)";
+    }
+}
 -(void)logInToChatServer
 {
+    if ([self.appDel.xmppHelper isConnected]||[self.appDel.xmppHelper isConnecting]) {
+        return;
+    }
+    if (![self.regerTimer isValid]&&[TempData sharedInstance].appActive) {
+        self.regerTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(regetXMPPServerAddress) userInfo:nil repeats:NO];
+    }
+    titleLabel.text = @"消息(连接中...)";
     self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
 //    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{

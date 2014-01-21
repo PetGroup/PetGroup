@@ -40,9 +40,13 @@
 //    [self.xmppRoster activate:self.xmppStream];
 //    [self.xmppRoster setAutoFetchRoster:NO];
 //    self.xmppStream.enableBackgroundingOnSocket = YES;
-    self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
-    [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppReconnect activate:self.xmppStream];
+    
+    
+//    self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+//    [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
+//    [self.xmppReconnect activate:self.xmppStream];
+    
+    
 //    self.xmppAutoPing = [[XMPPAutoPing alloc] initWithDispatchQueue:dispatch_get_main_queue()];
 //    self.xmppAutoPing.pingInterval = 25.f; // default is 60
 //    self.xmppAutoPing.pingTimeout = 10.f; // default is 10

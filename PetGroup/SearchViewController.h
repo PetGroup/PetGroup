@@ -16,6 +16,7 @@ typedef  enum
 @interface SearchViewController : UIViewController<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     UILabel * noResultLabel;
+    BOOL canShowKeyboard;
 }
 @property (nonatomic,retain)NSString* forumPid;
 @property (nonatomic,assign)SearchType searchType;
