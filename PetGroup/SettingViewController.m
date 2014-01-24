@@ -154,6 +154,8 @@
 //        [userDefault removeObjectForKey:NewComment];
 //        [userDefault removeObjectForKey:MyDynamic];
 //        [userDefault synchronize];
+        [ReconnectionManager sharedInstance].stopAttempt = YES;
+        [tempData setOpened:NO];
         [app.xmppHelper disconnect];
         [TempData sharedInstance].changeUser = YES;
         [self.navigationController popViewControllerAnimated:NO];

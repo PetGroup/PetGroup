@@ -76,7 +76,7 @@
     self.inputTextF.text = self.defaultContent.length>self.maxCount?[self.defaultContent substringToIndex:self.maxCount]:self.defaultContent;
     self.inputTextF.delegate = self;
     self.inputTextF.font = [UIFont systemFontOfSize:16];
-
+    self.inputTextF.returnKeyType = UIReturnKeyDone;
 
     [bigBG addSubview:self.inputTextF];
     
@@ -111,6 +111,7 @@
     [remainingLabel setText:[NSString stringWithFormat:@"还可以输入%d字",self.maxCount-self.inputTextF.text.length]];
     [bigBG addSubview:remainingLabel];
     
+    
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
     hud.delegate = self;
@@ -122,6 +123,7 @@
     [self.inputTextF resignFirstResponder];
     return YES;
 }
+
 #pragma mark 显示字数的区域
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
@@ -161,6 +163,11 @@
 //}
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    if ( [text isEqualToString:@"\n"] ) {
+        [self.inputTextF resignFirstResponder];
+        return NO;
+        //Do whatever you want
+    }
     NSString * hhh = self.inputTextF.text;
     NSUInteger contentLen = self.inputTextF.text.length;
     if (contentLen<self.maxCount)

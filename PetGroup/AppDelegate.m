@@ -50,7 +50,7 @@
         
     }
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
-
+    
    // [MagicalRecord setupCoreDataStackWithStoreNamed:DataStoreModel];
     
     [MobClick startWithAppkey:@"528c5e1056240b39ce0a0f90" reportPolicy:SEND_ON_EXIT channelId:@""];
@@ -62,10 +62,67 @@
     self.loadingV = [[LoadingViewController alloc] init];
     self.window.rootViewController = self.loadingV;
     self.xmppHelper=[[XMPPHelper alloc] init];
+    [self checkNet];
     [self.window makeKeyAndVisible];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
     return YES;
+}
+-(void)checkNet
+{
+    ReconnectionManager * reconnetMannager = [ReconnectionManager sharedInstance];
+    Reachability * reach = [Reachability reachabilityForInternetConnection];
+    if (reach.isReachable) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_catchStatus" object:@"haveNet" userInfo:nil];
+        reconnetMannager.networkAvailable = YES;
+        // messageV->titleLabel.text=@"消息";
+//        if ([[TempData sharedInstance] ifOpened]) {
+            if (![self.xmppHelper ifXMPPConnected]) {
+//                [_loadingV setLabelTitle:@"消息(连接中...)"];
+                [_loadingV setMakeLogin];
+            }
+//        }
+        });
+        
+    }
+    else{
+        dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_catchStatus" object:@"noNet" userInfo:nil];
+        reconnetMannager.networkAvailable = NO;
+        // messageV->titleLabel.text=@"消息(未连接)";
+//        [_loadingV setLabelTitle:@"sss"];
+        [self.xmppHelper disconnect];
+        });
+    }
+    reach.reachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            reconnetMannager.networkAvailable = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_catchStatus" object:@"haveNet" userInfo:nil];
+            //    messageV->titleLabel.text=@"消息";
+//            if ([[TempData sharedInstance] ifOpened]) {
+                if (![self.xmppHelper ifXMPPConnected]) {
+//                    [_loadingV setLabelTitle:@"消息(连接中...)"];
+                    [_loadingV setMakeLogin];
+                }
+//            }
+            //[self logIn];
+        });
+    };
+    
+    reach.unreachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_catchStatus" object:@"noNet" userInfo:nil];
+            reconnetMannager.networkAvailable = NO;
+            //   messageV->titleLabel.text=@"消息（未连接）";
+//            [_loadingV setLabelTitle:@"消息(未连接)"];
+            [self.xmppHelper disconnect];
+        });
+    };
+    
+    [reach startNotifier];
 }
 -(void)setChannel:(NSString *)theChannel
 {
@@ -134,7 +191,7 @@
     inActive = NO;
     [TempData sharedInstance].appActive = NO;
     [self.xmppHelper disconnect];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 }
@@ -161,66 +218,27 @@
     //暂时注释
     inActive = YES;
     [TempData sharedInstance].appActive = YES;
-    ReconnectionManager * reconnetMannager = [ReconnectionManager sharedInstance];
+
     [UIApplication sharedApplication].applicationIconBadgeNumber = 1;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(reachabilityChanged:)
+//                                                 name:kReachabilityChangedNotification
+//                                               object:nil];
     
        // Reachability * reach2 = [Reachability reachabilityWithHostname:@"www.google.com"];
-    Reachability * reach = [Reachability reachabilityForInternetConnection];
-    if (reach) {
-        reconnetMannager.networkAvailable = YES;
-        // messageV->titleLabel.text=@"消息";
-        if ([[TempData sharedInstance] ifOpened]) {
-            if (![self.xmppHelper ifXMPPConnected]) {
-                [_loadingV setLabelTitle:@"消息(连接中...)"];
-                [_loadingV setMakeLogin];
-            }
-        }
-        
-    }
-    else{
-        reconnetMannager.networkAvailable = NO;
-        // messageV->titleLabel.text=@"消息(未连接)";
-        [_loadingV setLabelTitle:@"消息(未连接)"];
-        [self.xmppHelper disconnect];
-    }
-    reach.reachableBlock = ^(Reachability * reachability)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            reconnetMannager.networkAvailable = YES;
-            //    messageV->titleLabel.text=@"消息";
-            if ([[TempData sharedInstance] ifOpened]) {
-                if (![self.xmppHelper ifXMPPConnected]) {
-                    [_loadingV setLabelTitle:@"消息(连接中...)"];
-                    [_loadingV setMakeLogin];
-                }
-            }
-            //[self logIn];
-        });
-    };
-    
-    reach.unreachableBlock = ^(Reachability * reachability)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            reconnetMannager.networkAvailable = NO;
-            //   messageV->titleLabel.text=@"消息（未连接）";
-            [_loadingV setLabelTitle:@"消息(未连接)"];
-            [self.xmppHelper disconnect];
-        });
-    };
-    
-    [reach startNotifier];
     
 //    [[NSNotificationCenter defaultCenter] postNotificationName:@"inspectNewSubject" object:self];//检查新专题
     
 //    if ([[TempData sharedInstance] ifOpened]){
 //        [_loadingV makeTabbarPresentAViewController:nil];
 //    }
-
+    if ([[TempData sharedInstance] ifOpened]) {
+        if (![self.xmppHelper ifXMPPConnected]) {
+            [_loadingV setLabelTitle:@"消息(连接中...)"];
+            [_loadingV setMakeLogin];
+        }
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

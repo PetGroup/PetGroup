@@ -82,6 +82,9 @@
     UIImageView *TopBarBGV;
     
     JudgeDrawMood * judgeDrawmood;
+    ReconnectionManager * reV;
+    
+    UILabel * noNetLabel;
 }
 
 

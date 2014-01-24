@@ -170,7 +170,11 @@
 -(void)setMakeLogin
 {
     if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
-        [messageV logInToChatServer];
+        if ([[TempData sharedInstance] ifOpened]) {
+            [messageV logInToChatServer];
+        }
+        else
+            [messageV logInToServer];
     }
 }
 -(void)getUserLocation

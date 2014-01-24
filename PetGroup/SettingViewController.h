@@ -10,6 +10,7 @@
 #import "ReportViewController.h"
 #import "AboutAppViewController.h"
 #import "TempData.h"
+#import "ReconnectionManager.h"
 @interface SettingViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>{
     NSArray *titlesArray;
 }

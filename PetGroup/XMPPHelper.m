@@ -63,6 +63,11 @@
 	[[self xmppStream] sendElement:presence];
 }
 -(BOOL)connect:(NSString *)theaccount password:(NSString *)thepassword host:(NSString *)host success:(CallBackBlock)Success fail:(CallBackBlockErr)Fail{
+    if (self.isConnected||self.isConnecting) {
+        NSError *err = [NSError errorWithDomain:@"have been connected one account!" code:909 userInfo:nil];
+        Fail(err);
+        return NO;
+    }
     [self setupStream];
     self.password=thepassword;
     self.success=Success;
@@ -315,7 +320,8 @@
 //此方法在stream连接断开的时候调用
 - (void)xmppStreamDidDisconnect:(XMPPStream *)sender withError:(NSError *)error{
     NSLog(@"disconnected。。。：%@",error);
-    [self.notConnect notConnectted];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_disconnect" object:nil userInfo:nil];
+//    [self.notConnect notConnectted];
 }
 
 // 2.关于验证的
