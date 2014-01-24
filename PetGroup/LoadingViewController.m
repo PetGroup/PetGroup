@@ -107,6 +107,11 @@
     if([fm fileExistsAtPath:path] == NO)
     {
         firstOpenIt = YES;
+        if ([SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil]) {
+            [SFHFKeychainUtils deleteItemForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil];
+            NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+            [SFHFKeychainUtils storeUsername:MACADDRESS andPassword:idfa forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        }
         [self firtOpen];
         [self doOpen];
 
@@ -158,14 +163,18 @@
 -(void)setLabelTitle:(NSString *)title
 {
     if (messageV) {
-        messageV->titleLabel.text=title;
+        [messageV setTheTitleLabelText];
     }
     
 }
 -(void)setMakeLogin
 {
     if ([SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
-        [messageV logInToChatServer];
+        if ([[TempData sharedInstance] ifOpened]) {
+            [messageV logInToChatServer];
+        }
+        else
+            [messageV logInToServer];
     }
 }
 -(void)getUserLocation

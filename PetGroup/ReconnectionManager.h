@@ -7,19 +7,28 @@
 //
 
 #import <Foundation/Foundation.h>
-@class XMPPHelper,AppDelegate,TempData;
+@class XMPPHelper,AppDelegate,TempData,MessageViewController;
 @interface ReconnectionManager : NSObject
 {
     int randomBase;
     int attempts;
     BOOL haveBeginTry;
     BOOL done;
+//    BOOL stopAttempt;
+    BOOL canRegetAddress;
+    BOOL connecting;
+    BOOL firstIn;
+    BOOL manualStop;
 }
 
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic) TempData * tempData;
 @property (assign,nonatomic) BOOL networkAvailable;
+@property (assign,nonatomic) BOOL stopAttempt;
+@property (assign,nonatomic) BOOL isRunning;
+@property (strong,nonatomic) NSTimer * regetTimer;
+@property (strong,nonatomic) MessageViewController * msgV;
 
 +(ReconnectionManager *) sharedInstance;
--(void)reconnectionAttemptIfSuccess:(void (^)())success;
+-(void)reconnectionAttempt;
 @end

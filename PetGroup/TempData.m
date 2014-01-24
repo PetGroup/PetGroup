@@ -128,6 +128,9 @@ static TempData *sharedInstance=nil;
     if (!self.myUserID) {
         self.myUserID = [DataStoreManager getMyUserID];
     }
+    else if (self.myUserID.length<1){
+        self.myUserID = [DataStoreManager getMyUserID];
+    }
     return self.myUserID;
 }
 @end

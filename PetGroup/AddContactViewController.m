@@ -22,6 +22,7 @@
     if (self) {
         // Custom initialization
         self.pageIndex = 0;
+        canShowKeyboard = YES;
         self.resultArray = [NSMutableArray array];
     }
     return self;
@@ -158,7 +159,10 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [asearchBar becomeFirstResponder];
+    if (canShowKeyboard) {
+        [asearchBar becomeFirstResponder];
+    }
+    
 }
 #pragma mark -
 #pragma mark TableView 
@@ -237,6 +241,7 @@
     [hud show:YES];
     
     [asearchBar resignFirstResponder];
+    canShowKeyboard = NO;
     [self searchUser];
 
 }
@@ -251,5 +256,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [asearchBar resignFirstResponder];
+}
 @end

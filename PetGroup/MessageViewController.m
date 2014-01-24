@@ -108,9 +108,19 @@
     judgeDrawmood = [[JudgeDrawMood alloc] initWithArrays];
 
     self.appDel = [[UIApplication sharedApplication] delegate];
+    reV = [ReconnectionManager sharedInstance];
+    
+    noNetLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, 30)];
+    [noNetLabel setText:@"暂时没有检测到网络，请检查网络连接"];
+    [noNetLabel setFont:[UIFont systemFontOfSize:14]];
+    [noNetLabel setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+    [noNetLabel setTextColor:[UIColor grayColor]];
+    [noNetLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:noNetLabel];
+    noNetLabel.hidden = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(catchStatus:) name:@"Notification_catchStatus" object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(inspectNewSubject) name:@"inspectNewSubject" object:nil];
 //    [self inspectNewSubject];
 }
@@ -125,7 +135,16 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     canProcess = YES;
-
+    
+    if (!reV.networkAvailable){
+        titleLabel.text = @"消息(未连接)";
+        noNetLabel.hidden = NO;
+        [self.messageTable setFrame:CGRectMake(0, diffH+44+30, 320, self.view.frame.size.height-(49+44+diffH))];
+    }
+    else {
+        noNetLabel.hidden = YES;
+        [self.messageTable setFrame:CGRectMake(0, diffH+44, 320, self.view.frame.size.height-(49+44+diffH))];
+    }
 //    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:@"england" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 //    [SFHFKeychainUtils storeUsername:PASSWORD andPassword:@"111111" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
 //    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:@"f073afc6-dfbe-402c-9af1-8bad1eae6c49" forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
@@ -137,8 +156,12 @@
     else
     {
         [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
-        if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
-            [self logInToServer];
+        if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]&&reV.networkAvailable) {
+            if ([[TempData sharedInstance] ifOpened]) {
+                [self logInToChatServer];
+            }
+            else
+                [self logInToServer];
            // [self getMyUserInfoFromNet];
         }
         
@@ -236,14 +259,83 @@
         [[TempData sharedInstance] setNeedChatNO];
     }
 }
-
+-(void)catchStatus:(NSNotification*) notification
+{dispatch_async(dispatch_get_main_queue(), ^{
+    NSString * theType = [notification object];
+    //        [reV reconnectionAttemptIfSuccess:^{
+    //            [[TempData sharedInstance] setOpened:YES];
+    //            [self.appDel.xmppHelper checkToServerifSubscibe];
+    //            [self endRefresh];
+    //            titleLabel.text = @"消息";
+    //        } Failure:^{
+    //            titleLabel.text = @"消息(未连接)";
+    //            [self endRefresh];
+    //        }];
+    if ([theType isEqualToString:@"connected"]) {
+//            [[TempData sharedInstance] setOpened:YES];
+            [self.appDel.xmppHelper checkToServerifSubscibe];
+            [self endRefresh];
+            titleLabel.text = @"消息";
+    }
+    else if ([theType isEqualToString:@"disconnect"]){
+        titleLabel.text = @"消息(未连接)";
+    }
+    else if ([theType isEqualToString:@"failed"]){
+        titleLabel.text = @"消息(未连接)";
+        [self endRefresh];
+    }
+    else if ([theType isEqualToString:@"connecting"]){
+        titleLabel.text = @"消息(连接中...)";
+//        [self endRefresh];
+    }
+    else if ([theType isEqualToString:@"noNet"]){
+        titleLabel.text = @"消息(未连接)";
+        noNetLabel.hidden = NO;
+        [self.messageTable setFrame:CGRectMake(0, diffH+44+30, 320, self.view.frame.size.height-(49+44+diffH))];
+    }
+    else if ([theType isEqualToString:@"haveNet"]){
+        noNetLabel.hidden = YES;
+        [self.messageTable setFrame:CGRectMake(0, diffH+44, 320, self.view.frame.size.height-(49+44+diffH))];
+    }
+//    if ([self.appDel.xmppHelper isDisconnected]) {
+//        titleLabel.text = @"消息(未连接)";
+//    }
+ 
+//    if ([TempData sharedInstance].appActive) {
+//        titleLabel.text = @"消息(连接中...)";
+//        [[ReconnectionManager sharedInstance] reconnectionAttemptController:self IfSuccess:^{
+//            [[TempData sharedInstance] setOpened:YES];
+//            [self.appDel.xmppHelper checkToServerifSubscibe];
+//            [self endRefresh];
+//
+//            titleLabel.text = @"消息";
+//        } Failure:^{
+//            titleLabel.text = @"消息(未连接)";
+//        }];
+//    }
+});
+}
 -(void)notConnectted
 {
 //    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
 //        
 //    }];
 //    [self.appDel.xmppHelper disconnect];
-    titleLabel.text = @"消息(未连接)";
+    if ([self.appDel.xmppHelper isDisconnected]) {
+        titleLabel.text = @"消息(未连接)";
+    }
+//    if ([TempData sharedInstance].appActive) {
+//        titleLabel.text = @"消息(连接中...)";
+//        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+//            [[TempData sharedInstance] setOpened:YES];
+//            [self.appDel.xmppHelper checkToServerifSubscibe];
+//            [self endRefresh];
+//
+//            titleLabel.text = @"消息";
+//        } Failure:^{
+//            titleLabel.text = @"消息(未连接)";
+//        }];
+//    }
 //    if ([TempData sharedInstance].appActive&&[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil]) {
 //        titleLabel.text = @"消息(连接中...)";
 //        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
@@ -253,9 +345,6 @@
 
  //   [self connectChatServer];
    // NSLog(@"ddddd");
-    if (![self.regerTimer isValid]) {
-        self.regerTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(regetXMPPServerAddress) userInfo:nil repeats:NO];
-    }
 }
 
 -(void)reConnectChatServer
@@ -700,8 +789,12 @@
 //    [self performSelector:@selector(endRefresh)
 //                     withObject:nil afterDelay:2
 //                        inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
-    if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]) {
-        [self logInToServer];
+    if (![self.appDel.xmppHelper isConnected]&&![titleLabel.text isEqualToString:@"消息(连接中...)"]&&reV.networkAvailable) {
+        if ([[TempData sharedInstance] ifOpened]) {
+            [self logInToChatServer];
+        }
+        else
+            [self logInToServer];
         // [self getMyUserInfoFromNet];
     }
     else
@@ -809,6 +902,7 @@
 
 -(void)logInToServer
 {
+
     titleLabel.text = @"消息(连接中...)";
     NSMutableDictionary * userInfoDict = [NSMutableDictionary dictionary];
     NSMutableDictionary * postDict = [NSMutableDictionary dictionary];
@@ -854,6 +948,7 @@
 
 -(void)logInServerSuccessWithInfo:(NSDictionary *)dict
 {
+    [[TempData sharedInstance] setOpened:YES];
 //    NSString * version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
 //
 //    if ([[[dict objectForKey:@"version"] objectForKey:@"petVersion"] floatValue]>[version floatValue]) {
@@ -873,8 +968,9 @@
 //        [alert show];
 //    }
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [DataStoreManager storeMyUserID:[[dict objectForKey:@"authenticationToken"] objectForKey:@"userid"]];
     TempData * tp = [TempData sharedInstance];
-    tp.hostPort = [dict objectForKey:@"port"]?[dict objectForKey:@"port"]:@"5222";
+    tp.hostPort = [[dict objectForKey:@"chatserver"] objectForKey:@"port"]?[[dict objectForKey:@"chatserver"] objectForKey:@"port"]:@"5222";
     [tp SetServer:[[dict objectForKey:@"chatserver"] objectForKey:@"address"] TheDomain:[[dict objectForKey:@"chatserver"] objectForKey:@"name"]];
     
 //    NSString * receivedImgStr = [dict objectForKey:@"firstImage"];
@@ -928,9 +1024,26 @@
         
     }];
 }
+-(void)setTheTitleLabelText
+{
+    if ([self.appDel.xmppHelper isConnected]) {
+        titleLabel.text = @"消息";
+    }
+    else if ([self.appDel.xmppHelper isConnecting]){
+        titleLabel.text = @"消息(连接中...)";
+    }
+//    else if([self.appDel.xmppHelper isDisconnected]){
+//        titleLabel.text = @"消息(未连接)";
+//    }
+}
 -(void)logInToChatServer
 {
-    self.appDel.xmppHelper.notConnect = self;
+    if ([self.appDel.xmppHelper isConnected]||[self.appDel.xmppHelper isConnecting]) {
+        return;
+    }
+
+//    titleLabel.text = @"消息(连接中...)";
+//    self.appDel.xmppHelper.notConnect = self;
     self.appDel.xmppHelper.xmpptype = login;
 //    [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
 ////        NSLog(@"登陆成功xmpp");
@@ -944,34 +1057,40 @@
 //        [self.appDel.xmppHelper checkToServerifSubscibe];
 ////        [self.appDel.xmppHelper realSubscribeToServer];
 //    }];
-    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
-        NSLog(@"登陆成功xmpp");
-//        self.appDel.xmppHelper.buddyListDelegate = self;
-//        self.appDel.xmppHelper.chatDelegate = self;
-//        self.appDel.xmppHelper.processFriendDelegate = self;
-//        self.appDel.xmppHelper.addReqDelegate = self;
-//        self.appDel.xmppHelper.commentDelegate = self;
-        titleLabel.text = @"消息";
-        [[TempData sharedInstance] setOpened:YES];
-        [self.appDel.xmppHelper checkToServerifSubscibe];
-        [self endRefresh];
-        if (self.regerTimer != nil) {
-            if( [self.regerTimer isValid])
-            {
-                [self.regerTimer invalidate];
-            }
-            self.regerTimer = nil;
-        }
-//        [self.appDel.xmppHelper realSubscribeToServer];
-    }fail:^(NSError *result){
-        titleLabel.text = @"消息(未连接)";
-        [self endRefresh];
-//        titleLabel.text = @"消息(连接中...)";
-//        [[ReconnectionManager sharedInstance] reconnectionAttemptIfSuccess:^{
+    
+    
+//    [self.appDel.xmppHelper connect:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]stringByAppendingString:[[TempData sharedInstance] getDomain]] password:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] host:[[TempData sharedInstance] getServer] success:^(void){
+//        NSLog(@"登陆成功xmpp");
+//        titleLabel.text = @"消息";
+//        [[TempData sharedInstance] setOpened:YES];
+//        [self.appDel.xmppHelper checkToServerifSubscibe];
+//        [self endRefresh];
+//        if (self.regerTimer != nil) {
+//            if( [self.regerTimer isValid])
+//            {
+//                [self.regerTimer invalidate];
+//            }
+//            self.regerTimer = nil;
+//        }
+//    }fail:^(NSError *result){
+//        titleLabel.text = @"消息(未连接)";
+//        [self endRefresh];
+//    }];
+    
+    
+    if (!reV.isRunning) {
+        [reV reconnectionAttempt];
+//        [reV reconnectionAttemptIfSuccess:^{
+//            [[TempData sharedInstance] setOpened:YES];
+//            [self.appDel.xmppHelper checkToServerifSubscibe];
+//            [self endRefresh];
 //            titleLabel.text = @"消息";
+//        } Failure:^{
+//            titleLabel.text = @"消息(未连接)";
+//            [self endRefresh];
 //        }];
-        
-    }];
+    }
+
 }
 -(void)regetXMPPServerAddress
 {
@@ -1041,7 +1160,7 @@
     if (diffH==20.0f) {
         [UIView animateWithDuration:0.2 animations:^{
             [TopBarBGV setImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
-            [self.messageTable setFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-(49+44+diffH))];
+            [self.messageTable setFrame:CGRectMake(0, reV.networkAvailable?(44+diffH):(44+diffH+30), 320, self.view.frame.size.height-(49+44+diffH))];
         } completion:^(BOOL finished) {
             searchBar.backgroundImage = nil;
             

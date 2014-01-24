@@ -40,9 +40,13 @@
 //    [self.xmppRoster activate:self.xmppStream];
 //    [self.xmppRoster setAutoFetchRoster:NO];
 //    self.xmppStream.enableBackgroundingOnSocket = YES;
-    self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
-    [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
-    [self.xmppReconnect activate:self.xmppStream];
+    
+    
+//    self.xmppReconnect = [[XMPPReconnect alloc] initWithDispatchQueue:dispatch_get_main_queue()];
+//    [self.xmppReconnect addDelegate:self delegateQueue:dispatch_get_main_queue()];
+//    [self.xmppReconnect activate:self.xmppStream];
+    
+    
 //    self.xmppAutoPing = [[XMPPAutoPing alloc] initWithDispatchQueue:dispatch_get_main_queue()];
 //    self.xmppAutoPing.pingInterval = 25.f; // default is 60
 //    self.xmppAutoPing.pingTimeout = 10.f; // default is 10
@@ -59,6 +63,11 @@
 	[[self xmppStream] sendElement:presence];
 }
 -(BOOL)connect:(NSString *)theaccount password:(NSString *)thepassword host:(NSString *)host success:(CallBackBlock)Success fail:(CallBackBlockErr)Fail{
+    if (self.isConnected||self.isConnecting) {
+        NSError *err = [NSError errorWithDomain:@"have been connected one account!" code:909 userInfo:nil];
+        Fail(err);
+        return NO;
+    }
     [self setupStream];
     self.password=thepassword;
     self.success=Success;
@@ -311,7 +320,8 @@
 //此方法在stream连接断开的时候调用
 - (void)xmppStreamDidDisconnect:(XMPPStream *)sender withError:(NSError *)error{
     NSLog(@"disconnected。。。：%@",error);
-    [self.notConnect notConnectted];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_disconnect" object:nil userInfo:nil];
+//    [self.notConnect notConnectted];
 }
 
 // 2.关于验证的

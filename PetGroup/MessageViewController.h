@@ -82,6 +82,9 @@
     UIImageView *TopBarBGV;
     
     JudgeDrawMood * judgeDrawmood;
+    ReconnectionManager * reV;
+    
+    UILabel * noNetLabel;
 }
 
 
@@ -93,5 +96,6 @@
 -(void)logInToServer;
 -(void)logInToChatServer;
 -(void)makeScrollToTheTop:(NSNumber *)index;
+-(void)setTheTitleLabelText;
 
 @end

@@ -75,6 +75,7 @@
 //define local account store in SFHFKeychainUtils
 #define LOCALACCOUNT @"lovePetLocalAccountCreatedByChongWuQuan"
 #define ACCOUNT @"lovePetAccount"
+#define USERID @"lovePetUserID"
 #define USERNICKNAME  @"lovepetusernickname"
 #define PASSWORD @"lovePetPassword"
 #define LOCALTOKEN @"lovePetLocalToken"

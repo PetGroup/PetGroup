@@ -22,7 +22,7 @@
     if (self) {
         // Custom initialization
         unreadComment = 0;
-        codeSwitch = YES;
+        codeSwitch = NO;
     }
     return self;
 }
@@ -94,6 +94,10 @@
     }
     if (![SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]) {
         [self.customTabBarController setSelectedPage:2];
+    }
+    if ([[TempData sharedInstance] needChat]) {
+        [self.customTabBarController setSelectedPage:2];
+        return;
     }
 
 }

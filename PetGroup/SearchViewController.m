@@ -36,6 +36,7 @@
     if (self) {
         // Custom initialization
         self.forumPid = @"0";
+        canShowKeyboard = YES;
         self.resultArray = [NSMutableArray array];
     }
     return self;
@@ -104,7 +105,10 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [asearchBar becomeFirstResponder];
+    if (canShowKeyboard) {
+        [asearchBar becomeFirstResponder];
+    }
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -211,7 +215,10 @@
     articleVC.articleID = ((Article*)self.resultArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
 }
-
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [asearchBar resignFirstResponder];
+}
 #pragma mark -
 #pragma mark searchBar Delegate
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -221,6 +228,7 @@
         self.notename = searchBar.text;
         [self searchBarData];
         [asearchBar resignFirstResponder];
+        canShowKeyboard = NO;
     }
 }
 #pragma mark MJRefreshBaseView delegate
