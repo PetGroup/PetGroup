@@ -328,6 +328,7 @@
 -(void)backButton:(UIButton*)button
 {
 //    [[TempData sharedInstance] Panned:NO];
+    [_circleTF resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
