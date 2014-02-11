@@ -54,7 +54,7 @@
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
-    [self.view addSubview:TopBarBGV];
+//    [self.view addSubview:TopBarBGV];
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -151,13 +151,13 @@
     if (NSClassFromString(@"NSOrderedSet") && // Proxy for "is this iOS 5" ...
         [UIScreen mainScreen].scale > 1 &&
         [inputDevice
-         supportsAVCaptureSessionPreset:AVCaptureSessionPresetiFrame960x540]) {
+         supportsAVCaptureSessionPreset:AVCaptureSessionPresetiFrame1280x720]) {
             // NSLog(@"960");
-            preset = AVCaptureSessionPresetiFrame960x540;
+            preset = AVCaptureSessionPresetiFrame1280x720;
         }
     if (!preset) {
         // NSLog(@"MED");
-        preset = AVCaptureSessionPresetMedium;
+        preset = AVCaptureSessionPresetHigh;
     }
     self.captureSession.sessionPreset = preset;
     
@@ -216,7 +216,10 @@
     CGColorSpaceRelease(colorSpace);
     
     // Create and return an image object representing the specified Quartz image
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    CGRect rect = CGRectMake( 96*9/4 + diffH*9/4,40 *9/4 , 240*9/4, 240*9/4);//创建矩形框
+    UIImage *image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(cgImage, rect)];
+//    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    NSLog(@"%f,%f",image.size.width,image.size.height);
     CGImageRelease(cgImage);
     
     CVPixelBufferUnlockBaseAddress(imageBuffer, 0);

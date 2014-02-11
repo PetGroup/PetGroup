@@ -63,6 +63,7 @@
 		72795B4C18445B9600BB58E0 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795B4B18445B9600BB58E0 /* like.png */; };
 		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
 		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
+		72A67CEC18A4A5960006B42A /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72AE85311886673900EB84F4 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE852C1886670600EB84F4 /* libZXingWidget.a */; };
 		72AE85331886678400EB84F4 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE85321886678400EB84F4 /* CoreAudio.framework */; };
 		72AE8535188667AB00EB84F4 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE8534188667AB00EB84F4 /* libiconv.dylib */; };
@@ -798,7 +799,6 @@
 		97ED57F8185AA99B00CAE5CA /* filterBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 97ED57F7185AA99B00CAE5CA /* filterBtn.png */; };
 		97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F2FA6A18338C2100FD6725 /* Default@2x.png */; };
 		97F567C9180E84B100A72604 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F567C8180E84B000A72604 /* AVFoundation.framework */; };
-		97F5A7EF188FCA4A004018F2 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97F764B317F817750063A72E /* newfriend.png in Resources */ = {isa = PBXBuildFile; fileRef = 97F764B217F817750063A72E /* newfriend.png */; };
 		97FB035117E00432002086D9 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB034E17E00432002086D9 /* SettingViewController.m */; };
 		97FB035217E00432002086D9 /* AboutAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97FB035017E00432002086D9 /* AboutAppViewController.m */; };
@@ -5244,7 +5244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97F5A7EF188FCA4A004018F2 /* amrFileCodec.m in Sources */,
+				72A67CEC18A4A5960006B42A /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
@@ -5698,8 +5698,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5726,8 +5726,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5773,8 +5773,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5819,8 +5819,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D6C98BAD-D689-45CA-83CB-994D075FD165";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D6C98BAD-D689-45CA-83CB-994D075FD165";
+				PROVISIONING_PROFILE = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "37598FBE-1DB1-4B0D-82C4-A7B0E222C7A6";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
