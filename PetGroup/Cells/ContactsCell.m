@@ -35,12 +35,12 @@
 //        [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
 
-        self.sigBgImgV = [[UIImageView alloc] initWithFrame:CGRectMake(165, 15, 135, 30)];
+        self.sigBgImgV = [[UIImageView alloc] initWithFrame:CGRectMake(165, 15, 140, 30)];
         self.sigBgImgV.alpha = 0.6;
         [self.sigBgImgV setImage:[UIImage imageNamed:@"asigbg.png"]];
         [bgV addSubview:self.sigBgImgV];
         
-        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 15, 130, 30)];
+        self.signatureLabel = [[UILabel alloc] initWithFrame:CGRectMake(170, 15, 135, 30)];
         [self.signatureLabel setTextColor:[UIColor grayColor]];
         [self.signatureLabel setFont:[UIFont systemFontOfSize:14]];
 //        [self.signatureLabel setAdjustsFontSizeToFitWidth:YES];

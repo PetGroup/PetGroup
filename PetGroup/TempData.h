@@ -31,9 +31,12 @@
 @property (nonatomic,assign)BOOL changeUser;
 @property (nonatomic,assign)BOOL haveGotFriends;
 @property (nonatomic,assign)BOOL appActive;
+@property (nonatomic,assign)BOOL friendsInfoChanged;
 @property (strong,nonatomic)NSString* hostPort;
+@property (strong,nonatomic)NSMutableArray* friendsKeyArray;
 
 + (TempData*)sharedInstance;
+-(void)friendsArrayAddNameKey:(NSString *)nameKey;
 -(void)setOpened:(BOOL)haveOpened;
 -(BOOL)ifOpened;
 -(void)Panned:(BOOL)pan;

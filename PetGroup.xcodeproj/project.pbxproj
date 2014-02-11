@@ -683,6 +683,7 @@
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97B7DEF2187695DD00EA9789 /* AnimationStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B7DEF1187695DD00EA9789 /* AnimationStoreManager.m */; };
+		97B906A418A9CCCF0019FD6C /* DSNameKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B906A318A9CCCF0019FD6C /* DSNameKey.m */; };
 		97BCF0E41834ACC8006B7C0F /* Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DB1834ACC8006B7C0F /* Emoji.m */; };
 		97BCF0E51834ACC8006B7C0F /* EmojiEmoticons.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DD1834ACC8006B7C0F /* EmojiEmoticons.m */; };
 		97BCF0E61834ACC8006B7C0F /* EmojiMapSymbols.m in Sources */ = {isa = PBXBuildFile; fileRef = 97BCF0DF1834ACC8006B7C0F /* EmojiMapSymbols.m */; };
@@ -1823,6 +1824,8 @@
 		97B73F6B1827944300064447 /* redpot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redpot2.png; sourceTree = "<group>"; };
 		97B7DEF0187695DD00EA9789 /* AnimationStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationStoreManager.h; sourceTree = "<group>"; };
 		97B7DEF1187695DD00EA9789 /* AnimationStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationStoreManager.m; sourceTree = "<group>"; };
+		97B906A218A9CCCF0019FD6C /* DSNameKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSNameKey.h; sourceTree = "<group>"; };
+		97B906A318A9CCCF0019FD6C /* DSNameKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSNameKey.m; sourceTree = "<group>"; };
 		97BCF0DA1834ACC8006B7C0F /* Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Emoji.h; sourceTree = "<group>"; };
 		97BCF0DB1834ACC8006B7C0F /* Emoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Emoji.m; sourceTree = "<group>"; };
 		97BCF0DC1834ACC8006B7C0F /* EmojiEmoticons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiEmoticons.h; sourceTree = "<group>"; };
@@ -4621,6 +4624,8 @@
 			isa = PBXGroup;
 			children = (
 				9795473017BA36DA00D05874 /* LocalStore.xcdatamodeld */,
+				97B906A218A9CCCF0019FD6C /* DSNameKey.h */,
+				97B906A318A9CCCF0019FD6C /* DSNameKey.m */,
 				97D20A3217D05AAB001C8162 /* DSNameIndex.h */,
 				97D20A3317D05AAB001C8162 /* DSNameIndex.m */,
 				97E6BF3117CC522A00FFD154 /* DSUnreadCount.h */,
@@ -5439,6 +5444,7 @@
 				9736BC6417C489F2007DFE36 /* XMPPvCardTempLabel.m in Sources */,
 				72795B0C1844500F00BB58E0 /* TMQuiltViewCell.m in Sources */,
 				9736BC6517C489F2007DFE36 /* XMPPvCardTempModule.m in Sources */,
+				97B906A418A9CCCF0019FD6C /* DSNameKey.m in Sources */,
 				9736BC6617C489F2007DFE36 /* XMPPvCardTempTel.m in Sources */,
 				9736BC6717C489F2007DFE36 /* NSXMLElement+XEP_0059.m in Sources */,
 				9736BC6817C489F2007DFE36 /* XMPPResultSet.m in Sources */,

@@ -24,6 +24,8 @@
 #import "DSFriends.h"
 #import "DSUnreadCount.h"
 #import "DSNameIndex.h"
+#import "DSNameKey.h"
+@class TempData;
 @interface DataStoreManager : NSObject
 +(void)setDefaultDataBase:(NSString *)dataBaseName AndDefaultModel:(NSString *)modelName;
 +(void)storeNewMsgs:(NSDictionary *)msg senderType:(NSString *)sendertype;
@@ -46,7 +48,7 @@
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
 +(BOOL)ifFriendHaveNicknameAboutUser:(NSString *)username;
 +(NSMutableArray *)querySections;
-+(NSMutableDictionary *)queryAllFriends;
++(NSMutableArray *)queryAllFriends;
 //+(void)addFriendToLocal:(NSDictionary *)userInfoDict;
 +(void)addFriendToLocal:(NSString *)username;
 +(NSString *)queryNickNameForUser:(NSString *)userName;
@@ -73,4 +75,5 @@
 +(void)qureyAllFriends;
 +(NSMutableArray *)queryAllFriendsNickname;
 +(void)storeMyUserID:(NSString *)theID;
++(NSMutableDictionary *)queryFriendInfoByKey:(NSString *)nameKey;
 @end

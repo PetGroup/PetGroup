@@ -30,6 +30,8 @@
     SRRefreshView   *_slimeView;
     BOOL ifRequested;
     BOOL canGetFriends;
+    
+    BOOL firstIn;
 }
 @property (strong,nonatomic) AppDelegate * appDel;
 @property (strong,nonatomic)UITableView *contactsTable;

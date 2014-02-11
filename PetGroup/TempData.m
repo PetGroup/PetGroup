@@ -40,6 +40,14 @@ static TempData *sharedInstance=nil;
     self.appActive = NO;
     self.needDisplayPushNotification = NO;
     self.haveGotFriends = NO;
+    self.friendsInfoChanged = NO;
+    self.friendsKeyArray = [NSMutableArray array];
+}
+-(void)friendsArrayAddNameKey:(NSString *)nameKey
+{
+    if (![self.friendsKeyArray containsObject:nameKey]) {
+        [self.friendsKeyArray addObject:nameKey];
+    }
 }
 -(void)setOpened:(BOOL)haveOpened
 {

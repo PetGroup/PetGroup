@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5041" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="DSArticles" representedClassName="DSArticles" syncable="YES">
         <attribute name="articleDetail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="articleID" optional="YES" attributeType="String" syncable="YES"/>
@@ -101,6 +101,11 @@
     <entity name="DSNameIndex" representedClassName="DSNameIndex" syncable="YES">
         <attribute name="index" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="DSNameKey" representedClassName="DSNameKey" syncable="YES">
+        <attribute name="nameIndex" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="DSPets" representedClassName="DSPets" syncable="YES">
         <attribute name="creatTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="friendName" optional="YES" attributeType="String" syncable="YES"/>
@@ -200,5 +205,6 @@
         <element name="DSThumbPublicMsgs" positionX="0" positionY="0" width="128" height="150"/>
         <element name="DSThumbSubscribedMsgs" positionX="0" positionY="0" width="128" height="150"/>
         <element name="DSUnreadCount" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="DSNameKey" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

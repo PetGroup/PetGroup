@@ -95,7 +95,7 @@
     if (self.customTabBarController.selectedIndex!=3) {
         return;
     }
-    if (sectionArray.count>0&&[[[sectionArray objectAtIndex:0] objectAtIndex:1] count]>0) {
+    if ([friendsArray count]>0) {
         [self.contactsTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
     }
     
@@ -219,15 +219,17 @@
 }
 -(void)refreshFriendList
 {
-    friendDict = [DataStoreManager queryAllFriends];
-    sectionArray = [DataStoreManager querySections];
-    [sectionIndexArray removeAllObjects];
-    for (int i = 0; i<sectionArray.count; i++) {
-        [sectionIndexArray addObject:[[sectionArray objectAtIndex:i] objectAtIndex:0]];
-    }
+//    TempData * tp = [TempData sharedInstance];
+    friendsArray = [DataStoreManager queryAllFriends];
+//    sectionArray = [DataStoreManager querySections];
+//    [sectionIndexArray removeAllObjects];
+//    for (int i = 0; i<sectionArray.count; i++) {
+//        [sectionIndexArray addObject:[[sectionArray objectAtIndex:i] objectAtIndex:0]];
+//    }
     
-    friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
-    [friendsArray sortUsingSelector:@selector(compare:)];
+//    friendsArray = tp.friendsKeyArray;
+//    friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
+//    [friendsArray sortUsingSelector:@selector(compare:)];
     [self.contactsTable reloadData];
 //    NSMutableArray * tempF = [DataStoreManager queryAllFriendsNickname];
 //    for (int i = 0; i<tempF.count; i++) {
@@ -302,7 +304,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",searchBar.text];
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(nameKey contains[cd] %@)",searchBar.text];
     NSLog(@"%@",searchBar.text);
     
     searchResultArray = [friendsArray filteredArrayUsingPredicate:resultPredicate ]; //注意retain
@@ -311,7 +313,7 @@
         return [searchResultArray count];
     }
 
-    return [[[sectionArray objectAtIndex:section] objectAtIndex:1] count];
+    return [friendsArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,10 +325,10 @@
     }
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+        tempDict = searchResultArray[indexPath.row];
     }
     else
-        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+        tempDict = friendsArray[indexPath.row];
     cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
     cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingString:[tempDict objectForKey:@"img"]]];
     cell.nameLabel.text = [tempDict objectForKey:@"displayName"];
@@ -341,11 +343,11 @@
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
         [searchDisplay setActive:NO animated:NO];
-        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+        tempDict = searchResultArray[indexPath.row];
     }
     else
     {
-        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+        tempDict = friendsArray[indexPath.row];
     }
     PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
     HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:tempDict];
@@ -361,27 +363,27 @@
         return 1;
     }
 
-    return sectionArray.count;
+    return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
-{
-    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        return @"";
-    }
-    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+//{
+//    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+//        return @"";
+//    }
+//    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
+//}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
 }
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        return nil;
-    }
-    return sectionIndexArray;
-}
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+//        return nil;
+//    }
+//    return sectionIndexArray;
+//}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

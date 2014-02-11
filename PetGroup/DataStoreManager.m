@@ -7,7 +7,7 @@
 //
 
 #import "DataStoreManager.h"
-
+#import "TempData.h"
 @implementation DataStoreManager
 -(void)nothing
 {}
@@ -559,20 +559,51 @@
     return array;
 }
 
-+(NSMutableDictionary *)queryAllFriends
++(NSMutableDictionary *)queryFriendInfoByKey:(NSString *)nameKey
 {
-    NSArray * fri = [DSFriends MR_findAll];
-    NSMutableArray * nameKeyArray = [NSMutableArray array];
-    NSMutableDictionary * theDict = [NSMutableDictionary dictionary];
+    NSString * nameK = nameKey;
+    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"nameKey==[c]%@",nameK];
+    DSFriends * df = [DSFriends MR_findFirstWithPredicate:predicate];
+    NSString * userName = df.userName;
+    NSString * nickName = df.nickName;
+    NSString * remarkName = df.remarkName;
+    NSString * headImg = [DataStoreManager queryFirstHeadImageForUser:userName];
+    NSString * signature = df.signature;
+//    if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
+        NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
+        [friendDict setObject:userName forKey:@"username"];
+        [friendDict setObject:nickName?nickName:@"" forKey:@"nickname"];
+        if (remarkName) {
+            [friendDict setObject:remarkName forKey:@"displayName"];
+        }
+        else if(nickName){
+            [friendDict setObject:nickName forKey:@"displayName"];
+        }
+        else
+        {
+            [friendDict setObject:userName forKey:@"displayName"];
+        }
+        [friendDict setObject:headImg?headImg:@"" forKey:@"img"];
+        [friendDict setObject:signature?signature:@"" forKey:@"signature"];
+        return friendDict;
+//    }
+}
+
++(NSMutableArray *)queryAllFriends
+{
+    NSArray * fri = [DSFriends MR_findAllSortedBy:@"nameKey" ascending:YES];
+    NSMutableArray * friArray = [NSMutableArray array];
+//    NSMutableDictionary * theDict = [NSMutableDictionary dictionary];
     for (int i = 0; i<fri.count; i++) {
         NSString * nameK = [[fri objectAtIndex:i]nameKey];
-        if (nameK)
-        [nameKeyArray addObject:nameK];
+//        if (nameK)
+//        [nameKeyArray addObject:nameK];
         NSString * userName = [[fri objectAtIndex:i] userName];
         NSString * nickName = [[fri objectAtIndex:i] nickName];
         NSString * remarkName = [[fri objectAtIndex:i] remarkName];
         NSString * headImg = [DataStoreManager queryFirstHeadImageForUser:userName];
         NSString * signature = [[fri objectAtIndex:i] signature];
+        NSString * nameKey = [[fri objectAtIndex:i] nameKey];
         if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
             NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
             [friendDict setObject:userName forKey:@"username"];
@@ -587,12 +618,13 @@
             {
                 [friendDict setObject:userName forKey:@"displayName"];
             }
+            [friendDict setObject:nameKey forKey:@"nameKey"];
             [friendDict setObject:headImg?headImg:@"" forKey:@"img"];
             [friendDict setObject:signature?signature:@"" forKey:@"signature"];
-            [theDict setObject:friendDict forKey:nameK];
+            [friArray addObject:friendDict];
         }
     }
-    return theDict;
+    return friArray;
 }
 +(NSString *)convertChineseToPinYin:(NSString *)chineseName
 {
@@ -789,12 +821,14 @@
 //            }
             if (![myUserName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
                 if (nickName.length>=1) {
-                NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"index==[c]%@",nameIndex];
-                DSNameIndex * dFname = [DSNameIndex MR_findFirstWithPredicate:predicate2];
-                if (!dFname)
-                    dFname = [DSNameIndex MR_createInContext:localContext];
-                
-                dFname.index = nameIndex;
+                    NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"index==[c]%@",nameIndex];
+                    DSNameIndex * dFname = [DSNameIndex MR_findFirstWithPredicate:predicate2];
+                    if (!dFname)
+                        dFname = [DSNameIndex MR_createInContext:localContext];
+                    
+                    dFname.index = nameIndex;
+                    
+                    [[TempData sharedInstance] friendsArrayAddNameKey:nameKey];
                 }
             
                 
