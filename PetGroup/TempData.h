@@ -22,6 +22,7 @@
     BOOL ifNeedChat;
     
     BOOL opened;
+//    BOOL needToQRCodePage;
     NSString * needChatUserName;
     
 }
@@ -32,6 +33,7 @@
 @property (nonatomic,assign)BOOL haveGotFriends;
 @property (nonatomic,assign)BOOL appActive;
 @property (nonatomic,assign)BOOL friendsInfoChanged;
+@property (nonatomic,assign)BOOL needToQRCodePage;
 @property (strong,nonatomic)NSString* hostPort;
 @property (strong,nonatomic)NSMutableArray* friendsKeyArray;
 

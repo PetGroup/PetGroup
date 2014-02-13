@@ -163,15 +163,7 @@
 
 -(void)refreshFriendList
 {
-    friendDict = [DataStoreManager queryAllFriends];
-    sectionArray = [DataStoreManager querySections];
-    [sectionIndexArray removeAllObjects];
-    for (int i = 0; i<sectionArray.count; i++) {
-        [sectionIndexArray addObject:[[sectionArray objectAtIndex:i] objectAtIndex:0]];
-    }
-    
-    friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
-    [friendsArray sortUsingSelector:@selector(compare:)];
+    friendsArray = [DataStoreManager queryAllFriends];
     [self.contactsTable reloadData];
 }
 -(void)getFriendInfo:(NSString *)userName withIndex:(int)index
@@ -237,7 +229,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",searchBar.text];
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(nameKey contains[cd] %@)",searchBar.text];
     NSLog(@"%@",searchBar.text);
     
     searchResultArray = [friendsArray filteredArrayUsingPredicate:resultPredicate ]; //注意retain
@@ -246,7 +238,7 @@
         return [searchResultArray count];
     }
     
-    return [[[sectionArray objectAtIndex:section] objectAtIndex:1] count];
+    return [friendsArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -258,11 +250,11 @@
     }
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+        tempDict = searchResultArray[indexPath.row];
     }
     else
-        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
-    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
+        tempDict = friendsArray[indexPath.row];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
     cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingString:[tempDict objectForKey:@"img"]]];
     cell.nameLabel.text = [tempDict objectForKey:@"displayName"];
     cell.signatureLabel.text = [tempDict objectForKey:@"signature"];
@@ -275,11 +267,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
+        [searchDisplay setActive:NO animated:NO];
+        tempDict = searchResultArray[indexPath.row];
     }
     else
     {
-        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+        tempDict = friendsArray[indexPath.row];
     }
     [self.contactDelegate getContact:tempDict];
 //    [self dismissModalViewControllerAnimated:YES];
@@ -300,24 +293,24 @@
         return 1;
     }
     
-    return sectionArray.count;
+    return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
-{
-    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        return @"";
-    }
-    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+//{
+//    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+//        return @"";
+//    }
+//    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
+//}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
 }
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return sectionIndexArray;
-}
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    return sectionIndexArray;
+//}
 -(void)back
 {
 //    [self dismissModalViewControllerAnimated:YES];

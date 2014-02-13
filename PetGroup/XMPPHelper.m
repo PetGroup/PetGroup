@@ -606,6 +606,25 @@
                 }
             }
         }
+        else if([type isEqualToString:@"normal"]){
+            NSRange range = [from rangeOfString:@"@"];
+            NSString * sender = [from substringToIndex:range.location];
+            if ([sender isEqualToString:@"messageAck"]) {
+                NSString * theBody=[[message elementForName:@"body"] stringValue];
+                if (theBody) {
+                    NSRange range = [theBody rangeOfString:@"answer_me"];
+                    if (range.location!=NSNotFound) {
+                        NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+                        [mes addAttributeWithName:@"type" stringValue:@"normal"];
+                        [mes addAttributeWithName:@"action" stringValue:@"ack"];
+                        [mes addAttributeWithName:@"to" stringValue:from];
+                        [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+                        [mes addAttributeWithName:@"id" stringValue:[[message attributeForName:@"id"] stringValue]];
+                        [self sendMessage:mes];
+                    }
+                }
+            }
+        }
         
     
     }

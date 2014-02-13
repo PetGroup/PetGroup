@@ -97,6 +97,20 @@
     }
 //    [self advertisement];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    TempData * tp = [TempData sharedInstance];
+    if (tp.needToQRCodePage) {
+        tp.needToQRCodePage = NO;
+        [self performSelector:@selector(toQRV) withObject:nil afterDelay:0.3];
+    }
+}
+-(void)toQRV
+{
+    QRCodeViewController * qrV = [[QRCodeViewController alloc] init];
+    [self.navigationController pushViewController:qrV animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

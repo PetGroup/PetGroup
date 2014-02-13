@@ -336,25 +336,48 @@
 {
     if (self.petType == PetTypeStyleNone) {
         if (!haveHostImg) {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"您还没有上传您的头像呢" delegate:self cancelButtonTitle:@"继续上传" otherButtonTitles:@"暂不上传", nil];
+            alert.tag = 201;
             [alert show];
             return;
         }
         [self uploadUserImage];
     }else{
         if (!haveHostImg) {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择主人头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"您还没有上传您的头像呢" delegate:self cancelButtonTitle:@"继续上传" otherButtonTitles:@"暂不上传", nil];
+            alert.tag = 202;
             [alert show];
             return;
         }
         if (!havePetImg) {
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请选择宠物头像" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"您还没有上传宠物的头像呢" delegate:self cancelButtonTitle:@"继续上传" otherButtonTitles:@"暂不上传", nil];
+            alert.tag = 203;
             [alert show];
             return;
         }
         [self uploadPetImage];
     }
     [hud show:YES];
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        if (alertView.tag==201) {
+            self.hostIMG = @"";
+            [self uploadUserImage];
+            [hud show:YES];
+        }
+        else if (alertView.tag==202){
+            self.hostIMG = @"";
+            [self uploadPetImage];
+            [hud show:YES];
+        }
+        else if (alertView.tag == 203){
+            self.petIMG = @"";
+            [self uploadPetImage];
+            [hud show:YES];
+        }
+    }
 }
 -(void)btnClicked:(UIButton *)sender
 {
