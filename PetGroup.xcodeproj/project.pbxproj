@@ -16,6 +16,8 @@
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
+		7235369C18AC63C7005B2C42 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56702180E364400A72604 /* NSData+Base64.m */; };
+		7235369D18AC6642005B2C42 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -156,7 +158,6 @@
 		86993B70180CD4FC00F61A3F /* CircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86993B6F180CD4FC00F61A3F /* CircleViewController.m */; };
 		86993B73180CDC3600F61A3F /* OnceCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86993B72180CDC3500F61A3F /* OnceCircleViewController.m */; };
 		86993B75180CE54D00F61A3F /* ren.png in Resources */ = {isa = PBXBuildFile; fileRef = 86993B74180CE54B00F61A3F /* ren.png */; };
-		86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56702180E364400A72604 /* NSData+Base64.m */; };
 		86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56704180E364400A72604 /* NSString+Base64.m */; };
 		86A569BB180F7D3D000FD684 /* CoreTextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56708180E364D00A72604 /* CoreTextUtils.m */; };
 		86A569BD180F7D3D000FD684 /* NSTextCheckingResult+ExtendedURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F5670D180E365600A72604 /* NSTextCheckingResult+ExtendedURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
