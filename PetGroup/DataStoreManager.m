@@ -633,7 +633,7 @@
     CFStringTransform((CFMutableStringRef)theName, &range, kCFStringTransformToLatin, NO);
     range = CFRangeMake(0, theName.length);
     CFStringTransform((CFMutableStringRef)theName, &range, kCFStringTransformStripCombiningMarks, NO);
-    NSString * dd = [theName stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString * dd = [[theName stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
     return dd;
 }
 +(void)addFriendToLocal:(NSString *)username

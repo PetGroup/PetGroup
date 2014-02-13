@@ -38,6 +38,7 @@ static TempData *sharedInstance=nil;
     needChatUserName = @"";
     opened = NO;
     self.appActive = NO;
+    self.needToQRCodePage = NO;
     self.needDisplayPushNotification = NO;
     self.haveGotFriends = NO;
     self.friendsInfoChanged = NO;
