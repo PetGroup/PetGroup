@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MoreCell.h"
+@class QRCodeViewController;
 @interface DiscoverViewController : UIViewController
 {
     float diffH;
+    BOOL codeSwitch;
 }
 @end

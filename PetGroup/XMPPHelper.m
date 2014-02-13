@@ -17,6 +17,7 @@
 #import "XMPPRoster.h"
 #import "XMPPReconnect.h"
 #import "XMPPAutoPing.h"
+#import "XMPPPing.h"
 #import "XMPPRosterMemoryStorage.h"
 #import "XMPPvCardTemp.h"
 #import "XMPPvCardTempModule.h"
@@ -146,7 +147,18 @@
     [iq addChild:query];
     [self.xmppStream sendElement:iq];
 }
-
+-(void)rePong:(NSString *)pingID
+{
+    
+    NSXMLElement *iq = [NSXMLElement elementWithName:@"iq"];
+    XMPPJID *myJID = self.xmppStream.myJID;
+    [iq addAttributeWithName:@"from" stringValue:myJID.description];
+    [iq addAttributeWithName:@"to" stringValue:myJID.domain];
+    //    [iq addAttributeWithName:@"id" stringValue:[self generateID]];
+    [iq addAttributeWithName:@"type" stringValue:@"result"];
+    [iq addAttributeWithName:@"id" stringValue:pingID];
+    [self.xmppStream sendElement:iq];
+}
 -(void)getAllSubscribedMsg
 {
 //    NSXMLElement *query = [NSXMLElement elementWithName:@"query" xmlns:@"jabber:iq:roster"];
@@ -451,12 +463,21 @@
         }
         
     }
+    else if ([@"get" isEqualToString:iq.type]){
+        NSXMLElement *query = iq.childElement;
+        if ([@"ping" isEqualToString:query.name]) {
+            [self rePong:[[iq attributeForName:@"id"] stringValue]];
+        }
+    }
     return YES;
 }
 // 3.关于通信的
 //收到消息后调用
 - (void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message{
     NSString *msgtype = [[message attributeForName:@"msgtype"] stringValue];
+    if (!msgtype) {
+        return;
+    }
      NSString *msg = @"";
     if (![msgtype isEqualToString:@"zanDynamic"]) {
         msg=[[message elementForName:@"body"] stringValue]?[[message elementForName:@"body"] stringValue]:@"nocontent";

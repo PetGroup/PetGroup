@@ -18,6 +18,7 @@
 #import "WebViewViewController.h"
 
 #import "SubjectViewController.h"
+#import "QRCodeViewController.h"
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     NSTimer* timer;
@@ -37,8 +38,17 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
-        self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
+        
+        codeSwitch = YES;
+        if (codeSwitch) {
+            self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科",@"宠物二维码"];
+            self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png",@"codeicon.png"];
+        }
+        else
+        {
+            self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
+            self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
+        }
     }
     return self;
 }
@@ -105,7 +115,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 5;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -172,8 +182,8 @@
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
         case 4:{
-            SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
-            [self.navigationController pushViewController:subjectVC animated:YES];
+            QRCodeViewController * qrV = [[QRCodeViewController alloc] init];
+            [self.navigationController pushViewController:qrV animated:YES];
         }break;
         default:
             return;

@@ -681,6 +681,7 @@
 		97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423F1847321000EF6F9D /* ExperienceListViewController.m */; };
 		97AA42431847322400EF6F9D /* ContentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA42421847322400EF6F9D /* ContentDetailViewController.m */; };
 		97B318BC1845A72D0053919F /* noti.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B318BB1845A72D0053919F /* noti.png */; };
+		97B5631418AB729800E73DBC /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97B7DEF2187695DD00EA9789 /* AnimationStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B7DEF1187695DD00EA9789 /* AnimationStoreManager.m */; };

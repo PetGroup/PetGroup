@@ -19,6 +19,7 @@
 @class XMPPRoster;
 @class XMPPReconnect;
 @class XMPPAutoPing;
+@class XMPPPing;
 
 
 @interface XMPPHelper : NSObject
@@ -39,6 +40,7 @@ typedef enum {
 @property (nonatomic,strong) XMPPvCardTemp *xmppvCardTemp;
 @property (nonatomic,strong) XMPPAutoPing *xmppAutoPing;
 @property (nonatomic,strong) XMPPReconnect *xmppReconnect;
+@property (nonatomic,strong) XMPPPing *xmppPing;
 
 @property (nonatomic,strong) NSString *account;
 @property (nonatomic,strong) NSString *password;
