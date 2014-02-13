@@ -63,7 +63,6 @@
 		72795B4C18445B9600BB58E0 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 72795B4B18445B9600BB58E0 /* like.png */; };
 		727BB2F718471D19005A2C44 /* CircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F618471D19005A2C44 /* CircleCell.m */; };
 		727BB2FA18473438005A2C44 /* FriendCircleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2F918473438005A2C44 /* FriendCircleCell.m */; };
-		72A67CEC18A4A5960006B42A /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72AE85311886673900EB84F4 /* libZXingWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE852C1886670600EB84F4 /* libZXingWidget.a */; };
 		72AE85331886678400EB84F4 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE85321886678400EB84F4 /* CoreAudio.framework */; };
 		72AE8535188667AB00EB84F4 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72AE8534188667AB00EB84F4 /* libiconv.dylib */; };
@@ -681,6 +680,7 @@
 		97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423F1847321000EF6F9D /* ExperienceListViewController.m */; };
 		97AA42431847322400EF6F9D /* ContentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA42421847322400EF6F9D /* ContentDetailViewController.m */; };
 		97B318BC1845A72D0053919F /* noti.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B318BB1845A72D0053919F /* noti.png */; };
+		97B5631418AB729800E73DBC /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97B7DEF2187695DD00EA9789 /* AnimationStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B7DEF1187695DD00EA9789 /* AnimationStoreManager.m */; };
@@ -5244,7 +5244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72A67CEC18A4A5960006B42A /* amrFileCodec.m in Sources */,
+				97B5631418AB729800E73DBC /* amrFileCodec.m in Sources */,
 				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
