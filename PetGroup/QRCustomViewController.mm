@@ -54,7 +54,7 @@
     
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
-//    [self.view addSubview:TopBarBGV];
+    [self.view addSubview:TopBarBGV];
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
