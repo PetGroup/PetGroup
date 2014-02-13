@@ -202,12 +202,12 @@
 }
 -(void)puchNextView
 {
-    if (passVerificationCode) {
+//    if (passVerificationCode) {
         NewRegistThreeViewController* newReg = [[NewRegistThreeViewController alloc]init];
         newReg.phoneNo = self.phoneTF.text;
         [self.navigationController pushViewController:newReg animated:YES];
         return;
-    }
+//    }
     NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);

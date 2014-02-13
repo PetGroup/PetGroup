@@ -10,7 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <QRCodeReader.h>
 #import <TwoDDecoderResult.h>
-@interface QRCustomViewController ()<UIAlertViewDelegate, DecoderDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface QRCustomViewController ()<UIAlertViewDelegate, DecoderDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 {
     float diffH;
     NSTimer * timer;
@@ -37,6 +37,7 @@
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
+    [self.captureSession stopRunning];
     [timer invalidate];
     timer = nil;
 }
@@ -218,8 +219,6 @@
     // Create and return an image object representing the specified Quartz image
     CGRect rect = CGRectMake( 96*9/4 + diffH*9/4,40 *9/4 , 240*9/4, 240*9/4);//创建矩形框
     UIImage *image = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(cgImage, rect)];
-//    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    NSLog(@"%f,%f",image.size.width,image.size.height);
     CGImageRelease(cgImage);
     
     CVPixelBufferUnlockBaseAddress(imageBuffer, 0);

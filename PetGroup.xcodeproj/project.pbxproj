@@ -13,6 +13,7 @@
 		7214AD6B18541E370027D47E /* havepic.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6818541E370027D47E /* havepic.png */; };
 		7214AD6C18541E370027D47E /* jing.png in Resources */ = {isa = PBXBuildFile; fileRef = 7214AD6918541E370027D47E /* jing.png */; };
 		7219A6581845A29400836883 /* CircleFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7219A6571845A29400836883 /* CircleFooterView.m */; };
+		721CCD7B18AC9B8100CB71B8 /* ShowPetMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721CCD7A18AC9B8100CB71B8 /* ShowPetMessageViewController.m */; };
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
@@ -76,7 +77,6 @@
 		72AE85491886995900EB84F4 /* QRCodeCorner_RightButtom.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85441886995900EB84F4 /* QRCodeCorner_RightButtom.png */; };
 		72AE854A1886995900EB84F4 /* QRCodeCorner_RightTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85451886995900EB84F4 /* QRCodeCorner_RightTop.png */; };
 		72AE854B1886995900EB84F4 /* QRCodeScanLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 72AE85461886995900EB84F4 /* QRCodeScanLine.png */; };
-		72AE85521887762D00EB84F4 /* AddQPCodeNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */; };
 		72B64D11187E62FD00A6A923 /* timelabelbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B64D10187E62FD00A6A923 /* timelabelbg.png */; };
 		72CAD8A4183C774900B1F927 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD870183C636800B1F927 /* libz.dylib */; };
 		72CAD8B4183C7C7200B1F927 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72CAD8B2183C7C7200B1F927 /* libMobClickLibrary.a */; };
@@ -681,7 +681,6 @@
 		97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA423F1847321000EF6F9D /* ExperienceListViewController.m */; };
 		97AA42431847322400EF6F9D /* ContentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97AA42421847322400EF6F9D /* ContentDetailViewController.m */; };
 		97B318BC1845A72D0053919F /* noti.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B318BB1845A72D0053919F /* noti.png */; };
-		97B5631418AB729800E73DBC /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		97B73F6C1827944300064447 /* redCB2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6A1827944300064447 /* redCB2.png */; };
 		97B73F6D1827944300064447 /* redpot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97B73F6B1827944300064447 /* redpot2.png */; };
 		97B7DEF2187695DD00EA9789 /* AnimationStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B7DEF1187695DD00EA9789 /* AnimationStoreManager.m */; };
@@ -889,6 +888,8 @@
 		7214AD6918541E370027D47E /* jing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jing.png; sourceTree = "<group>"; };
 		7219A6561845A29400836883 /* CircleFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleFooterView.h; sourceTree = "<group>"; };
 		7219A6571845A29400836883 /* CircleFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleFooterView.m; sourceTree = "<group>"; };
+		721CCD7918AC9B8100CB71B8 /* ShowPetMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowPetMessageViewController.h; sourceTree = "<group>"; };
+		721CCD7A18AC9B8100CB71B8 /* ShowPetMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowPetMessageViewController.m; sourceTree = "<group>"; };
 		721E361018482F33002FCA77 /* MyNoteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNoteDataSource.h; sourceTree = "<group>"; };
 		721E361118482F33002FCA77 /* MyNoteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNoteDataSource.m; sourceTree = "<group>"; };
 		721E361318483A52002FCA77 /* DPBusinessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DPBusinessViewController.h; sourceTree = "<group>"; };
@@ -976,8 +977,6 @@
 		72AE85441886995900EB84F4 /* QRCodeCorner_RightButtom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodeCorner_RightButtom.png; sourceTree = "<group>"; };
 		72AE85451886995900EB84F4 /* QRCodeCorner_RightTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodeCorner_RightTop.png; sourceTree = "<group>"; };
 		72AE85461886995900EB84F4 /* QRCodeScanLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodeScanLine.png; sourceTree = "<group>"; };
-		72AE85501887762D00EB84F4 /* AddQPCodeNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddQPCodeNumberViewController.h; sourceTree = "<group>"; };
-		72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddQPCodeNumberViewController.m; sourceTree = "<group>"; };
 		72AE85541887789C00EB84F4 /* AddPetMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPetMessageViewController.h; sourceTree = "<group>"; };
 		72B64D10187E62FD00A6A923 /* timelabelbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timelabelbg.png; sourceTree = "<group>"; };
 		72CAD870183C636800B1F927 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -3019,8 +3018,8 @@
 				97FE804518865BD00040AC21 /* QRCodeViewController.mm */,
 				72AE853E18867B1000EB84F4 /* QRCustomViewController.h */,
 				72AE853F18867B1000EB84F4 /* QRCustomViewController.mm */,
-				72AE85501887762D00EB84F4 /* AddQPCodeNumberViewController.h */,
-				72AE85511887762D00EB84F4 /* AddQPCodeNumberViewController.m */,
+				721CCD7918AC9B8100CB71B8 /* ShowPetMessageViewController.h */,
+				721CCD7A18AC9B8100CB71B8 /* ShowPetMessageViewController.m */,
 				72AE85541887789C00EB84F4 /* AddPetMessageViewController.h */,
 				9708A0281888C94200F31375 /* AddPetMessageViewController.m */,
 				97DB08F817C5A1EE000EC195 /* MyProfileViewController.h */,
@@ -5393,7 +5392,6 @@
 				9736BC3917C489F2007DFE36 /* XMPPGoogleSharedStatus.m in Sources */,
 				9736BC3A17C489F2007DFE36 /* XMPPProcessOne.m in Sources */,
 				97AA423D184721A600EF6F9D /* CategoryViewController.m in Sources */,
-				72AE85521887762D00EB84F4 /* AddQPCodeNumberViewController.m in Sources */,
 				9736BC3B17C489F2007DFE36 /* XMPPReconnect.m in Sources */,
 				9736BC3C17C489F2007DFE36 /* XMPPGroupCoreDataStorageObject.m in Sources */,
 				9736BC3D17C489F2007DFE36 /* XMPPResourceCoreDataStorageObject.m in Sources */,
@@ -5418,6 +5416,7 @@
 				9736BC4D17C489F2007DFE36 /* XMPPRoomCoreDataStorage.m in Sources */,
 				97A93DD3182CBC1D00D571A5 /* UIFont+TextUtil.m in Sources */,
 				9736BC4E17C489F2007DFE36 /* XMPPRoomMessageCoreDataStorageObject.m in Sources */,
+				721CCD7B18AC9B8100CB71B8 /* ShowPetMessageViewController.m in Sources */,
 				721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */,
 				9736BC4F17C489F2007DFE36 /* XMPPRoomOccupantCoreDataStorageObject.m in Sources */,
 				9736BC5017C489F2007DFE36 /* XMPPRoomHybrid.xcdatamodeld in Sources */,

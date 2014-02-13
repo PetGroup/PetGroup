@@ -8,8 +8,12 @@
 
 #import "QRCodeViewController.h"
 #import "QRCustomViewController.h"
-#import "AddQPCodeNumberViewController.h"
+#import "AddPetMessageViewController.h"
+#import "ShowPetMessageViewController.h"
 @interface QRCodeViewController ()<CustomViewControllerDelegate,AddRQCodeMessageDelegate>
+{
+    int QRCustomType;
+}
 
 @end
 
@@ -21,6 +25,7 @@
     if (self) {
         // Custom initialization
         petListArray = [NSMutableArray array];
+        QRCustomType = 0;//扫描状态为0添加,为1查看
     }
     return self;
 }
@@ -111,8 +116,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-//    [self setCardInfoByID:@"1KL35D"];
-//    [self getInfoByCardID:@"1KL35D"];
+
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -147,9 +151,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
+    ShowPetMessageViewController * addPV = [[ShowPetMessageViewController alloc] init];
     addPV.RQCodeMessage = petListArray[indexPath.row];
-    addPV.delegate = self;
     [self.navigationController pushViewController:addPV animated:YES];
 }
 
@@ -203,44 +206,26 @@
     
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [hud hide:YES];
-        AddPetMessageViewController * addPV = [[AddPetMessageViewController alloc] init];
-        addPV.RQCodeMessage = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:NO];
-        [self.navigationController pushViewController:addPV animated:YES];
+        if (QRCustomType == 0) {
+            //处理一下
+            AddPetMessageViewController*addpetVC = [[AddPetMessageViewController alloc]init];
+            addpetVC.delegate = self;
+            addpetVC.RQCodeMessage = [NSMutableDictionary dictionary];
+            [self.navigationController popToViewController:self animated:NO];
+            [self.navigationController pushViewController:addpetVC animated:YES];
+        }
+        if (QRCustomType == 1) {
+            //处理一下
+            ShowPetMessageViewController * addPV = [[ShowPetMessageViewController alloc] init];
+            addPV.RQCodeMessage = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+            [self.navigationController popToViewController:self animated:NO];
+            [self.navigationController pushViewController:addPV animated:YES];
+        }
         
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud hide:YES];
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"加载失败" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
         [alert show];
-        //        self.profileTableV.hidden = YES;
-    }];
-}
--(void)setCardInfoByID:(NSString *)theID
-{
-    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-    long long a = (long long)(cT*1000);
-    [params setObject:theID forKey:@"id"];
-    [params setObject:@"hahahaha" forKey:@"petType"];
-    [params setObject:@"数据库类" forKey:@"petNickname"];
-    [params setObject:@"kjklkk" forKey:@"petOwner"];
-    [params setObject:@"15165333394" forKey:@"petOwnerTel"];
-    [params setObject:@"asjklajsdjas" forKey:@"petOwnerMsg"];
-    
-    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-    [body setObject:@"1" forKey:@"channel"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-    [body setObject:@"iphone" forKey:@"imei"];
-    [body setObject:params forKey:@"params"];
-    [body setObject:@"setPetCard" forKey:@"method"];
-    [body setObject:@"service.uri.pet_user" forKey:@"service"];
-    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-    [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-    
-    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
-    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        self.profileTableV.hidden = YES;
     }];
 }
@@ -252,9 +237,10 @@
 #pragma mark - button action
 -(void)addRQCodeMessage
 {
-    AddQPCodeNumberViewController* addrqVC = [[AddQPCodeNumberViewController alloc]init];
-    addrqVC.delegate = self;
-    [self.navigationController pushViewController:addrqVC animated:YES];
+    QRCustomType = 0;
+    QRCustomViewController *vc = [[QRCustomViewController alloc] init];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 -(void)back
@@ -264,6 +250,7 @@
 }
 - (void)pressButton1:(UIButton*)button
 {
+    QRCustomType = 1;
     QRCustomViewController *vc = [[QRCustomViewController alloc] init];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
@@ -307,13 +294,9 @@
         cv.contentType = contentTypeTextView;
         cv.typeName = @"扫描内容";
         cv.contentStrS = [[NSAttributedString alloc] initWithString:resultStr];
-        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:NO];
+        [self.navigationController popToViewController:self animated:NO];
         [self.navigationController pushViewController:cv animated:YES];
     }
-
-//    [self dismissViewControllerAnimated:YES completion:^{
-//        NSLog(@"%@",result);
-//    }];
 
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

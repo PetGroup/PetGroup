@@ -14,17 +14,14 @@
 #import "KGStatusBar.h"
 #import "XMPPHelper.h"
 #import "MBProgressHUD.h"
-@interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText,UIAlertViewDelegate>
+@interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText>
 {
-    BOOL edit;
     float specialHigh;
     MBProgressHUD* hud;
 }
 @property (nonatomic,retain)UITableView * tableV;
 
-@property (nonatomic,retain)UIAlertView* addMeAlertV;
-@property (nonatomic,retain)UIAlertView* callMeAlertV;
-@property (nonatomic,assign)AppDelegate* appDel;
+@property (nonatomic,retain)NSString* RQCodeNo;
 @end
 
 @implementation AddPetMessageViewController
@@ -34,8 +31,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.appDel = [UIApplication sharedApplication].delegate;
-        edit = YES;
+        self.edit = NO;
         specialHigh = 50;
     }
     return self;
@@ -43,21 +39,11 @@
 
 - (void)viewDidLoad
 {
-    if (_RQCodeMessage) {
-        float a =[_RQCodeMessage[@"petOwnerMsg"] sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height;
-        if (a > 20) {
-            specialHigh = a +30;
-        }
-        if (![_RQCodeMessage[@"username"] isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]) {
-            edit = NO;
-        }else
-        {
-            _RQCodeNo = _RQCodeMessage[@"id"];
-        }
-    }else
-    {
-        self.RQCodeMessage = [[NSMutableDictionary alloc]init];
+    float a =[_RQCodeMessage[@"petOwnerMsg"] sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height;
+    if (a > 20) {
+        specialHigh = a +30;
     }
+    self.RQCodeNo = _RQCodeMessage[@"id"];
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
@@ -75,7 +61,7 @@
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text = @"二维码信息";
+    titleLabel.text = @"编辑二维码信息";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -87,17 +73,11 @@
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
     
-    if (edit) {
-        UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
-        tishiL.text = @"请认真填写信息,以便爱宠丢失后与您联系";
-        tishiL.font = [UIFont systemFontOfSize:16];
-        tishiL.backgroundColor = [UIColor clearColor];
-        [headV addSubview:tishiL];
-        UILabel* numberL = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 20)];
-        numberL.text = _RQCodeNo;
-        numberL.backgroundColor = [UIColor clearColor];
-        [headV addSubview:numberL];
-    }
+    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
+    tishiL.text = [NSString stringWithFormat:@"挂件编号:%@",_RQCodeNo];
+    tishiL.font = [UIFont systemFontOfSize:16];
+    tishiL.backgroundColor = [UIColor clearColor];
+    [headV addSubview:tishiL];
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
@@ -175,10 +155,7 @@
     }else if(section == 1){
         return 3;
     }else {
-        if (edit) {
-            return 1;
-        }
-        return 0;
+        return 1;
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -203,10 +180,6 @@
     PetProfileCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
         cell = [[PetProfileCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        if (!edit) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.arrow.hidden = YES;
-        }
     }
     if (indexPath.section == 0) {
         switch (indexPath.row) {
@@ -227,16 +200,10 @@
             case 0:{
                 cell.titleLabel.text = @"主人名称:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwner"];
-                if (!edit) {
-                    cell.describeLabel.textColor = [UIColor blueColor];
-                }
             }break;
             case 1:{
                 cell.titleLabel.text = @"主人电话:";
                 cell.describeLabel.text = _RQCodeMessage[@"petOwnerTel"];
-                if (!edit) {
-                    cell.describeLabel.textColor = [UIColor blueColor];
-                }
             }break;
             case 2:{
                 cell.titleLabel.text = @"主人寄语:";
@@ -267,65 +234,51 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (edit) {
-        if (indexPath.section == 2) {
-            [self finishEdit];
-            return;
+    if (indexPath.section == 2) {
+        [self finishEdit];
+        return;
+    }
+    ReportViewController * reportV = [[ReportViewController alloc] init];
+    reportV.textDelegate = self;
+    reportV.maxCount = 16;
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:{
+                reportV.theTitle = @"宠物品种";
+                reportV.defaultContent = _RQCodeMessage[@"petType"];
+                reportV.thisIndex = indexPath.row;
+            }break;
+            case 1:{
+                reportV.theTitle = @"宠物昵称";
+                reportV.defaultContent = _RQCodeMessage[@"petNickname"];
+                reportV.thisIndex = indexPath.row;
+            }break;
+            default:
+                break;
         }
-        ReportViewController * reportV = [[ReportViewController alloc] init];
-        reportV.textDelegate = self;
-        reportV.maxCount = 16;
-        if (indexPath.section == 0) {
-            switch (indexPath.row) {
-                case 0:{
-                    reportV.theTitle = @"宠物品种";
-                    reportV.defaultContent = _RQCodeMessage[@"petType"];
-                    reportV.thisIndex = indexPath.row;
-                }break;
-                case 1:{
-                    reportV.theTitle = @"宠物昵称";
-                    reportV.defaultContent = _RQCodeMessage[@"petNickname"];
-                    reportV.thisIndex = indexPath.row;
-                }break;
-                default:
-                    break;
-            }
-            [self.navigationController pushViewController:reportV animated:YES];
-        }else if (indexPath.section == 1){
-            switch (indexPath.row) {
-                case 0:{
-                    reportV.theTitle = @"主人名称";
-                    reportV.defaultContent = _RQCodeMessage[@"petOwner"];
-                    reportV.thisIndex = indexPath.row+10;
-                }break;
-                case 1:{
-                    reportV.theTitle = @"主人电话";
-                    reportV.defaultContent = _RQCodeMessage[@"petOwnerTel"];
-                    reportV.thisIndex = indexPath.row+10;
-                }break;
-                case 2:{
-                    reportV.theTitle = @"主人寄语";
-                    reportV.defaultContent = _RQCodeMessage[@"petOwnerMsg"];
-                    reportV.thisIndex = indexPath.row+10;
-                    reportV.maxCount = 50;
-                }break;
-                default:
-                    break;
-            }
-            [self.navigationController pushViewController:reportV animated:YES];
+        [self.navigationController pushViewController:reportV animated:YES];
+    }else if (indexPath.section == 1){
+        switch (indexPath.row) {
+            case 0:{
+                reportV.theTitle = @"主人名称";
+                reportV.defaultContent = _RQCodeMessage[@"petOwner"];
+                reportV.thisIndex = indexPath.row+10;
+            }break;
+            case 1:{
+                reportV.theTitle = @"主人电话";
+                reportV.defaultContent = _RQCodeMessage[@"petOwnerTel"];
+                reportV.thisIndex = indexPath.row+10;
+            }break;
+            case 2:{
+                reportV.theTitle = @"主人寄语";
+                reportV.defaultContent = _RQCodeMessage[@"petOwnerMsg"];
+                reportV.thisIndex = indexPath.row+10;
+                reportV.maxCount = 50;
+            }break;
+            default:
+                break;
         }
-    }else
-    {
-        if (indexPath.section ==1) {
-            if (indexPath.row == 0) {
-                self.addMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"加我为好友?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
-                [_addMeAlertV show];
-            }
-            if (indexPath.row == 1) {
-                self.callMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"给我打电话?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
-                [_callMeAlertV show];
-            }
-        }
+        [self.navigationController pushViewController:reportV animated:YES];
     }
 }
 #pragma mark - ChangeText
@@ -356,43 +309,5 @@
             break;
     }
     [_tableV reloadData];
-}
-#pragma mark - alertView delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        if (alertView == _addMeAlertV)
-        {
-            if (![self.appDel.xmppHelper addFriend:_RQCodeMessage[@"username"]]) {
-                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
-                return;
-            }
-            NSString *message = [NSString stringWithFormat:@"Hi~我是%@，加我为好友吧",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
-            if (message.length > 0) {
-                NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
-                [body setStringValue:message];
-                NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
-                [mes addAttributeWithName:@"type" stringValue:@"chat"];
-                [mes addAttributeWithName:@"msgtype" stringValue:@"sayHello"];
-                [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
-                [mes addAttributeWithName:@"fileType" stringValue:@"no"];
-                [mes addAttributeWithName:@"to" stringValue:[_RQCodeMessage[@"petOwnerTel"] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
-                [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
-                [mes addChild:body];
-                //        [self.appDel.xmppHelper.xmppStream sendElement:mes];
-                if (![self.appDel.xmppHelper sendMessage:mes]) {
-                    [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
-                    //Do something when send failed...
-                    return;
-                }
-                
-                
-            }
-            [KGStatusBar showSuccessWithStatus:@"好友请求发送成功" Controller:self];
-        }
-        if (alertView == _callMeAlertV) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",_RQCodeMessage[@"petOwnerTel"]]]];
-        }
-    }
 }
 @end
