@@ -59,7 +59,11 @@
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text = @"二维码";
+    if (_delegate && [_delegate respondsToSelector:@selector(titleTextForQRCustomViewController:)]) {
+        titleLabel.text = [_delegate titleTextForQRCustomViewController:self];
+    }else{
+        titleLabel.text = @"二维码";
+    }
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];

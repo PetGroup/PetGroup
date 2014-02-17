@@ -19,6 +19,7 @@
 - (void)customViewController:(QRCustomViewController *)controller didScanResult:(NSString *)result;
 - (void)customViewControllerDidCancel:(QRCustomViewController *)controller;
 - (NSString*)textForQRCustomViewController:(QRCustomViewController *)controller;
+- (NSString*)titleTextForQRCustomViewController:(QRCustomViewController *)controller;
 @end
 @interface QRCustomViewController : UIViewController
 @property (nonatomic, assign) id<CustomViewControllerDelegate> delegate;

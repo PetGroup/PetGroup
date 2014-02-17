@@ -52,7 +52,7 @@
 
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text = @"二维码";
+    titleLabel.text = @"防丢失二维码";
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -243,6 +243,15 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - QRCustomViewControllerViewController
+- (NSString*)titleTextForQRCustomViewController:(QRCustomViewController *)controller
+{
+    if (QRCustomType == 0) {
+        return @"添加二维码";
+    }else
+    {
+        return @"二维码";
+    }
+}
 - (NSString*)textForQRCustomViewController:(QRCustomViewController *)controller
 {
     if (QRCustomType == 0) {
