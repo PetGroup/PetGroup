@@ -209,7 +209,7 @@
 #pragma mark - table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1 && indexPath.row == 2) {
+    if (indexPath.section == 2 && indexPath.row == 2) {
         float a =[_RQCodeMessage[@"petOwnerMsg"] sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(200, 300) lineBreakMode:NSLineBreakByWordWrapping].height;
         if (a > 20) {
             a += 30;
