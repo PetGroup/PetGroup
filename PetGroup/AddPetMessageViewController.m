@@ -11,8 +11,6 @@
 #import "TempData.h"
 #import "PetProfileCell.h"
 #import "ReportViewController.h"
-#import "KGStatusBar.h"
-#import "XMPPHelper.h"
 #import "MBProgressHUD.h"
 #import "EGOImageButton.h"
 #import "PetInfo.h"

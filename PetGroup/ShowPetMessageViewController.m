@@ -9,7 +9,8 @@
 #import "AppDelegate.h"
 #import "PetProfileCell.h"
 #import "ShowPetMessageViewController.h"
-
+#import "XMPPHelper.h"
+#import "KGStatusBar.h"
 @interface ShowPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
     BOOL isSelf;
@@ -240,6 +241,44 @@
                 self.callMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"给我打电话?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
                 [_callMeAlertV show];
             }
+        }
+    }
+}
+#pragma mark - alertView delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        if (alertView == _addMeAlertV)
+        {
+            if (![self.appDel.xmppHelper addFriend:_RQCodeMessage[@"username"]]) {
+                [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+                return;
+            }
+            NSString *message = [NSString stringWithFormat:@"Hi~我是%@，加我为好友吧",[DataStoreManager queryNickNameForUser:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+            if (message.length > 0) {
+                NSXMLElement *body = [NSXMLElement elementWithName:@"body"];
+                [body setStringValue:message];
+                NSXMLElement *mes = [NSXMLElement elementWithName:@"message"];
+                [mes addAttributeWithName:@"type" stringValue:@"chat"];
+                [mes addAttributeWithName:@"msgtype" stringValue:@"sayHello"];
+                [mes addAttributeWithName:@"msgTime" stringValue:[Common getCurrentTime]];
+                [mes addAttributeWithName:@"fileType" stringValue:@"no"];
+                [mes addAttributeWithName:@"to" stringValue:[_RQCodeMessage[@"petOwnerTel"] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+                [mes addAttributeWithName:@"from" stringValue:[[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] stringByAppendingString:[[TempData sharedInstance] getDomain]]];
+                [mes addChild:body];
+                //        [self.appDel.xmppHelper.xmppStream sendElement:mes];
+                if (![self.appDel.xmppHelper sendMessage:mes]) {
+                    [KGStatusBar showSuccessWithStatus:@"网络有点问题，稍后再试吧" Controller:self];
+                    //Do something when send failed...
+                    return;
+                }
+                
+                
+            }
+            [KGStatusBar showSuccessWithStatus:@"好友请求发送成功" Controller:self];
+        }
+        if (alertView == _callMeAlertV) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",_RQCodeMessage[@"petOwnerTel"]]]];
         }
     }
 }
