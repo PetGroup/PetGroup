@@ -108,6 +108,7 @@
 		72E5B2A218AE0AD500707EE6 /* saomiaoICO.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29D18AE0AD500707EE6 /* saomiaoICO.png */; };
 		72E5B2A318AE0AD500707EE6 /* QRCodetishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */; };
 		72E5B2A618AE0F2200707EE6 /* QRCodeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E5B2A518AE0F2200707EE6 /* QRCodeCell.m */; };
+		72E5B2A918B1AB1F00707EE6 /* selestPhoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B2A818B1AB1F00707EE6 /* selestPhoto.png */; };
 		72EFC36F18530C4900A2B746 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EFC36E18530C4900A2B746 /* CircleHeaderView.m */; };
 		72F78C3F18516F4F0007892B /* newlogbg3.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C3E18516F4F0007892B /* newlogbg3.png */; };
 		72F78C431852D3B60007892B /* replyB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C401852D3B60007892B /* replyB.png */; };
@@ -1022,6 +1023,7 @@
 		72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodetishi.png; sourceTree = "<group>"; };
 		72E5B2A418AE0F2200707EE6 /* QRCodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeCell.h; sourceTree = "<group>"; };
 		72E5B2A518AE0F2200707EE6 /* QRCodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeCell.m; sourceTree = "<group>"; };
+		72E5B2A818B1AB1F00707EE6 /* selestPhoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selestPhoto.png; sourceTree = "<group>"; };
 		72EFC36D18530C4900A2B746 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		72EFC36E18530C4900A2B746 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		72F78C3E18516F4F0007892B /* newlogbg3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg3.png; sourceTree = "<group>"; };
@@ -2376,6 +2378,7 @@
 				72E5B29C18AE0AD500707EE6 /* saomiao.png */,
 				72E5B29D18AE0AD500707EE6 /* saomiaoICO.png */,
 				72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */,
+				72E5B2A818B1AB1F00707EE6 /* selestPhoto.png */,
 			);
 			name = QRcodixon;
 			sourceTree = "<group>";
@@ -5006,6 +5009,7 @@
 				9700D3C518502C81003260BC /* tabbar_sel_04.png in Resources */,
 				97F2FA6C18338C2100FD6725 /* Default@2x.png in Resources */,
 				72795AFB1844456C00BB58E0 /* star_16_3.png in Resources */,
+				72E5B2A918B1AB1F00707EE6 /* selestPhoto.png in Resources */,
 				97EC66B518729DDD00D434F2 /* conten_share.png in Resources */,
 				97DB09CF17C5B037000EC195 /* xuanzechongwu-bg.png in Resources */,
 				72D7B9411856C5D70048FAE2 /* circle_normal.png in Resources */,

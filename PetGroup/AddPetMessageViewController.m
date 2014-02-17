@@ -28,6 +28,8 @@
 
 @property (nonatomic,retain)NSArray* myPetArray;
 
+@property (nonatomic,retain)UIImageView * selestPhoto;
+
 @end
 
 @implementation AddPetMessageViewController
@@ -92,7 +94,18 @@
     [headV addSubview:tishiL];
     NSArray *petArray = (NSArray*)userDic[@"petInfoViews"];
     if (!_RQCodeMessage[@"petType"] && petArray.count >0) {
-        UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, 320, 80)];
+        self.selestPhoto = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 70, 70)];
+        _selestPhoto.tag = 12138;
+        _selestPhoto.image = [UIImage imageNamed:@"selestPhoto"];
+        
+        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 310, 20)];
+        label.text = @"检测到您有如下宠物，点击快速完善信息:";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor grayColor];
+        label.backgroundColor = [UIColor clearColor];
+        [headV addSubview:label];
+        
+        UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 50, 320, 80)];
         self.myPetArray =petArray;
         for (int i = 0;i < petArray.count;i ++) {
             PetInfo* pet = [[PetInfo alloc]initWithPetInfo:petArray[i]];
@@ -121,24 +134,36 @@
 }
 - (void)setPetMsg:(UIButton*)button
 {
-    NSDictionary*dic = _myPetArray[button.tag-100];
-    [_RQCodeMessage setObject:dic[@"nickname"] forKey:@"petNickname"];
-    [_RQCodeMessage setObject:[XMLMatcher typeStringWithNumber:[NSString stringWithFormat:@"%d",[dic[@"type"] intValue]]] forKey:@"petType"];
+    if ([button viewWithTag:12138]) {
+        [_selestPhoto removeFromSuperview];
+        [_RQCodeMessage removeObjectForKey:@"petNickname"];
+        [_RQCodeMessage removeObjectForKey:@"petType"];
+    }else{
+        [button addSubview:_selestPhoto];
+        NSDictionary*dic = _myPetArray[button.tag-100];
+        [_RQCodeMessage setObject:dic[@"nickname"] forKey:@"petNickname"];
+        [_RQCodeMessage setObject:[XMLMatcher typeStringWithNumber:[NSString stringWithFormat:@"%d",[dic[@"type"] intValue]]] forKey:@"petType"];
+    }
     
     [_tableV reloadData];
 }
 -(void)finishEdit
 {
     if (!_RQCodeMessage[@"petType"]) {
-        
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"宠物类型不能为空!" delegate:nil cancelButtonTitle:@"知道啦!" otherButtonTitles: nil];
+        [alert show];
     }else if (!_RQCodeMessage[@"petNickname"]) {
-        
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"宠物昵称不能为空!" delegate:nil cancelButtonTitle:@"知道啦!" otherButtonTitles: nil];
+        [alert show];
     }else if (!_RQCodeMessage[@"petOwner"]) {
-        
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"主人姓名不能为空!" delegate:nil cancelButtonTitle:@"知道啦!" otherButtonTitles: nil];
+        [alert show];
     }else if (!_RQCodeMessage[@"petOwnerTel"]) {
-        
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"联系方式不能为空!" delegate:nil cancelButtonTitle:@"知道啦!" otherButtonTitles: nil];
+        [alert show];
     }else if (!_RQCodeMessage[@"petOwnerMsg"]) {
-        
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"主人寄语不能为空!" delegate:nil cancelButtonTitle:@"知道啦!" otherButtonTitles: nil];
+        [alert show];
     }else
     {
         [self setCardInfoByID:_RQCodeNo];
