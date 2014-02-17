@@ -231,7 +231,7 @@
         }
     }else
     {
-        if (indexPath.section ==1) {
+        if (indexPath.section ==2) {
             if (indexPath.row == 0) {
                 self.addMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"加我为好友?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
                 [_addMeAlertV show];
