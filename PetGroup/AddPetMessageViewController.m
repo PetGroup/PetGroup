@@ -104,6 +104,7 @@
         [headV addSubview:label];
         
         UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 55, 320, 80)];
+        scrollV.contentSize = CGSizeMake(10+ petArray.count * 80, 80);
         self.myPetArray =petArray;
         for (int i = 0;i < petArray.count;i ++) {
             PetInfo* pet = [[PetInfo alloc]initWithPetInfo:petArray[i]];
