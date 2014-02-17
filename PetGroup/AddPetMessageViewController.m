@@ -11,8 +11,6 @@
 #import "TempData.h"
 #import "PetProfileCell.h"
 #import "ReportViewController.h"
-#import "KGStatusBar.h"
-#import "XMPPHelper.h"
 #import "MBProgressHUD.h"
 #import "EGOImageButton.h"
 #import "PetInfo.h"
@@ -87,7 +85,7 @@
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
     
-    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
+    UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 15, 300, 20)];
     tishiL.text = [NSString stringWithFormat:@"挂件编号:%@",_RQCodeMessage[@"num"]];
     tishiL.font = [UIFont systemFontOfSize:16];
     tishiL.backgroundColor = [UIColor clearColor];
@@ -98,14 +96,14 @@
         _selestPhoto.tag = 12138;
         _selestPhoto.image = [UIImage imageNamed:@"selestPhoto"];
         
-        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 310, 20)];
+        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(10, 35, 310, 20)];
         label.text = @"检测到您有如下宠物，点击快速完善信息:";
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor grayColor];
         label.backgroundColor = [UIColor clearColor];
         [headV addSubview:label];
         
-        UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 50, 320, 80)];
+        UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 55, 320, 80)];
         self.myPetArray =petArray;
         for (int i = 0;i < petArray.count;i ++) {
             PetInfo* pet = [[PetInfo alloc]initWithPetInfo:petArray[i]];
@@ -118,7 +116,7 @@
             
         }
         [headV addSubview:scrollV];
-        headV.frame = CGRectMake(0, 0, 320, 135);
+        headV.frame = CGRectMake(0, 0, 320, 145);
     }
     _tableV.tableHeaderView = headV;
     
