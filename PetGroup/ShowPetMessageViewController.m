@@ -9,9 +9,8 @@
 #import "AppDelegate.h"
 #import "PetProfileCell.h"
 #import "ShowPetMessageViewController.h"
-#import "AddPetMessageViewController.h"
 
-@interface ShowPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface ShowPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 {
     BOOL isSelf;
 }
@@ -61,18 +60,54 @@
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
+    
+    if (isSelf) {
+        UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+        nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
+        [nextB setBackgroundImage:[UIImage imageNamed:@"nextBtn"] forState:UIControlStateNormal];
+        [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [nextB setTitle:@"更多" forState:UIControlStateNormal];
+        [nextB addTarget:self action:@selector(showActtionSheet) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:nextB];
+    }
+    
+    UIImageView* imageV = [[UIImageView alloc]initWithFrame:CGRectMake(96, 140, 127, 127)];
+    imageV.image = [UIImage imageNamed:@"QRCodeError"];
+    [self.view addSubview:imageV];
+    UILabel* aLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 280, 320, 20)];
+    aLabel.backgroundColor = [UIColor clearColor];
+    aLabel.textColor = [UIColor orangeColor];
+    aLabel.text = @"糟糕!";
+    aLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:aLabel];
+    UILabel*bLabel =[[UILabel alloc]initWithFrame:CGRectMake(45, 300, 230, 50)];
+    bLabel.numberOfLines = 2;
+    bLabel.backgroundColor = [UIColor clearColor];
+    bLabel.textColor = [UIColor orangeColor];
+    bLabel.text = @"防丢失二维码挂件尚未绑定,你可以发布招领帖,寻找宠物主人";
+    bLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:bLabel];
+    
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44 + diffH, 320, self.view.frame.size.height - 44 - diffH) style:UITableViewStyleGrouped];
     UIView * headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 55)];
     _tableV.tableHeaderView = headV;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
+    if (!_RQCodeMessage[@"petOwner"]) {
+        _tableV.hidden = YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)showActtionSheet
+{
+    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"什么也不做" destructiveButtonTitle:@"解除绑定" otherButtonTitles:nil];
+    [action showInView:self.view];
 }
 -(void)back
 {
@@ -122,7 +157,7 @@
     }
     if (indexPath.section == 0) {
         cell.titleLabel.text = @"挂件编号:";
-        cell.describeLabel.text = _RQCodeMessage[@"petType"];
+        cell.describeLabel.text = [NSString stringWithFormat:@"%d",[_RQCodeMessage[@"num"] intValue]];
     }else if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0:{
@@ -189,9 +224,8 @@
     if (isSelf) {
         if (indexPath.section == 3) {
             AddPetMessageViewController*addpetVC = [[AddPetMessageViewController alloc]init];
-            addpetVC.delegate = self.navigationController.viewControllers[1];
+            addpetVC.delegate = self.delegate;
             addpetVC.RQCodeMessage = self.RQCodeMessage;
-            addpetVC.edit = YES;
             [self.navigationController popToViewController:self animated:NO];
             [self.navigationController pushViewController:addpetVC animated:YES];
         }
@@ -207,6 +241,36 @@
                 [_callMeAlertV show];
             }
         }
+    }
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+        long long a = (long long)(cT*1000);
+        [params setObject:_RQCodeMessage[@"id"] forKey:@"id"];
+        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+        [body setObject:@"1" forKey:@"channel"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+        [body setObject:@"iphone" forKey:@"imei"];
+        [body setObject:params forKey:@"params"];
+        [body setObject:@"unboundPetCard" forKey:@"method"];
+        [body setObject:@"service.uri.pet_user" forKey:@"service"];
+        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
+        
+        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            [hud hide:YES];
+            if (self.delegate&&[_delegate respondsToSelector:@selector(finishDelRQCodeMessageWithPet:)]) {
+                [self.delegate finishDelRQCodeMessageWithPet:_RQCodeMessage];
+            }
+            
+        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+            [alert show];
+//            [hud hide:YES];
+        }];
     }
 }
 /*

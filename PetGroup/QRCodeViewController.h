@@ -17,7 +17,6 @@
     NSMutableArray * petListArray;
     NSString * resultString;
     MBProgressHUD * hud;
-    UILabel * dLabel;
 }
 @property (strong,nonatomic) UITableView * profileTableV;
 @end

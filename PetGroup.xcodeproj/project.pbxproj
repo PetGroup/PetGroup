@@ -17,8 +17,6 @@
 		721E361218482F33002FCA77 /* MyNoteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361118482F33002FCA77 /* MyNoteDataSource.m */; };
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
-		7235369C18AC63C7005B2C42 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F56702180E364400A72604 /* NSData+Base64.m */; };
-		7235369D18AC6642005B2C42 /* amrFileCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = 97F567CC180E868100A72604 /* amrFileCodec.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -103,6 +101,13 @@
 		72D7B947185706750048FAE2 /* alert.png in Resources */ = {isa = PBXBuildFile; fileRef = 72D7B946185706750048FAE2 /* alert.png */; };
 		72D7B94A18570DAC0048FAE2 /* alert_three.png in Resources */ = {isa = PBXBuildFile; fileRef = 72D7B94818570DAC0048FAE2 /* alert_three.png */; };
 		72D7B94B18570DAC0048FAE2 /* alert_two.png in Resources */ = {isa = PBXBuildFile; fileRef = 72D7B94918570DAC0048FAE2 /* alert_two.png */; };
+		72E5B29818AE05A300707EE6 /* QRCodeError.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29718AE05A300707EE6 /* QRCodeError.png */; };
+		72E5B29F18AE0AD500707EE6 /* add_saomiao.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29A18AE0AD500707EE6 /* add_saomiao.png */; };
+		72E5B2A018AE0AD500707EE6 /* saomiao_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29B18AE0AD500707EE6 /* saomiao_bg.png */; };
+		72E5B2A118AE0AD500707EE6 /* saomiao.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29C18AE0AD500707EE6 /* saomiao.png */; };
+		72E5B2A218AE0AD500707EE6 /* saomiaoICO.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29D18AE0AD500707EE6 /* saomiaoICO.png */; };
+		72E5B2A318AE0AD500707EE6 /* QRCodetishi.png in Resources */ = {isa = PBXBuildFile; fileRef = 72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */; };
+		72E5B2A618AE0F2200707EE6 /* QRCodeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E5B2A518AE0F2200707EE6 /* QRCodeCell.m */; };
 		72EFC36F18530C4900A2B746 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EFC36E18530C4900A2B746 /* CircleHeaderView.m */; };
 		72F78C3F18516F4F0007892B /* newlogbg3.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C3E18516F4F0007892B /* newlogbg3.png */; };
 		72F78C431852D3B60007892B /* replyB.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F78C401852D3B60007892B /* replyB.png */; };
@@ -1009,6 +1014,14 @@
 		72D7B946185706750048FAE2 /* alert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert.png; sourceTree = "<group>"; };
 		72D7B94818570DAC0048FAE2 /* alert_three.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert_three.png; sourceTree = "<group>"; };
 		72D7B94918570DAC0048FAE2 /* alert_two.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alert_two.png; sourceTree = "<group>"; };
+		72E5B29718AE05A300707EE6 /* QRCodeError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodeError.png; sourceTree = "<group>"; };
+		72E5B29A18AE0AD500707EE6 /* add_saomiao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_saomiao.png; sourceTree = "<group>"; };
+		72E5B29B18AE0AD500707EE6 /* saomiao_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saomiao_bg.png; sourceTree = "<group>"; };
+		72E5B29C18AE0AD500707EE6 /* saomiao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saomiao.png; sourceTree = "<group>"; };
+		72E5B29D18AE0AD500707EE6 /* saomiaoICO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = saomiaoICO.png; sourceTree = "<group>"; };
+		72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QRCodetishi.png; sourceTree = "<group>"; };
+		72E5B2A418AE0F2200707EE6 /* QRCodeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeCell.h; sourceTree = "<group>"; };
+		72E5B2A518AE0F2200707EE6 /* QRCodeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeCell.m; sourceTree = "<group>"; };
 		72EFC36D18530C4900A2B746 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		72EFC36E18530C4900A2B746 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		72F78C3E18516F4F0007892B /* newlogbg3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newlogbg3.png; sourceTree = "<group>"; };
@@ -2357,6 +2370,12 @@
 				72AE85441886995900EB84F4 /* QRCodeCorner_RightButtom.png */,
 				72AE85451886995900EB84F4 /* QRCodeCorner_RightTop.png */,
 				72AE85461886995900EB84F4 /* QRCodeScanLine.png */,
+				72E5B29718AE05A300707EE6 /* QRCodeError.png */,
+				72E5B29A18AE0AD500707EE6 /* add_saomiao.png */,
+				72E5B29B18AE0AD500707EE6 /* saomiao_bg.png */,
+				72E5B29C18AE0AD500707EE6 /* saomiao.png */,
+				72E5B29D18AE0AD500707EE6 /* saomiaoICO.png */,
+				72E5B29E18AE0AD500707EE6 /* QRCodetishi.png */,
 			);
 			name = QRcodixon;
 			sourceTree = "<group>";
@@ -4341,6 +4360,8 @@
 				97DB097D17C5A95C000EC195 /* ProfileHeadCell.m */,
 				97DB097E17C5A95C000EC195 /* ProfileImageCell.h */,
 				97DB097F17C5A95C000EC195 /* ProfileImageCell.m */,
+				72E5B2A418AE0F2200707EE6 /* QRCodeCell.h */,
+				72E5B2A518AE0F2200707EE6 /* QRCodeCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4838,6 +4859,7 @@
 				86A56A8C180F81D6000FD684 /* third_xiemessage_record_ani7.png in Resources */,
 				97FB83E81852C22B00F5F8F8 /* start_bg_02.png in Resources */,
 				86A56A8D180F81D6000FD684 /* third_xiemessage_record_ani8.png in Resources */,
+				72E5B29F18AE0AD500707EE6 /* add_saomiao.png in Resources */,
 				970982221858799C00EFAE07 /* xuanzegou.png in Resources */,
 				86A56A8E180F81D6000FD684 /* third_xiemessage_record_ani9.png in Resources */,
 				86A56A6F180F81C3000FD684 /* btn_03.png in Resources */,
@@ -4876,6 +4898,7 @@
 				9736BD8417C49146007DFE36 /* inputbg.png in Resources */,
 				9736BD8517C49146007DFE36 /* popview2.png in Resources */,
 				9736BD8A17C49146007DFE36 /* zhuce_click.png in Resources */,
+				72E5B2A018AE0AD500707EE6 /* saomiao_bg.png in Resources */,
 				726F08DB1867E4F3006343F9 /* like_bg.png in Resources */,
 				97E3794B18693DCC00151F1D /* MessageSendFail.png in Resources */,
 				9736BD8B17C49146007DFE36 /* zhuce_normal.png in Resources */,
@@ -4889,6 +4912,7 @@
 				9736BD9617C49146007DFE36 /* galleryBtn-normal.png in Resources */,
 				97ED57F8185AA99B00CAE5CA /* filterBtn.png in Resources */,
 				9736BD9717C49146007DFE36 /* headbg.png in Resources */,
+				72E5B29818AE05A300707EE6 /* QRCodeError.png in Resources */,
 				9736BD9C17C49146007DFE36 /* list-long-normal.png in Resources */,
 				7214AD6C18541E370027D47E /* jing.png in Resources */,
 				9700D3B818502B2B003260BC /* tabbar01.png in Resources */,
@@ -4954,6 +4978,7 @@
 				9736BDF317C49146007DFE36 /* back.png in Resources */,
 				72795AF81844456C00BB58E0 /* star_16_0.png in Resources */,
 				9736BDF417C49146007DFE36 /* back2.png in Resources */,
+				72E5B2A118AE0AD500707EE6 /* saomiao.png in Resources */,
 				97233B9D1820F42C00A8015D /* loupe-hi@2x.png in Resources */,
 				9736BDF517C49146007DFE36 /* cat.png in Resources */,
 				9736BDF617C49146007DFE36 /* chat-profile.png in Resources */,
@@ -5002,6 +5027,7 @@
 				86D69D0917C703C700FFFBDD /* tanchuanniu-normal.png in Resources */,
 				86D69D1417C72CD600FFFBDD /* dabeijing.png in Resources */,
 				97BCF0F41834D6B2006B7C0F /* icon-120.png in Resources */,
+				72E5B2A318AE0AD500707EE6 /* QRCodetishi.png in Resources */,
 				86D69D1517C72CD600FFFBDD /* edit_bg.png in Resources */,
 				86D69D1717C72CD600FFFBDD /* xiaobeijing.png in Resources */,
 				86D69D1817C72CD600FFFBDD /* zhaoxiangji.png in Resources */,
@@ -5172,6 +5198,7 @@
 				97FD5C721855B0E5007F5B7E /* nopet.png in Resources */,
 				97FB83E71852C22B00F5F8F8 /* start_pic_02.png in Resources */,
 				97233B9E1820F42C00A8015D /* loupe-lo@2x.png in Resources */,
+				72E5B2A218AE0AD500707EE6 /* saomiaoICO.png in Resources */,
 				97A93DD9182CC35E00D571A5 /* writing_picbox_bg.png in Resources */,
 				86A56A6B180F8191000FD684 /* biaoqing083.png in Resources */,
 				86A56A6C180F8191000FD684 /* biaoqing084.png in Resources */,
@@ -5246,7 +5273,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				971A4E0F18AC7D1000B9821A /* amrFileCodec.m in Sources */,
-				86A569B9180F7D3D000FD684 /* NSData+Base64.m in Sources */,
 				72795B4A1844512300BB58E0 /* BeautifulImageCell.m in Sources */,
 				86A569BA180F7D3D000FD684 /* NSString+Base64.m in Sources */,
 				86A569BB180F7D3D000FD684 /* CoreTextUtils.m in Sources */,
@@ -5353,6 +5379,7 @@
 				9736BB0317C4892A007DFE36 /* ContextFilterLogFormatter.m in Sources */,
 				9736BB0417C4892A007DFE36 /* DispatchQueueLogFormatter.m in Sources */,
 				9736BB0617C4892A007DFE36 /* NSString+DDXML.m in Sources */,
+				72E5B2A618AE0F2200707EE6 /* QRCodeCell.m in Sources */,
 				9736BB0717C4892A007DFE36 /* DDXMLDocument.m in Sources */,
 				97A93DC7182CBC1D00D571A5 /* AttributeConfig.m in Sources */,
 				9736BB0817C4892A007DFE36 /* DDXMLElement.m in Sources */,

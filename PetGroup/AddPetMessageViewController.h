@@ -12,9 +12,9 @@
 
 @optional
 - (void)finishAddRQCodeMessageWithPet:(NSDictionary*)pet;
+- (void)finishDelRQCodeMessageWithPet:(NSDictionary *)pet;
 @end
 @interface AddPetMessageViewController : UIViewController
-@property (nonatomic,assign)BOOL edit;
 @property (nonatomic,assign)id<AddRQCodeMessageDelegate>delegate;
 @property (nonatomic,retain)NSMutableDictionary* RQCodeMessage;
 @end

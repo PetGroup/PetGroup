@@ -14,6 +14,9 @@
 #import "KGStatusBar.h"
 #import "XMPPHelper.h"
 #import "MBProgressHUD.h"
+#import "EGOImageButton.h"
+#import "PetInfo.h"
+#import "XMLMatcher.h"
 @interface AddPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,ChangeText>
 {
     float specialHigh;
@@ -22,6 +25,9 @@
 @property (nonatomic,retain)UITableView * tableV;
 
 @property (nonatomic,retain)NSString* RQCodeNo;
+
+@property (nonatomic,retain)NSArray* myPetArray;
+
 @end
 
 @implementation AddPetMessageViewController
@@ -31,7 +37,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.edit = NO;
         specialHigh = 50;
     }
     return self;
@@ -43,7 +48,15 @@
     if (a > 20) {
         specialHigh = a +30;
     }
+    NSDictionary * userDic;
     self.RQCodeNo = _RQCodeMessage[@"id"];
+    if (!_RQCodeMessage[@"petOwner"]) {
+        userDic = [DataStoreManager queryMyInfo];
+        [_RQCodeMessage setObject:userDic[@"nickname"] forKey:@"petOwner"];
+    }
+    if (!_RQCodeMessage[@"petOwnerTel"]&&userDic) {
+        [_RQCodeMessage setObject:userDic[@"username"] forKey:@"petOwnerTel"];
+    }
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor colorWithRed:0.90 green:0.90 blue:0.90 alpha:1]];
@@ -68,16 +81,33 @@
     [self.view addSubview:titleLabel];
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44 + diffH, 320, self.view.frame.size.height - 44 - diffH) style:UITableViewStyleGrouped];
     UIView * headV = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 55)];
-    _tableV.tableHeaderView = headV;
     _tableV.delegate = self;
     _tableV.dataSource = self;
     [self.view addSubview:_tableV];
     
     UILabel* tishiL = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 300, 20)];
-    tishiL.text = [NSString stringWithFormat:@"挂件编号:%@",_RQCodeNo];
+    tishiL.text = [NSString stringWithFormat:@"挂件编号:%@",_RQCodeMessage[@"num"]];
     tishiL.font = [UIFont systemFontOfSize:16];
     tishiL.backgroundColor = [UIColor clearColor];
     [headV addSubview:tishiL];
+    NSArray *petArray = (NSArray*)userDic[@"petInfoViews"];
+    if (!_RQCodeMessage[@"petType"] && petArray.count >0) {
+        UIScrollView* scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, 320, 80)];
+        self.myPetArray =petArray;
+        for (int i = 0;i < petArray.count;i ++) {
+            PetInfo* pet = [[PetInfo alloc]initWithPetInfo:petArray[i]];
+            EGOImageButton* setPetMsgB = [[EGOImageButton alloc]initWithPlaceholderImage:[UIImage imageNamed:@"placeholderpet.png"]];
+            setPetMsgB.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl@"%@",[pet.headImgArray lastObject]]];
+            setPetMsgB.frame = CGRectMake(10 + i*80, 5, 70, 70);
+            [setPetMsgB addTarget:self action:@selector(setPetMsg:) forControlEvents:UIControlEventTouchUpInside];
+            setPetMsgB.tag = i + 100;
+            [scrollV addSubview:setPetMsgB];
+            
+        }
+        [headV addSubview:scrollV];
+        headV.frame = CGRectMake(0, 0, 320, 135);
+    }
+    _tableV.tableHeaderView = headV;
     
     hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     [[UIApplication sharedApplication].keyWindow addSubview:hud];
@@ -88,6 +118,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (void)setPetMsg:(UIButton*)button
+{
+    NSDictionary*dic = _myPetArray[button.tag-100];
+    [_RQCodeMessage setObject:dic[@"nickname"] forKey:@"petNickname"];
+    [_RQCodeMessage setObject:[XMLMatcher typeStringWithNumber:[NSString stringWithFormat:@"%d",[dic[@"type"] intValue]]] forKey:@"petType"];
+    
+    [_tableV reloadData];
 }
 -(void)finishEdit
 {

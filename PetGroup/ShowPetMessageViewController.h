@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddPetMessageViewController.h"
 
 @interface ShowPetMessageViewController : UIViewController
+@property (nonatomic,assign)id<AddRQCodeMessageDelegate>delegate;
 @property (nonatomic,retain)NSMutableDictionary* RQCodeMessage;
 @end
