@@ -55,7 +55,7 @@
         [_RQCodeMessage setObject:userDic[@"nickname"] forKey:@"petOwner"];
     }
     if (!_RQCodeMessage[@"petOwnerTel"]&&userDic) {
-        [_RQCodeMessage setObject:userDic[@"username"] forKey:@"petOwnerTel"];
+        [_RQCodeMessage setObject:userDic[@"phoneNumber"] forKey:@"petOwnerTel"];
     }
     [super viewDidLoad];
     // Do any additional setup after loading the view.
