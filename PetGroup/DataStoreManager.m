@@ -786,6 +786,7 @@
     NSString * signature = [self toString:[myInfo objectForKey:@"signature"]];
     NSString * hobby = [self toString:[myInfo objectForKey:@"hobby"]];
     NSString * age = [self toString:[myInfo objectForKey:@"birthdate"]];
+    NSString * phoneNum = [self toString:[myInfo objectForKey:@"phoneNumber"]];
     NSString * userId = [self toString:[myInfo objectForKey:@"id"]];
     NSString * theCity = [self toString:[myInfo objectForKey:@"city"]];
  
@@ -802,6 +803,7 @@
             dFriend.hobby = hobby?hobby:@"";
             dFriend.headImgID = headImgID?headImgID:@"";
             dFriend.signature = signature?signature:@"";
+            dFriend.phoneNumber = phoneNum;
             dFriend.age = age?age:@"";
             dFriend.theCity = theCity?theCity:@"未知";
             dFriend.backgroundImg = background;
@@ -968,6 +970,7 @@
         [dict setObject:dFriend.gender forKey:@"gender"];
         [dict setObject:dFriend.signature forKey:@"signature"];
         [dict setObject:dFriend.hobby forKey:@"hobby"];
+        [dict setObject:dFriend.phoneNumber forKey:@"phoneNumber"];
         [dict setObject:@"0" forKey:@"latitude"];
         [dict setObject:@"0" forKey:@"longitude"];
         [dict setObject:dFriend.age forKey:@"birthdate"];
