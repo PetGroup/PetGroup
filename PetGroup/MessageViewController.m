@@ -572,7 +572,13 @@
             [self.customTabBarController setSelectedPage:1];
         }
         else if (buttonIndex==2){
-            
+            NSString * theLink = @"http://www.52pet.net/XXX";
+            if (appStoreURL&&![appStoreURL isKindOfClass:[NSNull class]]) {
+                NSURL * theURL = [NSURL URLWithString:theLink];
+                if ([[UIApplication sharedApplication] canOpenURL:theURL]) {
+                    [[UIApplication sharedApplication] openURL:theURL];
+                }
+            }
         }
     }
     else{
