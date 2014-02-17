@@ -107,7 +107,7 @@
 }
 -(void)showActtionSheet
 {
-    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"您要做什么?" delegate:self cancelButtonTitle:@"什么也不做" destructiveButtonTitle:@"解除绑定" otherButtonTitles:nil];
+    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"解绑防丢失二维码后,需要重新绑定激活才能恢复" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"解除绑定" otherButtonTitles:nil];
     [action showInView:self.view];
 }
 -(void)back
