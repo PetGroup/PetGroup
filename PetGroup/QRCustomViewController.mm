@@ -59,7 +59,11 @@
     
     UILabel *titleLabel=[[UILabel alloc] initWithFrame:CGRectMake(90, 2+diffH, 140, 40)];
     titleLabel.backgroundColor=[UIColor clearColor];
-    titleLabel.text = @"二维码";
+    if (_delegate && [_delegate respondsToSelector:@selector(titleTextForQRCustomViewController:)]) {
+        titleLabel.text = [_delegate titleTextForQRCustomViewController:self];
+    }else{
+        titleLabel.text = @"二维码";
+    }
     [titleLabel setFont:[UIFont boldSystemFontOfSize:17]];
     titleLabel.textAlignment=NSTextAlignmentCenter;
     titleLabel.textColor=[UIColor whiteColor];
@@ -107,6 +111,17 @@
     self.anminIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 94 + diffH, 320, 12)];
     _anminIV.image = [UIImage imageNamed:@"QRCodeScanLine"];
     [self.view addSubview:_anminIV];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(textForQRCustomViewController:)]) {
+        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(40, 354 + diffH, 240, 50)];
+        label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:16];
+        label.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:label];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor whiteColor];
+        label.text = [self.delegate textForQRCustomViewController:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
