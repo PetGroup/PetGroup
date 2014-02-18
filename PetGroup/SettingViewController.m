@@ -7,6 +7,7 @@
 //
 
 #import "SettingViewController.h"
+#import <ShareSDK/ShareSDK.h>
 #import "AppDelegate.h"
 #import "XMPPHelper.h"
 #import "EGOCache.h"
@@ -158,6 +159,9 @@
         [tempData setOpened:NO];
         [app.xmppHelper disconnect];
         [TempData sharedInstance].changeUser = YES;
+        [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+        [ShareSDK cancelAuthWithType:ShareTypeTencentWeibo];
+        [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
         [self.navigationController popViewControllerAnimated:NO];
     }
 }

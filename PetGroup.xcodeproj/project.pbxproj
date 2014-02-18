@@ -37,7 +37,6 @@
 		726F08D41867DE18006343F9 /* imessage.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08CE1867DE18006343F9 /* imessage.png */; };
 		726F08D51867DE18006343F9 /* wechat.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08CF1867DE18006343F9 /* wechat.png */; };
 		726F08D61867DE18006343F9 /* wechattimeline.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08D01867DE18006343F9 /* wechattimeline.png */; };
-		726F08D71867DE18006343F9 /* qqfriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08D11867DE18006343F9 /* qqfriends.png */; };
 		726F08D81867DE18006343F9 /* sina.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08D21867DE18006343F9 /* sina.png */; };
 		726F08D91867DE18006343F9 /* tencent.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08D31867DE18006343F9 /* tencent.png */; };
 		726F08DB1867E4F3006343F9 /* like_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 726F08DA1867E4F3006343F9 /* like_bg.png */; };
@@ -628,6 +627,7 @@
 		97703072182B4504005E3018 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703071182B4504005E3018 /* NotificationCell.m */; };
 		97703075182B6E34005E3018 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703074182B6E34005E3018 /* MyMessageViewController.m */; };
 		97703078182B7D69005E3018 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97703077182B7D69005E3018 /* NotificationViewController.m */; };
+		977D866718B1F40D00C4623A /* qqfriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 977D866618B1F40D00C4623A /* qqfriends.png */; };
 		97804888187D2E3A005DAB58 /* special_subject.png in Resources */ = {isa = PBXBuildFile; fileRef = 97804887187D2E3A005DAB58 /* special_subject.png */; };
 		979088D4182DF7710060A345 /* OHParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D1182DF7710060A345 /* OHParagraphStyle.m */; };
 		979088D5182DF7710060A345 /* OHTouchesGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 979088D3182DF7710060A345 /* OHTouchesGestureRecognizer.m */; };
@@ -933,7 +933,6 @@
 		726F08CE1867DE18006343F9 /* imessage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imessage.png; sourceTree = "<group>"; };
 		726F08CF1867DE18006343F9 /* wechat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wechat.png; sourceTree = "<group>"; };
 		726F08D01867DE18006343F9 /* wechattimeline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wechattimeline.png; sourceTree = "<group>"; };
-		726F08D11867DE18006343F9 /* qqfriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqfriends.png; sourceTree = "<group>"; };
 		726F08D21867DE18006343F9 /* sina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sina.png; sourceTree = "<group>"; };
 		726F08D31867DE18006343F9 /* tencent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tencent.png; sourceTree = "<group>"; };
 		726F08DA1867E4F3006343F9 /* like_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = like_bg.png; path = ../more/like_bg.png; sourceTree = "<group>"; };
@@ -1721,6 +1720,7 @@
 		97703074182B6E34005E3018 /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
 		97703076182B7D69005E3018 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		97703077182B7D69005E3018 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		977D866618B1F40D00C4623A /* qqfriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qqfriends.png; sourceTree = "<group>"; };
 		97804887187D2E3A005DAB58 /* special_subject.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = special_subject.png; sourceTree = "<group>"; };
 		979088D0182DF7710060A345 /* OHParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OHParagraphStyle.h; sourceTree = "<group>"; };
 		979088D1182DF7710060A345 /* OHParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OHParagraphStyle.m; sourceTree = "<group>"; };
@@ -2251,7 +2251,7 @@
 				726F08CE1867DE18006343F9 /* imessage.png */,
 				726F08CF1867DE18006343F9 /* wechat.png */,
 				726F08D01867DE18006343F9 /* wechattimeline.png */,
-				726F08D11867DE18006343F9 /* qqfriends.png */,
+				977D866618B1F40D00C4623A /* qqfriends.png */,
 				726F08D21867DE18006343F9 /* sina.png */,
 				726F08D31867DE18006343F9 /* tencent.png */,
 			);
@@ -4974,6 +4974,7 @@
 				9736BDD717C49146007DFE36 /* select-short-click.png in Resources */,
 				9736BDD817C49146007DFE36 /* select-short-normal.png in Resources */,
 				72AE85491886995900EB84F4 /* QRCodeCorner_RightButtom.png in Resources */,
+				977D866718B1F40D00C4623A /* qqfriends.png in Resources */,
 				97233B9C1820F42C00A8015D /* drag-dot@2x.png in Resources */,
 				9736BDE217C49146007DFE36 /* redCB.png in Resources */,
 				9736BDE317C49146007DFE36 /* redpot.png in Resources */,
@@ -5060,7 +5061,6 @@
 				72D7B93018555D4D0048FAE2 /* qita_click.png in Resources */,
 				72D7B94B18570DAC0048FAE2 /* alert_two.png in Resources */,
 				865FDD3F1808DA14005BB088 /* footer_bg.png in Resources */,
-				726F08D71867DE18006343F9 /* qqfriends.png in Resources */,
 				97233BA11820F42C00A8015D /* magnifier-ranged-lo-stemless@2x.png in Resources */,
 				97FE60CF18346DF200CEAF79 /* keyboard.png in Resources */,
 				726F08D81867DE18006343F9 /* sina.png in Resources */,
