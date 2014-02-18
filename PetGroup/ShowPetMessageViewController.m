@@ -12,12 +12,13 @@
 #import "XMPPHelper.h"
 #import "KGStatusBar.h"
 #import "PersonDetailViewController.h"
-@interface ShowPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
+@interface ShowPetMessageViewController ()<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     BOOL isSelf;
 }
 @property (nonatomic,retain)UITableView * tableV;
-@property (nonatomic,retain)UIAlertView* callMeAlertV;
+@property (nonatomic,retain)UIActionSheet* callMeActionSheet;
+@property (nonatomic,retain)UIActionSheet* unboundActionSheet;
 @property (nonatomic,assign)AppDelegate* appDel;
 @end
 
@@ -81,11 +82,11 @@
     aLabel.text = @"糟糕!";
     aLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:aLabel];
-    UILabel*bLabel =[[UILabel alloc]initWithFrame:CGRectMake(45, 300, 230, 50)];
+    UILabel*bLabel =[[UILabel alloc]initWithFrame:CGRectMake(10, 300, 300, 50)];
     bLabel.numberOfLines = 2;
     bLabel.backgroundColor = [UIColor clearColor];
     bLabel.textColor = [UIColor orangeColor];
-    bLabel.text = @"该防丢失二维码挂件尚未被绑定,你可以发布招领帖,寻找宠物主人";
+    bLabel.text = @"该防丢失二维码挂件尚未被绑定,\n你可以发布招领帖,寻找宠物主人";
     bLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:bLabel];
     
@@ -107,8 +108,8 @@
 }
 -(void)showActtionSheet
 {
-    UIActionSheet* action = [[UIActionSheet alloc]initWithTitle:@"解绑防丢失二维码后,需要重新绑定激活才能恢复" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"解除绑定" otherButtonTitles:nil];
-    [action showInView:self.view];
+    self.unboundActionSheet = [[UIActionSheet alloc]initWithTitle:@"解绑防丢失二维码后,需要重新绑定激活才能恢复" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"解除绑定" otherButtonTitles:nil];
+    [_unboundActionSheet showInView:self.view];
 }
 -(void)back
 {
@@ -243,49 +244,45 @@
                 [self.navigationController pushViewController:personDVC animated:YES];
             }
             if (indexPath.row == 1) {
-                self.callMeAlertV = [[UIAlertView alloc]initWithTitle:nil message:@"给我打电话?" delegate:self cancelButtonTitle:@"才不呢" otherButtonTitles:@"对呀对呀", nil];
-                [_callMeAlertV show];
+                self.callMeActionSheet = [[UIActionSheet alloc]initWithTitle:@"联系宠物主人" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:_RQCodeMessage[@"petOwnerTel"] otherButtonTitles: nil];
+                [_callMeActionSheet showInView:self.view];
             }
         }
     }
 }
-#pragma mark - alertView delegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        if (alertView == _callMeAlertV) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",_RQCodeMessage[@"petOwnerTel"]]]];
-        }
-    }
-}
+#pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
-        NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
-        long long a = (long long)(cT*1000);
-        [params setObject:_RQCodeMessage[@"id"] forKey:@"id"];
-        NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
-        [body setObject:@"1" forKey:@"channel"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
-        [body setObject:@"iphone" forKey:@"imei"];
-        [body setObject:params forKey:@"params"];
-        [body setObject:@"unboundPetCard" forKey:@"method"];
-        [body setObject:@"service.uri.pet_user" forKey:@"service"];
-        [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
-        [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
-        
-        [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//            [hud hide:YES];
-            if (self.delegate&&[_delegate respondsToSelector:@selector(finishDelRQCodeMessageWithPet:)]) {
-                [self.delegate finishDelRQCodeMessageWithPet:_RQCodeMessage];
-            }
+        if (actionSheet == _callMeActionSheet) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",_RQCodeMessage[@"petOwnerTel"]]]];
+        }if (actionSheet == _unboundActionSheet) {
+            NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+            NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+            long long a = (long long)(cT*1000);
+            [params setObject:_RQCodeMessage[@"id"] forKey:@"id"];
+            NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+            [body setObject:@"1" forKey:@"channel"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+            [body setObject:@"iphone" forKey:@"imei"];
+            [body setObject:params forKey:@"params"];
+            [body setObject:@"unboundPetCard" forKey:@"method"];
+            [body setObject:@"service.uri.pet_user" forKey:@"service"];
+            [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+            [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
             
-        }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
-            [alert show];
-//            [hud hide:YES];
-        }];
+            [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                //            [hud hide:YES];
+                if (self.delegate&&[_delegate respondsToSelector:@selector(finishDelRQCodeMessageWithPet:)]) {
+                    [self.delegate finishDelRQCodeMessageWithPet:_RQCodeMessage];
+                }
+                
+            }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                UIAlertView * alert = [[UIAlertView alloc]initWithTitle:nil message:@"发送失败，请重发" delegate:nil cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+                [alert show];
+                //            [hud hide:YES];
+            }];
+        }
     }
 }
 /*

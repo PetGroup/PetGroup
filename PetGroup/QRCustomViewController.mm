@@ -115,6 +115,7 @@
     if (_delegate && [_delegate respondsToSelector:@selector(textForQRCustomViewController:)]) {
         UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(40, 354 + diffH, 240, 50)];
         label.numberOfLines = 0;
+        label.font = [UIFont systemFontOfSize:16];
         label.textAlignment = NSTextAlignmentCenter;
         [self.view addSubview:label];
         label.backgroundColor = [UIColor clearColor];

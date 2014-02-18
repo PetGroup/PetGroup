@@ -258,7 +258,7 @@
         return @"请首先在取景框中扫描您需要绑定的二维码";
     }else
     {
-        return @"将二维码放入框内,即可自动扫面";
+        return @"将二维码放入框内,即可自动扫描";
     }
 }
 - (void)customViewController:(QRCustomViewController *)controller didScanResult:(NSString *)result
