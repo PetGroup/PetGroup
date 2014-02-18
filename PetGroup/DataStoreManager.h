@@ -48,7 +48,7 @@
 +(BOOL)ifHaveThisFriend:(NSString *)userName;
 +(BOOL)ifFriendHaveNicknameAboutUser:(NSString *)username;
 +(NSMutableArray *)querySections;
-+(NSMutableArray *)queryAllFriends;
++(NSMutableDictionary *)queryAllFriends;
 //+(void)addFriendToLocal:(NSDictionary *)userInfoDict;
 +(void)addFriendToLocal:(NSString *)username;
 +(NSString *)queryNickNameForUser:(NSString *)userName;
