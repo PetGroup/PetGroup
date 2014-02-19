@@ -151,36 +151,36 @@
     [forgetBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     
-//    UIButton * sinaLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [sinaLoginBtn setFrame:CGRectMake(70, 360+diffH, 60, 60)];
-//    [sinaLoginBtn setImage:[UIImage imageNamed:@"sina.png"] forState:UIControlStateNormal];
-//    [self.view addSubview:sinaLoginBtn];
-//    sinaLoginBtn.tag = 101;
-//    [sinaLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    UILabel * sinaLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 430+diffH, 100, 20)];
-//    [sinaLabel setBackgroundColor:[UIColor clearColor]];
-//    [sinaLabel setTextColor:[UIColor blackColor]];
-//    [sinaLabel setText:@"新浪微博登陆"];
-//    [sinaLabel setFont:[UIFont systemFontOfSize:15]];
-//    [sinaLabel setTextAlignment:NSTextAlignmentCenter];
-//    [self.view addSubview:sinaLabel];
-//    
-//    UIButton * qqLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [qqLoginBtn setFrame:CGRectMake(320-70-60, 360+diffH, 60, 60)];
-//    [qqLoginBtn setImage:[UIImage imageNamed:@"tencent.png"] forState:UIControlStateNormal];
-//    [self.view addSubview:qqLoginBtn];
-//    qqLoginBtn.tag = 102;
-//    [qqLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    
-//    UILabel * qqLabel = [[UILabel alloc] initWithFrame:CGRectMake(320-70-60-20, 430+diffH, 100, 20)];
-//    [qqLabel setBackgroundColor:[UIColor clearColor]];
-//    [qqLabel setTextColor:[UIColor blackColor]];
-//    [qqLabel setText:@"腾讯微博登陆"];
-//    [qqLabel setFont:[UIFont systemFontOfSize:15]];
-//    [qqLabel setTextAlignment:NSTextAlignmentCenter];
-//    [self.view addSubview:qqLabel];
+    UIButton * sinaLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sinaLoginBtn setFrame:CGRectMake(70, 360+diffH, 60, 60)];
+    [sinaLoginBtn setImage:[UIImage imageNamed:@"sina.png"] forState:UIControlStateNormal];
+    [self.view addSubview:sinaLoginBtn];
+    sinaLoginBtn.tag = 101;
+    [sinaLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel * sinaLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 430+diffH, 100, 20)];
+    [sinaLabel setBackgroundColor:[UIColor clearColor]];
+    [sinaLabel setTextColor:[UIColor blackColor]];
+    [sinaLabel setText:@"新浪微博登陆"];
+    [sinaLabel setFont:[UIFont systemFontOfSize:15]];
+    [sinaLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:sinaLabel];
+    
+    UIButton * qqLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [qqLoginBtn setFrame:CGRectMake(320-70-60, 360+diffH, 60, 60)];
+    [qqLoginBtn setImage:[UIImage imageNamed:@"tencent.png"] forState:UIControlStateNormal];
+    [self.view addSubview:qqLoginBtn];
+    qqLoginBtn.tag = 102;
+    [qqLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UILabel * qqLabel = [[UILabel alloc] initWithFrame:CGRectMake(320-70-60-20, 430+diffH, 100, 20)];
+    [qqLabel setBackgroundColor:[UIColor clearColor]];
+    [qqLabel setTextColor:[UIColor blackColor]];
+    [qqLabel setText:@"腾讯微博登陆"];
+    [qqLabel setFont:[UIFont systemFontOfSize:15]];
+    [qqLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:qqLabel];
     [self.view addSubview:forgetBtn];
     [forgetBtn addTarget:self action:@selector(resetPassWord:) forControlEvents:UIControlEventTouchUpInside];
     

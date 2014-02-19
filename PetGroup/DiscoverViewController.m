@@ -39,7 +39,7 @@
     if (self) {
         // Custom initialization
         
-        codeSwitch = NO;
+        codeSwitch = YES;
         if (codeSwitch) {
             self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科",@"宠物二维码"];
             self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png",@"codeicon.png"];
