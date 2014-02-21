@@ -1801,7 +1801,8 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         selectedNSRange = [self rangeIntersection:r.range withSecond:_selectedRange];
     }
     [_attributedString replaceCharactersInRange:r.range withString:text];
-    self.selectedRange = selectedNSRange;    
+
+    self.selectedRange = selectedNSRange;
     _dirty=YES;
     
 }
@@ -1837,7 +1838,12 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     
     actiontime=[NSString stringWithFormat:@"markedText %@",markedText];
     beginedittime=[[NSDate date]timeIntervalSince1970];
-      
+    
+    if (markedText.length>0&&_placeHolderView!=nil) {
+        [_placeHolderView removeFromSuperview];
+        _placeHolderView=nil;
+    }
+    
     if (markedText!=nil && [markedText length]>0) {  //gfthr add for fix baidu input bug baidu3.5.5
         [self.attributedString beginStorageEditing];        
         
@@ -2211,7 +2217,10 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     NSRange markedTextRange = self.markedRange;
     
     NSString *text=newString.string;
-    
+    if (text.length>0&&_placeHolderView!=nil) {
+        [_placeHolderView removeFromSuperview];
+        _placeHolderView=nil;
+    }
     /*if (_correctionRange.location != NSNotFound && _correctionRange.length > 0){
      ace
      [_mutableAttributedString replaceCharactersInRange:self.correctionRange withAttributedString:newString];
@@ -2370,6 +2379,9 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     _dirty=YES;
     displayFlags=FastDisplayRect;
     [_textContentView refreshView];
+    if (self.attributedString.string.length<1) {
+        [self showPlaceHolderView];
+    }
 }
 
 
@@ -3018,11 +3030,11 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
         [self selectionChanged];       
     
     }
-    if (_placeHolderView!=nil ) {
-        [_placeHolderView removeFromSuperview];
-        _placeHolderView=nil;
-    }
-     
+//    if (_placeHolderView!=nil) {
+//        [_placeHolderView removeFromSuperview];
+//        _placeHolderView=nil;
+//    }
+    
     return [super becomeFirstResponder];
 }
 
@@ -3051,12 +3063,12 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
     
     [_caretView removeFromSuperview];//resignFirstResponder should remove caret // 需要去掉光标
     
-    if (![self.attributedString.string isEqualToString:EMPTY_STRING] ) {//self.attributedString.length>0
-        [_placeHolderView removeFromSuperview];
-        _placeHolderView=nil;
-    }else{
-        [self showPlaceHolderView];
-    }
+//    if (![self.attributedString.string isEqualToString:EMPTY_STRING] ) {//self.attributedString.length>0
+//        [_placeHolderView removeFromSuperview];
+//        _placeHolderView=nil;
+//    }else{
+//        [self showPlaceHolderView];
+//    }
     
     isFirstResponser=NO;
 
