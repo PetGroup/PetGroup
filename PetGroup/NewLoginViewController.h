@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TempData.h"
 #import "LocationManager.h"
+@class DedLoginViewController;
 @interface NewLoginViewController : UIViewController
 
 @end

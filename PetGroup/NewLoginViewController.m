@@ -7,14 +7,17 @@
 //
 
 #import "NewLoginViewController.h"
+#import <ShareSDK/ShareSDK.h>
 #import "NewRegistOneViewController.h"
 #import "ReSetPassWordViewController.h"
 #import "IdentifyingString.h"
 #import "MBProgressHUD.h"
-
+#import "DedLoginViewController.h"
 @interface NewLoginViewController ()
 {
     MBProgressHUD* hud;
+    ShareType theShareType;
+    NSMutableDictionary * thirdInfoDict;
 }
 @property (nonatomic,strong) UITextField* PhoneNoTF;
 @property (nonatomic,strong) UITextField* passWordTF;
@@ -44,6 +47,7 @@
 //    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44)];
 //    [bgimgV setImage:[UIImage imageNamed:@"regBG.png"]];
 //    [self.view addSubview:bgimgV];
+    thirdInfoDict = [NSMutableDictionary dictionary];
     UIImageView *TopBarBGV=[[UIImageView alloc]initWithImage:[UIImage imageNamed:diffH==0?@"topBar1.png":@"topBar2.png"]];
     [TopBarBGV setFrame:CGRectMake(0, 0, 320, 44+diffH)];
     [self.view addSubview:TopBarBGV];
@@ -146,6 +150,37 @@
     [forgetBtn.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [forgetBtn setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [forgetBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    
+    UIButton * sinaLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sinaLoginBtn setFrame:CGRectMake(70, 360+diffH, 60, 60)];
+    [sinaLoginBtn setImage:[UIImage imageNamed:@"sina.png"] forState:UIControlStateNormal];
+    [self.view addSubview:sinaLoginBtn];
+    sinaLoginBtn.tag = 101;
+    [sinaLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel * sinaLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 430+diffH, 100, 20)];
+    [sinaLabel setBackgroundColor:[UIColor clearColor]];
+    [sinaLabel setTextColor:[UIColor blackColor]];
+    [sinaLabel setText:@"新浪微博登陆"];
+    [sinaLabel setFont:[UIFont systemFontOfSize:15]];
+    [sinaLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:sinaLabel];
+    
+    UIButton * qqLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [qqLoginBtn setFrame:CGRectMake(320-70-60, 360+diffH, 60, 60)];
+    [qqLoginBtn setImage:[UIImage imageNamed:@"tencent.png"] forState:UIControlStateNormal];
+    [self.view addSubview:qqLoginBtn];
+    qqLoginBtn.tag = 102;
+    [qqLoginBtn addTarget:self action:@selector(thirdPartyLoginWithType:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UILabel * qqLabel = [[UILabel alloc] initWithFrame:CGRectMake(320-70-60-20, 430+diffH, 100, 20)];
+    [qqLabel setBackgroundColor:[UIColor clearColor]];
+    [qqLabel setTextColor:[UIColor blackColor]];
+    [qqLabel setText:@"腾讯微博登陆"];
+    [qqLabel setFont:[UIFont systemFontOfSize:15]];
+    [qqLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.view addSubview:qqLabel];
     [self.view addSubview:forgetBtn];
     [forgetBtn addTarget:self action:@selector(resetPassWord:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -161,6 +196,194 @@
         
     }];
 
+}
+-(void)thirdPartyLoginWithType:(UIButton *)sender
+{
+    theShareType = sender.tag == 101?ShareTypeSinaWeibo:ShareTypeTencentWeibo;
+    [ShareSDK getUserInfoWithType:theShareType
+                      authOptions:nil
+                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+                               
+                               if (result)
+                               {
+                                   NSLog(@"userInfo:%@",userInfo.sourceData);
+                                   NSDictionary * uDict = userInfo.sourceData;
+                                   if (theShareType==ShareTypeTencentWeibo) {
+                                       [thirdInfoDict setObject:@"11" forKey:@"src"];
+                                       [thirdInfoDict setObject:[NSString stringWithFormat:@"tencentweibo%@",[uDict objectForKey:@"openid"]] forKey:@"username"];
+                                       [thirdInfoDict setObject:[uDict objectForKey:@"name"] forKey:@"nickname"];
+                                       [thirdInfoDict setObject:[NSString stringWithFormat:@"tencentweibo%@",[uDict objectForKey:@"openid"]] forKey:@"password"];
+                                       [thirdInfoDict setObject:[[uDict objectForKey:@"sex"] intValue]==0?@"female":@"male" forKey:@"gender"];
+                                       [thirdInfoDict setObject:[NSString stringWithFormat:@"%d",[self getYear]-[[uDict objectForKey:@"birth_year"] intValue]] forKey:@"birthdate"];
+                                       [thirdInfoDict setObject:[uDict objectForKey:@"location"] forKey:@"city"];
+                                       
+                                       //
+                                       [thirdInfoDict setObject:[uDict objectForKey:@"head"] forKey:@"img"];
+                                       [thirdInfoDict setObject:@"该用户还未设置爱好" forKey:@"hobby"];
+                                       [thirdInfoDict setObject:@"该用户还未填写签名" forKey:@"signature"];
+                                   }
+                                   else if (theShareType==ShareTypeSinaWeibo){
+                                       [thirdInfoDict setObject:@"10" forKey:@"src"];
+                                       [thirdInfoDict setObject:[NSString stringWithFormat:@"sinaweibo%@",[uDict objectForKey:@"id"]] forKey:@"username"];
+                                       [thirdInfoDict setObject:[uDict objectForKey:@"name"] forKey:@"nickname"];
+                                       [thirdInfoDict setObject:[NSString stringWithFormat:@"sinaweibo%@",[uDict objectForKey:@"id"]] forKey:@"password"];
+                                       [thirdInfoDict setObject:[[uDict objectForKey:@"gender"] isEqualToString:@"m"]?@"male":@"female" forKey:@"gender"];
+                                       [thirdInfoDict setObject:@"20" forKey:@"birthdate"];
+                                       [thirdInfoDict setObject:[uDict objectForKey:@"location"] forKey:@"city"];
+                                       
+                                       //
+                                       [thirdInfoDict setObject:@"" forKey:@"img"];
+                                       [thirdInfoDict setObject:@"该用户还未设置爱好" forKey:@"hobby"];
+                                       [thirdInfoDict setObject:@"该用户还未填写签名" forKey:@"signature"];
+                                   }
+                                   [self checkIfUsernameInUse:[thirdInfoDict objectForKey:@"username"]];
+                               }
+                               
+                               
+                           }];
+}
+-(int)getYear
+{
+    NSDate *now = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
+    int year = [dateComponent year];
+    return year;
+}
+-(void)checkIfUsernameInUse:(NSString *)username
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:username forKey:@"username"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"isUsernameInuse" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([responseObject boolValue]==true) {
+//            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"该手机号已被注册" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+//            [alert show];
+//            [hud hide:YES];
+            [self loginWithUser:username];
+        }else{
+//            [hud hide:YES];
+//            [self puchNextView];
+            [self regNewUser:username];
+        }
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"糟糕！登录失败，请稍后重试" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
+
+}
+-(void)regNewUser:(NSString *)username
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    params = thirdInfoDict;
+    NSString * deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:PushDeviceToken];
+    [params setObject:deviceToken?deviceToken:@"" forKey:@"deviceToken"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"register" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        //        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        //        NSRange range=[dede rangeOfString:@"token"];
+        //        if (range.location!=NSNotFound) {
+        [self saveSelfUserInFo:responseObject];
+        [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:username forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:PASSWORD andPassword:username forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        
+        [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
+        [params setObject:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] forKey:@"username"];
+        [params setObject:[responseObject objectForKey:@"userid"] forKey:@"id"];
+        [DataStoreManager saveUserInfo:params];
+        DedLoginViewController* newReg = [[DedLoginViewController alloc]init];
+        newReg.dic = params;
+        [self.navigationController pushViewController:newReg animated:YES];
+        //        }
+        //        else
+        //        {
+        //            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        //            [alert show];
+        //            [hud hide:YES];
+        //        }
+    }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络请求异常，请确认网络连接正常" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
+
+}
+-(void)loginWithUser:(NSString *)username
+{
+    NSMutableDictionary* params = [[NSMutableDictionary alloc]init];
+    NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
+    long long a = (long long)(cT*1000);
+    [params setObject:username forKey:@"username"];
+    [params setObject:username forKey:@"password"];
+    NSString * deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:PushDeviceToken];
+    [params setObject:deviceToken?deviceToken:@"" forKey:@"deviceToken"];
+    NSMutableDictionary* body = [[NSMutableDictionary alloc]init];
+    [body setObject:@"1" forKey:@"channel"];
+    [body setObject:[SFHFKeychainUtils getPasswordForUsername:MACADDRESS andServiceName:LOCALACCOUNT error:nil] forKey:@"mac"];
+    [body setObject:@"iphone" forKey:@"imei"];
+    [body setObject:params forKey:@"params"];
+    [body setObject:@"login" forKey:@"method"];
+    [body setObject:@"service.uri.pet_sso" forKey:@"service"];
+    [body setObject:[NSString stringWithFormat:@"%lld",a] forKey:@"connectTime"];
+    [hud show:YES];
+    [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [hud hide:YES];
+        //        NSString * dede = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
+        //        NSRange range=[dede rangeOfString:@"authenticationToken"];
+        //        if (range.location!=NSNotFound) {
+        NSDictionary* dic = responseObject;
+        
+        [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dic objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:username forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [SFHFKeychainUtils storeUsername:PASSWORD andPassword:username forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+        [DataStoreManager setDefaultDataBase:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil] AndDefaultModel:@"LocalStore"];
+        [DataStoreManager storeMyUserID:[[dic objectForKey:@"authenticationToken"] objectForKey:@"userid"]];
+        [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
+        NSLog(@"LOGIN DIC:%@,USER:%@,PHONRNUM:%@",dic,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil],self.PhoneNoTF.text);
+        //            [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+        }];
+        //        }
+        //        else {
+        //            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"用户名或密码错误" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        //            [alert show];
+        //        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络可能有点问题，稍后再试吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        [alert show];
+        [hud hide:YES];
+    }];
+
+}
+-(void)saveSelfUserInFo:(NSDictionary*)dic
+{
+    NSLog(@"%@",dic);
+    [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[dic objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [self upLoadUserLocationWithLat:[[TempData sharedInstance] returnLat] Lon:[[TempData sharedInstance] returnLon]];
 }
 - (void) textFieldDidChange:(UITextField *) textField
 {
@@ -239,7 +462,7 @@
 //            [alert show];
 //        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"请确保用户名密码正确" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络可能有点问题，稍后再试吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         [hud hide:YES];
     }];

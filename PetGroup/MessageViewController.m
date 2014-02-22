@@ -996,6 +996,7 @@
 //        [alert show];
 //    }
     [SFHFKeychainUtils storeUsername:LOCALTOKEN andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"token"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
+    [SFHFKeychainUtils storeUsername:ACCOUNT andPassword:[[dict objectForKey:@"authenticationToken"] objectForKey:@"username"] forServiceName:LOCALACCOUNT updateExisting:YES error:nil];
     [DataStoreManager storeMyUserID:[[dict objectForKey:@"authenticationToken"] objectForKey:@"userid"]];
     TempData * tp = [TempData sharedInstance];
     tp.hostPort = [[dict objectForKey:@"chatserver"] objectForKey:@"port"]?[[dict objectForKey:@"chatserver"] objectForKey:@"port"]:@"5222";

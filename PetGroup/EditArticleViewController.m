@@ -36,9 +36,13 @@
     NSMutableString * stringToPublish;
     NSMutableArray * tagArray;
     NSMutableArray * tagPositionArray;
+    
+    UIScrollView * scrollV;
+    UIScrollView * scrollV2;
+    NSArray * theTagArray;
 //    FastTextView *_dynamicTV;
 }
-@property (nonatomic,strong)UITextView* titleTF;
+@property (nonatomic,strong)UIPlaceHolderTextView* titleTF;
 @property (nonatomic,strong)FastTextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
 @property (nonatomic,strong)NSMutableArray* pictureArray;
@@ -59,7 +63,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
+        theTagArray = [NSArray arrayWithObjects:@" 晒一晒 ",@" 求助 ",@" 婚配/领养 ",@" 经验之谈 ", nil];
     }
     return self;
 }
@@ -74,13 +78,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     self.forumId = ((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).circleID;
     self.forumName =((CircleEntity*)((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray[self.indexPath.row]).name;
     self.circleArray = ((CircleClassify*)self.CircleTree[self.indexPath.section]).circleArray;
     
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
-    [self.view addSubview:bgimgV];
+//    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+//    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
+//    [self.view addSubview:bgimgV];
     
     diffH = [Common diffHeight:self];
     
@@ -101,8 +106,10 @@
     [cancelBtn addTarget:self action:@selector(backButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelBtn];
     
+    
+    self.forumName = @"新话题";
     CGSize size = [self.forumName sizeWithFont:[UIFont systemFontOfSize:18]];
-    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width-15)/2, (44-size.height)/2+diffH, size.width, size.height)];
+    titleLabel=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width)/2, (44-size.height)/2+diffH, size.width, size.height)];
     titleLabel.backgroundColor=[UIColor clearColor];
     [titleLabel setText:self.forumName];
     [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
@@ -110,14 +117,14 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    xialaIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xiala_bg"]];
-    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
-    [self.view addSubview:xialaIV];
-    
-    xialaB = [UIButton buttonWithType:UIButtonTypeCustom];
-    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
-    [xialaB addTarget:self action:@selector(screen) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:xialaB];
+//    xialaIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xiala_bg"]];
+//    xialaIV.frame = CGRectMake(titleLabel.frame.origin.x+size.width, 0+diffH, 15, 44);
+//    [self.view addSubview:xialaIV];
+//    
+//    xialaB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    xialaB.frame = CGRectMake(titleLabel.frame.origin.x, diffH, size.width+15, 44);
+//    [xialaB addTarget:self action:@selector(screen) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:xialaB];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
     nextB.frame = CGRectMake(240, 0+diffH, 80, 44);
@@ -131,11 +138,11 @@
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImage * bgImage = [[UIImage imageNamed:@"shurukuang.png"]
-               stretchableImageWithLeftCapWidth:0 topCapHeight:65];
-    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, self.view.frame.size.height-(diffH+55.57+253+44))];
-    editIV.image = bgImage ;
-    [self.view addSubview:editIV];
+//    UIImage * bgImage = [[UIImage imageNamed:@"shurukuang.png"]
+//               stretchableImageWithLeftCapWidth:0 topCapHeight:65];
+//    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, self.view.frame.size.height-(diffH+55.57+253+44))];
+//    editIV.image = bgImage ;
+//    [self.view addSubview:editIV];
     
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (version >= 5.0) {
@@ -153,51 +160,150 @@
 //    [self.view addSubview:_titleTF];
 //    [_titleTF addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
-    self.titleTF = [[UITextView alloc]initWithFrame:CGRectMake(22.75, 58.75+diffH, 272.5, 30)];
+    self.titleTF = [[UIPlaceHolderTextView alloc]initWithFrame:CGRectMake(5, 48.75+diffH, 310, 40)];
     self.titleTF.backgroundColor = [UIColor clearColor];
     self.titleTF.font = [UIFont systemFontOfSize:16];
+    self.titleTF.placeholder = @"标题(必填)";
     self.titleTF.delegate = self;
     [self.view addSubview:self.titleTF];
     
-    self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 91.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
+    UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(10, 56.75+diffH+30+4, 300, 1)];
+    [lineView setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
+    [self.view addSubview:lineView];
+    
+    self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(3, 93.75+diffH, 314,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
-    _dynamicTV.placeHolder=@"好好写点^_^";
+    _dynamicTV.placeHolder=@"内容(必填)";
     [_dynamicTV setFont:[UIFont systemFontOfSize:17]];
     _dynamicTV.pragraghSpaceHeight=15;
     _dynamicTV.backgroundColor=[UIColor clearColor];
 
     [self.view addSubview:_dynamicTV];
+    [self.titleTF becomeFirstResponder];
     
     UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
     tool.userInteractionEnabled = YES;
-    if (diffH==0.0f) {
-        tool.image = [UIImage imageNamed:@"table_bg"];
-    }
-    else
-    {
-        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-        tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
-        tool.layer.borderWidth = 1;
-    }
+    tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
+    tool.layer.borderWidth = 1;
+    
+    UIImageView* tool2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
+    tool2.backgroundColor = [UIColor clearColor];
+    tool2.userInteractionEnabled = YES;
+    tool2.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    tool2.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
+    tool2.layer.borderWidth = 1;
+
     _dynamicTV.inputAccessoryView = tool;
+    self.titleTF.inputAccessoryView = tool2;
 //    [self.view addSubview:tool];
     
+    
+    scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
+    scrollV.delegate = self;
+//    scrollV.contentSize = CGSizeMake(320, 44);
+    scrollV.showsHorizontalScrollIndicator=NO;
+	scrollV.showsVerticalScrollIndicator=NO;
+    float aWidth = 0.0f;
+    float bWidth = 0.0f;
+    for (int i = 0;i < theTagArray.count;i ++) {
+        UILabel * tagTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 25)];
+        tagTitleLabel.numberOfLines = 0;  //必须定义这个属性，否则UILabel不会换行
+        tagTitleLabel.textColor = [UIColor whiteColor];
+        tagTitleLabel.textAlignment = NSTextAlignmentLeft;  //文本对齐方式
+        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+        tagTitleLabel.layer.cornerRadius = 4;
+        tagTitleLabel.layer.masksToBounds = YES;
+        tagTitleLabel.tag = i + 100;
+        
+        NSString *str = theTagArray[i];
+        CGSize size = [str sizeWithFont:tagTitleLabel.font constrainedToSize:CGSizeMake(MAXFLOAT, 25) lineBreakMode:NSLineBreakByWordWrapping];
+        //根据计算结果重新设置UILabel的尺寸
+        [tagTitleLabel setFrame:CGRectMake(0, 0, size.width, 25)];
+        tagTitleLabel.text = str;
+        
+        aWidth = aWidth + size.width+10;
+        
+        UIButton* tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        tagBtn.frame = CGRectMake(aWidth-size.width, 8.5, size.width, 25);
+        [tagBtn addSubview:tagTitleLabel];
+        [tagBtn addTarget:self action:@selector(setTopicTag:) forControlEvents:UIControlEventTouchUpInside];
+        tagBtn.tag = i + 100;
+        [scrollV addSubview:tagBtn];
+        bWidth = size.width;
+        
+    }
+    scrollV.contentSize = CGSizeMake(aWidth, 44);
+    
+    scrollV2 = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
+    scrollV2.delegate = self;
+    //    scrollV.contentSize = CGSizeMake(320, 44);
+    scrollV2.showsHorizontalScrollIndicator=NO;
+	scrollV2.showsVerticalScrollIndicator=NO;
+    float aWidth2 = 0.0f;
+    float bWidth2 = 0.0f;
+    for (int i = 0;i < theTagArray.count;i ++) {
+        UILabel * tagTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 25)];
+        tagTitleLabel.numberOfLines = 0;  //必须定义这个属性，否则UILabel不会换行
+        tagTitleLabel.textColor = [UIColor whiteColor];
+        tagTitleLabel.textAlignment = NSTextAlignmentLeft;  //文本对齐方式
+        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+        tagTitleLabel.layer.cornerRadius = 4;
+        tagTitleLabel.layer.masksToBounds = YES;
+        tagTitleLabel.tag = i + 100;
+        
+        NSString *str = theTagArray[i];
+        CGSize size = [str sizeWithFont:tagTitleLabel.font constrainedToSize:CGSizeMake(MAXFLOAT, 25) lineBreakMode:NSLineBreakByWordWrapping];
+        //根据计算结果重新设置UILabel的尺寸
+        [tagTitleLabel setFrame:CGRectMake(0, 0, size.width, 25)];
+        tagTitleLabel.text = str;
+        
+        aWidth2 = aWidth2 + size.width+10;
+        
+        UIButton* tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        tagBtn.frame = CGRectMake(aWidth2-size.width, 8.5, size.width, 25);
+        [tagBtn addSubview:tagTitleLabel];
+        [tagBtn addTarget:self action:@selector(setTopicTag:) forControlEvents:UIControlEventTouchUpInside];
+        tagBtn.tag = i + 100;
+        [scrollV2 addSubview:tagBtn];
+        bWidth2 = size.width;
+        
+    }
+    scrollV2.contentSize = CGSizeMake(aWidth2, 44);
+    [tool addSubview:scrollV];
+    [tool2 addSubview:scrollV2];
+    
+//    [tool2 addSubview:scrollV];
+    
     imageB = [UIButton buttonWithType:UIButtonTypeCustom];
-    imageB.frame = CGRectMake(270, 4, 32, 32);
+    imageB.frame = CGRectMake(278, 5, 30, 30);
     [imageB addTarget:self action:@selector(getAnActionSheet) forControlEvents:UIControlEventTouchUpInside];
     [imageB setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
     [tool addSubview:imageB];
     
     emojiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emojiBtn setFrame:CGRectMake(220,-2 , 45, 45)];
+    [emojiBtn setFrame:CGRectMake(229,-1 , 43, 43)];
     [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:NO];
+    UIButton * imageB2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    imageB2.frame = CGRectMake(278, 5, 30, 30);
+    [imageB2 setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
+    [tool2 addSubview:imageB2];
+    [imageB2 setEnabled:NO];
+    
+    UIButton * emojiBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [emojiBtn2 setFrame:CGRectMake(229,-1 , 43, 43)];
+    [emojiBtn2 setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    [tool2 addSubview:emojiBtn2];
+    [emojiBtn2 setEnabled:NO];
+
+    
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
     theEmojiView.delegate = self;
 //    [self.view addSubview:theEmojiView];
 //    theEmojiView.hidden = YES;
@@ -222,7 +328,7 @@
     hud.delegate = self;
     hud.labelText = @"发布中...";
     
-    [self screen];
+//    [self screen];
 }
 
 - (void)didReceiveMemoryWarning
@@ -230,7 +336,58 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if (scrollView==scrollV) {
+        scrollV2.contentOffset = scrollView.contentOffset;
+    }
+    else if(scrollView==scrollV2)
+    {
+        scrollV.contentOffset = scrollView.contentOffset;
+    }
+}
+-(void)setTopicTag:(UIButton *)sender
+{
+    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:sender.tag];
+    UILabel * tempL = (UILabel *)[tB viewWithTag:sender.tag];
+    
+    tempL.layer.cornerRadius = 4;
+    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
+    tempL.layer.borderWidth = 2;
+    tempL.layer.masksToBounds = YES;
+//    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+    
+    for (UIButton * tpBtn in scrollV2.subviews) {
+        if (tpBtn.tag!=sender.tag) {
+            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+//            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+            tempL2.layer.cornerRadius = 4;
+            tempL2.layer.borderWidth = 0;
+            tempL2.layer.masksToBounds = YES;
+        }
+    }
+    
+    UIButton * tB2 = (UIButton *)[scrollV viewWithTag:sender.tag];
+    UILabel * tempLa = (UILabel *)[tB2 viewWithTag:sender.tag];
+    
+    tempLa.layer.cornerRadius = 4;
+    tempLa.layer.borderColor = [[UIColor orangeColor] CGColor];
+    tempLa.layer.borderWidth = 2;
+    tempLa.layer.masksToBounds = YES;
+    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+    
+    for (UIButton * tpBtn in scrollV.subviews) {
+        if (tpBtn.tag!=sender.tag) {
+            UILabel * tempL2a = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+            tempL2a.layer.cornerRadius = 4;
+            tempL2a.layer.borderWidth = 0;
+            tempL2a.layer.masksToBounds = YES;
+        }
+    }
+    
+    NSLog(@"tag = %@",theTagArray[sender.tag-100]);
+}
 -(void)emojiBtnClicked:(UIButton *)sender
 {
     if (!ifEmoji) {
@@ -259,9 +416,7 @@
 }
 -(void)deleteEmojiStr
 {
-//    if (self.textView.text.length>=1) {
-//        self.textView.text = [self.textView.text substringToIndex:(self.textView.text.length-1)];
-//    }
+    [_dynamicTV deleteBackward];
 }
 -(NSString *)selectedEmoji:(NSString *)ssss
 {
@@ -568,8 +723,10 @@
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:[textView.text substringFromIndex:textView.text.length-2]]) {
-        textView.text = [textView.text substringToIndex:textView.text.length-2];
+    if (textView.text.length>2&&[[Emoji allEmoji] containsObject:text]) {
+        NSMutableString * at = [NSMutableString stringWithString:textView.text];
+        [at replaceCharactersInRange:range withString:@""];
+        textView.text = (NSString *)at;
     }
     if (textView.text.length>40)
     {
@@ -593,8 +750,7 @@
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [_titleTF resignFirstResponder];
-    [_dynamicTV resignFirstResponder];
+ 
 }
 #pragma mark - actionsheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

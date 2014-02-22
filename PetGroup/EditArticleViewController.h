@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Article.h"
 #import "EmojiView.h"
+#import "UIPlaceHolderTextView.h"
 @protocol EditArticleViewDelegate<NSObject>
 -(void)editArticleViewDidEdit:(Article*)aricle;
 @end

@@ -60,13 +60,13 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-//    UIButton *addButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    addButton.frame=CGRectMake(275, 6, 40, 30);
-//    [addButton setBackgroundImage:[UIImage imageNamed:@"tianjia.png"] forState:UIControlStateNormal];
-//    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
-//    [addButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
-//    [self.view addSubview:addButton];
-//    [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
+    //    UIButton *addButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    //    addButton.frame=CGRectMake(275, 6, 40, 30);
+    //    [addButton setBackgroundImage:[UIImage imageNamed:@"tianjia.png"] forState:UIControlStateNormal];
+    //    //   [backButton setTitle:@" 返回" forState:UIControlStateNormal];
+    //    [addButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
+    //    [self.view addSubview:addButton];
+    //    [addButton addTarget:self action:@selector(addButton:) forControlEvents:UIControlEventTouchUpInside];
     
     self.contactsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 44+diffH+44, 320, self.view.frame.size.height-44-diffH-44) style:UITableViewStylePlain];
     [self.view addSubview:self.contactsTable];
@@ -140,18 +140,18 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-//    if ([[TempData sharedInstance] needChat]) {
-//        [self.customTabBarController setSelectedPage:0];
-//        return;
-//    }
-//    if ([[TempData sharedInstance] ifPanned]) {
-//        [self.customTabBarController hidesTabBar:NO animated:NO];
-//    }
-//    else
-//    {
-//        [self.customTabBarController hidesTabBar:NO animated:YES];
-//        [[TempData sharedInstance] Panned:YES];
-//    }
+    //    if ([[TempData sharedInstance] needChat]) {
+    //        [self.customTabBarController setSelectedPage:0];
+    //        return;
+    //    }
+    //    if ([[TempData sharedInstance] ifPanned]) {
+    //        [self.customTabBarController hidesTabBar:NO animated:NO];
+    //    }
+    //    else
+    //    {
+    //        [self.customTabBarController hidesTabBar:NO animated:YES];
+    //        [[TempData sharedInstance] Panned:YES];
+    //    }
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -163,7 +163,15 @@
 
 -(void)refreshFriendList
 {
-    friendsArray = [DataStoreManager queryAllFriends];
+    friendDict = [DataStoreManager queryAllFriends];
+    sectionArray = [DataStoreManager querySections];
+    [sectionIndexArray removeAllObjects];
+    for (int i = 0; i<sectionArray.count; i++) {
+        [sectionIndexArray addObject:[[sectionArray objectAtIndex:i] objectAtIndex:0]];
+    }
+    
+    friendsArray = [NSMutableArray arrayWithArray:[friendDict allKeys]];
+    [friendsArray sortUsingSelector:@selector(compare:)];
     [self.contactsTable reloadData];
 }
 -(void)getFriendInfo:(NSString *)userName withIndex:(int)index
@@ -229,7 +237,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"(nameKey contains[cd] %@)",searchBar.text];
+    NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@",searchBar.text];
     NSLog(@"%@",searchBar.text);
     
     searchResultArray = [friendsArray filteredArrayUsingPredicate:resultPredicate ]; //注意retain
@@ -238,7 +246,7 @@
         return [searchResultArray count];
     }
     
-    return [friendsArray count];
+    return [[[sectionArray objectAtIndex:section] objectAtIndex:1] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -250,11 +258,11 @@
     }
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        tempDict = searchResultArray[indexPath.row];
+        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
     }
     else
-        tempDict = friendsArray[indexPath.row];
-    cell.headImageV.placeholderImage = [UIImage imageNamed:@"placeholderman.png"];
+        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
+    cell.headImageV.placeholderImage = [UIImage imageNamed:@"moren_people.png"];
     cell.headImageV.imageURL = [NSURL URLWithString:[BaseImageUrl stringByAppendingString:[tempDict objectForKey:@"img"]]];
     cell.nameLabel.text = [tempDict objectForKey:@"displayName"];
     cell.signatureLabel.text = [tempDict objectForKey:@"signature"];
@@ -267,24 +275,23 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary * tempDict;
     if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-        [searchDisplay setActive:NO animated:NO];
-        tempDict = searchResultArray[indexPath.row];
+        tempDict = [friendDict objectForKey:[searchResultArray objectAtIndex:indexPath.row]];
     }
     else
     {
-        tempDict = friendsArray[indexPath.row];
+        tempDict = [friendDict objectForKey:[[[sectionArray objectAtIndex:indexPath.section] objectAtIndex:1] objectAtIndex:indexPath.row]];
     }
     [self.contactDelegate getContact:tempDict];
-//    [self dismissModalViewControllerAnimated:YES];
+    //    [self dismissModalViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
-//    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
-//    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:tempDict];
-//    detailV.hostInfo = hostInfo;
-//    detailV.needRequest = YES;
-//    [self.navigationController pushViewController:detailV animated:YES];
-//    [self.customTabBarController hidesTabBar:YES animated:YES];
+    //    PersonDetailViewController * detailV = [[PersonDetailViewController alloc] init];
+    //    HostInfo * hostInfo = [[HostInfo alloc] initWithHostInfo:tempDict];
+    //    detailV.hostInfo = hostInfo;
+    //    detailV.needRequest = YES;
+    //    [self.navigationController pushViewController:detailV animated:YES];
+    //    [self.customTabBarController hidesTabBar:YES animated:YES];
     
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -293,27 +300,27 @@
         return 1;
     }
     
-    return 1;
+    return sectionArray.count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
-//{
-//    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
-//        return @"";
-//    }
-//    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
-//}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
+{
+    if ([tableView isEqual:self.searchDisplayController.searchResultsTableView]) {
+        return @"";
+    }
+    return [[sectionArray objectAtIndex:section] objectAtIndex:0];
+}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
 }
-//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-//{
-//    return sectionIndexArray;
-//}
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    return sectionIndexArray;
+}
 -(void)back
 {
-//    [self dismissModalViewControllerAnimated:YES];
+    //    [self dismissModalViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];

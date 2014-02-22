@@ -589,27 +589,26 @@
 //    }
 }
 
-+(NSMutableArray *)queryAllFriends
++(NSMutableDictionary *)queryAllFriends
 {
-    NSArray * fri = [DSFriends MR_findAllSortedBy:@"nameKey" ascending:YES];
-    NSMutableArray * friArray = [NSMutableArray array];
-//    NSMutableDictionary * theDict = [NSMutableDictionary dictionary];
+    NSArray * fri = [DSFriends MR_findAll];
+    NSMutableArray * nameKeyArray = [NSMutableArray array];
+    NSMutableDictionary * theDict = [NSMutableDictionary dictionary];
     for (int i = 0; i<fri.count; i++) {
         NSString * nameK = [[fri objectAtIndex:i]nameKey];
-//        if (nameK)
-//        [nameKeyArray addObject:nameK];
+        if (nameK)
+            [nameKeyArray addObject:nameK];
         NSString * userName = [[fri objectAtIndex:i] userName];
         NSString * nickName = [[fri objectAtIndex:i] nickName];
         NSString * remarkName = [[fri objectAtIndex:i] remarkName];
         NSString * headImg = [DataStoreManager queryFirstHeadImageForUser:userName];
         NSString * signature = [[fri objectAtIndex:i] signature];
-        NSString * nameKey = [[fri objectAtIndex:i] nameKey];
         if (![userName isEqualToString:[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]&&nameK) {
             NSMutableDictionary * friendDict = [NSMutableDictionary dictionary];
             [friendDict setObject:userName forKey:@"username"];
             [friendDict setObject:nickName?nickName:@"" forKey:@"nickname"];
             if (remarkName) {
-                [friendDict setObject:remarkName forKey:@"displayName"];    
+                [friendDict setObject:remarkName forKey:@"displayName"];
             }
             else if(nickName){
                 [friendDict setObject:nickName forKey:@"displayName"];
@@ -618,13 +617,12 @@
             {
                 [friendDict setObject:userName forKey:@"displayName"];
             }
-            [friendDict setObject:nameKey forKey:@"nameKey"];
             [friendDict setObject:headImg?headImg:@"" forKey:@"img"];
             [friendDict setObject:signature?signature:@"" forKey:@"signature"];
-            [friArray addObject:friendDict];
+            [theDict setObject:friendDict forKey:nameK];
         }
     }
-    return friArray;
+    return theDict;
 }
 +(NSString *)convertChineseToPinYin:(NSString *)chineseName
 {
