@@ -15,6 +15,7 @@
 #import "DiscoverViewController.h"
 #import "JSON.h"
 #import "CircleViewController.h"
+#import "NewCircleViewController.h"
 #import "ContentDetailViewController.h"
 @interface LoadingViewController ()
 
@@ -382,9 +383,13 @@
 }
 -(void)toMainView
 {
-    CircleViewController* circleVC = [[CircleViewController alloc]init];
+//    CircleViewController* circleVC = [[CircleViewController alloc]init];
+//    self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:circleVC];
+//    circleVC.mlNavigationController = self.NaviDynamic;
+    
+    NewCircleViewController* circleVC = [[NewCircleViewController alloc]init];
     self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:circleVC];
-    circleVC.mlNavigationController = self.NaviDynamic;
+//    circleVC.mlNavigationController = self.NaviDynamic;
     
 //    DynamicViewController * dynamicV = [[DynamicViewController alloc] init];
 //    self.NaviDynamic = [[MLNavigationController alloc] initWithRootViewController:dynamicV];
