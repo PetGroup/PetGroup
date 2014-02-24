@@ -16,7 +16,7 @@
 #import "EGOImageButton.h"
 #import "EGOImageView.h"
 #import "WebViewViewController.h"
-
+#import "FriendCircleViewController.h"
 #import "SubjectViewController.h"
 #import "QRCodeViewController.h"
 @interface DiscoverViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -39,15 +39,15 @@
     if (self) {
         // Custom initialization
         
-        codeSwitch = YES;
+        codeSwitch = NO;
         if (codeSwitch) {
             self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科",@"宠物二维码"];
             self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png",@"codeicon.png"];
         }
         else
         {
-            self.nameArray = @[@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
-            self.iconNameArray = @[@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
+            self.nameArray = @[@"好友动态",@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
+            self.iconNameArray = @[@"newfdyn",@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
         }
     }
     return self;
@@ -130,10 +130,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (codeSwitch) {
-        return 5;
+        return 6;
     }
     else
-        return 4;
+        return 5;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -184,22 +184,27 @@
 {
     switch (indexPath.row) {
         case 0:{
+            FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
+            [self.navigationController pushViewController:friendCircleVC animated:YES];
+            [self.customTabBarController hidesTabBar:YES animated:YES];
+        }break;
+        case 1:{
             NearByViewController* nearByVC = [[NearByViewController alloc]init];
             [self.navigationController pushViewController:nearByVC animated:YES];
         }break;
-        case 1:{
+        case 2:{
             DPBusinessListViewController* businessVC = [[DPBusinessListViewController alloc]init];
             [self.navigationController pushViewController:businessVC animated:YES];
         }break;
-        case 2:{
+        case 3:{
             PinterestViewController* pinterestVC = [[PinterestViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
-        case 3:{
+        case 4:{
             PetknowledgeViewController* pinterestVC = [[PetknowledgeViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
-        case 4:{
+        case 5:{
             QRCodeViewController * qrV = [[QRCodeViewController alloc] init];
             [self.navigationController pushViewController:qrV animated:YES];
         }break;

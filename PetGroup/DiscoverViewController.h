@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MoreCell.h"
-@class QRCodeViewController;
+@class QRCodeViewController,FriendCircleViewController;
 @interface DiscoverViewController : UIViewController
 {
     float diffH;

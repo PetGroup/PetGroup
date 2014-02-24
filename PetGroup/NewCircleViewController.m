@@ -75,6 +75,22 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
+    UIButton * subBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    subBtn.frame = CGRectMake(0, 0+diffH, 44, 44);
+    [subBtn setBackgroundImage:[UIImage imageNamed:@"newsub"] forState:UIControlStateNormal];
+    [subBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    //    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
+    [subBtn addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:subBtn];
+    
+    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+    nextB.frame = CGRectMake(276, 0+diffH, 44, 44);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"newpublish2"] forState:UIControlStateNormal];
+    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
+//    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
+    [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nextB];
+    
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
     tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
     tabIV.userInteractionEnabled = YES;
