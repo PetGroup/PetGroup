@@ -27,5 +27,6 @@
 }
 @property (nonatomic,retain)id <EditArticleViewDelegate> delegate;
 @property (nonatomic,retain)NSArray* CircleTree;
+@property (nonatomic,retain)NSString* assortID;
 @property (nonatomic,retain)NSIndexPath* indexPath;
 @end

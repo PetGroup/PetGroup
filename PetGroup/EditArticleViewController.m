@@ -40,6 +40,7 @@
     UIScrollView * scrollV;
     UIScrollView * scrollV2;
     NSArray * theTagArray;
+    NSArray * theTagIdArray;
 //    FastTextView *_dynamicTV;
 }
 @property (nonatomic,strong)UIPlaceHolderTextView* titleTF;
@@ -63,7 +64,10 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        theTagArray = [NSArray arrayWithObjects:@" 晒一晒 ",@" 求助 ",@" 婚配/领养 ",@" 经验之谈 ", nil];
+        theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 想婚配 ",@" 求经验 ", nil];
+        theTagIdArray = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
+        
+        self.assortID = @"";
     }
     return self;
 }
@@ -386,7 +390,8 @@
         }
     }
     
-    NSLog(@"tag = %@",theTagArray[sender.tag-100]);
+    self.assortID = theTagIdArray[sender.tag-100];
+    NSLog(@"tagID = %@",theTagIdArray[sender.tag-100]);
 }
 -(void)emojiBtnClicked:(UIButton *)sender
 {
@@ -607,7 +612,7 @@
     if ([[TempData sharedInstance] getMyUserID]&&[[[TempData sharedInstance] getMyUserID] isKindOfClass:[NSNull class]]) {
         [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
     }
-    [params setObject:self.forumId forKey:@"forumId"];
+    [params setObject:self.assortID forKey:@"assortId"];
     [params setObject:_titleTF.text forKey:@"name"];
     [params setObject:imageString forKey:@"content"];
     NSMutableDictionary* body = [NSMutableDictionary dictionary];
