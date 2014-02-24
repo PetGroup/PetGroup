@@ -101,24 +101,24 @@
     [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
-    tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
-    tabIV.userInteractionEnabled = YES;
-    [self.view addSubview:tabIV];
+//    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
+//    tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
+//    tabIV.userInteractionEnabled = YES;
+//    [self.view addSubview:tabIV];
+//    
+//    UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
+//    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
+//    [publishB addTarget:self action:@selector(publishNewArticle) forControlEvents:UIControlEventTouchUpInside];
+//    [tabIV addSubview:publishB];
+//    
+//    UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
+//    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
+//    [subjectB addTarget:self action:@selector(showSubject) forControlEvents:UIControlEventTouchUpInside];
+//    [tabIV addSubview:subjectB];
     
-    UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
-    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
-    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
-    [publishB addTarget:self action:@selector(publishNewArticle) forControlEvents:UIControlEventTouchUpInside];
-    [tabIV addSubview:publishB];
-    
-    UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
-    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
-    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
-    [subjectB addTarget:self action:@selector(showSubject) forControlEvents:UIControlEventTouchUpInside];
-    [tabIV addSubview:subjectB];
-    
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-142-diffH)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-98-diffH)];
     _tableV.delegate = self;
     
     UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
@@ -217,6 +217,15 @@
     } failure:^{
         
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
+}
+-(void)makeScrollToTheTop:(NSNumber *)index
+{
+    if (_dataSource.dataSourceArray.count>0) {
+        [self.tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
+    }
+
 }
 -(void)viewWillAppear:(BOOL)animated
 {

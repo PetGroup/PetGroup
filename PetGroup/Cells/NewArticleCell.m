@@ -71,6 +71,7 @@
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         self.imageCollectionV = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        self.imageCollectionV.userInteractionEnabled = NO;
         [self.contentView addSubview:_imageCollectionV];
         _imageCollectionV.backgroundColor = [UIColor clearColor];
         _imageCollectionV.delegate = self;
