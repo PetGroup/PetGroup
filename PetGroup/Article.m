@@ -14,12 +14,10 @@
     self = [super init];
     if (self) {
         self.articleID = [info objectForKey:@"id"];
-//        self.content = [info objectForKey:@"content"];
         self.clientCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"clientCount"] integerValue]];
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
         self.userName = [info objectForKey:@"nickname"];
         self.circleName = [info objectForKey:@"forumName"];
-//        self.headImage = [info objectForKey:@"userIcon"];
         self.isEute = [[info objectForKey:@"isEute"]boolValue];
         self.isTop = [[info objectForKey:@"isTop"] boolValue];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];
@@ -36,6 +34,8 @@
         }else{
             self.name = str;
         }
+        self.imageArray = [NSArray arrayWithArray:info[@"images"]];
+        
     }
     return self;
 }

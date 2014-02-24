@@ -10,6 +10,9 @@
 #import "SRRefreshView.h"
 #import "MJRefresh.h"
 #import "NewArticleListDataSource.h"
+#import "NewArticleCell.h"
+#import "ArticleViewController.h"
+#import "CustomTabBar.h"
 @interface NewCircleViewController ()<UITableViewDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
 {
     float diffH;
@@ -78,16 +81,14 @@
     [self.view addSubview:tabIV];
     
     UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
-    publishB.frame = CGRectMake(6.5, 5, 188.5, 39);
-    [publishB setBackgroundImage:[UIImage imageNamed:@"fabu_normal"] forState:UIControlStateNormal];
-    [publishB setBackgroundImage:[UIImage imageNamed:@"fabu_click"] forState:UIControlStateHighlighted];
+    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
+    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
     [publishB addTarget:self action:@selector(publishNewArticle) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:publishB];
     
     UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
-    subjectB.frame = CGRectMake(201.5, 5, 112, 39);
-    [subjectB setBackgroundImage:[UIImage imageNamed:@"zhuanti_normal"] forState:UIControlStateNormal];
-    [subjectB setBackgroundImage:[UIImage imageNamed:@"zhuanti_click"] forState:UIControlStateHighlighted];
+    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
+    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
     [subjectB addTarget:self action:@selector(showSubject) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:subjectB];
     
@@ -151,7 +152,7 @@
     [self.view addSubview:allB];
     [_buttonArray insertObject:allB atIndex:0];
     
-    self.allListDS = [[NewArticleListDataSource alloc]initWithAssortID:@"all"];
+    self.allListDS = [[NewArticleListDataSource alloc]initWithAssortID:@"ALL"];
     _allListDS.myController = self;
     [self setDataSource:_allListDS];
     
@@ -181,8 +182,8 @@
         [_tableV reloadData];
     }else
     {
-        [_refreshView pullApart:_refreshView];
-        [_refreshView scrollViewDidEndDraging];
+        [_refreshView setLoadingWithexpansion];
+        [self reloadDataSource];
     }
 }
 - (void)setDataSource:(NewArticleListDataSource*)dataSource
@@ -290,6 +291,18 @@
                          }];
     }
 }
+#pragma mark - tableView delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = ((Article*)_dataSource.dataSourceArray[indexPath.row]).articleID;
+    [self.navigationController pushViewController:articleVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [NewArticleCell heightForRowWithArticle:_dataSource.dataSourceArray[indexPath.row]];
+}
 #pragma mark - MJRefreshBaseView delegate
 - (void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView
 {
@@ -326,7 +339,7 @@
         [_refreshView endRefresh];
         [_tableV reloadData];
     } failure:^{
-        
+        [_refreshView endRefresh];
     }];
 }
 - (void)loadMoreDataSource
@@ -335,7 +348,7 @@
         [_footerView endRefreshing];
         [_tableV reloadData];
     } failure:^{
-        
+        [_footerView endRefreshing];
     }];
 }
 /*

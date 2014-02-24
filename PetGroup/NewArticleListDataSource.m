@@ -7,7 +7,8 @@
 //
 
 #import "NewArticleListDataSource.h"
-
+#import "Article.h"
+#import "NewArticleCell.h"
 @implementation NewArticleListDataSource
 - (id)init
 {
@@ -82,9 +83,8 @@
         [self.dataSourceArray removeAllObjects];
         if (array.count > 0) {
             for (NSDictionary* dic in array) {
-//                Article* a = [[Article alloc]initWithDictionnary:dic];
-//                [a donnotNeedDisplayForumName];
-//                [self.dataSourceArray addObject:a];
+                Article* a = [[Article alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:a];
             }
         }
         success();
@@ -115,13 +115,11 @@
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
         NSArray* array = responseObject;
-        //        NSArray* array = [dic objectForKey:@"entity"];
         if (array.count > 0) {
-//            for (NSDictionary* dic in array) {
-//                Article* a = [[Article alloc]initWithDictionnary:dic];
-//                [a donnotNeedDisplayForumName];
-//                [self.dataSourceArray addObject:a];
-//            }
+            for (NSDictionary* dic in array) {
+                Article* a = [[Article alloc]initWithDictionnary:dic];
+                [self.dataSourceArray addObject:a];
+            }
         }
         success();
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -140,10 +138,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"Cell";
-    UITableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    NewArticleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[NewArticleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
+    cell.article = self.dataSourceArray[indexPath.row];
     return cell;
 }
 @end

@@ -18,6 +18,7 @@
 @property (nonatomic,retain) NSString* userName;
 @property (nonatomic,retain) NSString* headImage;
 @property (nonatomic,retain) NSString* ct;
+@property (nonatomic,retain) NSArray * imageArray;
 @property (nonatomic,assign) BOOL isEute;
 @property (nonatomic,assign) BOOL isTop;
 @property (nonatomic,assign) BOOL haveImage;
