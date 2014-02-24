@@ -18,6 +18,7 @@
 		721E361518483A52002FCA77 /* DPBusinessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721E361418483A52002FCA77 /* DPBusinessViewController.m */; };
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		7231DDA518B5E2FA0059F793 /* NewCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */; };
+		72347BA418BAE47E00DC3D88 /* NewArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72347BA318BAE47E00DC3D88 /* NewArticleCell.m */; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -921,6 +922,8 @@
 		7224769418279418000E3D05 /* AriticleContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AriticleContent.m; sourceTree = "<group>"; };
 		7231DDA318B5E2FA0059F793 /* NewCircleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCircleViewController.h; sourceTree = "<group>"; };
 		7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCircleViewController.m; sourceTree = "<group>"; };
+		72347BA218BAE47E00DC3D88 /* NewArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewArticleCell.h; sourceTree = "<group>"; };
+		72347BA318BAE47E00DC3D88 /* NewArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewArticleCell.m; sourceTree = "<group>"; };
 		72363C1418750EC40030E868 /* SubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectViewController.h; sourceTree = "<group>"; };
 		72363C1518750EC40030E868 /* SubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectViewController.m; sourceTree = "<group>"; };
 		72363C17187511940030E868 /* RootCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootCell.h; sourceTree = "<group>"; };
@@ -2568,6 +2571,8 @@
 				727BB2F618471D19005A2C44 /* CircleCell.m */,
 				727BB2F818473438005A2C44 /* FriendCircleCell.h */,
 				727BB2F918473438005A2C44 /* FriendCircleCell.m */,
+				72347BA218BAE47E00DC3D88 /* NewArticleCell.h */,
+				72347BA318BAE47E00DC3D88 /* NewArticleCell.m */,
 				865FDD4418091883005BB088 /* articleCell.h */,
 				865FDD4518091883005BB088 /* articleCell.m */,
 				8672574F1818C91300624A04 /* OwenrCell.h */,
@@ -4815,7 +4820,7 @@
 				ORGANIZATIONNAME = Tolecen;
 				TargetAttributes = {
 					979546B317BA368F00D05874 = {
-						DevelopmentTeam = 68WLA6HLV2;
+						DevelopmentTeam = GM3VHPP425;
 					};
 				};
 			};
@@ -5614,6 +5619,7 @@
 				724137381862CF2600851BB4 /* sharePlatformView.m in Sources */,
 				86FC76531820D9C10025686B /* SomeOneDynamicViewController.m in Sources */,
 				9736BCD017C48B7B007DFE36 /* XMPPHelper.m in Sources */,
+				72347BA418BAE47E00DC3D88 /* NewArticleCell.m in Sources */,
 				97D501D217C4998300799BD4 /* KKChatController.m in Sources */,
 				86FC764A18209F290025686B /* MJRefreshBaseView.m in Sources */,
 				97AA42401847321000EF6F9D /* ExperienceListViewController.m in Sources */,
@@ -5800,8 +5806,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5828,8 +5834,8 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5875,8 +5881,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5921,8 +5927,8 @@
 					"$(PROJECT_DIR)/PetGroup/ShareSDK_v2.6.1/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6747AC3F-84F4-4E0B-A581-C49A40E8077D";
+				PROVISIONING_PROFILE = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3EF3D6B5-BA41-44CE-BBCF-EAA62B45C941";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
