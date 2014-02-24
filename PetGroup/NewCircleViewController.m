@@ -17,6 +17,8 @@
 #import "PhotoViewController.h"
 #import "SearchViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "EditArticleViewController.h"
+#import "SubjectViewController.h"
 @interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
 {
     float diffH;
@@ -90,7 +92,7 @@
     [subBtn setBackgroundImage:[UIImage imageNamed:@"newsub"] forState:UIControlStateNormal];
     [subBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
     //    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
-    [subBtn addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
+    [subBtn addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:subBtn];
     
     UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -231,6 +233,19 @@
         [self.tableV scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition: UITableViewScrollPositionTop animated:YES];
     }
 
+}
+-(void)toSubjectPage
+{
+    SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
+    [self.navigationController pushViewController:subjectVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
+-(void)toPublishPage
+{
+    EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
+    [self presentViewController:editAVC animated:YES completion:^{
+        
+    }];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
