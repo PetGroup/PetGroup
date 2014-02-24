@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DynamicCellDelegate.h"
 #import "Article.h"
 @interface NewArticleCell : UITableViewCell
 @property (nonatomic,assign)Article* article;
+@property (nonatomic,weak)id<DynamicCellDelegate> delegate;
 + (CGFloat)heightForRowWithArticle:(Article*)article;
 @end

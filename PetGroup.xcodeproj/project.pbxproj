@@ -19,6 +19,7 @@
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		7231DDA518B5E2FA0059F793 /* NewCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */; };
 		72347BA418BAE47E00DC3D88 /* NewArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72347BA318BAE47E00DC3D88 /* NewArticleCell.m */; };
+		72347BA818BB325E00DC3D88 /* huifu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 72347BA718BB325E00DC3D88 /* huifu_icon.png */; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -364,7 +365,6 @@
 		9700D3D6185061D5003260BC /* newtypein.png in Resources */ = {isa = PBXBuildFile; fileRef = 9700D3D5185061D5003260BC /* newtypein.png */; };
 		9702BCDF18617EF60002A8E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9702BCDE18617EF60002A8E5 /* CoreMedia.framework */; };
 		97031FE21823905700F769E0 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 97031FE11823905700F769E0 /* WebViewViewController.m */; };
-		9707E16F18B8D32200E54900 /* maskToTag.png in Resources */ = {isa = PBXBuildFile; fileRef = 9707E16E18B8D32200E54900 /* maskToTag.png */; };
 		97083336187BB61A00B98C2E /* topBar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 97083335187BB61A00B98C2E /* topBar2.png */; };
 		9708A0291888C94200F31375 /* AddPetMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9708A0281888C94200F31375 /* AddPetMessageViewController.m */; };
 		9709821D185873FF00EFAE07 /* bottom_zan_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 9709821B185873FF00EFAE07 /* bottom_zan_normal.png */; };
@@ -924,6 +924,7 @@
 		7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCircleViewController.m; sourceTree = "<group>"; };
 		72347BA218BAE47E00DC3D88 /* NewArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewArticleCell.h; sourceTree = "<group>"; };
 		72347BA318BAE47E00DC3D88 /* NewArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewArticleCell.m; sourceTree = "<group>"; };
+		72347BA718BB325E00DC3D88 /* huifu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huifu_icon.png; sourceTree = "<group>"; };
 		72363C1418750EC40030E868 /* SubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectViewController.h; sourceTree = "<group>"; };
 		72363C1518750EC40030E868 /* SubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectViewController.m; sourceTree = "<group>"; };
 		72363C17187511940030E868 /* RootCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootCell.h; sourceTree = "<group>"; };
@@ -1302,7 +1303,6 @@
 		9702BCDE18617EF60002A8E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		97031FE01823905700F769E0 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		97031FE11823905700F769E0 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
-		9707E16E18B8D32200E54900 /* maskToTag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maskToTag.png; sourceTree = "<group>"; };
 		97083335187BB61A00B98C2E /* topBar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topBar2.png; sourceTree = "<group>"; };
 		9708A0281888C94200F31375 /* AddPetMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPetMessageViewController.m; sourceTree = "<group>"; };
 		9709821B185873FF00EFAE07 /* bottom_zan_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_zan_normal.png; sourceTree = "<group>"; };
@@ -2512,9 +2512,9 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				72347BA718BB325E00DC3D88 /* huifu_icon.png */,
 				9700888B18BB08C50098CDC2 /* subjectmain.png */,
 				9700888418BB029B0098CDC2 /* punlishmain.png */,
-				9707E16E18B8D32200E54900 /* maskToTag.png */,
 				72B8E4DB18B6F72100034733 /* faqiuzhu.png */,
 				72B8E4DC18B6F72100034733 /* qijingyan.png */,
 				72B8E4DD18B6F72100034733 /* qiuhunpei.png */,
@@ -4873,6 +4873,7 @@
 				86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */,
 				97FD5C6218557053007F5B7E /* petKnowledge.png in Resources */,
 				8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
+				72347BA818BB325E00DC3D88 /* huifu_icon.png in Resources */,
 				97BCF0F01834D6B2006B7C0F /* icon.png in Resources */,
 				975B15D4185960330074B778 /* biaotibtn_01.png in Resources */,
 				8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */,
@@ -5030,7 +5031,6 @@
 				72676AE818584EDA00EE5967 /* bottom_pl_normal.png in Resources */,
 				9736BDC117C49146007DFE36 /* surebtn-click.png in Resources */,
 				9700D3BC18502B2B003260BC /* tabbar05.png in Resources */,
-				9707E16F18B8D32200E54900 /* maskToTag.png in Resources */,
 				9736BDC217C49146007DFE36 /* surebtn-normal.png in Resources */,
 				97FB84021852FA0000F5F8F8 /* baike.png in Resources */,
 				9736BDD417C49146007DFE36 /* select-long-click.png in Resources */,

@@ -13,6 +13,7 @@
 @interface NewArticleCell ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
 @property(nonatomic,retain)EGOImageView* headPhote;
+@property(nonatomic,retain)UIImageView* replyIV;
 @property(nonatomic,retain)UILabel* nameL;
 @property(nonatomic,retain)UILabel* titleL;
 @property(nonatomic,retain)UILabel* timeL;
@@ -81,9 +82,10 @@
         _timeL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_timeL];
         
-        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(225, 52, 80, 20)];
+        self.replyIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"huifu_icon"]];
+        [self.contentView addSubview:_replyIV];
+        self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(265, 52, 40, 20)];
         _replyL.font = [UIFont systemFontOfSize:14];
-        [_replyL setTextAlignment:NSTextAlignmentRight];
         _replyL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_replyL];
         
@@ -141,30 +143,32 @@
         _goodI.hidden = YES;
     }
     lastPoint = CGPointMake(lastPoint.x , lastPoint.y+30);
-//    if (self.article.imageArray.count > 0) {
-//        switch (self.article.imageArray.count) {
-//            case 1:{
-//                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 80, 80);
-//            }break;
-//            case 2:{
-//                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 160, 80);
-//            }break;
-//            case 3:{
-//                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 240, 80);
-//            }break;
-//                
-//            default:
-//                break;
-//        }
-//        lastPoint = CGPointMake(lastPoint.x , lastPoint.y+80);
-//    }else{
-//        _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 0, 0);
-//    }
+    if (self.article.imageArray.count > 0) {
+        switch (self.article.imageArray.count) {
+            case 1:{
+                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 80, 80);
+            }break;
+            case 2:{
+                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 160, 80);
+            }break;
+            case 3:{
+                _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 240, 80);
+            }break;
+                
+            default:
+                break;
+        }
+        lastPoint = CGPointMake(lastPoint.x , lastPoint.y+80);
+    }else{
+        _imageCollectionV.frame = CGRectMake(60, lastPoint.y, 0, 0);
+    }
     if (lastPoint.y < 52) {
         lastPoint = CGPointMake(lastPoint.x , 52);
     }
+    [_imageCollectionV reloadData];
     _timeL.frame = CGRectMake(65, lastPoint.y, 70, 20);
-    _replyL.frame = CGRectMake(225, lastPoint.y, 80, 20);
+    _replyIV.frame = CGRectMake(250, lastPoint.y+4, 15, 13);
+    _replyL.frame = CGRectMake(270, lastPoint.y, 50, 20);
 }
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -175,9 +179,9 @@
         ImageCell* cell =(ImageCell*)[collectionView cellForItemAtIndexPath:indexPath];
         [array addObject:cell.imageV.image];
     }
-//    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
-//        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.dynamic.imgIDArray indext:indexPath.row];
-//    }
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(dynamicCellPressImageButtonWithSmallImageArray:andImageIDArray:indext:)]) {
+        [self.delegate dynamicCellPressImageButtonWithSmallImageArray:array andImageIDArray:self.article.imageArray indext:indexPath.row];
+    }
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

@@ -7,11 +7,11 @@
 //
 
 #import "DataSource.h"
-
+#import "NewArticleCell.h"
 @interface NewArticleListDataSource : DataSource<UITableViewDataSource>
 @property (nonatomic,assign)int pageNo;
 @property (nonatomic,retain)NSString* assortID;
-@property (nonatomic,assign)UIViewController* myController;
+@property (nonatomic,assign)UIViewController<DynamicCellDelegate>* myController;
 + (void)viewController:(UIViewController*)viewController loadTagListSuccess:(void (^)(NSArray * tagArray))success failure:(void (^)(void))failure;
 - (id)initWithAssortID:(NSString*)assortID;
 -(void)loadMoreDataSuccess:(void (^)(void))success failure:(void (^)(void))failure;
