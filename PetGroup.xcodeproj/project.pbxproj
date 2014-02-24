@@ -19,6 +19,7 @@
 		7224769518279418000E3D05 /* AriticleContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 7224769418279418000E3D05 /* AriticleContent.m */; };
 		7231DDA518B5E2FA0059F793 /* NewCircleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */; };
 		72347BA418BAE47E00DC3D88 /* NewArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72347BA318BAE47E00DC3D88 /* NewArticleCell.m */; };
+		72347BA818BB325E00DC3D88 /* huifu_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 72347BA718BB325E00DC3D88 /* huifu_icon.png */; };
 		72363C1618750EC40030E868 /* SubjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1518750EC40030E868 /* SubjectViewController.m */; };
 		72363C19187511940030E868 /* RootCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C18187511940030E868 /* RootCell.m */; };
 		72363C1D1875166E0030E868 /* WithContenSubjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72363C1C1875166E0030E868 /* WithContenSubjectCell.m */; };
@@ -926,6 +927,7 @@
 		7231DDA418B5E2FA0059F793 /* NewCircleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCircleViewController.m; sourceTree = "<group>"; };
 		72347BA218BAE47E00DC3D88 /* NewArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewArticleCell.h; sourceTree = "<group>"; };
 		72347BA318BAE47E00DC3D88 /* NewArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewArticleCell.m; sourceTree = "<group>"; };
+		72347BA718BB325E00DC3D88 /* huifu_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huifu_icon.png; sourceTree = "<group>"; };
 		72363C1418750EC40030E868 /* SubjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubjectViewController.h; sourceTree = "<group>"; };
 		72363C1518750EC40030E868 /* SubjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubjectViewController.m; sourceTree = "<group>"; };
 		72363C17187511940030E868 /* RootCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootCell.h; sourceTree = "<group>"; };
@@ -2516,6 +2518,7 @@
 		865FDD2118079BFA005BB088 /* circle */ = {
 			isa = PBXGroup;
 			children = (
+				72347BA718BB325E00DC3D88 /* huifu_icon.png */,
 				9700888B18BB08C50098CDC2 /* subjectmain.png */,
 				9700888418BB029B0098CDC2 /* punlishmain.png */,
 				72B8E4DB18B6F72100034733 /* faqiuzhu.png */,
@@ -4879,6 +4882,7 @@
 				86238749181F99CD000A8DC3 /* Fav_No_Pic@2x.png in Resources */,
 				97FD5C6218557053007F5B7E /* petKnowledge.png in Resources */,
 				8623874A181F99CD000A8DC3 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
+				72347BA818BB325E00DC3D88 /* huifu_icon.png in Resources */,
 				97BCF0F01834D6B2006B7C0F /* icon.png in Resources */,
 				975B15D4185960330074B778 /* biaotibtn_01.png in Resources */,
 				8623874B181F99CD000A8DC3 /* ReceiverVoiceNodePlaying001@2x.png in Resources */,

@@ -8,7 +8,7 @@
 
 #import "NewArticleListDataSource.h"
 #import "Article.h"
-#import "NewArticleCell.h"
+
 @implementation NewArticleListDataSource
 - (id)init
 {
@@ -141,6 +141,7 @@
     NewArticleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
         cell = [[NewArticleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell.delegate = self.myController;
     }
     cell.article = self.dataSourceArray[indexPath.row];
     return cell;

@@ -13,7 +13,11 @@
 #import "NewArticleCell.h"
 #import "ArticleViewController.h"
 #import "CustomTabBar.h"
-@interface NewCircleViewController ()<UITableViewDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate>
+#import "TempData.h"
+#import "PhotoViewController.h"
+#import "SearchViewController.h"
+#import <QuartzCore/QuartzCore.h>
+@interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
 {
     float diffH;
     CGPoint centerPoint;
@@ -31,6 +35,7 @@
 @property (nonatomic,retain)SRRefreshView* refreshView;
 @property (nonatomic,retain)MJRefreshFooterView* footerView;
 @property (nonatomic,retain)NSMutableArray* buttonArray;
+@property (nonatomic,retain)NSMutableArray* labelArray;
 @property (nonatomic,retain)NewArticleListDataSource * allListDS;
 @property (nonatomic,retain)NewArticleListDataSource * shareListDS;
 @property (nonatomic,retain)NewArticleListDataSource * helpListDS;
@@ -47,11 +52,16 @@
         // Custom initialization
         open = NO;
         self.buttonArray = [NSMutableArray array];
+        self.labelArray = [NSMutableArray array];
     }
     return self;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self close];
 }
 - (void)viewDidLoad
 {
@@ -111,6 +121,14 @@
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-142-diffH)];
     _tableV.delegate = self;
     
+    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+    searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    searchBar.placeholder = @"搜索精华帖";
+    self.tableV.tableHeaderView = searchBar;
+    _tableV.contentOffset = CGPointMake(0, 44);
+    searchBar.delegate = self;
+    
     self.refreshView = [[SRRefreshView alloc] init];
     _refreshView.delegate = self;
     _refreshView.upInset = 0;
@@ -168,9 +186,24 @@
     [self.view addSubview:allB];
     [_buttonArray insertObject:allB atIndex:0];
     
+    for (int i = 0; i<4; i++) {
+        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(25+i*60, centerPoint.y + 25, 50, 20)];
+        label.hidden = YES;
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor blackColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.layer.cornerRadius = 3;
+        label.layer.masksToBounds = YES;
+        
+        [self.view addSubview:label];
+        [_labelArray addObject:label];
+    }
+    
     self.allListDS = [[NewArticleListDataSource alloc]initWithAssortID:@"ALL"];
     _allListDS.myController = self;
     [self setDataSource:_allListDS];
+    [self reloadData];
     
     [NewArticleListDataSource viewController:self loadTagListSuccess:^(NSArray *tagArray) {
         self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[0]];
@@ -185,7 +218,25 @@
         
     }];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    if ([TempData sharedInstance].changeUser) {
+        [TempData sharedInstance].changeUser = NO;
+        
+    }
+    if ([[TempData sharedInstance] ifPanned]) {
+        [self.customTabBarController hidesTabBar:NO animated:NO];
+    }
+    else
+    {
+        [self.customTabBarController hidesTabBar:NO animated:YES];
+        [[TempData sharedInstance] Panned:YES];
+    }
+    if ([[TempData sharedInstance] needChat]) {
+        [self.customTabBarController setSelectedPage:2];
+        return;
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -199,6 +250,7 @@
     }else
     {
         [_refreshView setLoadingWithexpansion];
+        _refreshView.slime.hidden = YES;
         [self reloadDataSource];
     }
 }
@@ -219,6 +271,7 @@
 }
 -(void)open:(UIButton*)button
 {
+    NSLog(@"%f",button.center.x);
     if (!open) {
         [self openButtons];
     }else{
@@ -258,6 +311,9 @@
         [_buttonArray insertObject:button atIndex:0];
         [self.view bringSubviewToFront:button];
     }
+    for (UILabel * label in _labelArray) {
+        label.hidden = YES;
+    }
     [UIView animateWithDuration:0.3
                      animations:^{
                          if (button) {
@@ -293,7 +349,24 @@
                              }
                          }
                          completion:^(BOOL finished){
-                             
+                             for (int i  = 0;i < 4;i++) {
+                                 ((UILabel*)_labelArray[i]).hidden = NO;
+                                 if (_buttonArray[4-i]  == allB) {
+                                     ((UILabel*)_labelArray[i]).text = @"全部";
+                                 }
+                                 if (_buttonArray[4-i]  == shareB) {
+                                     ((UILabel*)_labelArray[i]).text = @"晒幸福";
+                                 }
+                                 if (_buttonArray[4-i]  == helpB) {
+                                     ((UILabel*)_labelArray[i]).text = @"求帮助";
+                                 }
+                                 if (_buttonArray[4-i]  == exB) {
+                                     ((UILabel*)_labelArray[i]).text = @"享经验";
+                                 }
+                                 if (_buttonArray[4-i]  == marryB) {
+                                     ((UILabel*)_labelArray[i]).text = @"求婚配";
+                                 }
+                             }
                          }];
     }else{
         [UIView animateWithDuration:0.3
@@ -303,13 +376,31 @@
                              }
                          } completion:^(BOOL finished) {
                              
-                             
+                             for (int i  = 0;i < 4;i++) {
+                                 ((UILabel*)_labelArray[i]).hidden = NO;
+                                 if (_buttonArray[4-i]  == allB) {
+                                     ((UILabel*)_labelArray[i]).text = @"全部";
+                                 }
+                                 if (_buttonArray[4-i]  == shareB) {
+                                     ((UILabel*)_labelArray[i]).text = @"晒幸福";
+                                 }
+                                 if (_buttonArray[4-i]  == helpB) {
+                                     ((UILabel*)_labelArray[i]).text = @"求帮助";
+                                 }
+                                 if (_buttonArray[4-i]  == exB) {
+                                     ((UILabel*)_labelArray[i]).text = @"享经验";
+                                 }
+                                 if (_buttonArray[4-i]  == marryB) {
+                                     ((UILabel*)_labelArray[i]).text = @"求婚配";
+                                 }
+                             }
                          }];
     }
 }
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)_dataSource.dataSourceArray[indexPath.row]).articleID;
     [self.navigationController pushViewController:articleVC animated:YES];
@@ -331,11 +422,14 @@
     [self reloadDataSource];
 }
 #pragma mark - scroll view delegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self close];
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(scrollView == _tableV){
         [_refreshView scrollViewDidScroll];
-        [self close];
     }
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -343,6 +437,21 @@
     if (scrollView == _tableV) {
         [_refreshView scrollViewDidEndDraging];
     }
+}
+#pragma mark - dynamicCell delegate
+-(void)dynamicCellPressImageButtonWithSmallImageArray:(NSArray*)smallImageArray andImageIDArray:(NSArray*)idArray indext:(int)indext
+{
+    PhotoViewController* vc = [[PhotoViewController alloc]initWithSmallImages:smallImageArray images:idArray indext:indext];
+    [self presentViewController:vc animated:NO completion:nil];
+}
+#pragma mark - UISearchBar delegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    SearchViewController* searchVC = [[SearchViewController alloc]init];
+    searchVC.searchType = searchTypeNew;
+    [self.navigationController pushViewController:searchVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+    return NO;
 }
 #pragma mark - load data
 - (void)loadHistory
@@ -352,10 +461,20 @@
 - (void)reloadDataSource
 {
     [_dataSource reloadDataSuccess:^{
-        [_refreshView endRefresh];
+        [_refreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.tableV.contentOffset = CGPointMake(0, 44);
+            }];
+            _refreshView.slime.hidden = NO;
+        }];
         [_tableV reloadData];
     } failure:^{
-        [_refreshView endRefresh];
+        [_refreshView endRefreshFinish:^{
+            [UIView animateWithDuration:0.3 animations:^{
+                self.tableV.contentOffset = CGPointMake(0, 44);
+            }];
+            _refreshView.slime.hidden = NO;
+        }];
     }];
 }
 - (void)loadMoreDataSource

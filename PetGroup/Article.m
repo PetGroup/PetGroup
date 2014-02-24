@@ -34,7 +34,17 @@
         }else{
             self.name = str;
         }
-        self.imageArray = [NSArray arrayWithArray:info[@"images"]];
+        NSArray* array = info[@"images"];
+        if (array.count<4) {
+            self.imageArray = [NSArray arrayWithArray:array];
+        }else{
+            NSMutableArray * marray = [NSMutableArray array];
+            for (int i = 0; i < 3; i ++) {
+                [marray addObject:array[i]];
+            }
+            self.imageArray = marray;
+        }
+        
         
     }
     return self;
