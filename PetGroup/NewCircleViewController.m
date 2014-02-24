@@ -147,6 +147,7 @@
     [self.view addSubview:_tableV];
     
     shareB = [UIButton buttonWithType:UIButtonTypeCustom];
+    shareB.hidden = YES;
     [shareB setBackgroundImage:[UIImage imageNamed:@"shaiingfu"] forState:UIControlStateNormal];
     shareB.frame = CGRectMake(0, 0, 50, 50);
     shareB.center = centerPoint;
@@ -155,6 +156,7 @@
     [_buttonArray addObject:shareB];
     
     helpB = [UIButton buttonWithType:UIButtonTypeCustom];
+    helpB.hidden = YES;
     [helpB setBackgroundImage:[UIImage imageNamed:@"faqiuzhu"] forState:UIControlStateNormal];
     helpB.frame = CGRectMake(0, 0, 50, 50);
     helpB.center = centerPoint;
@@ -163,6 +165,7 @@
     [_buttonArray addObject:helpB];
     
     marryB = [UIButton buttonWithType:UIButtonTypeCustom];
+    marryB.hidden = YES;
     [marryB setBackgroundImage:[UIImage imageNamed:@"qiuhunpei"] forState:UIControlStateNormal];
     marryB.frame = CGRectMake(0, 0, 50, 50);
     marryB.center = centerPoint;
@@ -171,6 +174,7 @@
     [_buttonArray addObject:marryB];
     
     exB = [UIButton buttonWithType:UIButtonTypeCustom];
+    exB.hidden = YES;
     [exB setBackgroundImage:[UIImage imageNamed:@"qijingyan"] forState:UIControlStateNormal];
     exB.frame = CGRectMake(0, 0, 50, 50);
     exB.center = centerPoint;
@@ -179,6 +183,7 @@
     [_buttonArray addObject:exB];
     
     allB = [UIButton buttonWithType:UIButtonTypeCustom];
+    allB.alpha = 0.5;
     [allB setBackgroundImage:[UIImage imageNamed:@"quanbu"] forState:UIControlStateNormal];
     allB.frame = CGRectMake(0, 0, 50, 50);
     allB.center = centerPoint;
@@ -308,7 +313,7 @@
 - (void)close
 {
     if (open) {
-        [self closeWithButton:nil Completion:nil];
+        [self closeWithButton:_buttonArray[0] Completion:nil];
         open = !open;
     }
     
@@ -331,8 +336,13 @@
                              }
                          }
                      } completion:^(BOOL finished) {
+                         for (UIButton* button in _buttonArray) {
+                             button.hidden = YES;
+                         }
+                         ((UIButton*)_buttonArray[0]).hidden = NO;
                          [UIView animateWithDuration:0.2
                                           animations:^{
+                                              ((UIButton*)_buttonArray[0]).alpha = 0.5;
                                               for (int i = 0; i<_buttonArray.count; i++) {
                                                   ((UIView*)_buttonArray[i]).center  = centerPoint;
                                               }
@@ -346,6 +356,10 @@
 }
 - (void)openButtons
 {
+    for (UIButton* button in _buttonArray) {
+        button.alpha = 1;
+        button.hidden = NO;
+    }
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
         [UIView animateWithDuration:0.3
                               delay:0.0
@@ -409,6 +423,11 @@
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (open) {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [self close];
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)_dataSource.dataSourceArray[indexPath.row]).articleID;
