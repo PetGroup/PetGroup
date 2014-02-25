@@ -30,7 +30,7 @@
     }
     CGSize sz = [article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
     
-    CGSize linesSz = [article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(228, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize linesSz = [article.name sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(240, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
     if(sz.width > linesSz.width && linesSz.height > 20)//判断是否折行
     {
         return  170;
@@ -119,9 +119,9 @@
     _timeL.text = self.article.ct;
     _replyL.text =[NSString stringWithFormat:@"%@",self.article.replyCount];
     CGPoint lastPoint;
-    CGSize sz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize sz = [_titleL.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
     
-    CGSize linesSz = [_titleL.text sizeWithFont:_titleL.font constrainedToSize:CGSizeMake(_titleL.frame.size.width, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize linesSz = [_titleL.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(_titleL.frame.size.width, MAXFLOAT) lineBreakMode:NSLineBreakByCharWrapping];
     if(sz.width > linesSz.width && linesSz.height > 20)//判断是否折行
     {
         lastPoint = CGPointMake(_titleL.frame.origin.x + (int)sz.width % (int)linesSz.width,linesSz.height - 10);
@@ -167,9 +167,9 @@
         lastPoint = CGPointMake(lastPoint.x , 52);
     }
     [_imageCollectionV reloadData];
-    _timeL.frame = CGRectMake(65, lastPoint.y, 70, 20);
-    _replyIV.frame = CGRectMake(250, lastPoint.y+4, 15, 13);
-    _replyL.frame = CGRectMake(270, lastPoint.y, 50, 20);
+    _timeL.frame = CGRectMake(65, self.contentView.frame.size.height - 28, 70, 20);
+    _replyIV.frame = CGRectMake(250, self.contentView.frame.size.height - 24, 15, 13);
+    _replyL.frame = CGRectMake(270, self.contentView.frame.size.height - 28, 50, 20);
 }
 #pragma mark - collection view delegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
