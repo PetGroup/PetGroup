@@ -40,6 +40,8 @@ typedef  enum
     UIButton* marryB;
     UIButton* exB;
     NewArticleListDataSource* _dataSource;
+    
+    int _lastPosition;
 }
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -481,6 +483,29 @@ typedef  enum
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(scrollView == _tableV){
+        int currentPostion = scrollView.contentOffset.y;
+        if (currentPostion - _lastPosition > 20  && currentPostion > 0) {        //这个地方加上 currentPostion > 0 即可)
+            _lastPosition = currentPostion;
+            NSLog(@"ScrollUp now");
+            if (_tableV.frame.origin.y != 44+diffH) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    _tableV.frame = CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-91-diffH);
+                }];
+            }
+            
+            
+        }
+        
+        else if ((_lastPosition - currentPostion > 20) && (currentPostion  <= scrollView.contentSize.height-scrollView.bounds.size.height-20) ) //这个地方加上后边那个即可，也不知道为什么，再减20才行
+        {
+            _lastPosition = currentPostion;
+            NSLog(@"ScrollDown now");
+            if (_tableV.frame.origin.y != 93+diffH) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    _tableV.frame = CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-140-diffH);
+                }];
+            }
+        }
         [_refreshView scrollViewDidScroll];
     }
 }
