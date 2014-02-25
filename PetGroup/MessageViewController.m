@@ -913,14 +913,14 @@
             [DataStoreManager storeOnePetInfo:dict];
         }
         if (petsArray.count>0) {
-            NSString * bindedQRcode = [[NSUserDefaults standardUserDefaults] objectForKey:@"bindedQR"];
-            if (!bindedQRcode) {
-                [[NSUserDefaults standardUserDefaults] setObject:@"yes" forKey:@"bindedQR"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到您已经添加了宠物，要不要将您的宠物绑定一个防丢失二维码呢？" delegate:self cancelButtonTitle:@"去绑定" otherButtonTitles:@"不用了",@"那是什么？", nil];
-                alert.tag = 301;
-                [alert show];
-            }
+//            NSString * bindedQRcode = [[NSUserDefaults standardUserDefaults] objectForKey:@"bindedQR"];
+//            if (!bindedQRcode) {
+//                [[NSUserDefaults standardUserDefaults] setObject:@"yes" forKey:@"bindedQR"];
+//                [[NSUserDefaults standardUserDefaults] synchronize];
+//                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"检测到您已经添加了宠物，要不要将您的宠物绑定一个防丢失二维码呢？" delegate:self cancelButtonTitle:@"去绑定" otherButtonTitles:@"不用了",@"那是什么？", nil];
+//                alert.tag = 301;
+//                [alert show];
+//            }
         }
         [self getFriendByHttp];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
