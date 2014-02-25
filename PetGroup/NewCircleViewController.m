@@ -303,6 +303,16 @@ typedef  enum
 {
     if ([TempData sharedInstance].changeUser) {
         [TempData sharedInstance].changeUser = NO;
+        [_buttonArray removeObject:allB];
+        for (UIButton* button in _buttonArray) {
+            button.hidden = YES;
+        }
+        [_buttonArray insertObject:allB atIndex:0];
+        [self.view bringSubviewToFront:allB];
+        allB.hidden = NO;
+        allB.alpha = 0.5;
+        [self setDataSource:_allListDS];
+        [self reloadData];
         
     }
     if ([[TempData sharedInstance] ifPanned]) {
@@ -326,14 +336,9 @@ typedef  enum
 #pragma mark - button action
 - (void)reloadData
 {
-    if (_dataSource.dataSourceArray.count >0) {
-        [_tableV reloadData];
-    }else
-    {
-        [_refreshView setLoadingWithexpansion];
-        _refreshView.slime.hidden = YES;
-        [self reloadDataSource];
-    }
+    [_refreshView setLoadingWithexpansion];
+    _refreshView.slime.hidden = YES;
+    [self reloadDataSource];
 }
 - (void)setDataSource:(NewArticleListDataSource*)dataSource
 {
