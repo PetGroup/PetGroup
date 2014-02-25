@@ -87,40 +87,40 @@
     titleLabel.textColor=[UIColor whiteColor];
     [self.view addSubview:titleLabel];
     
-    UIButton * subBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    subBtn.frame = CGRectMake(0, 0+diffH, 44, 44);
-    [subBtn setBackgroundImage:[UIImage imageNamed:@"newsub"] forState:UIControlStateNormal];
-    [subBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    //    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
-    [subBtn addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:subBtn];
-    
-    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextB.frame = CGRectMake(276, 0+diffH, 44, 44);
-    [nextB setBackgroundImage:[UIImage imageNamed:@"newpublish2"] forState:UIControlStateNormal];
-    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
-//    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
-    [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:nextB];
-    
-//    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
-//    tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
-//    tabIV.userInteractionEnabled = YES;
-//    [self.view addSubview:tabIV];
+//    UIButton * subBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    subBtn.frame = CGRectMake(0, 0+diffH, 44, 44);
+//    [subBtn setBackgroundImage:[UIImage imageNamed:@"newsub"] forState:UIControlStateNormal];
+//    [subBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+//    //    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
+//    [subBtn addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:subBtn];
 //    
-//    UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
-//    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
-//    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
-//    [publishB addTarget:self action:@selector(publishNewArticle) forControlEvents:UIControlEventTouchUpInside];
-//    [tabIV addSubview:publishB];
-//    
-//    UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
-//    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
-//    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
-//    [subjectB addTarget:self action:@selector(showSubject) forControlEvents:UIControlEventTouchUpInside];
-//    [tabIV addSubview:subjectB];
+//    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+//    nextB.frame = CGRectMake(276, 0+diffH, 44, 44);
+//    [nextB setBackgroundImage:[UIImage imageNamed:@"newpublish2"] forState:UIControlStateNormal];
+//    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
+////    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
+//    [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:nextB];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-98-diffH)];
+    UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
+    tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
+    tabIV.userInteractionEnabled = YES;
+    [self.view addSubview:tabIV];
+    
+    UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
+    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
+    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
+    [publishB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
+    [tabIV addSubview:publishB];
+    
+    UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
+    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
+    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
+    [subjectB addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
+    [tabIV addSubview:subjectB];
+    
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-140-diffH)];
     _tableV.delegate = self;
     
     UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
