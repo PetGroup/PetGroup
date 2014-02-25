@@ -46,8 +46,8 @@
         }
         else
         {
-            self.nameArray = @[@"好友动态",@"附近的人",@"宠物周边",@"宠物美图",@"宠物百科"];
-            self.iconNameArray = @[@"newfdyn",@"fujin.png",@"zhoubian.png",@"meitu.png",@"baike.png"];
+            self.nameArray = @[@"宠物美图",@"宠物百科",@"好友动态",@"附近的人",@"宠物周边"];
+            self.iconNameArray = @[@"meitu.png",@"baike.png",@"newfdyn",@"fujin.png",@"zhoubian.png"];
         }
     }
     return self;
@@ -183,24 +183,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
-        case 0:{
+        case 2:{
             FriendCircleViewController* friendCircleVC = [[FriendCircleViewController alloc]init];
             [self.navigationController pushViewController:friendCircleVC animated:YES];
             [self.customTabBarController hidesTabBar:YES animated:YES];
         }break;
-        case 1:{
+        case 3:{
             NearByViewController* nearByVC = [[NearByViewController alloc]init];
             [self.navigationController pushViewController:nearByVC animated:YES];
         }break;
-        case 2:{
+        case 4:{
             DPBusinessListViewController* businessVC = [[DPBusinessListViewController alloc]init];
             [self.navigationController pushViewController:businessVC animated:YES];
         }break;
-        case 3:{
+        case 0:{
             PinterestViewController* pinterestVC = [[PinterestViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;
-        case 4:{
+        case 1:{
             PetknowledgeViewController* pinterestVC = [[PetknowledgeViewController alloc]init];
             [self.navigationController pushViewController:pinterestVC animated:YES];
         }break;

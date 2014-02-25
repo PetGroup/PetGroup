@@ -278,7 +278,7 @@
             [self regNewUser:username];
         }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"糟糕！登录失败，请稍后重试" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络有点问题，请稍后重试" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         [hud hide:YES];
     }];
@@ -373,7 +373,7 @@
         //            [alert show];
         //        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络可能有点问题，稍后再试吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"登录失败，请确保用户名密码正确及网络通畅" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         [hud hide:YES];
     }];
@@ -462,7 +462,7 @@
 //            [alert show];
 //        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"网络可能有点问题，稍后再试吧" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"登录失败，请确保用户名密码正确及网络通畅" delegate:self cancelButtonTitle:@"知道啦" otherButtonTitles: nil];
         [alert show];
         [hud hide:YES];
     }];
