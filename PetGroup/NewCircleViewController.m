@@ -129,6 +129,10 @@
     searchBar.placeholder = @"搜索精华帖";
     self.tableV.tableHeaderView = searchBar;
     _tableV.contentOffset = CGPointMake(0, 44);
+    UIView * dd = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [dd setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
+    
+    [searchBar insertSubview:dd atIndex:1];
     searchBar.delegate = self;
     
     self.refreshView = [[SRRefreshView alloc] init];
@@ -210,7 +214,7 @@
     self.allListDS = [[NewArticleListDataSource alloc]initWithAssortID:@"ALL"];
     _allListDS.myController = self;
     [self setDataSource:_allListDS];
-    [self reloadData];
+    [self loadHistory];
     
     [NewArticleListDataSource viewController:self loadTagListSuccess:^(NSArray *tagArray) {
         self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[0]];
@@ -499,7 +503,12 @@
 #pragma mark - load data
 - (void)loadHistory
 {
-    
+    [_allListDS loadHistorySuccess:^{
+        [_tableV reloadData];
+        [self reloadData];
+    } failure:^{
+        
+    }];
 }
 - (void)reloadDataSource
 {

@@ -79,6 +79,11 @@
     [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
     [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:self.myController success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject);
+        if ([self.assortID isEqualToString:@"ALL"]) {
+            NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:responseObject forKey:@"AllArticleList"];
+            [defaults synchronize];
+        }
         NSArray* array = responseObject;
         [self.dataSourceArray removeAllObjects];
         if (array.count > 0) {
@@ -128,7 +133,16 @@
 }
 -(void)loadHistorySuccess:(void (^)(void))success failure:(void (^)(void))failure
 {
-    
+    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+    NSArray * array = [defaults objectForKey:@"AllArticleList"];
+    if (array.count > 0) {
+        [self.dataSourceArray removeAllObjects];
+        for (NSDictionary* dic in array) {
+            Article* a = [[Article alloc]initWithDictionnary:dic];
+            [self.dataSourceArray addObject:a];
+        }
+    }
+    success();
 }
 #pragma mark - table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
