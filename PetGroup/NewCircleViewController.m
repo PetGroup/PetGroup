@@ -104,13 +104,13 @@ typedef  enum
 //    [subBtn addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:subBtn];
 //    
-//    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
-//    nextB.frame = CGRectMake(276, 0+diffH, 44, 44);
-//    [nextB setBackgroundImage:[UIImage imageNamed:@"newpublish2"] forState:UIControlStateNormal];
-//    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
-////    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
-//    [nextB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:nextB];
+    UIButton * nextB = [UIButton buttonWithType:UIButtonTypeCustom];
+    nextB.frame = CGRectMake(276, 0+diffH, 44, 44);
+    [nextB setBackgroundImage:[UIImage imageNamed:@"topsearch"] forState:UIControlStateNormal];
+    [nextB.titleLabel setFont:[UIFont systemFontOfSize:15]];
+//    [nextB setTitle:@"新话题" forState:UIControlStateNormal];
+    [nextB addTarget:self action:@selector(toSearchPage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nextB];
     
     UIImageView * tabIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, 49)];
     tabIV.image = [UIImage imageNamed:@"top_btn_bg"];
@@ -118,31 +118,31 @@ typedef  enum
     [self.view addSubview:tabIV];
     
     UIButton* publishB = [UIButton buttonWithType:UIButtonTypeCustom];
-    publishB.frame = CGRectMake(6.5, 6, 190.5, 37.5);
-    [publishB setBackgroundImage:[UIImage imageNamed:@"punlishmain"] forState:UIControlStateNormal];
+    publishB.frame = CGRectMake(6.5, 6, 187.5, 38);
+    [publishB setBackgroundImage:[UIImage imageNamed:@"fabu_normal"] forState:UIControlStateNormal];
     [publishB addTarget:self action:@selector(toPublishPage) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:publishB];
     
     UIButton* subjectB = [UIButton buttonWithType:UIButtonTypeCustom];
-    subjectB.frame = CGRectMake(202.5, 6, 111, 37.5);
-    [subjectB setBackgroundImage:[UIImage imageNamed:@"subjectmain"] forState:UIControlStateNormal];
+    subjectB.frame = CGRectMake(202.5, 6, 111, 38);
+    [subjectB setBackgroundImage:[UIImage imageNamed:@"zhuanti_normal"] forState:UIControlStateNormal];
     [subjectB addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:subjectB];
     
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-140-diffH)];
     _tableV.delegate = self;
     
-    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
-    searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    searchBar.placeholder = @"搜索精华帖";
-    self.tableV.tableHeaderView = searchBar;
-    _tableV.contentOffset = CGPointMake(0, 44);
-    UIView * dd = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [dd setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
-    
-    [searchBar insertSubview:dd atIndex:1];
-    searchBar.delegate = self;
+//    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
+//    searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+//    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    searchBar.placeholder = @"搜索精华帖";
+//    self.tableV.tableHeaderView = searchBar;
+//    _tableV.contentOffset = CGPointMake(0, 44);
+//    UIView * dd = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//    [dd setBackgroundColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1]];
+//    
+//    [searchBar insertSubview:dd atIndex:1];
+//    searchBar.delegate = self;
     
     self.refreshView = [[SRRefreshView alloc] init];
     _refreshView.delegate = self;
@@ -505,6 +505,14 @@ typedef  enum
     [self.customTabBarController hidesTabBar:YES animated:YES];
     return NO;
 }
+
+-(void)toSearchPage
+{
+    SearchViewController* searchVC = [[SearchViewController alloc]init];
+    searchVC.searchType = searchTypeNew;
+    [self.navigationController pushViewController:searchVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
+}
 #pragma mark - load data
 - (void)loadHistory
 {
@@ -520,7 +528,7 @@ typedef  enum
     [_dataSource reloadDataSuccess:^{
         [_refreshView endRefreshFinish:^{
             [UIView animateWithDuration:0.3 animations:^{
-                self.tableV.contentOffset = CGPointMake(0, 44);
+                self.tableV.contentOffset = CGPointMake(0, 0);
             }];
             _refreshView.slime.hidden = NO;
         }];
@@ -528,7 +536,7 @@ typedef  enum
     } failure:^{
         [_refreshView endRefreshFinish:^{
             [UIView animateWithDuration:0.3 animations:^{
-                self.tableV.contentOffset = CGPointMake(0, 44);
+                self.tableV.contentOffset = CGPointMake(0, 0);
             }];
             _refreshView.slime.hidden = NO;
         }];

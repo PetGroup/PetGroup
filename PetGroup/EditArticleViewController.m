@@ -64,8 +64,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 想婚配 ",@" 求经验 ", nil];
-        theTagIdArray = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
+        theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 求经验 ",@" 其他 ", nil];
+        theTagIdArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"TagList"];
         
         self.assortID = @"";
     }
