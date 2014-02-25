@@ -227,6 +227,7 @@ typedef  enum
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor blackColor];
+        label.alpha = 0.85;
         label.textAlignment = NSTextAlignmentCenter;
         label.layer.cornerRadius = 3;
         label.layer.masksToBounds = YES;
@@ -453,7 +454,7 @@ typedef  enum
                               _touchV.hidden = NO;
                          }];
     }else{
-        [UIView animateWithDuration:0.3
+        [UIView animateWithDuration:0.2
                          animations:^{
                              for (int i = 0; i<_buttonArray.count; i++) {
                                  ((UIView*)_buttonArray[i]).center  = CGPointMake(((UIView*)_buttonArray[i]).center.x-i*60, ((UIView*)_buttonArray[i]).center.y);
