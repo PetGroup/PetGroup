@@ -19,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "EditArticleViewController.h"
 #import "SubjectViewController.h"
+#import "TouchView.h"
 typedef  enum
 {
     stateTypeOpen = 0,
@@ -26,7 +27,7 @@ typedef  enum
     stateTypeClose,
     stateTypeClosing
 }StateType;
-@interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
+@interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate,TouchViewDelegate>
 {
     float diffH;
     CGPoint centerPoint;
@@ -50,6 +51,7 @@ typedef  enum
 @property (nonatomic,retain)NewArticleListDataSource * helpListDS;
 @property (nonatomic,retain)NewArticleListDataSource * marryListDS;
 @property (nonatomic,retain)NewArticleListDataSource * exListDS;
+@property (nonatomic,retain)TouchView * touchV;
 @end
 
 @implementation NewCircleViewController
@@ -159,14 +161,19 @@ typedef  enum
     
     [self.view addSubview:_tableV];
     
-    shareB = [UIButton buttonWithType:UIButtonTypeCustom];
-    shareB.hidden = YES;
-    [shareB setBackgroundImage:[UIImage imageNamed:@"shaiingfu"] forState:UIControlStateNormal];
-    shareB.frame = CGRectMake(0, 0, 50, 50);
-    shareB.center = centerPoint;
-    [shareB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:shareB];
-    [_buttonArray addObject:shareB];
+    self.touchV = [[TouchView alloc]initWithFrame:CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-93-diffH)];
+    [self.view addSubview:_touchV];
+    _touchV.hidden = YES;
+    _touchV.delegate = self;
+    
+    marryB = [UIButton buttonWithType:UIButtonTypeCustom];
+    marryB.hidden = YES;
+    [marryB setBackgroundImage:[UIImage imageNamed:@"other_normal"] forState:UIControlStateNormal];
+    marryB.frame = CGRectMake(0, 0, 50, 50);
+    marryB.center = centerPoint;
+    [marryB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:marryB];
+    [_buttonArray addObject:marryB];
     
     helpB = [UIButton buttonWithType:UIButtonTypeCustom];
     helpB.hidden = YES;
@@ -177,15 +184,6 @@ typedef  enum
     [self.view addSubview:helpB];
     [_buttonArray addObject:helpB];
     
-    marryB = [UIButton buttonWithType:UIButtonTypeCustom];
-    marryB.hidden = YES;
-    [marryB setBackgroundImage:[UIImage imageNamed:@"qiuhunpei"] forState:UIControlStateNormal];
-    marryB.frame = CGRectMake(0, 0, 50, 50);
-    marryB.center = centerPoint;
-    [marryB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:marryB];
-    [_buttonArray addObject:marryB];
-    
     exB = [UIButton buttonWithType:UIButtonTypeCustom];
     exB.hidden = YES;
     [exB setBackgroundImage:[UIImage imageNamed:@"qijingyan"] forState:UIControlStateNormal];
@@ -194,6 +192,15 @@ typedef  enum
     [exB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exB];
     [_buttonArray addObject:exB];
+    
+    shareB = [UIButton buttonWithType:UIButtonTypeCustom];
+    shareB.hidden = YES;
+    [shareB setBackgroundImage:[UIImage imageNamed:@"shaiingfu"] forState:UIControlStateNormal];
+    shareB.frame = CGRectMake(0, 0, 50, 50);
+    shareB.center = centerPoint;
+    [shareB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:shareB];
+    [_buttonArray addObject:shareB];
     
     allB = [UIButton buttonWithType:UIButtonTypeCustom];
     allB.alpha = 0.5;
@@ -375,6 +382,7 @@ typedef  enum
                                               }
                                           } completion:^(BOOL finished) {
                                               stateType = stateTypeClose;
+                                              _touchV.hidden = YES;
                                               if (completion) {
                                                    completion();
                                               }
@@ -401,25 +409,9 @@ typedef  enum
                              }
                          }
                          completion:^(BOOL finished){
-                             for (int i  = 0;i < 4;i++) {
-                                 ((UILabel*)_labelArray[i]).hidden = NO;
-                                 if (_buttonArray[4-i]  == allB) {
-                                     ((UILabel*)_labelArray[i]).text = @"全部";
-                                 }
-                                 if (_buttonArray[4-i]  == shareB) {
-                                     ((UILabel*)_labelArray[i]).text = @"晒幸福";
-                                 }
-                                 if (_buttonArray[4-i]  == helpB) {
-                                     ((UILabel*)_labelArray[i]).text = @"求帮助";
-                                 }
-                                 if (_buttonArray[4-i]  == exB) {
-                                     ((UILabel*)_labelArray[i]).text = @"享经验";
-                                 }
-                                 if (_buttonArray[4-i]  == marryB) {
-                                     ((UILabel*)_labelArray[i]).text = @"求婚配";
-                                 }
-                             }
+                             [self setTextForLabrls];
                               stateType = stateTypeOpen;
+                              _touchV.hidden = NO;
                          }];
     }else{
         [UIView animateWithDuration:0.3
@@ -429,36 +421,41 @@ typedef  enum
                              }
                          } completion:^(BOOL finished) {
                              
-                             for (int i  = 0;i < 4;i++) {
-                                 ((UILabel*)_labelArray[i]).hidden = NO;
-                                 if (_buttonArray[4-i]  == allB) {
-                                     ((UILabel*)_labelArray[i]).text = @"全部";
-                                 }
-                                 if (_buttonArray[4-i]  == shareB) {
-                                     ((UILabel*)_labelArray[i]).text = @"晒幸福";
-                                 }
-                                 if (_buttonArray[4-i]  == helpB) {
-                                     ((UILabel*)_labelArray[i]).text = @"求帮助";
-                                 }
-                                 if (_buttonArray[4-i]  == exB) {
-                                     ((UILabel*)_labelArray[i]).text = @"享经验";
-                                 }
-                                 if (_buttonArray[4-i]  == marryB) {
-                                     ((UILabel*)_labelArray[i]).text = @"求婚配";
-                                 }
-                             }
-                              stateType = stateTypeOpen;
+                             [self setTextForLabrls];
+                             stateType = stateTypeOpen;
+                             _touchV.hidden = NO;
                          }];
     }
+}
+- (void)setTextForLabrls
+{
+    for (int i  = 0;i < 4;i++) {
+        ((UILabel*)_labelArray[i]).hidden = NO;
+        if (_buttonArray[4-i]  == allB) {
+            ((UILabel*)_labelArray[i]).text = @"全部";
+        }
+        if (_buttonArray[4-i]  == shareB) {
+            ((UILabel*)_labelArray[i]).text = @"晒幸福";
+        }
+        if (_buttonArray[4-i]  == helpB) {
+            ((UILabel*)_labelArray[i]).text = @"发求助";
+        }
+        if (_buttonArray[4-i]  == exB) {
+            ((UILabel*)_labelArray[i]).text = @"求经验";
+        }
+        if (_buttonArray[4-i]  == marryB) {
+            ((UILabel*)_labelArray[i]).text = @"其他";
+        }
+    }
+}
+#pragma mark - touchView delegate
+-(void)TouchViewBeginTouch:(TouchView*)touchView
+{
+    [self close];
 }
 #pragma mark - tableView delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (open) {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        [self close];
-        return;
-    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ArticleViewController * articleVC = [[ArticleViewController alloc]init];
     articleVC.articleID = ((Article*)_dataSource.dataSourceArray[indexPath.row]).articleID;
@@ -481,10 +478,6 @@ typedef  enum
     [self reloadDataSource];
 }
 #pragma mark - scroll view delegate
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self close];
-}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(scrollView == _tableV){
