@@ -41,6 +41,7 @@
     UIScrollView * scrollV2;
     NSArray * theTagArray;
     NSArray * theTagIdArray;
+    NSMutableArray * tagSizeArray;
 //    FastTextView *_dynamicTV;
 }
 @property (nonatomic,strong)UIPlaceHolderTextView* titleTF;
@@ -66,8 +67,9 @@
         // Custom initialization
         theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 求经验 ",@" 其他 ", nil];
         theTagIdArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"TagList"];
+        tagSizeArray = [NSMutableArray array];
         
-        self.assortID = @"";
+        self.assortID = theTagIdArray[3];
     }
     return self;
 }
@@ -76,7 +78,8 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    
+    NSInteger a = [theTagIdArray indexOfObject:self.assortID];
+    [self selectTag:(a+100)];
 }
 - (void)viewDidLoad
 {
@@ -233,6 +236,7 @@
         
         UIButton* tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         tagBtn.frame = CGRectMake(aWidth-size.width, 8.5, size.width, 25);
+        [tagSizeArray addObject:[NSNumber numberWithFloat:(aWidth-size.width)]];
         [tagBtn addSubview:tagTitleLabel];
         [tagBtn addTarget:self action:@selector(setTopicTag:) forControlEvents:UIControlEventTouchUpInside];
         tagBtn.tag = i + 100;
@@ -327,12 +331,55 @@
     toolbar.items = @[rb];
     _circleTF.inputAccessoryView = toolbar;
     
-    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
-    [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.delegate = self;
-    hud.labelText = @"发布中...";
+//    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+//    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+//    [hud setMyFrameHaveKeyboard];
+//    hud.delegate = self;
+//    hud.labelText = @"发布中...";
     
 //    [self screen];
+}
+
+-(void)showTheHUD
+{
+    if (hud == nil)
+    {
+        
+        NSLog(@"windows count %d \n",[[UIApplication sharedApplication].windows count]);
+        if ([[UIApplication sharedApplication].windows count] > 1 )
+        {
+            UIWindow *win=[[UIApplication sharedApplication].windows objectAtIndex:1];
+            if (win)
+            {
+                NSLog(@"windows 1111111111111 \n");
+                hud = [[MBProgressHUD alloc] initWithWindow:win];
+                // Add HUD to screen
+                [win addSubview:hud];
+            }
+            
+        }
+        else
+        {
+            // Should be initialized with the windows frame so the HUD disables all user input by covering the entire screen
+            hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+            
+            // Add HUD to screen
+            [[UIApplication sharedApplication].keyWindow addSubview:hud];
+            
+            // Regisete for HUD callbacks so we can remove it from the window at the right time
+        }
+        hud.delegate = self;
+        
+        hud.labelText = @"发布中...";
+        
+        [hud show:YES];
+        
+        
+    }
+    else
+    {
+        [hud show:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -352,8 +399,9 @@
 }
 -(void)setTopicTag:(UIButton *)sender
 {
-    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:sender.tag];
-    UILabel * tempL = (UILabel *)[tB viewWithTag:sender.tag];
+    int btnID = sender.tag;
+    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
+    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
     
     tempL.layer.cornerRadius = 4;
     tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
@@ -362,7 +410,7 @@
 //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
     
     for (UIButton * tpBtn in scrollV2.subviews) {
-        if (tpBtn.tag!=sender.tag) {
+        if (tpBtn.tag!=btnID) {
             UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
 //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
             tempL2.layer.cornerRadius = 4;
@@ -371,8 +419,8 @@
         }
     }
     
-    UIButton * tB2 = (UIButton *)[scrollV viewWithTag:sender.tag];
-    UILabel * tempLa = (UILabel *)[tB2 viewWithTag:sender.tag];
+    UIButton * tB2 = (UIButton *)[scrollV viewWithTag:btnID];
+    UILabel * tempLa = (UILabel *)[tB2 viewWithTag:btnID];
     
     tempLa.layer.cornerRadius = 4;
     tempLa.layer.borderColor = [[UIColor orangeColor] CGColor];
@@ -381,7 +429,7 @@
     //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
     
     for (UIButton * tpBtn in scrollV.subviews) {
-        if (tpBtn.tag!=sender.tag) {
+        if (tpBtn.tag!=btnID) {
             UILabel * tempL2a = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
             //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
             tempL2a.layer.cornerRadius = 4;
@@ -390,8 +438,66 @@
         }
     }
     
-    self.assortID = theTagIdArray[sender.tag-100];
-    NSLog(@"tagID = %@",theTagIdArray[sender.tag-100]);
+    self.assortID = theTagIdArray[btnID-100];
+    NSLog(@"tagID = %@",theTagIdArray[btnID-100]);
+//    float scSizeOx = [tagSizeArray[(btnID-100)] floatValue];
+//    scrollV.contentOffset = CGPointMake(scSizeOx, scrollV.contentOffset.y);
+//    scrollV2.contentOffset = CGPointMake(scSizeOx, scrollV2.contentOffset.y);
+}
+-(void)selectTag:(int)btnID
+{
+    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
+    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
+    
+    tempL.layer.cornerRadius = 4;
+    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
+    tempL.layer.borderWidth = 2;
+    tempL.layer.masksToBounds = YES;
+    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+    
+    for (UIButton * tpBtn in scrollV2.subviews) {
+        if (tpBtn.tag!=btnID) {
+            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+            tempL2.layer.cornerRadius = 4;
+            tempL2.layer.borderWidth = 0;
+            tempL2.layer.masksToBounds = YES;
+        }
+    }
+    
+    UIButton * tB2 = (UIButton *)[scrollV viewWithTag:btnID];
+    UILabel * tempLa = (UILabel *)[tB2 viewWithTag:btnID];
+    
+    tempLa.layer.cornerRadius = 4;
+    tempLa.layer.borderColor = [[UIColor orangeColor] CGColor];
+    tempLa.layer.borderWidth = 2;
+    tempLa.layer.masksToBounds = YES;
+    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+    
+    for (UIButton * tpBtn in scrollV.subviews) {
+        if (tpBtn.tag!=btnID) {
+            UILabel * tempL2a = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+            tempL2a.layer.cornerRadius = 4;
+            tempL2a.layer.borderWidth = 0;
+            tempL2a.layer.masksToBounds = YES;
+        }
+    }
+    
+    self.assortID = theTagIdArray[btnID-100];
+    NSLog(@"tagID = %@",theTagIdArray[btnID-100]);
+//    float scSizeOx = [tagSizeArray[(btnID-100)] floatValue];
+    if (btnID-100 != 0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            scrollV.contentOffset = CGPointMake(45, scrollV.contentOffset.y);
+            scrollV2.contentOffset = CGPointMake(45, scrollV2.contentOffset.y);
+        } completion:^(BOOL finished) {
+            
+        }];
+
+    }
+//    scrollV.contentOffset = CGPointMake(40, scrollV.contentOffset.y);
+//    scrollV2.contentOffset = CGPointMake(40, scrollV2.contentOffset.y);
 }
 -(void)emojiBtnClicked:(UIButton *)sender
 {
@@ -537,9 +643,9 @@
         [alert show];
         return;
     }
-    [hud show:YES];
-    [_titleTF resignFirstResponder];
-    [_dynamicTV resignFirstResponder];
+    [self showTheHUD];
+//    [_titleTF resignFirstResponder];
+//    [_dynamicTV resignFirstResponder];
     NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
     if (fileArray.count>0) {
         NSMutableArray *uploadImageArray = [NSMutableArray array];
@@ -609,8 +715,8 @@
     NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
     long long a = (long long)(cT*1000);
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
-    if ([[TempData sharedInstance] getMyUserID]&&[[[TempData sharedInstance] getMyUserID] isKindOfClass:[NSNull class]]) {
-        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userid"];
+    if ([[TempData sharedInstance] getMyUserID]&&![[[TempData sharedInstance] getMyUserID] isKindOfClass:[NSNull class]]) {
+        [params setObject:[[TempData sharedInstance] getMyUserID] forKey:@"userId"];
     }
     [params setObject:self.assortID forKey:@"assortId"];
     [params setObject:_titleTF.text forKey:@"name"];

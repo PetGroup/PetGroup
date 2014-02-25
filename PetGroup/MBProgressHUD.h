@@ -229,7 +229,7 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * animations while (dis)appearing.
  */
 - (void)showWhileExecuting:(SEL)method onTarget:(id)target withObject:(id)object animated:(BOOL)animated;
-
+-(void)setMyFrameHaveKeyboard;
 #if NS_BLOCKS_AVAILABLE
 
 /**

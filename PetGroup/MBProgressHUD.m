@@ -150,6 +150,11 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	return [NSArray arrayWithArray:huds];
 }
 
+-(void)setMyFrameHaveKeyboard
+{
+    [self setFrame:CGRectMake(self.frame.origin.x, 100, self.frame.size.width, self.frame.size.height)];
+}
+
 #pragma mark - Lifecycle
 
 - (id)initWithFrame:(CGRect)frame {
