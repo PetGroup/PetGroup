@@ -19,12 +19,19 @@
 #import <QuartzCore/QuartzCore.h>
 #import "EditArticleViewController.h"
 #import "SubjectViewController.h"
+typedef  enum
+{
+    stateTypeOpen = 0,
+    stateTypeOpening,
+    stateTypeClose,
+    stateTypeClosing
+}StateType;
 @interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate>
 {
     float diffH;
     CGPoint centerPoint;
     
-    BOOL open;
+    StateType stateType;
     
     UIButton* allB;
     UIButton* shareB;
@@ -52,7 +59,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        open = NO;
+        stateType = stateTypeClose;
         self.buttonArray = [NSMutableArray array];
         self.labelArray = [NSMutableArray array];
     }
@@ -305,9 +312,11 @@
 -(void)open:(UIButton*)button
 {
     NSLog(@"%f",button.center.x);
-    if (!open) {
+    if (stateType == stateTypeClose) {
         [self openButtons];
-    }else{
+    }
+    if (stateType == stateTypeOpen)
+    {
         [self closeWithButton:button Completion:^{
             if (button == allB) {
                 [self setDataSource:_allListDS];
@@ -327,18 +336,17 @@
             [self reloadData];
         }];
     }
-    open = !open;
 }
 - (void)close
 {
-    if (open) {
+    if (stateType == stateTypeOpen) {
         [self closeWithButton:_buttonArray[0] Completion:nil];
-        open = !open;
     }
     
 }
 - (void)closeWithButton:(UIButton*)button Completion:(void (^)(void))completion
 {
+    stateType = stateTypeClosing;
     if (button) {
         [_buttonArray removeObject:button];
         [_buttonArray insertObject:button atIndex:0];
@@ -366,6 +374,7 @@
                                                   ((UIView*)_buttonArray[i]).center  = centerPoint;
                                               }
                                           } completion:^(BOOL finished) {
+                                              stateType = stateTypeClose;
                                               if (completion) {
                                                    completion();
                                               }
@@ -375,6 +384,7 @@
 }
 - (void)openButtons
 {
+    stateType = stateTypeOpening;
     for (UIButton* button in _buttonArray) {
         button.alpha = 1;
         button.hidden = NO;
@@ -409,6 +419,7 @@
                                      ((UILabel*)_labelArray[i]).text = @"求婚配";
                                  }
                              }
+                              stateType = stateTypeOpen;
                          }];
     }else{
         [UIView animateWithDuration:0.3
@@ -436,6 +447,7 @@
                                      ((UILabel*)_labelArray[i]).text = @"求婚配";
                                  }
                              }
+                              stateType = stateTypeOpen;
                          }];
     }
 }
