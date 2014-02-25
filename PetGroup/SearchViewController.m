@@ -10,7 +10,7 @@
 #import "MJRefresh.h"
 #import "TempData.h"
 #import "Article.h"
-#import "articleCell.h"
+#import "NewArticleCell.h"
 #import "ArticleViewController.h"
 
 @interface SearchViewController ()<MJRefreshBaseViewDelegate>
@@ -200,12 +200,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"NearbyCell";
-    articleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
+    NewArticleCell*cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier ];
     if (cell == nil) {
-        cell = [[articleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        cell = [[NewArticleCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     cell.article = self.resultArray[indexPath.row];
     return cell;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [NewArticleCell heightForRowWithArticle:self.resultArray[indexPath.row]];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
