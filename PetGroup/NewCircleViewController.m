@@ -131,7 +131,7 @@ typedef  enum
     [subjectB addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:subjectB];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-93-diffH)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-142-diffH)];
     _tableV.delegate = self;
     
 //    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
@@ -488,12 +488,8 @@ typedef  enum
             _lastPosition = currentPostion;
             NSLog(@"ScrollUp now");
             if (_tableV.frame.origin.y != 44+diffH) {
-                float cc = 0;
-                if (diffH) {
-                    cc = 49;
-                }
                 [UIView animateWithDuration:0.2 animations:^{
-                    _tableV.frame = CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-44-cc-diffH);
+                    _tableV.frame = CGRectMake(0, 44+diffH, 320, _tableV.frame.size.height+49);
                 }];
             }
             
@@ -505,12 +501,8 @@ typedef  enum
             _lastPosition = currentPostion;
             NSLog(@"ScrollDown now");
             if (_tableV.frame.origin.y != 93+diffH) {
-                float cc = 0;
-                if (diffH) {
-                    cc = 49;
-                }
                 [UIView animateWithDuration:0.2 animations:^{
-                    _tableV.frame = CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-93-cc-diffH);
+                    _tableV.frame = CGRectMake(0, 93+diffH, 320, _tableV.frame.size.height-49);
                 }];
             }
         }
