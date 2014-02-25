@@ -411,6 +411,8 @@
     NSUserDefaults * defaultUserD = [NSUserDefaults standardUserDefaults];
     AudioServicesPlayAlertSound(1003);
     if ([theDict[@"contentType"] isEqualToString:@"bbs_special_subject"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:[NSString stringWithFormat:@"%@_%@",@"bbs_special_subject",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         return;
     }
     NSString * notiKey = [NSString stringWithFormat:@"%@_%@",NewComment,[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]];
@@ -520,7 +522,7 @@
         [DataStoreManager storeNewMsgs:messageContent senderType:SYSTEMNOTIFICATION];
     }
     else if ([type isEqualToString:@"bbs_special_subject"]){
-        [DataStoreManager storeNewMsgs:messageContent senderType:NewSpecialSubject];
+//        [DataStoreManager storeNewMsgs:messageContent senderType:NewSpecialSubject];
     }
     else if([type isEqualToString:@"normalchat"])
     {

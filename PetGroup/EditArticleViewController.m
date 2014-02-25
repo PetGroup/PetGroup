@@ -68,8 +68,8 @@
         theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 求经验 ",@" 其他 ", nil];
         theTagIdArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"TagList"];
         tagSizeArray = [NSMutableArray array];
-        manual = NO;
-        self.assortID = theTagIdArray[3];
+//        manual = NO;
+        self.assortID = @"";
     }
     return self;
 }
@@ -78,8 +78,8 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSInteger a = [theTagIdArray indexOfObject:self.assortID];
-    [self selectTag:(a+100)];
+//    NSInteger a = [theTagIdArray indexOfObject:self.assortID];
+//    [self selectTag:(a+100)];
 }
 - (void)viewDidLoad
 {
@@ -647,6 +647,11 @@
     }
     if (_dynamicTV.text.length<4||[IdentifyingString isValidateAllSpace:_dynamicTV.text]) {
         UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不写点内容能行么，至少4个字吧" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }
+    if (self.assortID.length<=1) {
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"给你的帖子选一个合适的分类吧，就是在编辑正文的时候键盘上面的蓝色小按钮哦" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
     }

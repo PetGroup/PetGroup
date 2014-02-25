@@ -27,7 +27,7 @@ typedef  enum
     stateTypeClose,
     stateTypeClosing
 }StateType;
-@interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate,TouchViewDelegate>
+@interface NewCircleViewController ()<UITableViewDelegate,UISearchBarDelegate,SRRefreshDelegate,MJRefreshBaseViewDelegate,DynamicCellDelegate,TouchViewDelegate,EditArticleViewDelegate>
 {
     float diffH;
     CGPoint centerPoint;
@@ -42,6 +42,8 @@ typedef  enum
     NewArticleListDataSource* _dataSource;
     
     int _lastPosition;
+    
+    UIImageView * subNotiV;
 }
 @property (nonatomic,retain)UITableView* tableV;
 @property (nonatomic,retain)SRRefreshView* refreshView;
@@ -131,8 +133,14 @@ typedef  enum
     [subjectB addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:subjectB];
     
+    subNotiV = [[UIImageView alloc] initWithFrame:CGRectMake(90, 5, 15, 15)];
+    [subNotiV setImage:[UIImage imageNamed:@"redpot.png"]];
+    [subjectB addSubview:subNotiV];
+    subNotiV.hidden = YES;
+    
     self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-142-diffH)];
     _tableV.delegate = self;
+    _tableV.showsVerticalScrollIndicator = NO;
     
 //    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
 //    searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -233,13 +241,13 @@ typedef  enum
     [self loadHistory];
     
     [NewArticleListDataSource viewController:self loadTagListSuccess:^(NSArray *tagArray) {
-        self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[0]];
+        self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[0]];  //晒幸福
         _shareListDS.myController = self;
-        self.exListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[1]];
+        self.exListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[1]];   //求经验
         _exListDS.myController = self;
-        self.marryListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[2]];
+        self.marryListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[2]];  //其他
         _marryListDS.myController = self;
-        self.helpListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[3]];
+        self.helpListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[3]];   //发求助
         _helpListDS.myController = self;
     } failure:^{
         
@@ -259,13 +267,37 @@ typedef  enum
     SubjectViewController* subjectVC = [[SubjectViewController alloc]init];
     [self.navigationController pushViewController:subjectVC animated:YES];
     [self.customTabBarController hidesTabBar:YES animated:YES];
+    [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:[NSString stringWithFormat:@"%@_%@",@"bbs_special_subject",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 -(void)toPublishPage
 {
     EditArticleViewController* editAVC = [[EditArticleViewController alloc]init];
+    editAVC.delegate = self;
     [self presentViewController:editAVC animated:YES completion:^{
         
     }];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSString * subIfRead = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@_%@",@"bbs_special_subject",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+    if (subIfRead) {
+        if ([subIfRead isEqualToString:@"YES"]) {
+            subNotiV.hidden = YES;
+            [self.customTabBarController removeNotificatonOfIndex:0];
+            
+        }
+        else
+        {
+            subNotiV.hidden = NO;
+            [self.customTabBarController notificationWithNumber:NO AndTheNumber:0 OrDot:YES WithButtonIndex:0];
+        }
+    }
+    else
+    {
+        subNotiV.hidden = YES;
+        [self.customTabBarController removeNotificatonOfIndex:0];
+    }
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -575,6 +607,14 @@ typedef  enum
     } failure:^{
         [_footerView endRefreshing];
     }];
+}
+#pragma mark - edit article view delegate
+-(void)editArticleViewDidEdit:(Article*)aricle
+{
+    ArticleViewController * articleVC = [[ArticleViewController alloc]init];
+    articleVC.articleID = aricle.articleID;
+    [self.navigationController pushViewController:articleVC animated:YES];
+    [self.customTabBarController hidesTabBar:YES animated:YES];
 }
 /*
 #pragma mark - Navigation
