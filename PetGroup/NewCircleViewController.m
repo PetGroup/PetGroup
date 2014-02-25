@@ -131,7 +131,7 @@ typedef  enum
     [subjectB addTarget:self action:@selector(toSubjectPage) forControlEvents:UIControlEventTouchUpInside];
     [tabIV addSubview:subjectB];
     
-    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-140-diffH)];
+    self.tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-142-diffH)];
     _tableV.delegate = self;
     
 //    UISearchBar* searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, 320, 44)];
@@ -489,7 +489,7 @@ typedef  enum
             NSLog(@"ScrollUp now");
             if (_tableV.frame.origin.y != 44+diffH) {
                 [UIView animateWithDuration:0.2 animations:^{
-                    _tableV.frame = CGRectMake(0, 44+diffH, 320, self.view.frame.size.height-91-diffH);
+                    _tableV.frame = CGRectMake(0, 44+diffH, 320, _tableV.frame.size.height+49);
                 }];
             }
             
@@ -502,7 +502,7 @@ typedef  enum
             NSLog(@"ScrollDown now");
             if (_tableV.frame.origin.y != 93+diffH) {
                 [UIView animateWithDuration:0.2 animations:^{
-                    _tableV.frame = CGRectMake(0, 93+diffH, 320, self.view.frame.size.height-140-diffH);
+                    _tableV.frame = CGRectMake(0, 93+diffH, 320, _tableV.frame.size.height-49);
                 }];
             }
         }
