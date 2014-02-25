@@ -24,6 +24,8 @@
     UIButton * emojiBtn;
     UIButton* imageB;
     
+    BOOL manual;
+    
 }
 @property (nonatomic,retain)id <EditArticleViewDelegate> delegate;
 @property (nonatomic,retain)NSArray* CircleTree;

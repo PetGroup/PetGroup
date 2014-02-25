@@ -68,7 +68,7 @@
         theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 求经验 ",@" 其他 ", nil];
         theTagIdArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"TagList"];
         tagSizeArray = [NSMutableArray array];
-        
+        manual = NO;
         self.assortID = theTagIdArray[3];
     }
     return self;
@@ -197,20 +197,20 @@
     tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
     tool.layer.borderWidth = 1;
     
-    UIImageView* tool2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
-    tool2.backgroundColor = [UIColor clearColor];
-    tool2.userInteractionEnabled = YES;
-    tool2.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-    tool2.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
-    tool2.layer.borderWidth = 1;
+//    UIImageView* tool2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
+//    tool2.backgroundColor = [UIColor clearColor];
+//    tool2.userInteractionEnabled = YES;
+//    tool2.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+//    tool2.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
+//    tool2.layer.borderWidth = 1;
 
     _dynamicTV.inputAccessoryView = tool;
-    self.titleTF.inputAccessoryView = tool2;
+//    self.titleTF.inputAccessoryView = tool2;
 //    [self.view addSubview:tool];
     
     
     scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
-    scrollV.delegate = self;
+//    scrollV.delegate = self;
 //    scrollV.contentSize = CGSizeMake(320, 44);
     scrollV.showsHorizontalScrollIndicator=NO;
 	scrollV.showsVerticalScrollIndicator=NO;
@@ -246,43 +246,43 @@
     }
     scrollV.contentSize = CGSizeMake(aWidth, 44);
     
-    scrollV2 = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
-    scrollV2.delegate = self;
-    //    scrollV.contentSize = CGSizeMake(320, 44);
-    scrollV2.showsHorizontalScrollIndicator=NO;
-	scrollV2.showsVerticalScrollIndicator=NO;
-    float aWidth2 = 0.0f;
-    float bWidth2 = 0.0f;
-    for (int i = 0;i < theTagArray.count;i ++) {
-        UILabel * tagTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 25)];
-        tagTitleLabel.numberOfLines = 0;  //必须定义这个属性，否则UILabel不会换行
-        tagTitleLabel.textColor = [UIColor whiteColor];
-        tagTitleLabel.textAlignment = NSTextAlignmentLeft;  //文本对齐方式
-        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
-        tagTitleLabel.layer.cornerRadius = 4;
-        tagTitleLabel.layer.masksToBounds = YES;
-        tagTitleLabel.tag = i + 100;
-        
-        NSString *str = theTagArray[i];
-        CGSize size = [str sizeWithFont:tagTitleLabel.font constrainedToSize:CGSizeMake(MAXFLOAT, 25) lineBreakMode:NSLineBreakByWordWrapping];
-        //根据计算结果重新设置UILabel的尺寸
-        [tagTitleLabel setFrame:CGRectMake(0, 0, size.width, 25)];
-        tagTitleLabel.text = str;
-        
-        aWidth2 = aWidth2 + size.width+10;
-        
-        UIButton* tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        tagBtn.frame = CGRectMake(aWidth2-size.width, 8.5, size.width, 25);
-        [tagBtn addSubview:tagTitleLabel];
-        [tagBtn addTarget:self action:@selector(setTopicTag:) forControlEvents:UIControlEventTouchUpInside];
-        tagBtn.tag = i + 100;
-        [scrollV2 addSubview:tagBtn];
-        bWidth2 = size.width;
-        
-    }
-    scrollV2.contentSize = CGSizeMake(aWidth2, 44);
+//    scrollV2 = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
+//    scrollV2.delegate = self;
+//    //    scrollV.contentSize = CGSizeMake(320, 44);
+//    scrollV2.showsHorizontalScrollIndicator=NO;
+//	scrollV2.showsVerticalScrollIndicator=NO;
+//    float aWidth2 = 0.0f;
+//    float bWidth2 = 0.0f;
+//    for (int i = 0;i < theTagArray.count;i ++) {
+//        UILabel * tagTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 25)];
+//        tagTitleLabel.numberOfLines = 0;  //必须定义这个属性，否则UILabel不会换行
+//        tagTitleLabel.textColor = [UIColor whiteColor];
+//        tagTitleLabel.textAlignment = NSTextAlignmentLeft;  //文本对齐方式
+//        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+//        tagTitleLabel.layer.cornerRadius = 4;
+//        tagTitleLabel.layer.masksToBounds = YES;
+//        tagTitleLabel.tag = i + 100;
+//        
+//        NSString *str = theTagArray[i];
+//        CGSize size = [str sizeWithFont:tagTitleLabel.font constrainedToSize:CGSizeMake(MAXFLOAT, 25) lineBreakMode:NSLineBreakByWordWrapping];
+//        //根据计算结果重新设置UILabel的尺寸
+//        [tagTitleLabel setFrame:CGRectMake(0, 0, size.width, 25)];
+//        tagTitleLabel.text = str;
+//        
+//        aWidth2 = aWidth2 + size.width+10;
+//        
+//        UIButton* tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        tagBtn.frame = CGRectMake(aWidth2-size.width, 8.5, size.width, 25);
+//        [tagBtn addSubview:tagTitleLabel];
+//        [tagBtn addTarget:self action:@selector(setTopicTag:) forControlEvents:UIControlEventTouchUpInside];
+//        tagBtn.tag = i + 100;
+//        [scrollV2 addSubview:tagBtn];
+//        bWidth2 = size.width;
+//        
+//    }
+//    scrollV2.contentSize = CGSizeMake(aWidth2, 44);
     [tool addSubview:scrollV];
-    [tool2 addSubview:scrollV2];
+//    [tool2 addSubview:scrollV2];
     
 //    [tool2 addSubview:scrollV];
     
@@ -298,17 +298,17 @@
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton * imageB2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    imageB2.frame = CGRectMake(278, 5, 30, 30);
-    [imageB2 setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
-    [tool2 addSubview:imageB2];
-    [imageB2 setEnabled:NO];
-    
-    UIButton * emojiBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [emojiBtn2 setFrame:CGRectMake(229,-1 , 43, 43)];
-    [emojiBtn2 setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
-    [tool2 addSubview:emojiBtn2];
-    [emojiBtn2 setEnabled:NO];
+//    UIButton * imageB2 = [UIButton buttonWithType:UIButtonTypeCustom];
+//    imageB2.frame = CGRectMake(278, 5, 30, 30);
+//    [imageB2 setBackgroundImage:[UIImage imageNamed:@"picBtn"] forState:UIControlStateNormal];
+//    [tool2 addSubview:imageB2];
+//    [imageB2 setEnabled:NO];
+//    
+//    UIButton * emojiBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [emojiBtn2 setFrame:CGRectMake(229,-1 , 43, 43)];
+//    [emojiBtn2 setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+//    [tool2 addSubview:emojiBtn2];
+//    [emojiBtn2 setEnabled:NO];
 
     
     theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
@@ -387,37 +387,44 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-	if (scrollView==scrollV) {
-        scrollV2.contentOffset = scrollView.contentOffset;
-    }
-    else if(scrollView==scrollV2)
-    {
-        scrollV.contentOffset = scrollView.contentOffset;
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+////    if (manual) {
+////        if (scrollView==scrollV) {
+////            scrollV2.contentOffset = scrollView.contentOffset;
+////            manual = NO;
+////        }
+////        else if(scrollView==scrollV2)
+////        {
+////            scrollV.contentOffset = scrollView.contentOffset;
+////            manual = NO;
+////        }
+////    }
+////    manual = NO;
+//
+//}
 -(void)setTopicTag:(UIButton *)sender
 {
+//    manual = YES;
     int btnID = sender.tag;
-    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
-    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
-    
-    tempL.layer.cornerRadius = 4;
-    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
-    tempL.layer.borderWidth = 2;
-    tempL.layer.masksToBounds = YES;
-//    [tempL setBackgroundColor:[UIColor lightGrayColor]];
-    
-    for (UIButton * tpBtn in scrollV2.subviews) {
-        if (tpBtn.tag!=btnID) {
-            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
-//            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
-            tempL2.layer.cornerRadius = 4;
-            tempL2.layer.borderWidth = 0;
-            tempL2.layer.masksToBounds = YES;
-        }
-    }
+//    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
+//    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
+//    
+//    tempL.layer.cornerRadius = 4;
+//    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
+//    tempL.layer.borderWidth = 2;
+//    tempL.layer.masksToBounds = YES;
+////    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+//    
+//    for (UIButton * tpBtn in scrollV2.subviews) {
+//        if (tpBtn.tag!=btnID) {
+//            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+////            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+//            tempL2.layer.cornerRadius = 4;
+//            tempL2.layer.borderWidth = 0;
+//            tempL2.layer.masksToBounds = YES;
+//        }
+//    }
     
     UIButton * tB2 = (UIButton *)[scrollV viewWithTag:btnID];
     UILabel * tempLa = (UILabel *)[tB2 viewWithTag:btnID];
@@ -446,24 +453,24 @@
 }
 -(void)selectTag:(int)btnID
 {
-    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
-    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
-    
-    tempL.layer.cornerRadius = 4;
-    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
-    tempL.layer.borderWidth = 2;
-    tempL.layer.masksToBounds = YES;
-    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
-    
-    for (UIButton * tpBtn in scrollV2.subviews) {
-        if (tpBtn.tag!=btnID) {
-            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
-            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
-            tempL2.layer.cornerRadius = 4;
-            tempL2.layer.borderWidth = 0;
-            tempL2.layer.masksToBounds = YES;
-        }
-    }
+//    UIButton * tB = (UIButton *)[scrollV2 viewWithTag:btnID];
+//    UILabel * tempL = (UILabel *)[tB viewWithTag:btnID];
+//    
+//    tempL.layer.cornerRadius = 4;
+//    tempL.layer.borderColor = [[UIColor orangeColor] CGColor];
+//    tempL.layer.borderWidth = 2;
+//    tempL.layer.masksToBounds = YES;
+//    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
+//    
+//    for (UIButton * tpBtn in scrollV2.subviews) {
+//        if (tpBtn.tag!=btnID) {
+//            UILabel * tempL2 = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
+//            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+//            tempL2.layer.cornerRadius = 4;
+//            tempL2.layer.borderWidth = 0;
+//            tempL2.layer.masksToBounds = YES;
+//        }
+//    }
     
     UIButton * tB2 = (UIButton *)[scrollV viewWithTag:btnID];
     UILabel * tempLa = (UILabel *)[tB2 viewWithTag:btnID];
@@ -488,12 +495,12 @@
     NSLog(@"tagID = %@",theTagIdArray[btnID-100]);
 //    float scSizeOx = [tagSizeArray[(btnID-100)] floatValue];
     if (btnID-100 != 0) {
-        [UIView animateWithDuration:0.3 animations:^{
+//        [UIView animateWithDuration:0.3 animations:^{
             scrollV.contentOffset = CGPointMake(45, scrollV.contentOffset.y);
-            scrollV2.contentOffset = CGPointMake(45, scrollV2.contentOffset.y);
-        } completion:^(BOOL finished) {
-            
-        }];
+//            scrollV2.contentOffset = CGPointMake(45, scrollV2.contentOffset.y);
+//        } completion:^(BOOL finished) {
+//            
+//        }];
 
     }
 //    scrollV.contentOffset = CGPointMake(40, scrollV.contentOffset.y);
