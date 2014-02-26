@@ -28,11 +28,11 @@
 }
 + (void)viewController:(UIViewController*)viewController loadTagListSuccess:(void (^)(NSArray * tagArray))success failure:(void (^)(void))failure
 {
-    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
-    NSArray * array = [userDefaults objectForKey:@"TagList"];
-    if (array) {
-        success(array);
-    }else{//getAssortList
+//    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSArray * array = [userDefaults objectForKey:@"TagList"];
+//    if (array) {
+//        success(array);
+//    }else{//getAssortList
         NSTimeInterval cT = [[NSDate date] timeIntervalSince1970];
         long long a = (long long)(cT*1000);
         NSMutableDictionary* body = [NSMutableDictionary dictionary];
@@ -49,13 +49,13 @@
             for (NSDictionary* dic in responseObject) {
                 [tagArray addObject:dic[@"id"]];
             }
-            [userDefaults setObject:tagArray forKey:@"TagList"];
-            [userDefaults synchronize];
+            [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"TagList"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             success(tagArray);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure();
         }];
-    }
+//    }
 }
 -(void)reloadDataSuccess:(void (^)(void))success failure:(void (^)(void))failure
 {

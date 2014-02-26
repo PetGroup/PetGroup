@@ -40,6 +40,7 @@ typedef  enum
     UIButton* marryB;
     UIButton* exB;
     NewArticleListDataSource* _dataSource;
+    int previousTag;
     
     int _lastPosition;
     
@@ -184,6 +185,7 @@ typedef  enum
     [marryB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:marryB];
     [_buttonArray addObject:marryB];
+    marryB.tag = 1;
     
     helpB = [UIButton buttonWithType:UIButtonTypeCustom];
     helpB.hidden = YES;
@@ -193,6 +195,7 @@ typedef  enum
     [helpB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:helpB];
     [_buttonArray addObject:helpB];
+    helpB.tag = 2;
     
     exB = [UIButton buttonWithType:UIButtonTypeCustom];
     exB.hidden = YES;
@@ -202,6 +205,7 @@ typedef  enum
     [exB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:exB];
     [_buttonArray addObject:exB];
+    exB.tag = 3;
     
     shareB = [UIButton buttonWithType:UIButtonTypeCustom];
     shareB.hidden = YES;
@@ -211,6 +215,7 @@ typedef  enum
     [shareB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:shareB];
     [_buttonArray addObject:shareB];
+    shareB.tag = 4;
     
     allB = [UIButton buttonWithType:UIButtonTypeCustom];
     allB.alpha = 0.5;
@@ -220,6 +225,7 @@ typedef  enum
     [allB addTarget:self action:@selector(open:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:allB];
     [_buttonArray insertObject:allB atIndex:0];
+    allB.tag = 5;
     
     for (int i = 0; i<4; i++) {
         UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(25+i*60, centerPoint.y + 25, 50, 20)];
@@ -239,17 +245,34 @@ typedef  enum
     self.allListDS = [[NewArticleListDataSource alloc]initWithAssortID:@"ALL"];
     _allListDS.myController = self;
     [self setDataSource:_allListDS];
-    [self loadHistory];
+    previousTag = 5;
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray * array = [userDefaults objectForKey:@"TagList"];
+    if (array.count>2) {
+        self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:array[0]];  //晒幸福
+        _shareListDS.myController = self;
+        self.exListDS = [[NewArticleListDataSource alloc]initWithAssortID:array[1]];   //求经验
+        _exListDS.myController = self;
+        self.marryListDS = [[NewArticleListDataSource alloc]initWithAssortID:array[3]];  //其他
+        _marryListDS.myController = self;
+        self.helpListDS = [[NewArticleListDataSource alloc]initWithAssortID:array[2]];   //发求助
+        _helpListDS.myController = self;
+        [self loadHistory];
+    }
+    
     
     [NewArticleListDataSource viewController:self loadTagListSuccess:^(NSArray *tagArray) {
         self.shareListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[0]];  //晒幸福
         _shareListDS.myController = self;
         self.exListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[1]];   //求经验
         _exListDS.myController = self;
-        self.marryListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[2]];  //其他
+        self.marryListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[3]];  //其他
         _marryListDS.myController = self;
-        self.helpListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[3]];   //发求助
+        self.helpListDS = [[NewArticleListDataSource alloc]initWithAssortID:tagArray[2]];   //发求助
         _helpListDS.myController = self;
+        if (!array||array.count<2) {
+            [self loadHistory];
+        }
     } failure:^{
         
     }];
@@ -362,6 +385,7 @@ typedef  enum
     if (stateType == stateTypeClose) {
         [self openButtons];
     }
+    
     if (stateType == stateTypeOpen)
     {
         [self closeWithButton:button Completion:^{
@@ -380,7 +404,11 @@ typedef  enum
             if (button == helpB) {
                 [self setDataSource:_helpListDS];
             }
-            [self reloadData];
+            if (button.tag!=previousTag) {
+                [self reloadData];
+            }
+            previousTag = button.tag;
+            
         }];
     }
 }

@@ -800,7 +800,7 @@ static CFIndex bsearchLines(CFArrayRef lines, CFIndex l, CFIndex h, CFIndex quer
 - (void)drawContentInRect:(CGRect)rect ctx:(CGContextRef)ctx {
 
     double starttime=[[NSDate date]timeIntervalSince1970];
-    
+    [self.delegate fastTextViewDidChange:self];
     [self.attributedString clearDeleteParagraphs]; //clear attributedString deleted paragraphs // 清理已删除的章节
     
     if ([self.attributedString isEditing]) {

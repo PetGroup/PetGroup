@@ -42,6 +42,8 @@
     NSArray * theTagArray;
     NSArray * theTagIdArray;
     NSMutableArray * tagSizeArray;
+    
+    UIImageView* tool;
 //    FastTextView *_dynamicTV;
 }
 @property (nonatomic,strong)UIPlaceHolderTextView* titleTF;
@@ -178,6 +180,11 @@
     [lineView setBackgroundColor:[UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1]];
     [self.view addSubview:lineView];
     
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
+    theEmojiView.delegate = self;
+    [self.view addSubview:theEmojiView];
+    theEmojiView.hidden = YES;
+    
     self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(3, 93.75+diffH, 314,self.view.frame.size.height-(diffH+55.57+253+44)-20-20)];
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
@@ -190,7 +197,7 @@
     [self.view addSubview:_dynamicTV];
     [self.titleTF becomeFirstResponder];
     
-    UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
+    tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
     tool.userInteractionEnabled = YES;
     tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
@@ -204,9 +211,9 @@
 //    tool2.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
 //    tool2.layer.borderWidth = 1;
 
-    _dynamicTV.inputAccessoryView = tool;
+//    _dynamicTV.inputAccessoryView = tool;
 //    self.titleTF.inputAccessoryView = tool2;
-//    [self.view addSubview:tool];
+    [self.view addSubview:tool];
     
     
     scrollV = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 225, 44)];
@@ -221,10 +228,12 @@
         tagTitleLabel.numberOfLines = 0;  //必须定义这个属性，否则UILabel不会换行
         tagTitleLabel.textColor = [UIColor whiteColor];
         tagTitleLabel.textAlignment = NSTextAlignmentLeft;  //文本对齐方式
-        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+//        [tagTitleLabel setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+        [tagTitleLabel setBackgroundColor:[UIColor lightGrayColor]];
         tagTitleLabel.layer.cornerRadius = 4;
         tagTitleLabel.layer.masksToBounds = YES;
         tagTitleLabel.tag = i + 100;
+//        tagTitleLabel.alpha = 0.5;
         
         NSString *str = theTagArray[i];
         CGSize size = [str sizeWithFont:tagTitleLabel.font constrainedToSize:CGSizeMake(MAXFLOAT, 25) lineBreakMode:NSLineBreakByWordWrapping];
@@ -311,10 +320,7 @@
 //    [emojiBtn2 setEnabled:NO];
 
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
-    theEmojiView.delegate = self;
-//    [self.view addSubview:theEmojiView];
-//    theEmojiView.hidden = YES;
+
  
     self.circleTF = [[UITextField alloc]init];
     [self.view addSubview:_circleTF];
@@ -427,18 +433,21 @@
 //    }
     
     UIButton * tB2 = (UIButton *)[scrollV viewWithTag:btnID];
-    UILabel * tempLa = (UILabel *)[tB2 viewWithTag:btnID];
+    UILabel * tempLa = (UILabel *)tB2.subviews[0];
     
+//    tempLa.layer.cornerRadius = 4;
+////    tempLa.layer.borderColor = [[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1] CGColor];
+//    tempLa.layer.borderWidth = 0;
+//    tempLa.layer.masksToBounds = YES;
+    [tempLa setBackgroundColor:[UIColor orangeColor]];
     tempLa.layer.cornerRadius = 4;
-    tempLa.layer.borderColor = [[UIColor orangeColor] CGColor];
-    tempLa.layer.borderWidth = 2;
+    tempLa.layer.borderWidth = 0;
     tempLa.layer.masksToBounds = YES;
-    //    [tempL setBackgroundColor:[UIColor lightGrayColor]];
     
     for (UIButton * tpBtn in scrollV.subviews) {
         if (tpBtn.tag!=btnID) {
-            UILabel * tempL2a = (UILabel *)[tpBtn viewWithTag:tpBtn.tag];
-            //            [tempL2 setBackgroundColor:[UIColor colorWithRed:0.5 green:0.64 blue:0.8 alpha:1]];
+            UILabel * tempL2a = (UILabel *)tpBtn.subviews[0];
+            [tempL2a setBackgroundColor:[UIColor lightGrayColor]];
             tempL2a.layer.cornerRadius = 4;
             tempL2a.layer.borderWidth = 0;
             tempL2a.layer.masksToBounds = YES;
@@ -506,20 +515,36 @@
 //    scrollV.contentOffset = CGPointMake(40, scrollV.contentOffset.y);
 //    scrollV2.contentOffset = CGPointMake(40, scrollV2.contentOffset.y);
 }
+-(void)showEmojiScrollView
+{
+    [_dynamicTV resignFirstResponder];
+    [tool setFrame:CGRectMake(0, self.view.frame.size.height-227-tool.frame.size.height, 320, tool.frame.size.height)];
+    theEmojiView.hidden = NO;
+    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 227)];
+//    [self autoMovekeyBoard:253];
+    
+}
+
+-(void)hideEmojiView
+{
+    
+}
+
 -(void)emojiBtnClicked:(UIButton *)sender
 {
     if (!ifEmoji) {
         [_dynamicTV resignFirstResponder];
-        _dynamicTV.inputView = theEmojiView;
-        [_dynamicTV becomeFirstResponder];
+//        _dynamicTV.inputView = theEmojiView;
+//        [_dynamicTV becomeFirstResponder];
         ifEmoji = YES;
+        [self showEmojiScrollView];
         [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
         
     }
     else
     {
-        [_dynamicTV resignFirstResponder];
-        _dynamicTV.inputView = nil;
+//        [_dynamicTV resignFirstResponder];
+//        _dynamicTV.inputView = nil;
         [_dynamicTV becomeFirstResponder];
         ifEmoji = NO;
         [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
@@ -651,7 +676,7 @@
         return;
     }
     if (self.assortID.length<=1) {
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"给你的帖子选一个合适的分类吧，就是在编辑正文的时候键盘上面的蓝色小按钮哦" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
+        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"给你的帖子选一个合适的分类吧，就是在编辑正文的时候键盘上面的灰色小按钮哦" delegate:self cancelButtonTitle:@"知道了" otherButtonTitles: nil];
         [alert show];
         return;
     }
@@ -870,6 +895,12 @@
     }
     
 }
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [emojiBtn setEnabled:NO];
+    [imageB setEnabled:NO];
+    return YES;
+}
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -1001,6 +1032,8 @@
 #pragma mark fastTextViewDelegate
 
 - (BOOL)fastTextViewShouldBeginEditing:(FastTextView *)textView {
+    [emojiBtn setEnabled:YES];
+    [imageB setEnabled:YES];
     return YES;
 }
 
@@ -1174,13 +1207,42 @@
 //    }
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
+    ifEmoji = NO;
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    NSDictionary *userInfo = [notification userInfo];
+    
+    // Get the origin of the keyboard when it's displayed.
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    // Get the top of the keyboard as the y coordinate of its origin in self's view's coordinate system. The bottom of the text view's frame should align with the top of the keyboard's final position.
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    // Get the duration of the animation.
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
+    [self autoMovekeyBoard:keyboardRect.size.height];
+}
 
-//    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+-(void)autoMovekeyBoard:(float)h
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [tool setFrame:CGRectMake(0, self.view.frame.size.height-h-tool.frame.size.height, 320, 44)];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    
+    [UIView animateWithDuration:0.2 animations:^{
+        [tool setFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 44)];
+    } completion:^(BOOL finished) {
+        
+    }];
 
     
     

@@ -29,6 +29,8 @@
     NSMutableString * stringToPublish;
     NSMutableArray * tagArray;
     NSMutableArray * tagPositionArray;
+    
+    UIImageView * tool;
 }
 @property (nonatomic,strong)FastTextView* dynamicTV;
 @property (nonatomic,strong)UILabel* placeholderL;
@@ -57,9 +59,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
-    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
-    [self.view addSubview:bgimgV];
+//    UIImageView * bgimgV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height-44)];
+//    [bgimgV setImage:[UIImage imageNamed:@"chat_bg"]];
+//    [self.view addSubview:bgimgV];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     diffH = [Common diffHeight:self];
     
@@ -101,13 +104,13 @@
     [nextB addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextB];
     
-    UIImage * bgImage = [[UIImage imageNamed:@"edit_bg"]
-                         stretchableImageWithLeftCapWidth:0 topCapHeight:65];
-    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, self.view.frame.size.height-(diffH+55.57+253+44))];
-    editIV.image = bgImage ;
-    [self.view addSubview:editIV];
+//    UIImage * bgImage = [[UIImage imageNamed:@"edit_bg"]
+//                         stretchableImageWithLeftCapWidth:0 topCapHeight:65];
+//    UIImageView* editIV = [[UIImageView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5, self.view.frame.size.height-(diffH+55.57+253+44))];
+//    editIV.image = bgImage ;
+//    [self.view addSubview:editIV];
     
-    self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(13.75, 55.75+diffH, 292.5,self.view.frame.size.height-(diffH+55.57+253+44))];
+    self.dynamicTV = [[FastTextView alloc]initWithFrame:CGRectMake(8.75, 55.75+diffH, 310.5,self.view.frame.size.height-(diffH+55.57+253+44))];
 //    _dynamicTV.backgroundColor = [UIColor redColor];
     _dynamicTV.font = [UIFont systemFontOfSize:16];
     //    _dynamicTV.delegate = self;
@@ -115,27 +118,28 @@
     _dynamicTV.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _dynamicTV.delegate = (id<FastTextViewDelegate>)self;
     _dynamicTV.attributeConfig=[TextConfig editorAttributeConfig];
-    _dynamicTV.placeHolder=@"好好写点^_^";
+    _dynamicTV.placeHolder=@"回复内容";
     [_dynamicTV setFont:[UIFont systemFontOfSize:16]];
     _dynamicTV.pragraghSpaceHeight=10;
     _dynamicTV.backgroundColor=[UIColor clearColor];
     
     [self.view addSubview:_dynamicTV];
+    [_dynamicTV becomeFirstResponder];
+    
+    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 207.5) WithSendBtn:NO withDeleteBtn:YES];
+    theEmojiView.delegate = self;
+    [self.view addSubview:theEmojiView];
+    theEmojiView.hidden = YES;
     
     
-    UIImageView* tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
-    if (diffH==0.0f) {
-        tool.image = [UIImage imageNamed:@"table_bg"];
-    }
-    else
-    {
-        tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
-        tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
-        tool.layer.borderWidth = 1;
-    }
+    tool = [[UIImageView alloc]initWithFrame:CGRectMake(0, _dynamicTV.frame.origin.y+_dynamicTV.frame.size.height+2, 320, 44)];
     tool.backgroundColor = [UIColor clearColor];
     tool.userInteractionEnabled = YES;
-    _dynamicTV.inputAccessoryView = tool;
+    tool.backgroundColor = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1];
+    tool.layer.borderColor = [[UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1] CGColor];
+    tool.layer.borderWidth = 1;
+    [self.view addSubview:tool];
+//    _dynamicTV.inputAccessoryView = tool;
 
     imageB = [UIButton buttonWithType:UIButtonTypeCustom];
     imageB.frame = CGRectMake(270, 4, 32, 32);
@@ -149,13 +153,13 @@
     [tool addSubview:emojiBtn];
     [emojiBtn addTarget:self action:@selector(emojiBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
-    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:NO];
-    theEmojiView.delegate = self;
+//    theEmojiView = [[EmojiView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-253, 320, 207.5) WithSendBtn:NO withDeleteBtn:NO];
+//    theEmojiView.delegate = self;
     
-    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
-    [[UIApplication sharedApplication].keyWindow addSubview:hud];
-    hud.delegate = self;
-    hud.labelText = @"发布中...";
+//    hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+//    [[UIApplication sharedApplication].keyWindow addSubview:hud];
+//    hud.delegate = self;
+//    hud.labelText = @"发布中...";
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -213,24 +217,76 @@
 {
     if (!ifEmoji) {
         [_dynamicTV resignFirstResponder];
-        _dynamicTV.inputView = theEmojiView;
-        [_dynamicTV becomeFirstResponder];
+        //        _dynamicTV.inputView = theEmojiView;
+        //        [_dynamicTV becomeFirstResponder];
         ifEmoji = YES;
+        [self showEmojiScrollView];
         [sender setImage:[UIImage imageNamed:@"keyboard.png"] forState:UIControlStateNormal];
         
     }
     else
     {
-        [_dynamicTV resignFirstResponder];
-        _dynamicTV.inputView = nil;
+        //        [_dynamicTV resignFirstResponder];
+        //        _dynamicTV.inputView = nil;
         [_dynamicTV becomeFirstResponder];
         ifEmoji = NO;
         [sender setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
     }
 }
+-(void)showEmojiScrollView
+{
+    [_dynamicTV resignFirstResponder];
+    [tool setFrame:CGRectMake(0, self.view.frame.size.height-227-tool.frame.size.height, 320, tool.frame.size.height)];
+    theEmojiView.hidden = NO;
+    [theEmojiView setFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 227)];
+    //    [self autoMovekeyBoard:253];
+    
+}
+
 -(void)backButton:(UIButton*)button
 {
     [self dismissViewControllerAnimated:YES completion:^{}];
+}
+-(void)showTheHUD
+{
+    if (hud == nil)
+    {
+        
+        NSLog(@"windows count %d \n",[[UIApplication sharedApplication].windows count]);
+        if ([[UIApplication sharedApplication].windows count] > 1 )
+        {
+            UIWindow *win=[[UIApplication sharedApplication].windows objectAtIndex:1];
+            if (win)
+            {
+                NSLog(@"windows 1111111111111 \n");
+                hud = [[MBProgressHUD alloc] initWithWindow:win];
+                // Add HUD to screen
+                [win addSubview:hud];
+            }
+            
+        }
+        else
+        {
+            // Should be initialized with the windows frame so the HUD disables all user input by covering the entire screen
+            hud = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+            
+            // Add HUD to screen
+            [[UIApplication sharedApplication].keyWindow addSubview:hud];
+            
+            // Regisete for HUD callbacks so we can remove it from the window at the right time
+        }
+        hud.delegate = self;
+        
+        hud.labelText = @"发布中...";
+        
+        [hud show:YES];
+        
+        
+    }
+    else
+    {
+        [hud show:YES];
+    }
 }
 
 -(void)next
@@ -240,8 +296,8 @@
         [alert show];
         return;
     }
-    [hud show:YES];
-    [_dynamicTV resignFirstResponder];
+    [self showTheHUD];
+//    [_dynamicTV resignFirstResponder];
     NSArray *fileArray=[NSAttributedString getAttachmentsForNewFileName:_dynamicTV.attributedString];
     if (fileArray.count>0) {
         NSMutableArray *uploadImageArray = [NSMutableArray array];
@@ -380,7 +436,7 @@
 #pragma mark - touch
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [_dynamicTV resignFirstResponder];
+//    [_dynamicTV resignFirstResponder];
 }
 #pragma mark - actionsheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -683,13 +739,42 @@
 //    }
 }
 - (void)keyboardWillShow:(NSNotification *)notification {
+    ifEmoji = NO;
+    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    NSDictionary *userInfo = [notification userInfo];
     
-//    [emojiBtn setImage:[UIImage imageNamed:@"emoji.png"] forState:UIControlStateNormal];
+    // Get the origin of the keyboard when it's displayed.
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    // Get the top of the keyboard as the y coordinate of its origin in self's view's coordinate system. The bottom of the text view's frame should align with the top of the keyboard's final position.
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    // Get the duration of the animation.
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
+    [self autoMovekeyBoard:keyboardRect.size.height];
+}
+
+-(void)autoMovekeyBoard:(float)h
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [tool setFrame:CGRectMake(0, self.view.frame.size.height-h-tool.frame.size.height, 320, 44)];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
 
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    
+    [UIView animateWithDuration:0.2 animations:^{
+        [tool setFrame:CGRectMake(0, self.view.frame.size.height-227, 320, 44)];
+    } completion:^(BOOL finished) {
+        
+    }];
     
     
     
