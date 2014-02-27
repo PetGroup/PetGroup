@@ -16,6 +16,7 @@
 @property (nonatomic,retain) NSString* circleName;
 @property (nonatomic,retain) NSString* replyCount;
 @property (nonatomic,retain) NSString* userName;
+@property (nonatomic,retain) NSString* assortName;
 @property (nonatomic,retain) NSString* headImage;
 @property (nonatomic,retain) NSString* ct;
 @property (nonatomic,retain) NSArray * imageArray;

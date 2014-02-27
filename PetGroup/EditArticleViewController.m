@@ -67,7 +67,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 发求助 ",@" 求经验 ",@" 其他 ", nil];
+        theTagArray = [NSArray arrayWithObjects:@" 晒幸福 ",@" 求经验 ",@" 发求助 ",@" 其他 ", nil];
         theTagIdArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"TagList"];
         tagSizeArray = [NSMutableArray array];
 //        manual = NO;
@@ -799,7 +799,7 @@
     [dic setObject:dateS forKey:@"et"];
     [dic setObject:@"0" forKey:@"cTotalReply"];
     [dic setObject:@"0" forKey:@"clientCount"];
-    [dic setObject:self.forumId forKey:@"forumId"];
+//    [dic setObject:self.forumId forKey:@"forumId"];
     [dic setObject:@"0" forKey:@"isEute"];
     [dic setObject:@"0" forKey:@"isTop"];
     [dic setObject:@"0" forKey:@"totalReply"];

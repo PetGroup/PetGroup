@@ -16,6 +16,7 @@
 @property(nonatomic,retain)UIImageView* replyIV;
 @property(nonatomic,retain)UILabel* nameL;
 @property(nonatomic,retain)UILabel* titleL;
+@property(nonatomic,retain)UILabel* assortNameL;
 @property(nonatomic,retain)UILabel* timeL;
 @property(nonatomic,retain)UILabel* replyL;
 @property(nonatomic,retain)UIImageView* goodI;
@@ -83,6 +84,11 @@
         _timeL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
         [self.contentView addSubview:_timeL];
         
+        self.assortNameL = [[UILabel alloc]initWithFrame:CGRectMake(145, 52, 70, 20)];
+        _assortNameL.font = [UIFont systemFontOfSize:14];
+        _assortNameL.textColor = [UIColor colorWithRed:0.65 green:0.65 blue:0.65 alpha:1];
+        [self.contentView addSubview:_assortNameL];
+        
         self.replyIV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"huifu_icon"]];
         [self.contentView addSubview:_replyIV];
         self.replyL = [[UILabel alloc]initWithFrame:CGRectMake(265, 52, 40, 20)];
@@ -117,6 +123,7 @@
     _titleL.frame = CGRectMake(60, 10, 240, size.height);
     _titleL.text = self.article.name;
     _timeL.text = self.article.ct;
+    _assortNameL.text = self.article.assortName;
     _replyL.text =[NSString stringWithFormat:@"%@",self.article.replyCount];
     CGPoint lastPoint;
     CGSize sz = [_titleL.text sizeWithFont:[UIFont systemFontOfSize:16] constrainedToSize:CGSizeMake(MAXFLOAT, 20) lineBreakMode:NSLineBreakByCharWrapping];
@@ -168,6 +175,7 @@
     }
     [_imageCollectionV reloadData];
     _timeL.frame = CGRectMake(65, self.contentView.frame.size.height - 28, 70, 20);
+    _assortNameL.frame =CGRectMake(145, self.contentView.frame.size.height - 28, 70, 20);
     _replyIV.frame = CGRectMake(250, self.contentView.frame.size.height - 24, 15, 13);
     _replyL.frame = CGRectMake(270, self.contentView.frame.size.height - 28, 50, 20);
 }
@@ -192,7 +200,7 @@
 {
     static NSString *cellIdentifier = @"cell";
     ImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@/75",self.article.imageArray[indexPath.row]]];
+    cell.imageV.imageURL = [NSURL URLWithString:[NSString stringWithFormat:BaseImageUrl"%@/75/square",self.article.imageArray[indexPath.row]]];
     return cell;
     
 }

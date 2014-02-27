@@ -45,7 +45,7 @@
         [body setObject:[SFHFKeychainUtils getPasswordForUsername:LOCALTOKEN andServiceName:LOCALACCOUNT error:nil] forKey:@"token"];
         NSMutableArray* tagArray = [NSMutableArray array];
         [NetManager requestWithURLStr:BaseClientUrl Parameters:body TheController:viewController success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"%@",responseObject);
+            NSLog(@"DDDSSSSSSS：%@",responseObject);
             for (NSDictionary* dic in responseObject) {
                 [tagArray addObject:dic[@"id"]];
             }

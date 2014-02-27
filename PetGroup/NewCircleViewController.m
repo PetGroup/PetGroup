@@ -85,6 +85,10 @@ typedef  enum
     // Do any additional setup after loading the view.
     self.hidesBottomBarWhenPushed = YES;
     
+    NSArray * tagArray = [NSArray arrayWithObjects:@"944BC5EF8585417C820F503FCD85251C",@"ECA4CEDBBB7C42188B10BBA238F60651",@"2B8F7255CABC43BE9CEBFCADBB9DD356",@"D657265C27B44D3C8D3493420B6BF0B2", nil];
+    [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"TagList"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     diffH = [Common diffHeight:self];
     
     centerPoint = CGPointMake(290, self.view.frame.size.height - 100);
@@ -278,6 +282,29 @@ typedef  enum
     }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makeScrollToTheTop:) name:@"Notification_makeSrollTop" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedNewSub) name:@"Notification_received_bbs_special_subject" object:nil];
+}
+-(void)receivedNewSub
+{
+    NSString * subIfRead = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@_%@",@"bbs_special_subject",[SFHFKeychainUtils getPasswordForUsername:ACCOUNT andServiceName:LOCALACCOUNT error:nil]]];
+    if (subIfRead) {
+        if ([subIfRead isEqualToString:@"YES"]) {
+            subNotiV.hidden = YES;
+            [self.customTabBarController removeNotificatonOfIndex:0];
+            
+        }
+        else
+        {
+            subNotiV.hidden = NO;
+            [self.customTabBarController notificationWithNumber:NO AndTheNumber:0 OrDot:YES WithButtonIndex:0];
+        }
+    }
+    else
+    {
+        subNotiV.hidden = YES;
+        [self.customTabBarController removeNotificatonOfIndex:0];
+    }
+
 }
 -(void)makeScrollToTheTop:(NSNumber *)index
 {

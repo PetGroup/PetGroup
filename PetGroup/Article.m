@@ -18,6 +18,7 @@
         self.replyCount = [NSString stringWithFormat:@"%d",[[info objectForKey:@"totalReply"] integerValue]];
         self.userName = [info objectForKey:@"nickname"];
         self.circleName = [info objectForKey:@"forumName"];
+        self.assortName = [info objectForKey:@"assortName"]?[info objectForKey:@"assortName"]:@"noAssortNow";
         self.isEute = [[info objectForKey:@"isEute"]boolValue];
         self.isTop = [[info objectForKey:@"isTop"] boolValue];
         NSArray *arr = [[info objectForKey:@"userIcon"] componentsSeparatedByString:@"_"];

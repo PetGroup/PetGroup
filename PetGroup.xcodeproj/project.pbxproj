@@ -4831,7 +4831,7 @@
 				ORGANIZATIONNAME = Tolecen;
 				TargetAttributes = {
 					979546B317BA368F00D05874 = {
-						DevelopmentTeam = GM3VHPP425;
+						DevelopmentTeam = 68WLA6HLV2;
 					};
 				};
 			};
@@ -5861,7 +5861,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5907,7 +5907,7 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaofeng Zhang (YELSC58VLN)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
